@@ -15,6 +15,12 @@
 ;; Load publishing system
 (require 'ox-publish)
 
+;; Sitemap preprocessing
+(defun my/org-publish-org-sitemap (title list)
+  "Sitemap generation function."
+  (concat "#+TITLE: Sitemap\n\n"
+          (org-list-to-subtree list)))
+
 ;; define publishing project
 (setq org-publish-project-alist
       (list
@@ -28,10 +34,17 @@
              :with-toc t
              :section-numbers nil
              :time-stamp-file nil
+             :auto-sitemap t
+             :sitemap-title nil;"Daniel Liden's Blog"
+             :sitemap-function 'my/org-publish-org-sitemap
+             :sitemap-sort-files 'anti-chronologically
+             :sitemap-filename "sitemap.org"
+             :sitemap-style 'tree
              )))
 
 ;; additional settings
-(setq org-html-validation-link nil)
+(setq org-html-validation-link nil
+      org-html-htmlize-output-type 'css)
 ;; generate site output
 (org-publish-all t)
 (message "Build Complete!")

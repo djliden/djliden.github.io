@@ -1,12 +1,12 @@
-#+TITLE: Test Index Page
-#+AUTHOR: Daniel Liden
+#+TITLE: Daniel Liden's Blog
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+#+OPTIONS: toc:nil
+* Welcome
 
-* This is a top-level headline
-This is some introductory text
-** This is a lower-level headline
-With some more text.
+* Latest Post
+#+INCLUDE: posts/test1.org :lines "2-" :only-contents t
+* Recent Posts
+#+INCLUDE: sitemap.org::*posts :lines "-5" :only-contents t
+* About Me
+#+INCLUDE: about.org :lines "2-" :only-contents t
 
-#+begin_src python
-import pandas as pd
-pd.DataFrame({'a':[1,2,3]})
-#+end_src
