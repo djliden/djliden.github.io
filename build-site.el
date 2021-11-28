@@ -14,7 +14,6 @@
 
 ;; Load publishing system
 (require 'ox-publish)
-(message "Build Complete!")
 
 ;; define publishing project
 (setq org-publish-project-alist
@@ -38,3 +37,4 @@
 ;;       org-html-head "<link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />")
 ;; generate site output
 (org-publish-all t)
+(message "Build Complete!")
