@@ -31,11 +31,7 @@
              )))
 
 ;; additional settings
-(setq org-html-validation-link nil
-      org-html-head-include-default-style nil ;; Use our own styles
-      org-html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/tufte.css\" />")            ;; Don't show validation link
-;;       org-html-head-include-scripts nil       ;; Use our own scripts
-;;       org-html-head "<link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />")
+(setq org-html-validation-link nil)
 ;; generate site output
 (org-publish-all t)
 (message "Build Complete!")
