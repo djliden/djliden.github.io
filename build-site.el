@@ -60,7 +60,7 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
 ;; modify this one! (if necessary)
 (defun my/org-publish-org-sitemap (title list)
   "Sitemap generation function."
-  (concat "#+TITLE: Sitemap\n\n#+OPTIONS: toc:nil")
+  (concat "#+OPTIONS: toc:nil")
   (org-list-to-subtree list))
 
 ;; modify this one!
@@ -76,7 +76,6 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
                                      (org-publish-find-date entry project))
                  (org-publish-find-title entry project)
                  preview)))
-                 ;;(my/get-preview (concat "content/" entry))))
         ((eq style 'tree)
          ;; Return only last subdir.
          ;; ends up as a headline at higher level than the posts
@@ -106,16 +105,16 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :time-stamp-file nil
              :auto-sitemap t
              :sitemap-title nil;"Daniel Liden's Blog"
+             :sitemap-format-entry 'my/org-publish-org-sitemap-format
              :sitemap-function 'my/org-publish-org-sitemap
              :sitemap-sort-files 'anti-chronologically
-             :sitemap-format-entry 'my/org-publish-org-sitemap-format
              :sitemap-filename "sitemap.org"
-             :sitemap-style 'tree
-             )))
+             :sitemap-style 'tree)))
 
 ;;; additional settings
 (setq org-html-validation-link nil
-      org-html-htmlize-output-type 'css)
+org-html-htmlize-output-type 'css
+org-html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://gongzhitaao.org/orgcss/org.css\"/>")
 
 ;;; generate site output
 (org-publish-all t)

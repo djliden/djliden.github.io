@@ -1,0 +1,188 @@
+#+TITLE: Made with Org-Mode
+#+DATE: <2021-12-03 Fri>
+
+* Background
+#+BEGIN_PREVIEW
+I finally made a personal site using org-mode's built-in ~ox-publish~ exporter.
+
+I've written my personal website with org-mode for years (it is, after all, [[https://karl-voit.at/2017/09/23/orgmode-as-markup-only/][one of the most
+reasonable markup languages to use for text]]). But until this point, I've used Hugo (with the ~ox-Hugo~
+exporter). It worked fine, but it always seemed /just a little bit too complicated/ for my needs. I
+wanted to find something where I could basically understand all of the components and where the gap
+between my org-mode files and the published output was as small as possible. I wanted to focus more
+on the writing and less on understanding the framework.
+#+END_PREVIEW
+
+* First Steps
+
+** Ox-Publish
+[[https://systemcrafters.net/publishing-websites-with-org-mode/building-the-site/][This great guide]] from System Crafters got me started with ~ox-publish~. The very short post
+how to use ~ox-publish~ to set up a basic site; ~htmlize~ to correctly render code blocks, and
+~simple-httpd~ to preview the site locally. I recommend starting here if you're interested in making
+your own site with org-mode.
+
+** GitHub Pages
+[[https://systemcrafters.net/publishing-websites-with-org-mode/automated-site-publishing/][The followup post]] is just as useful—it describes the process of publishing the site with GitHub
+Pages (or SourceHut; I opted for GitHub Pages). There was one minor point missing from this
+article. The described GitHub action runs the site's build script and commits the ~public~ directory
+to a new branch. It was, therefore, necessary to add the /local/ version of the public branch
+(which we preview with ~simple-httpd~) to our ~gitignore~ file to avoid conflicts. Otherwise, this guide
+was simple to follow and worked perfectly.
+
+* Some Simple Customization
+There were a few simple design and organization changes I wanted before I started writing: a simple
+and readable theme; a list of recent posts with short "preview" snippets, and a link to a post
+archive.
+
+** CSS theme
+I opted to use [[https://gongzhitaao.org/orgcss/][orgcss]], at least for now. It's a stylesheet explicitly designed for use with
+org-exported HTML files. It looks (to me) quite a bit nicer than the default and it works well
+without any additional configuration. I'm sure I'll want to make some changes in the future, but
+it's a great place to start.
+
+I applied this stylesheet to all of the exported .org files by adding the following line to my
+~build-site.el~ configuration file:
+
+#+begin_src emacs-lisp
+;; org-site/build-site.el
+;; ...
+(setq org-html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://gongzhitaao.org/orgcss/org.css\"/>")
+#+end_src
+
+** Recent Posts
+I wanted to include a few recent posts on the homepage and separately link to the post archive. I
+also wanted each of these custom posts to have a short "preview"—a paragraph or so of my choosing
+from the post. I adapted my approach to this from [[https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html#sec-org-setup][this post]] (not sure of the author) and [[https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html][this post]]
+by Seth Morabito ([[https://twitter.com/twylo/][@twylo]]).
+
+To include the recent posts, I included the first 25 lines of the automatically-generated
+~sitemap.org~ on my index page with:
+
+#+begin_src org
+#+INCLUDE: sitemap.org::*posts :lines "-25" :only-contents t
+#+end_src
+
+*** Sitemap Configuration
+I specified the generation of the sitemap using ~org-publish-project-alist~ configuration variable:
+
+#+begin_src emacs-lisp -n
+;; org-site/build-site.el
+(setq org-publish-project-alist
+      (list
+       (list "org-site:main"
+             ;; other configuration settings
+             :base-directly: "./content"
+             :auto-sitemap t
+             :sitemap-title nil
+             :sitemap-format-entry 'my/org-publish-org-sitemap-format
+             :sitemap-function 'my/org-publish-org-sitemap
+             :sitemap-sort-files 'anti-chronologically
+             :sitemap-filename "sitemap.org"
+             :sitemap-style 'tree)))
+#+end_src
+
+*** Sitemap Entry Formatting
+You'll notice two functions used to format and publish the sitemap entries. ~sitemap-format-entry~
+takes three arguments (~entry~, ~style~, and ~project~). We only need to worry about the former. Each
+~entry~ is a file or directory in the ~base-directory~ specified in the ~org-publish-project-alist~
+above. My ~my/org-publish-org-sitemap-format~ defun closely follows the one [[https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html#orgace8e3d][here]].
+
+#+begin_src emacs-lisp -n
+;; org-site/build-site.el
+(defun my/org-publish-org-sitemap-format (entry style project)
+  "Custom sitemap entry formatting: add date"
+  (cond ((not (directory-name-p entry))
+         (let ((preview (if (my/get-preview (concat "content/" entry))
+                            (my/get-preview (concat "content/" entry))
+                          "(No preview)")))
+         (format "[[file:%s][(%s) %s]]\n%s"
+                 entry
+                 (format-time-string "%Y-%m-%d"
+                                     (org-publish-find-date entry project))
+                 (org-publish-find-title entry project)
+                 preview)))
+        ((eq style 'tree)
+         (file-name-nondirectory (directory-file-name entry)))
+        (t entry)))
+#+end_src
+
+This does the following:
+1. Read in each entry's path
+2. If the entry is /not/ a directory:
+   - Check if the ~my/get-preview~ defun returns a value (more on ~my/get-preview~ later)
+   - Assign the preview text to to the ~preview~ variable if ~my/get-preview~ is not null and assigns
+     ~"(No preview)"~ to ~preview~ otherwise
+   - Format the output as a link to the entry with ~(Date) Title~ as the description (using the
+     ~org-publish-find-date~ and ~org-publish-find-title~ defuns to get the dates/titles of each
+     entry)
+   - include the ~preview~ (defined above) after a line break
+3. If the entry /is/ a directory (e.g. if the first condition returns ~nil~) and if the ~sitemap-style~ is
+   ~tree~, return the name of the last subdirectory (e.g. the entry ~/projects/org-site/content/posts~ would
+   return ~posts~)
+4. Otherwise, just return the entry unchanged.
+*** Sitemap List Formatting
+The entries formatted above are all added to a list (formatted in a tree style to represent the
+directory structure). We simply convert this list into an org subtree and publish it to the
+~sitemap.org~ file. The conversion is handled in the ~my/org-publish-org-sitemap~ file (again, adapted
+from [[https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html#orgace8e3d][here]]).
+
+#+begin_src emacs-lisp -n
+;; org-site/build-site.el
+(defun my/org-publish-org-sitemap (title list)
+  "Sitemap generation function."
+  (concat "#+OPTIONS: toc:nil")
+  (org-list-to-subtree list))
+#+end_src
+
+All this does is specify that we do not want a table of contents and that we want our formatted list
+of entries (with previews) represented as an org subtree.
+*** Previews
+One part we haven't addressed yet is the generation of previews. There are different approaches out
+there, but none of them did exactly what I wanted. I borrowed from posts by  [[https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html][Seth Morabito]] and
+especially [[https://ogbe.net/blog/blogging_with_org.html][Dennis Ogbe]]. The biggest change I wanted was making sure a default "No preview" would be
+inserted if there wasn't a preview. I did this by ensuring the ~my/get-preview~ defun would return ~nil~
+(instead of an error) without a preview, and that the entry formatting defun would return "No
+preview" if ~my/get-preview~ was ~nil~.
+
+#+begin_src emacs-lisp -n
+;; org-site/build-site.el
+(defun my/get-preview (file)
+  "get preview text from a file
+
+Uses the function here as a starting point:
+https://ogbe.net/blog/blogging_with_org.html"
+  (with-temp-buffer
+    (insert-file-contents file)
+    (goto-char (point-min))
+    (when (re-search-forward "^#\\+BEGIN_PREVIEW$" nil 1)
+      (goto-char (point-min))
+      (let ((beg (+ 1 (re-search-forward "^#\\+BEGIN_PREVIEW$" nil 1)))
+            (end (progn (re-search-forward "^#\\+END_PREVIEW$" nil 1)
+                        (match-beginning 0))))
+        (buffer-substring beg end)))))
+#+end_src
+
+This defun takes a file path as an argument and:
+1. Inserts the contents of the file into a temporary buffer
+2. Navigates to the beginning of the buffer and searches forward for the ~#+BEGIN_PREVIEW~ block
+   pattern
+   - If it fails to locate this pattern, the defun returns ~nil~
+   - If it does locate this pattern, it:
+     1. Returns to the beginning of the temporary buffer and repeats the search, recording the location of the
+        block pattern, saving its location under the name ~beg~
+     2. Searches forward again for the ~#+END_PREVIEW~ pattern, saving its location under the name
+        ~end~
+     3. Returns the text between ~beg~ and ~end~: the user-selected preview text.
+* Putting It All Together
+Check out the full source code for the site [[https://github.com/djliden/djliden.github.io][on GitHub]].
+* What's Next?
+This site now has everything I need to write more with minimal need to tweak the site configuration
+every step of the way (which I found myself doing constantly when using Hugo). That said, there are
+a few more things I want to do before moving this site to its permanent home under my personal
+domain. These include:
+** TODO [#A] Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, [[file:../index.org][here's the link]]).
+** TODO [#B] Set up a good system for managing images (e.g. for data visualizations from R/Python)
+** TODO [#B] Set up and test LaTeX exporting for formulas etc.
+** TODO [#C] Add a portfolio page showing some of my past work
+** TODO [#C] Make a more visually interesting home page
+
