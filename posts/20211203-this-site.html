@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Made with Org-Mode</title>
+<meta name="generator" content="Org mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Made with Org-Mode</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org72b2f35">Background</a></li>
+<li><a href="#org2c361a2">First Steps</a>
+<ul>
+<li><a href="#orgd1aa3ab">Ox-Publish</a></li>
+<li><a href="#orgfb171a2">GitHub Pages</a></li>
+</ul>
+</li>
+<li><a href="#org3625c9f">Some Simple Customization</a>
+<ul>
+<li><a href="#orgad4d505">CSS theme</a></li>
+<li><a href="#org7a76e47">Recent Posts</a>
+<ul>
+<li><a href="#orgd2e5422">Sitemap Configuration</a></li>
+<li><a href="#org2c7585b">Sitemap Entry Formatting</a></li>
+<li><a href="#org975176d">Sitemap List Formatting</a></li>
+<li><a href="#org8a3f0e4">Previews</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org8a14465">Putting It All Together</a></li>
+<li><a href="#orga649dc5">What's Next?</a>
+<ul>
+<li><a href="#orge855751"><span class="todo TODO">TODO</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, here's the link).</a></li>
+<li><a href="#org36bf5bc"><span class="todo TODO">TODO</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</a></li>
+<li><a href="#org7d9a7a0"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</a></li>
+<li><a href="#org744baf9"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</a></li>
+<li><a href="#orgd63e305"><span class="todo TODO">TODO</span> Make a more visually interesting home page</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org72b2f35" class="outline-2">
+<h2 id="org72b2f35">Background</h2>
+<div class="outline-text-2" id="text-org72b2f35">
+<div class="PREVIEW">
+<p>
+I finally made a personal site using org-mode's built-in <code>ox-publish</code> exporter.
+</p>
+
+<p>
+I've written my personal website with org-mode for years (it is, after all, <a href="https://karl-voit.at/2017/09/23/orgmode-as-markup-only/">one of the most
+reasonable markup languages to use for text</a>). But until this point, I've used Hugo (with the <code>ox-Hugo</code>
+exporter). It worked fine, but it always seemed <i>just a little bit too complicated</i> for my needs. I
+wanted to find something where I could basically understand all of the components and where the gap
+between my org-mode files and the published output was as small as possible. I wanted to focus more
+on the writing and less on understanding the framework.
+</p>
+
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2c361a2" class="outline-2">
+<h2 id="org2c361a2">First Steps</h2>
+<div class="outline-text-2" id="text-org2c361a2">
+</div>
+<div id="outline-container-orgd1aa3ab" class="outline-3">
+<h3 id="orgd1aa3ab">Ox-Publish</h3>
+<div class="outline-text-3" id="text-orgd1aa3ab">
+<p>
+<a href="https://systemcrafters.net/publishing-websites-with-org-mode/building-the-site/">This great guide</a> from System Crafters got me started with <code>ox-publish</code>. The very short post
+how to use <code>ox-publish</code> to set up a basic site; <code>htmlize</code> to correctly render code blocks, and
+<code>simple-httpd</code> to preview the site locally. I recommend starting here if you're interested in making
+your own site with org-mode.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfb171a2" class="outline-3">
+<h3 id="orgfb171a2">GitHub Pages</h3>
+<div class="outline-text-3" id="text-orgfb171a2">
+<p>
+<a href="https://systemcrafters.net/publishing-websites-with-org-mode/automated-site-publishing/">The followup post</a> is just as useful—it describes the process of publishing the site with GitHub
+Pages (or SourceHut; I opted for GitHub Pages). There was one minor point missing from this
+article. The described GitHub action runs the site's build script and commits the <code>public</code> directory
+to a new branch. It was, therefore, necessary to add the <i>local</i> version of the public branch
+(which we preview with <code>simple-httpd</code>) to our <code>gitignore</code> file to avoid conflicts. Otherwise, this guide
+was simple to follow and worked perfectly.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3625c9f" class="outline-2">
+<h2 id="org3625c9f">Some Simple Customization</h2>
+<div class="outline-text-2" id="text-org3625c9f">
+<p>
+There were a few simple design and organization changes I wanted before I started writing: a simple
+and readable theme; a list of recent posts with short "preview" snippets, and a link to a post
+archive.
+</p>
+</div>
+
+<div id="outline-container-orgad4d505" class="outline-3">
+<h3 id="orgad4d505">CSS theme</h3>
+<div class="outline-text-3" id="text-orgad4d505">
+<p>
+I opted to use <a href="https://gongzhitaao.org/orgcss/">orgcss</a>, at least for now. It's a stylesheet explicitly designed for use with
+org-exported HTML files. It looks (to me) quite a bit nicer than the default and it works well
+without any additional configuration. I'm sure I'll want to make some changes in the future, but
+it's a great place to start.
+</p>
+
+<p>
+I applied this stylesheet to all of the exported .org files by adding the following line to my
+<code>build-site.el</code> configuration file:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">org-site/build-site.el</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">...</span>
+(<span class="org-keyword">setq</span> org-html-head <span class="org-string">"&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"https://gongzhitaao.org/orgcss/org.css\"/&gt;"</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7a76e47" class="outline-3">
+<h3 id="org7a76e47">Recent Posts</h3>
+<div class="outline-text-3" id="text-org7a76e47">
+<p>
+I wanted to include a few recent posts on the homepage and separately link to the post archive. I
+also wanted each of these custom posts to have a short "preview"—a paragraph or so of my choosing
+from the post. I adapted my approach to this from <a href="https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html#sec-org-setup">this post</a> (not sure of the author) and <a href="https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html">this post</a>
+by Seth Morabito (<a href="https://twitter.com/twylo/">@twylo</a>).
+</p>
+
+<p>
+To include the recent posts, I included the first 25 lines of the automatically-generated
+<code>sitemap.org</code> on my index page with:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-meta-line">#+INCLUDE: sitemap.org::*posts :lines "-25" :only-contents t</span>
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgd2e5422" class="outline-4">
+<h4 id="orgd2e5422">Sitemap Configuration</h4>
+<div class="outline-text-4" id="text-orgd2e5422">
+<p>
+I specified the generation of the sitemap using <code>org-publish-project-alist</code> configuration variable:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="linenr"> 1: </span><span class="org-comment-delimiter">;; </span><span class="org-comment">org-site/build-site.el</span>
+<span class="linenr"> 2: </span>(<span class="org-keyword">setq</span> org-publish-project-alist
+<span class="linenr"> 3: </span>      (list
+<span class="linenr"> 4: </span>       (list <span class="org-string">"org-site:main"</span>
+<span class="linenr"> 5: </span>             <span class="org-comment-delimiter">;; </span><span class="org-comment">other configuration settings</span>
+<span class="linenr"> 6: </span>             <span class="org-builtin">:base-directly:</span> <span class="org-string">"./content"</span>
+<span class="linenr"> 7: </span>             <span class="org-builtin">:auto-sitemap</span> t
+<span class="linenr"> 8: </span>             <span class="org-builtin">:sitemap-title</span> nil
+<span class="linenr"> 9: </span>             <span class="org-builtin">:sitemap-format-entry</span> 'my/org-publish-org-sitemap-format
+<span class="linenr">10: </span>             <span class="org-builtin">:sitemap-function</span> 'my/org-publish-org-sitemap
+<span class="linenr">11: </span>             <span class="org-builtin">:sitemap-sort-files</span> 'anti-chronologically
+<span class="linenr">12: </span>             <span class="org-builtin">:sitemap-filename</span> <span class="org-string">"sitemap.org"</span>
+<span class="linenr">13: </span>             <span class="org-builtin">:sitemap-style</span> 'tree)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2c7585b" class="outline-4">
+<h4 id="org2c7585b">Sitemap Entry Formatting</h4>
+<div class="outline-text-4" id="text-org2c7585b">
+<p>
+You'll notice two functions used to format and publish the sitemap entries. <code>sitemap-format-entry</code>
+takes three arguments (<code>entry</code>, <code>style</code>, and <code>project</code>). We only need to worry about the former. Each
+<code>entry</code> is a file or directory in the <code>base-directory</code> specified in the <code>org-publish-project-alist</code>
+above. My <code>my/org-publish-org-sitemap-format</code> defun closely follows the one <a href="https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html#orgace8e3d">here</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="linenr"> 1: </span><span class="org-comment-delimiter">;; </span><span class="org-comment">org-site/build-site.el</span>
+<span class="linenr"> 2: </span>(<span class="org-keyword">defun</span> <span class="org-function-name">my/org-publish-org-sitemap-format</span> (entry style project)
+<span class="linenr"> 3: </span>  <span class="org-doc">"Custom sitemap entry formatting: add date"</span>
+<span class="linenr"> 4: </span>  (<span class="org-keyword">cond</span> ((not (directory-name-p entry))
+<span class="linenr"> 5: </span>         (<span class="org-keyword">let</span> ((preview (<span class="org-keyword">if</span> (my/get-preview (concat <span class="org-string">"content/"</span> entry))
+<span class="linenr"> 6: </span>                            (my/get-preview (concat <span class="org-string">"content/"</span> entry))
+<span class="linenr"> 7: </span>                          <span class="org-string">"(No preview)"</span>)))
+<span class="linenr"> 8: </span>         (format <span class="org-string">"[[file:%s][(%s) %s]]\n%s"</span>
+<span class="linenr"> 9: </span>                 entry
+<span class="linenr">10: </span>                 (format-time-string <span class="org-string">"%Y-%m-%d"</span>
+<span class="linenr">11: </span>                                     (org-publish-find-date entry project))
+<span class="linenr">12: </span>                 (org-publish-find-title entry project)
+<span class="linenr">13: </span>                 preview)))
+<span class="linenr">14: </span>        ((eq style 'tree)
+<span class="linenr">15: </span>         (file-name-nondirectory (directory-file-name entry)))
+<span class="linenr">16: </span>        (t entry)))
+</pre>
+</div>
+
+<p>
+This does the following:
+</p>
+<ol class="org-ol">
+<li>Read in each entry's path</li>
+<li>If the entry is <i>not</i> a directory:
+<ul class="org-ul">
+<li>Check if the <code>my/get-preview</code> defun returns a value (more on <code>my/get-preview</code> later)</li>
+<li>Assign the preview text to to the <code>preview</code> variable if <code>my/get-preview</code> is not null and assigns
+<code>"(No preview)"</code> to <code>preview</code> otherwise</li>
+<li>Format the output as a link to the entry with <code>(Date) Title</code> as the description (using the
+<code>org-publish-find-date</code> and <code>org-publish-find-title</code> defuns to get the dates/titles of each
+entry)</li>
+<li>include the <code>preview</code> (defined above) after a line break</li>
+</ul></li>
+<li>If the entry <i>is</i> a directory (e.g. if the first condition returns <code>nil</code>) and if the <code>sitemap-style</code> is
+<code>tree</code>, return the name of the last subdirectory (e.g. the entry <code>/projects/org-site/content/posts</code> would
+return <code>posts</code>)</li>
+<li>Otherwise, just return the entry unchanged.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org975176d" class="outline-4">
+<h4 id="org975176d">Sitemap List Formatting</h4>
+<div class="outline-text-4" id="text-org975176d">
+<p>
+The entries formatted above are all added to a list (formatted in a tree style to represent the
+directory structure). We simply convert this list into an org subtree and publish it to the
+<code>sitemap.org</code> file. The conversion is handled in the <code>my/org-publish-org-sitemap</code> file (again, adapted
+from <a href="https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html#orgace8e3d">here</a>).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="linenr">1: </span><span class="org-comment-delimiter">;; </span><span class="org-comment">org-site/build-site.el</span>
+<span class="linenr">2: </span>(<span class="org-keyword">defun</span> <span class="org-function-name">my/org-publish-org-sitemap</span> (title list)
+<span class="linenr">3: </span>  <span class="org-doc">"Sitemap generation function."</span>
+<span class="linenr">4: </span>  (concat <span class="org-string">"#+OPTIONS: toc:nil"</span>)
+<span class="linenr">5: </span>  (org-list-to-subtree list))
+</pre>
+</div>
+
+<p>
+All this does is specify that we do not want a table of contents and that we want our formatted list
+of entries (with previews) represented as an org subtree.
+</p>
+</div>
+</div>
+<div id="outline-container-org8a3f0e4" class="outline-4">
+<h4 id="org8a3f0e4">Previews</h4>
+<div class="outline-text-4" id="text-org8a3f0e4">
+<p>
+One part we haven't addressed yet is the generation of previews. There are different approaches out
+there, but none of them did exactly what I wanted. I borrowed from posts by  <a href="https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html">Seth Morabito</a> and
+especially <a href="https://ogbe.net/blog/blogging_with_org.html">Dennis Ogbe</a>. The biggest change I wanted was making sure a default "No preview" would be
+inserted if there wasn't a preview. I did this by ensuring the <code>my/get-preview</code> defun would return <code>nil</code>
+(instead of an error) without a preview, and that the entry formatting defun would return "No
+preview" if <code>my/get-preview</code> was <code>nil</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="linenr"> 1: </span><span class="org-comment-delimiter">;; </span><span class="org-comment">org-site/build-site.el</span>
+<span class="linenr"> 2: </span>(<span class="org-keyword">defun</span> <span class="org-function-name">my/get-preview</span> (file)
+<span class="linenr"> 3: </span>  <span class="org-doc">"get preview text from a file</span>
+<span class="linenr"> 4: </span>
+<span class="linenr"> 5: </span><span class="org-doc">Uses the function here as a starting point:</span>
+<span class="linenr"> 6: </span><span class="org-doc">https://ogbe.net/blog/blogging_with_org.html"</span>
+<span class="linenr"> 7: </span>  (<span class="org-keyword">with-temp-buffer</span>
+<span class="linenr"> 8: </span>    (insert-file-contents file)
+<span class="linenr"> 9: </span>    (goto-char (point-min))
+<span class="linenr">10: </span>    (<span class="org-keyword">when</span> (re-search-forward <span class="org-string">"^#\\+BEGIN_PREVIEW$"</span> nil 1)
+<span class="linenr">11: </span>      (goto-char (point-min))
+<span class="linenr">12: </span>      (<span class="org-keyword">let</span> ((beg (+ 1 (re-search-forward <span class="org-string">"^#\\+BEGIN_PREVIEW$"</span> nil 1)))
+<span class="linenr">13: </span>            (end (<span class="org-keyword">progn</span> (re-search-forward <span class="org-string">"^#\\+END_PREVIEW$"</span> nil 1)
+<span class="linenr">14: </span>                        (match-beginning 0))))
+<span class="linenr">15: </span>        (buffer-substring beg end)))))
+</pre>
+</div>
+
+<p>
+This defun takes a file path as an argument and:
+</p>
+<ol class="org-ol">
+<li>Inserts the contents of the file into a temporary buffer</li>
+<li>Navigates to the beginning of the buffer and searches forward for the <code>#+BEGIN_PREVIEW</code> block
+pattern
+<ul class="org-ul">
+<li>If it fails to locate this pattern, the defun returns <code>nil</code></li>
+<li>If it does locate this pattern, it:
+<ol class="org-ol">
+<li>Returns to the beginning of the temporary buffer and repeats the search, recording the location of the
+block pattern, saving its location under the name <code>beg</code></li>
+<li>Searches forward again for the <code>#+END_PREVIEW</code> pattern, saving its location under the name
+<code>end</code></li>
+<li>Returns the text between <code>beg</code> and <code>end</code>: the user-selected preview text.</li>
+</ol></li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org8a14465" class="outline-2">
+<h2 id="org8a14465">Putting It All Together</h2>
+<div class="outline-text-2" id="text-org8a14465">
+<p>
+Check out the full source code for the site <a href="https://github.com/djliden/djliden.github.io">on GitHub</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-orga649dc5" class="outline-2">
+<h2 id="orga649dc5">What's Next?</h2>
+<div class="outline-text-2" id="text-orga649dc5">
+<p>
+This site now has everything I need to write more with minimal need to tweak the site configuration
+every step of the way (which I found myself doing constantly when using Hugo). That said, there are
+a few more things I want to do before moving this site to its permanent home under my personal
+domain. These include:
+</p>
+</div>
+<div id="outline-container-orge855751" class="outline-3">
+<h3 id="orge855751"><span class="todo TODO">TODO</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, <a href="../index.html">here's the link</a>).</h3>
+</div>
+<div id="outline-container-org36bf5bc" class="outline-3">
+<h3 id="org36bf5bc"><span class="todo TODO">TODO</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</h3>
+</div>
+<div id="outline-container-org7d9a7a0" class="outline-3">
+<h3 id="org7d9a7a0"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</h3>
+</div>
+<div id="outline-container-org744baf9" class="outline-3">
+<h3 id="org744baf9"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</h3>
+</div>
+<div id="outline-container-orgd63e305" class="outline-3">
+<h3 id="orgd63e305"><span class="todo TODO">TODO</span> Make a more visually interesting home page</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2021-12-03 Fri 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>
