@@ -180,7 +180,23 @@ This site now has everything I need to write more with minimal need to tweak the
 every step of the way (which I found myself doing constantly when using Hugo). That said, there are
 a few more things I want to do before moving this site to its permanent home under my personal
 domain. These include:
-** TODO [#A] Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, [[file:../index.org][here's the link]]).
+** DONE [#A] Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, [[file:../index.org][here's the link]]).
+*Update:* I've added this in a very simple way. I updated my ~org-publish-project-alist~ with:
+
+#+begin_src emacs-lisp -n
+;; org-site/build-site.el
+(setq org-publish-project-alist
+      (list
+       (list "org-site:main"
+             ;; ...
+             :html-preamble (concat "<div class='topnav'>
+                                     <a href='/index.html'>Home</a> / 
+                                     <a href='/archive.html'>Blog</a> /
+                                     <a href='/about.html'>About Me</a>
+                                     </div>")
+             ;; ...
+             )))
+#+end_src
 ** TODO [#B] Set up a good system for managing images (e.g. for data visualizations from R/Python)
 ** TODO [#B] Set up and test LaTeX exporting for formulas etc.
 ** TODO [#C] Add a portfolio page showing some of my past work

@@ -99,10 +99,10 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :publishing-directory "./public"
              :publishing-function 'org-html-publish-to-html
              :html-preamble (concat "<div class='topnav'>
-    <a href='/index.html'>Home</a> / 
-    <a href='/archive.html'>Blog</a> /
-    <a href='/about.html'>About Me</a>
-</div>")
+                                     <a href='/index.html'>Home</a> / 
+                                     <a href='/archive.html'>Blog</a> /
+                                     <a href='/about.html'>About Me</a>
+                                     </div>")
              :with-author nil
              :with-creator t
              :with-toc t
