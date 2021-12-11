@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Org Babel Source Blocks for R</title>
+<meta name="generator" content="Org mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class='topnav'>
+                                     <a href='/index.html'>Home</a> / 
+                                     <a href='/archive.html'>Blog</a> /
+                                     <a href='/about.html'>About Me</a>
+                                     </div>
+</div>
+<div id="content">
+<h1 class="title">Org Babel Source Blocks for R</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgb2be4f6">Background</a></li>
+<li><a href="#org4e2048e">R Source Headers</a>
+<ul>
+<li><a href="#orgdbf9572">Code</a>
+<ul>
+<li><a href="#org43ad5f4">Displaying Tabular Output</a></li>
+</ul>
+</li>
+<li><a href="#orgddcbeaf">Figures</a>
+<ul>
+<li><a href="#org28855ec">Base R</a></li>
+<li><a href="#org86b87d2">Ggplot and Lattice</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgfb8db86">An Alternative: Emacs-Jupyter</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb2be4f6" class="outline-2">
+<h2 id="orgb2be4f6">Background</h2>
+<div class="outline-text-2" id="text-orgb2be4f6">
+<div class="preview">
+<p>
+<a href="https://orgmode.org/worg/org-contrib/babel/intro.html">Org Babel</a> is one of the best tools available for <a href="https://www-cs-faculty.stanford.edu/~knuth/lp.html">literate programming</a>. As a data scientist, I use it
+as a plain-text alternative to Jupyter notebooks. Org-mode files are much easier to track with
+version control and don't require the overhead of a browser. There are tradeoffs: Jupyter notebooks
+handle the display of different types of output (text results, images, interactive figures, etc.) in
+a way that is both seamless and visually appealing. Displaying figures at all can be a challenge
+when getting started with org-babel. This post covers the basics of using org-babel for common data
+science tasks in R.
+</p>
+
+</div>
+
+<p>
+I will specifically talk about using org-babel in interactive (session-based) evaluation, much like
+how you would use a Jupyter notebook. Each org-babel source block is executed in the same
+environment, so data objects persist between source blocks. Some specific org-babel behaviors will
+depend on the specifics of your org-babel configuration; you can see mine below<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
+</p>
+
+<p>
+<i>For notes on setting up org-babel to work with R, read <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html">this article</a>.</i>
+</p>
+</div>
+</div>
+<div id="outline-container-org4e2048e" class="outline-2">
+<h2 id="org4e2048e">R Source Headers</h2>
+<div class="outline-text-2" id="text-org4e2048e">
+<p>
+I tend to use two different header configurations, one for code output and one for figures.
+</p>
+</div>
+<div id="outline-container-orgdbf9572" class="outline-3">
+<h3 id="orgdbf9572">Code</h3>
+<div class="outline-text-3" id="text-orgdbf9572">
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-block-begin-line">#+begin_src R :session mysession</span>
+# Code goes here
+add_1 &lt;- function(x) {
+  x + 1
+}
+
+add_1(99)
+<span class="org-org-block-end-line">#+end_src</span>
+</pre>
+</div>
+
+<p>
+This (given my org-babel config)<sup><a id="fnr.1.100" class="footref" href="#fn.1">1</a></sup> will appear as follows once exported:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R"># Code goes here
+add_1 &lt;- function(x) {
+  x + 1
+}
+
+add_1(99)
+</pre>
+</div>
+
+<pre class="example">
+100
+
+</pre>
+</div>
+<div id="outline-container-org43ad5f4" class="outline-4">
+<h4 id="org43ad5f4">Displaying Tabular Output</h4>
+<div class="outline-text-4" id="text-org43ad5f4">
+<p>
+When not dealing with plotting outputs, there are two main header options for result formatting that I tend
+to use: <code>:results output</code> and <code>:results value</code> (the default). You can find details on these two modes
+<a href="https://orgmode.org/manual/Results-of-Evaluation.html">here</a>.
+</p>
+
+<p>
+The biggest differences between the two, in my experience, are visible when displaying or exporting
+tabular data (e.g. a <code>data.frame</code> or <code>tibble</code>). I prefer the <code>:results output</code> formatting for interactive
+work within an org file, simply because it is more compact. <code>:results value</code> tends to result in more
+readable exports, though.
+</p>
+</div>
+<ul class="org-ul">
+<li><a id="org2597797"></a>Value<br />
+<div class="outline-text-5" id="text-org2597797">
+<p>
+(With <code>:results value</code> header arg).
+</p>
+<div class="org-src-container">
+<pre class="src src-R">head(mtcars)
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">mpg</th>
+<th scope="col" class="org-right">cyl</th>
+<th scope="col" class="org-right">disp</th>
+<th scope="col" class="org-right">hp</th>
+<th scope="col" class="org-right">drat</th>
+<th scope="col" class="org-right">wt</th>
+<th scope="col" class="org-right">qsec</th>
+<th scope="col" class="org-right">vs</th>
+<th scope="col" class="org-right">am</th>
+<th scope="col" class="org-right">gear</th>
+<th scope="col" class="org-right">carb</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">21</td>
+<td class="org-right">6</td>
+<td class="org-right">160</td>
+<td class="org-right">110</td>
+<td class="org-right">3.9</td>
+<td class="org-right">2.62</td>
+<td class="org-right">16.46</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+<td class="org-right">4</td>
+<td class="org-right">4</td>
+</tr>
+
+<tr>
+<td class="org-right">21</td>
+<td class="org-right">6</td>
+<td class="org-right">160</td>
+<td class="org-right">110</td>
+<td class="org-right">3.9</td>
+<td class="org-right">2.875</td>
+<td class="org-right">17.02</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+<td class="org-right">4</td>
+<td class="org-right">4</td>
+</tr>
+
+<tr>
+<td class="org-right">22.8</td>
+<td class="org-right">4</td>
+<td class="org-right">108</td>
+<td class="org-right">93</td>
+<td class="org-right">3.85</td>
+<td class="org-right">2.32</td>
+<td class="org-right">18.61</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">4</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-right">21.4</td>
+<td class="org-right">6</td>
+<td class="org-right">258</td>
+<td class="org-right">110</td>
+<td class="org-right">3.08</td>
+<td class="org-right">3.215</td>
+<td class="org-right">19.44</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-right">3</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-right">18.7</td>
+<td class="org-right">8</td>
+<td class="org-right">360</td>
+<td class="org-right">175</td>
+<td class="org-right">3.15</td>
+<td class="org-right">3.44</td>
+<td class="org-right">17.02</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">3</td>
+<td class="org-right">2</td>
+</tr>
+
+<tr>
+<td class="org-right">18.1</td>
+<td class="org-right">6</td>
+<td class="org-right">225</td>
+<td class="org-right">105</td>
+<td class="org-right">2.76</td>
+<td class="org-right">3.46</td>
+<td class="org-right">20.22</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-right">3</td>
+<td class="org-right">1</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Note that you may also need to include <code>:colnames yes</code> in order to ensure the column names display
+correctly.
+</p>
+</div>
+</li>
+
+<li><a id="orgc3be314"></a>Output<br />
+<div class="outline-text-5" id="text-orgc3be314">
+<p>
+(With <code>:results output</code> header arg).
+</p>
+<div class="org-src-container">
+<pre class="src src-R">head(mtcars)
+</pre>
+</div>
+
+<pre class="example">
+                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgddcbeaf" class="outline-3">
+<h3 id="orgddcbeaf">Figures</h3>
+<div class="outline-text-3" id="text-orgddcbeaf">
+<p>
+I don't find the display and exporting of figures particularly intuitive and finding help tends to
+be challening because of differences depending on the plotting system and because of changes over
+time. <i>This approach works as of December 2021</i>. Further details on exporting org source blocks can be
+found <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org7fbd9c2">here</a>.
+</p>
+</div>
+<div id="outline-container-org28855ec" class="outline-4">
+<h4 id="org28855ec">Base R</h4>
+<div class="outline-text-4" id="text-org28855ec">
+<p>
+Using Base R graphics, the following header argument will produce a link to a file which can then be
+previewed in your org-mode buffer and exported.
+</p>
+
+<p>
+<code>#+begin_src R :results file graphics :file path/to/file.png</code>
+</p>
+
+<p>
+Here's an example.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">plot(mpg~hp, data=mtcars, main="Sample Figure")
+grid()
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="./figures/20211209-R-babel/fig1.png" alt="fig1.png" />
+</p>
+</div>
+</div>
+<ul class="org-ul">
+<li><a id="orgce928f8"></a>Setting Graphical Parameters with Header Arguments<br />
+<div class="outline-text-5" id="text-orgce928f8">
+<p>
+We can also set some graphical parameters such as figure height and width through the header
+arguments. For example, to set the with, height, and resolution, we add <code>:width 6 :height 3 :units in
+:res 100</code>. You can find a complete list of graphical header arguments <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org075fa45">here</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">plot(mpg~hp, data=mtcars, main="Sample Figure")
+grid()
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="./figures/20211209-R-babel/fig2.png" alt="fig2.png" />
+</p>
+</div>
+</div>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-org86b87d2" class="outline-4">
+<h4 id="org86b87d2">Ggplot and Lattice</h4>
+<div class="outline-text-4" id="text-org86b87d2">
+<p>
+Can we just use this approach for everything? From <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org075fa45">the documentation</a>,
+</p>
+
+<blockquote>
+<p>
+If the source code block uses grid-based R graphics, e.g., the lattice and ggplot2 packages, then
+care must be taken either to <code>print()</code> the graphics object, specify <code>:results</code> output, or run the code
+in a <code>:session</code>. This is because the graphics functions from lattice and ggplot2 return objects that
+must be explicitly printed to see them, using the print function. This happens automatically when
+run interactively, e.g., <code>:session</code>, but when called inside another function, it does not.
+</p>
+</blockquote>
+
+<p>
+So in our case—as we're interested in <code>:session</code> evaluation—we <i>can</i> use this approach for
+everything. But care must be taken (i.e. read the documentation) if attempting to use ggplot or
+lattice graphics outside of a <code>:session</code> context.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">library(ggplot2)
+ggplot(data=mtcars, mapping=aes(x=hp, y=mpg)) + geom_point()
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="./figures/20211209-R-babel/fig3.png" alt="fig3.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfb8db86" class="outline-2">
+<h2 id="orgfb8db86">An Alternative: Emacs-Jupyter</h2>
+<div class="outline-text-2" id="text-orgfb8db86">
+<p>
+The excellent <a href="https://github.com/nnicandro/emacs-jupyter">emacs-jupyter</a> package is a solid alternative to the approaches described above. To use
+it for R, install the <code>emacs-jupyter</code> package (e.g. with <code>(use-package jupyter)</code>. In R, install <code>IRkernel</code>
+(make sure to follow all of the instructions <a href="https://github.com/IRkernel/IRkernel">here</a> for registering the kernel). Update
+<code>org-babel-load-languages</code> to include <code>jupyter</code>. E.g.:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (julia . t)
+   (python . t)
+   (jupyter . t)))
+</pre>
+</div>
+
+<p>
+Then you can set up R blocks with:
+</p>
+
+<p>
+<code>#+begin_src jupyter-R :session my-jupyter-session</code>
+</p>
+
+<p>
+e.g.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-R">1+1
+</pre>
+</div>
+
+<pre class="example">
+[1] 2
+
+</pre>
+
+<p>
+Using <code>emacs-jupyter</code> results in a significantly different experience, which warrants a post of its
+own (especially because the documentation for using <code>emacs-jupyter</code> with R is not easy to find or
+follow).
+</p>
+
+<p>
+A couple of reasons <code>emacs-jupyter</code> is worth considering:
+</p>
+<ul class="org-ul">
+<li>if a code block generates a figure, you don't need to specify a filename/path or use any fancy
+header arguments to make sure the image appears in your org buffer. The image is named and saved
+automatically to <code>org-babel-jupyter-resource-directory</code>. This makes exploratory analysis
+comparatively seamless. I spend much less time tripping over header args with <code>emacs-jupyter</code>.</li>
+<li>Accessibility of help: pressing <code>&lt;M-i&gt;</code> with the cursor over an object opens a new window with
+documentation.</li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+Some of the above will be affected by the specifics of my org-babel config. Here it is:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org">;; org-babel
+(org-babel-do-load-languages
+'org-babel-load-languages
+'(
+    (emacs-lisp . t)
+    (R          . t)
+    (python     . t)
+    (org        . t)
+    (dot        . t)
+    (sql        . t)
+    (http       . t)
+    (latex      . t)
+    (js         . t)
+    (shell      . t)
+    (C          . t)
+    (jupyter    . t)
+    ))
+(setq org-babel-default-header-args '((:eval . "never-export")
+                                    (:exports . "both")
+                                    (:cache . "no")
+                                    (:results . "replace"))
+    org-src-fontify-natively t
+    org-src-preserve-indentation t
+    org-src-tab-acts-natively t
+    org-src-window-setup 'current-window
+    org-confirm-babel-evaluate nil)
+
+(eval-after-load 'org
+(add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>I have it set to export both code and output (<code>~:exports . "both"</code>). The <code>"never-export"</code> part
+specifies that the code should <i>not</i> be re-run run during export. I try to ensure that the output is
+what I want it to be prior to export, but that's just what works for my workflow.
+<ul class="org-ul">
+<li>I noticed this was <i>not</i> being respected when exporting to html with <code>ox-publish</code>. It was necessary
+to add <code>(setq org-export-use-babel nil)</code> to prevent the export from triggering re-execution of all
+of the source blocks.</li>
+</ul></li>
+<li><code>org-confirm-babel-evaluate-nil</code> results in org babel not asking for confirmation every time I
+execute a code block (<a href="https://orgmode.org/manual/Code-Evaluation-Security.html">details here</a>).</li>
+<li><code>org-src-preserve-indentation</code> prevents org-babel from automatically indenting code blocks. The
+auto-indentation <i>can</i> look nice, but I found that, more often than not, it resulted in more
+challenges in code intentation than it was worth.</li>
+<li>You can look up anything else you're curious about! <code>&lt;C-h&gt;-f</code> and <code>&lt;C-h&gt;-v</code> are your friends.</li>
+</ul></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="date">Date: 2021-12-11 Sat 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>
