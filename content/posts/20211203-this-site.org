@@ -197,7 +197,26 @@ domain. These include:
              ;; ...
              )))
 #+end_src
-** TODO [#B] Set up a good system for managing images (e.g. for data visualizations from R/Python)
+** DONE [#B] Set up a good system for managing images (e.g. for data visualizations from R/Python)
+I followed the guide [[https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html][here]] to set up the export of "static" files using the ~org-publish-attachment~
+publication function. The new section of my config looks like this:
+
+#+begin_src org
+(setq org-publish-project-alist
+      (list
+       (list "org-site:main"
+       ;; ...
+             )
+       ;; this part is new
+       (list "org-site:static"
+             :base-directory "./content/"
+             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+             :publishing-directory "./public"
+             :recursive t
+             :publishing-function 'org-publish-attachment
+             )))
+#+end_src
+
 ** TODO [#B] Set up and test LaTeX exporting for formulas etc.
 ** TODO [#C] Add a portfolio page showing some of my past work
 ** TODO [#C] Make a more visually interesting home page
