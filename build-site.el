@@ -114,12 +114,20 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :sitemap-function 'my/org-publish-org-sitemap
              :sitemap-sort-files 'anti-chronologically
              :sitemap-filename "sitemap.org"
-             :sitemap-style 'tree)))
+             :sitemap-style 'tree)
+       (list "org-site:static"
+             :base-directory "./content/"
+             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+             :publishing-directory "./public"
+             :recursive t
+             :publishing-function 'org-publish-attachment
+             )))
 
 ;;; additional settings
 (setq org-html-validation-link nil
-org-html-htmlize-output-type 'css
-org-html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://gongzhitaao.org/orgcss/org.css\"/>")
+      org-html-htmlize-output-type 'css
+      org-html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://gongzhitaao.org/orgcss/org.css\"/>"
+      org-export-use-babel nil)
 
 ;;; generate site output
 (org-publish-all t)
