@@ -1,0 +1,186 @@
+#+TITLE: Task Repeaters in Org Mode
+#+DATE: <2022-01-29 Sat>
+
+* Background
+#+BEGIN_PREVIEW
+I recently started using org-mode to keep track of a few habits (morning
+meditation, getting some sunlight and exercise before my morning coffee, etc.)
+and needed to make use of org-mode's calendar features to do so. I've previously
+set deadlines and scheduled dates for my ~TODO~ entries, but have seldom used
+repeat intervals. My early attempts ( ~date +1d~) worked fine but required some
+extra steps if I ever missed a day. This post discusses the ~.+~ and ~++~
+-style repeat intervals, which allow more control over what happens when you
+complete a task after the scheduled date.
+#+END_PREVIEW
+* Review: Dates, Schedules, and Deadlines in Emacs Org-Mode
+The [[https://orgmode.org/manual/Dates-and-Times.html][org-mode manual]] provides plenty of details on the basics of dates and
+times. Here's a quick review:
+- Add a *timestamp* with only the date to an org-mode entry with ~<C-c> .~. A
+  timestamp entry with a /time/ can be added with ~<C-u><C-c> .~. While there are
+  [[https://orgmode.org/manual/Creating-Timestamps.html][plenty of methods]] for modifying timestamps after creation, I typically create
+  the timestamp and then modify it, if needed, with ~S-LEFT/RIGHT/UP/DOWN~ to
+  change the day (forward/back) or whichever element of the timestamp the cursor
+  is located on (up/down).
+
+  Another useful timestamp format is ~<C-c> ! (org-time-stamp-inactive~), which
+  inserts an /inactive/ timestamp (represented with square rather than angled
+  brackets; e.g. ~[2022-01-16 Sun]~ rather than ~<2022-01-16 Sun>~). Inactive
+  timestamps work the same as active timestamps, except that they do not appear
+  on the org-agenda.
+- Two timestamps connected by ~--~ make up a *range*
+  (e.g. ~<2022-02-12 Sat>--<2022-01-16 Sun>~). A range will appear on the agenda
+  on the start and stop dates and on all dates in the range.
+- Add a *scheduled* date to a headline with ~<C-c><C-s>~ and a *deadline* with
+  ~<C-c><C-d>~. Again, there are [[https://orgmode.org/manual/Deadlines-and-Scheduling.html][plenty of details]] in the manual. Both of these
+  types of timestamps affect how the timestamp appears in the agenda. In short,
+  a "scheduled" headline appears on the date of the timestamp and on every day
+  following until the entry is marked ~DONE~. A "deadline" timestamp on a headline
+  will start appearing in the agenda ~org-deadline-warning-days~ before the
+  deadline timestamp and will appear daily until it is marked ~DONE~.
+
+  Conceptually, a "deadline" in org mode comports with the common use of the
+  word: it is the date when a task is supposed to be finished. The meaning of
+  "scheduled," on the other hand, specifically refers to the date when a task is
+  to be started. It is not meant to be used in the sense of "scheduling an
+  appointment." A regular timestamp is better suited for this use. Recall: a
+  /scheduled/ headline will appear in the agenda /even after the scheduled date/,
+  which is not especially useful for an event (again, like a meeting or
+  appointment) that occurs /on/ a given date.
+* Repeat Intervals
+Org-mode makes it possible to schedule recurring events without manually
+specifying each repetition date. There are three key formats for repeated
+events. Regardless of the format, the main idea is to add a repetition interval
+to the timestamp. A repetition interval combines a number with a unit of time to
+specify how often a timestamp/schedule/deadline should be repeated. For example:
+- ~<2022-01-16 Sun +1d>~ will repeat daily.
+- ~<2022-01-29 Sat +5d>~ will repeat every five days.
+- ~<2022-01-29 Sat +1y>~ will repeat yearly.
+
+When specifying repeat intervals, ~y~ means "yearly", ~m~ means "monthly", ~w~ means
+"weekly", ~d~ means "daily", and ~h~ means "hourly." Prepending these values with
+~+<number>~ tells how often the event should be repeated.
+** Different Types of Repeat Intervals
+Here's where I ran into trouble. I scheduled some events as daily "habits." For
+example, I wanted to take a walk each morning, so I included the following in my
+planner file:
+
+#+begin_src org
+,* TODO Walk 1000 steps before coffee
+SCHEDULED: <2022-01-29 Sat>
+#+end_src
+
+The idea was that, each morning, I would take a walk and mark the task as ~DONE~,
+at which point the date would advance to the next day. This worked fine for a
+while, but eventually I missed a day. Suppose I was supposed to walk on
+~<2022-01-25 Tue>~ but, instead, I got up and immediately started working on my
+computer. Before I knew it, it was after noon and I'd only walked between the
+coffeepot and the computer. But I didn't give up, and I took a morning walk
+again on ~<2022-01-29 Sat>~. Here's what happens on ~<2022-01-29 Sat>~:
+
+*State before marking ~DONE~:*
+#+begin_src org
+,* TODO Walk 1000 steps before coffee
+SCHEDULED: <2022-01-25 Tue +1d>
+#+end_src
+
+*State after marking ~DONE~:*
+
+#+begin_src org
+,* TODO Walk 1000 steps before coffee
+SCHEDULED: <2022-01-26 Wed +1d>
+:PROPERTIES:
+:LAST_REPEAT: [2022-01-29 Sat 09:11]
+:END:
+- State "DONE"       from "TODO"       [2022-01-29 Sat 09:11]
+  #+end_src
+
+  The scheduled date advances by one day, but that day is still in the past. If
+  I really, /really/ need to account for every day, maybe this is what I want. I
+  could fill out the rest of the days between 2022-01-25 and 2022-01-29 for the
+  sake of completeness. But oftentimes, if I don't mark something as done, it's
+  because /I haven't done it/. I want to indicate that I completed the task /today/
+  and I plan to complete the task again /tomorrow/.
+  
+There are two special repeaters for situations like this.
+*** The ~.+~ Repeater
+Instead of scheduling with ~+1d~, we can use ~.+1d~ to specify that, after we mark a
+task ~DONE~ it should advance by exactly one day from the date (and time, if the
+timestamp includes a time) when we marked it ~DONE~. Let's walk through an
+example. Let's say I was supposed to clean the kitchen on Sunday, January 9, and
+weekly thereafter. But suppose I didn't get to it until Saturday, January 29.
+
+*State before marking ~DONE~:*
+#+begin_src org
+,* TODO Clean the Kitchen
+SCHEDULED: <2022-01-09 Sun .+1w>
+#+end_src
+
+*State after marking ~DONE~:*
+#+begin_src org
+,* TODO Clean the Kitchen
+SCHEDULED: <2022-02-05 Sat .+1w>
+:PROPERTIES:
+:LAST_REPEAT: [2022-01-29 Sat 09:28]
+:END:
+- State "DONE"       from "TODO"       [2022-01-29 Sat 09:28]
+#+end_src
+A couple of noteworthy things happened here:
+- The next scheduled date advanced to a /future/ date one week from the
+  ~LAST_REPEAT~ date.
+- The next scheduled date did /not/ schedule for the next /Sunday/ but for the date
+  one week from when it was marked ~DONE~, a Saturday.
+*** The ~++~ Repeater
+The ~++~ repeater is very similar to the ~.+~ repeater insofar as it will also
+advance the scheduled date into the future. However, it will /also/ match the
+original scheduled time and day of the week. Here's the previous example,
+updated to use the ~++~ syntax.
+
+*State before marking ~DONE~:*
+#+begin_src org
+,* TODO Clean the Kitchen
+SCHEDULED: <2022-01-09 Sun ++1w>
+#+end_src
+
+*State after marking ~DONE~:*
+#+begin_src org
+,* TODO Clean the Kitchen
+SCHEDULED: <2022-01-30 Sun ++1w>
+:PROPERTIES:
+:LAST_REPEAT: [2022-01-29 Sat 09:35]
+:END:
+- State "DONE"       from "TODO"       [2022-01-29 Sat 09:35]
+#+end_src
+
+It is now scheduled for the next Sunday (even though that's only one day after
+the ~LAST_REPEAT~ date. In other words, it will always advance into the future,
+but it will match the scheduled day of the week instead of advancing the
+scheduled date exactly be the repeat interval.
+
+One consequence of this behavior is that the next ~SCHEDULED~ date might be less
+than the repeater interval in the future relative to the ~LAST_REPEAT~ date. For
+example, if I schedule cleaning each Sunday, but I don't get to it until
+Wednesday one week, the next repeat will still be scheduled for the following
+Sunday, only four days later.
+** Marking Tasks with Repeaters ~DONE~ (For Good)
+You may want to end a repeated task—stop it from appearing in your agenda and
+mark it ~DONE~ —without entirely deleting the task. Maybe you want to maintain the
+task history or re-activate the task in the future. There are two approaches to
+this.
+
+1. Mark the task as ~DONE~ by invoking the ~org-todo~ function with the numeric
+   prefix of ~-1~. You can do this with:
+   - ~<C-u> -1 <C-t>~ or ~<C--1><C-t>~, or
+   - ~<C-u> org-todo~ or ~<C--1> org-todo~,
+     and then changing the state to ~DONE~. (~<C--1>~ means to hold Control and type
+     ~-1~).
+2. Deactivate the timestamp. Org will not repeat inactive timestamps. You can do
+   this by placing the cursor on one of the angle brackets ~<,>~ on either side of
+   the timestamp and pressing the up arrow. This will change the angle brackets
+   to square brackets, indicating an inactive timestamp.
+* Further Reading
+The org-mode manual is the best place to learn more about timestamps, schedules,
+and deadlines in general and repeated tasks in particular. Here are some places
+to start:
+- [[https://orgmode.org/manual/Timestamps.html][Timestamps]]
+- [[https://orgmode.org/manual/Repeated-tasks.html][Repeated Tasks]]
+- [[https://orgmode.org/manual/Dates-and-Times.html][Dates and Times (Index Page)]]
