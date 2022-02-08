@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Resources</title>
+<title>Org Mode Headlines in Org Source Blocks</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -235,84 +235,194 @@ for the JavaScript code in this tag.
                                      </div>
 </div>
 <div id="content">
-<h1 class="title">Resources</h1>
+<h1 class="title">Org Mode Headlines in Org Source Blocks</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf4f3efe">Personal Website in Org</a></li>
-<li><a href="#org2f7ef40">OrgCSS Stylesheet</a></li>
-<li><a href="#org840c181">loomcom</a></li>
-<li><a href="#org37a31ad">Blogging using org-mode (and nothing else)</a></li>
-<li><a href="#org467d116">Worg Publishing to HTML Tutorial</a></li>
-<li><a href="#orgc5213ac">My Site</a></li>
+<li><a href="#orge9c59d4">The Problem</a></li>
+<li><a href="#orgb0d33ed">This Headline Is in an Org Source Block</a></li>
+<li><a href="#orgb7527d1">Prepend Headlines in Source Blocks with Commas</a></li>
+<li><a href="#orgd21b581">An Easier Way</a></li>
 </ul>
 </div>
 </div>
+<p>
+<i>Note: I know the org-mode syntax highlighting in the current theme is very
+low-contrast. I will update this soon.</i>
+</p>
+
+<div id="outline-container-orge9c59d4" class="outline-2">
+<h2 id="orge9c59d4">The Problem</h2>
+<div class="outline-text-2" id="text-orge9c59d4">
 <div class="PREVIEW">
 <p>
-Here are some resources to reference for building a simple site with org-mode. I've extensively
-used the sites listed as models for building the present site and expect to continue to reference
-them for some time.
+When writing about org mode, one often wants to show what particular org
+headline look like in terms of formatting, properties, tags, options,
+etc,. However, even within a babel org source block, an org header will be
+parsed and exported as a header. We can get around this by prepending the
+headline with a comma. The comma won't show up when exported: all that is
+exported is a nicely-formatted example of an org headline.
 </p>
 
 </div>
 
+<p>
+Here is an example of the issue. Below, I inserted an org source block (defined
+with <code>#+begin_src org</code>) with a first-level org headline inside,  <i>without</i> inserting
+a comma before the headline.
+</p>
 
-<div id="outline-container-orgf4f3efe" class="outline-2">
-<h2 id="orgf4f3efe"><a href="https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html#html_head">Personal Website in Org</a></h2>
-<div class="outline-text-2" id="text-orgf4f3efe">
 <p>
-Good resoures for setting up a custom sitemap as an index page.
+#+begin<sub>src</sub> org
 </p>
 </div>
 </div>
-<div id="outline-container-org2f7ef40" class="outline-2">
-<h2 id="org2f7ef40"><a href="https://github.com/gongzhitaao/orgcss">OrgCSS Stylesheet</a></h2>
-<div class="outline-text-2" id="text-org2f7ef40">
+<div id="outline-container-orgb0d33ed" class="outline-2">
+<h2 id="orgb0d33ed">This Headline Is in an Org Source Block</h2>
+<div class="outline-text-2" id="text-orgb0d33ed">
 <p>
-Nice-looking basic stylesheet for site. I likely won't stick with this forever but it looks good for
-  now.
+And it is still parsed and exported as a headline, not as an example.
+#+end<sub>src</sub>
+</p>
+
+<p>
+Clearly, this isn't what we want.
 </p>
 </div>
 </div>
-<div id="outline-container-org840c181" class="outline-2">
-<h2 id="org840c181"><a href="https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html">loomcom</a></h2>
-<div class="outline-text-2" id="text-org840c181">
+<div id="outline-container-orgb7527d1" class="outline-2">
+<h2 id="orgb7527d1"><a id="ID-7B4CFE25-5585-43AA-A866-9983B5A22305"></a>Prepend Headlines in Source Blocks with Commas</h2>
+<div class="outline-text-2" id="text-orgb7527d1">
 <p>
-This site includes a good overview of making list of posts with previews of the first few lines of
-text.
+This issue is easily resolved: just insert a comma before the headline in the
+source block (e.g. <code>,* Headline</code>). This results in the following:
 </p>
+
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-level-1">* This Headline Is in an Org Source Block</span>
+and it looks like org source, not like an exported org file.
+</pre>
 </div>
-</div>
-<div id="outline-container-org37a31ad" class="outline-2">
-<h2 id="org37a31ad"><a href="https://ogbe.net/blog/blogging_with_org.html">Blogging using org-mode (and nothing else)</a></h2>
-<div class="outline-text-2" id="text-org37a31ad">
+
 <p>
-By Dennis Ogbe. The code I ultimately used for generating and showing previews closely followed that
-from this post.
+This approach works well with more complicated org-mode syntax, as well. For
+example, the following block:
 </p>
-</div>
-</div>
-<div id="outline-container-org467d116" class="outline-2">
-<h2 id="org467d116"><a href="https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html">Worg Publishing to HTML Tutorial</a></h2>
-<div class="outline-text-2" id="text-org467d116">
+
+<pre class="example">
+,* Headline 1
+:PROPERTIES:
+:ID:       642BF4EE-3139-4B96-97C4-D3BABD86FFD5
+:END:
+,** Headline 2
+This headline is also prepended with a comma!
+,** Even a Nested Source Block!
+,#+begin_src R
+1+1
+,#+end_src
+
+,#+RESULTS:
+: 2
+</pre>
+
 <p>
-Good tutorial covering the basics of publishing org-mode projects to html.
+leads to the following (when we specify that it is an org source block).
 </p>
+
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-level-1">* Headline 1</span>
+<span class="org-org-special-keyword">:PROPERTIES:</span>
+<span class="org-org-special-keyword">:ID:</span>       <span class="org-org-property-value">642BF4EE-3139-4B96-97C4-D3BABD86FFD5</span>
+<span class="org-org-special-keyword">:END:</span>
+<span class="org-org-level-2">** Headline 2</span>
+This headline is also prepended with a comma!
+<span class="org-org-level-2">** Even a Nested Source Block!</span>
+<span class="org-org-block-begin-line">#+begin_src R</span>
+1+1
+<span class="org-org-block-end-line">#+end_src</span>
+
+<span class="org-org-meta-line">#+RESULTS:</span>
+<span class="org-org-code">: 2</span>
+</pre>
 </div>
 </div>
-<div id="outline-container-orgc5213ac" class="outline-2">
-<h2 id="orgc5213ac"><a href="https://djliden.github.io/">My Site</a></h2>
-<div class="outline-text-2" id="text-orgc5213ac">
+</div>
+<div id="outline-container-orgd21b581" class="outline-2">
+<h2 id="orgd21b581">An Easier Way</h2>
+<div class="outline-text-2" id="text-orgd21b581">
 <p>
-Here is a link to the site I'm making. Ultimately I will add a custom domain.
+We can use the <code>org-edit-special</code> command (<code>C-c '</code>) within an org source block to
+open a separate editing environment (in this case, another org buffer). We can
+then write some org syntax. When we exit the environment (again, with <code>C-c '</code>), it
+will be properly formatted for export.
+</p>
+
+<p>
+The following block was generated using this method:
+</p>
+
+<pre class="example">
+,* Headline 1                                                    :example_tag:
+This is an org headline with a tag.
+,** TODO Second Headline
+SCHEDULED: &lt;2022-02-15 Tue&gt;
+:PROPERTIES:
+:CUSTOM_ID: headline_1
+:END:
+,** Babel
+
+,#+begin_src jupyter-python :session datasci
+import numpy as np
+
+np.array(range(1,10))
+,#+end_src
+
+,#+RESULTS:
+: array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+</pre>
+
+<p>
+Which generates:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-level-1">* Headline 1                                                    </span><span class="org-org-level-1"><span class="org-org-tag">:example_tag:</span></span>
+This is an org headline with a tag.
+<span class="org-org-level-2">** </span><span class="org-org-todo">TODO</span><span class="org-org-level-2"> Second Headline</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2022-02-15 Tue&gt;</span>
+<span class="org-org-special-keyword">:PROPERTIES:</span>
+<span class="org-org-special-keyword">:CUSTOM_ID:</span> <span class="org-org-property-value">headline_1</span>
+<span class="org-org-special-keyword">:END:</span>
+<span class="org-org-level-2">** Babel</span>
+
+<span class="org-org-block-begin-line">#+begin_src jupyter-python :session datasci</span>
+import numpy as np
+
+np.array(range(1,10))
+<span class="org-org-block-end-line">#+end_src</span>
+
+<span class="org-org-meta-line">#+RESULTS:</span>
+<span class="org-org-code">: array([1, 2, 3, 4, 5, 6, 7, 8, 9])</span>
+</pre>
+</div>
+
+<p>
+This approach is easier because there is no need to remember or guess what,
+exactly, needs to be prepended with a comma. In this case, the headlines
+themselves, the nested <code>#+begin_src</code> and <code>#+end_src</code> lines, and the <code>#+RESULTS:</code> line
+were all escaped with commas.
+</p>
+
+<p>
+With both of these approaches available, writing about org mode with example org
+source blocks should be much easier.
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: 2021-12-02 Thu 00:00</p>
+<p class="date">Date: 2022-02-08 Tue 00:00</p>
 <p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</p>
 <p class="validation"></p>
 </div>
