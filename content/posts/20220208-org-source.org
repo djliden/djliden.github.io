@@ -1,0 +1,133 @@
+#+TITLE: Org Mode Headlines in Org Source Blocks
+#+DATE:<2022-02-08 Tue> 
+
+/Note: I know the org-mode syntax highlighting in the current theme is very
+low-contrast. I will update this soon./
+
+* The Problem
+#+BEGIN_PREVIEW
+When writing about org mode, one often wants to show what particular org
+headline look like in terms of formatting, properties, tags, options,
+etc,. However, even within a babel org source block, an org header will be
+parsed and exported as a header. We can get around this by prepending the
+headline with a comma. The comma won't show up when exported: all that is
+exported is a nicely-formatted example of an org headline.
+#+END_PREVIEW
+
+Here is an example of the issue. Below, I inserted an org source block (defined
+with ~#+begin_src org~) with a first-level org headline inside,  /without/ inserting
+a comma before the headline.
+
+#+begin_src org
+* This Headline Is in an Org Source Block
+And it is still parsed and exported as a headline, not as an example.
+#+end_src
+
+Clearly, this isn't what we want.
+* Prepend Headlines in Source Blocks with Commas
+:PROPERTIES:
+:ID:       7B4CFE25-5585-43AA-A866-9983B5A22305
+:END:
+
+This issue is easily resolved: just insert a comma before the headline in the
+source block (e.g. ~,* Headline~). This results in the following:
+
+#+begin_src org
+,* This Headline Is in an Org Source Block
+and it looks like org source, not like an exported org file.
+#+end_src
+
+This approach works well with more complicated org-mode syntax, as well. For
+example, the following block:
+
+#+begin_src
+,,* Headline 1
+:PROPERTIES:
+:ID:       642BF4EE-3139-4B96-97C4-D3BABD86FFD5
+:END:
+,,** Headline 2
+This headline is also prepended with a comma!
+,,** Even a Nested Source Block!
+,,#+begin_src R
+1+1
+,,#+end_src
+
+,,#+RESULTS:
+: 2
+#+end_src
+
+leads to the following (when we specify that it is an org source block).
+
+#+begin_src org
+,* Headline 1
+:PROPERTIES:
+:ID:       642BF4EE-3139-4B96-97C4-D3BABD86FFD5
+:END:
+,** Headline 2
+This headline is also prepended with a comma!
+,** Even a Nested Source Block!
+,#+begin_src R
+1+1
+,#+end_src
+
+,#+RESULTS:
+: 2
+#+end_src
+* An Easier Way
+
+We can use the ~org-edit-special~ command (~C-c '~) within an org source block to
+open a separate editing environment (in this case, another org buffer). We can
+then write some org syntax. When we exit the environment (again, with ~C-c '~), it
+will be properly formatted for export.
+
+The following block was generated using this method:
+
+#+begin_src
+,,* Headline 1                                                    :example_tag:
+This is an org headline with a tag.
+,,** TODO Second Headline
+SCHEDULED: <2022-02-15 Tue>
+:PROPERTIES:
+:CUSTOM_ID: headline_1
+:END:
+,,** Babel
+
+,,#+begin_src jupyter-python :session datasci
+import numpy as np
+
+np.array(range(1,10))
+,,#+end_src
+
+,,#+RESULTS:
+: array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+#+end_src
+
+Which generates:
+
+#+begin_src org
+,* Headline 1                                                    :example_tag:
+This is an org headline with a tag.
+,** TODO Second Headline
+SCHEDULED: <2022-02-15 Tue>
+:PROPERTIES:
+:CUSTOM_ID: headline_1
+:END:
+,** Babel
+
+,#+begin_src jupyter-python :session datasci
+import numpy as np
+
+np.array(range(1,10))
+,#+end_src
+
+,#+RESULTS:
+: array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+#+end_src
+
+This approach is easier because there is no need to remember or guess what,
+exactly, needs to be prepended with a comma. In this case, the headlines
+themselves, the nested ~#+begin_src~ and ~#+end_src~ lines, and the ~#+RESULTS:~ line
+were all escaped with commas.
+
+With both of these approaches available, writing about org mode with example org
+source blocks should be much easier.
