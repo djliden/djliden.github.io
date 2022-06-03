@@ -7,177 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Made with Org-Mode</title>
 <meta name="generator" content="Org mode" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
-    padding: 3px;
-    border: 1px solid black;
-  }
-  pre.src:hover:before { display: inline;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
-</style>
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <script type="text/javascript">
 /*
@@ -229,10 +58,10 @@ for the JavaScript code in this tag.
 <body>
 <div id="preamble" class="status">
 <div class='topnav'>
-                                     <a href='/index.html'>Home</a> / 
-                                     <a href='/archive.html'>Blog</a> /
-                                     <a href='/about.html'>About Me</a>
-                                     </div>
+  <a href='/index.html'>Home</a> /
+  <a href='/archive.html'>Blog</a> / 
+  <a href='/about.html'>About Me</a>
+</div>
 </div>
 <div id="content">
 <h1 class="title">Made with Org-Mode</h1>
@@ -240,43 +69,43 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org82cbaf2">Background</a></li>
-<li><a href="#org686e42c">First Steps</a>
+<li><a href="#orge936984">Background</a></li>
+<li><a href="#orgc568468">First Steps</a>
 <ul>
-<li><a href="#org882bca1">Ox-Publish</a></li>
-<li><a href="#orgaec6092">GitHub Pages</a></li>
+<li><a href="#orgf2cc15b">Ox-Publish</a></li>
+<li><a href="#org94dc254">GitHub Pages</a></li>
 </ul>
 </li>
-<li><a href="#org7193c35">Some Simple Customization</a>
+<li><a href="#org751ec19">Some Simple Customization</a>
 <ul>
-<li><a href="#org2847c90">CSS theme</a></li>
-<li><a href="#org4402385">Recent Posts</a>
+<li><a href="#org001f767">CSS theme</a></li>
+<li><a href="#org437d1c4">Recent Posts</a>
 <ul>
-<li><a href="#org9b01b1e">Sitemap Configuration</a></li>
-<li><a href="#org8d26a6b">Sitemap Entry Formatting</a></li>
-<li><a href="#orgdb6ab2d">Sitemap List Formatting</a></li>
-<li><a href="#org47fa5a3">Previews</a></li>
+<li><a href="#orgfbb3382">Sitemap Configuration</a></li>
+<li><a href="#org26395ce">Sitemap Entry Formatting</a></li>
+<li><a href="#org44cf6d9">Sitemap List Formatting</a></li>
+<li><a href="#org7ff079a">Previews</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orga1bc548">Putting It All Together</a></li>
-<li><a href="#orgc2516bf">What's Next?</a>
+<li><a href="#org8f24423">Putting It All Together</a></li>
+<li><a href="#org19f549f">What's Next?</a>
 <ul>
-<li><a href="#org001fc9f"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, here's the link).</a></li>
-<li><a href="#org3dbb71a"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</a></li>
-<li><a href="#org324591e"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</a></li>
-<li><a href="#orgd986bf5"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</a></li>
-<li><a href="#org3f88836"><span class="todo TODO">TODO</span> Make a more visually interesting home page</a></li>
+<li><a href="#org58b4b31"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, here's the link).</a></li>
+<li><a href="#org2fa49be"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</a></li>
+<li><a href="#org6b6f498"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</a></li>
+<li><a href="#org34d0d29"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</a></li>
+<li><a href="#orgd477d77"><span class="todo TODO">TODO</span> Make a more visually interesting home page</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org82cbaf2" class="outline-2">
-<h2 id="org82cbaf2">Background</h2>
-<div class="outline-text-2" id="text-org82cbaf2">
+<div id="outline-container-orge936984" class="outline-2">
+<h2 id="orge936984">Background</h2>
+<div class="outline-text-2" id="text-orge936984">
 <div class="PREVIEW">
 <p>
 I finally made a personal site using org-mode's built-in <code>ox-publish</code> exporter.
@@ -295,13 +124,13 @@ on the writing and less on understanding the framework.
 </div>
 </div>
 
-<div id="outline-container-org686e42c" class="outline-2">
-<h2 id="org686e42c">First Steps</h2>
-<div class="outline-text-2" id="text-org686e42c">
+<div id="outline-container-orgc568468" class="outline-2">
+<h2 id="orgc568468">First Steps</h2>
+<div class="outline-text-2" id="text-orgc568468">
 </div>
-<div id="outline-container-org882bca1" class="outline-3">
-<h3 id="org882bca1">Ox-Publish</h3>
-<div class="outline-text-3" id="text-org882bca1">
+<div id="outline-container-orgf2cc15b" class="outline-3">
+<h3 id="orgf2cc15b">Ox-Publish</h3>
+<div class="outline-text-3" id="text-orgf2cc15b">
 <p>
 <a href="https://systemcrafters.net/publishing-websites-with-org-mode/building-the-site/">This great guide</a> from System Crafters got me started with <code>ox-publish</code>. The very short post
 how to use <code>ox-publish</code> to set up a basic site; <code>htmlize</code> to correctly render code blocks, and
@@ -311,9 +140,9 @@ your own site with org-mode.
 </div>
 </div>
 
-<div id="outline-container-orgaec6092" class="outline-3">
-<h3 id="orgaec6092">GitHub Pages</h3>
-<div class="outline-text-3" id="text-orgaec6092">
+<div id="outline-container-org94dc254" class="outline-3">
+<h3 id="org94dc254">GitHub Pages</h3>
+<div class="outline-text-3" id="text-org94dc254">
 <p>
 <a href="https://systemcrafters.net/publishing-websites-with-org-mode/automated-site-publishing/">The followup post</a> is just as useful—it describes the process of publishing the site with GitHub
 Pages (or SourceHut; I opted for GitHub Pages). There was one minor point missing from this
@@ -326,9 +155,9 @@ was simple to follow and worked perfectly.
 </div>
 </div>
 
-<div id="outline-container-org7193c35" class="outline-2">
-<h2 id="org7193c35">Some Simple Customization</h2>
-<div class="outline-text-2" id="text-org7193c35">
+<div id="outline-container-org751ec19" class="outline-2">
+<h2 id="org751ec19">Some Simple Customization</h2>
+<div class="outline-text-2" id="text-org751ec19">
 <p>
 There were a few simple design and organization changes I wanted before I started writing: a simple
 and readable theme; a list of recent posts with short "preview" snippets, and a link to a post
@@ -336,9 +165,9 @@ archive.
 </p>
 </div>
 
-<div id="outline-container-org2847c90" class="outline-3">
-<h3 id="org2847c90">CSS theme</h3>
-<div class="outline-text-3" id="text-org2847c90">
+<div id="outline-container-org001f767" class="outline-3">
+<h3 id="org001f767">CSS theme</h3>
+<div class="outline-text-3" id="text-org001f767">
 <p>
 I opted to use <a href="https://gongzhitaao.org/orgcss/">orgcss</a>, at least for now. It's a stylesheet explicitly designed for use with
 org-exported HTML files. It looks (to me) quite a bit nicer than the default and it works well
@@ -360,9 +189,9 @@ I applied this stylesheet to all of the exported .org files by adding the follow
 </div>
 </div>
 
-<div id="outline-container-org4402385" class="outline-3">
-<h3 id="org4402385">Recent Posts</h3>
-<div class="outline-text-3" id="text-org4402385">
+<div id="outline-container-org437d1c4" class="outline-3">
+<h3 id="org437d1c4">Recent Posts</h3>
+<div class="outline-text-3" id="text-org437d1c4">
 <p>
 I wanted to include a few recent posts on the homepage and separately link to the post archive. I
 also wanted each of these custom posts to have a short "preview"—a paragraph or so of my choosing
@@ -381,9 +210,9 @@ To include the recent posts, I included the first 25 lines of the automatically-
 </div>
 </div>
 
-<div id="outline-container-org9b01b1e" class="outline-4">
-<h4 id="org9b01b1e">Sitemap Configuration</h4>
-<div class="outline-text-4" id="text-org9b01b1e">
+<div id="outline-container-orgfbb3382" class="outline-4">
+<h4 id="orgfbb3382">Sitemap Configuration</h4>
+<div class="outline-text-4" id="text-orgfbb3382">
 <p>
 I specified the generation of the sitemap using <code>org-publish-project-alist</code> configuration variable:
 </p>
@@ -407,9 +236,9 @@ I specified the generation of the sitemap using <code>org-publish-project-alist<
 </div>
 </div>
 
-<div id="outline-container-org8d26a6b" class="outline-4">
-<h4 id="org8d26a6b">Sitemap Entry Formatting</h4>
-<div class="outline-text-4" id="text-org8d26a6b">
+<div id="outline-container-org26395ce" class="outline-4">
+<h4 id="org26395ce">Sitemap Entry Formatting</h4>
+<div class="outline-text-4" id="text-org26395ce">
 <p>
 You'll notice two functions used to format and publish the sitemap entries. <code>sitemap-format-entry</code>
 takes three arguments (<code>entry</code>, <code>style</code>, and <code>project</code>). We only need to worry about the former. Each
@@ -459,9 +288,9 @@ return <code>posts</code>)</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgdb6ab2d" class="outline-4">
-<h4 id="orgdb6ab2d">Sitemap List Formatting</h4>
-<div class="outline-text-4" id="text-orgdb6ab2d">
+<div id="outline-container-org44cf6d9" class="outline-4">
+<h4 id="org44cf6d9">Sitemap List Formatting</h4>
+<div class="outline-text-4" id="text-org44cf6d9">
 <p>
 The entries formatted above are all added to a list (formatted in a tree style to represent the
 directory structure). We simply convert this list into an org subtree and publish it to the
@@ -484,9 +313,9 @@ of entries (with previews) represented as an org subtree.
 </p>
 </div>
 </div>
-<div id="outline-container-org47fa5a3" class="outline-4">
-<h4 id="org47fa5a3">Previews</h4>
-<div class="outline-text-4" id="text-org47fa5a3">
+<div id="outline-container-org7ff079a" class="outline-4">
+<h4 id="org7ff079a">Previews</h4>
+<div class="outline-text-4" id="text-org7ff079a">
 <p>
 One part we haven't addressed yet is the generation of previews. There are different approaches out
 there, but none of them did exactly what I wanted. I borrowed from posts by  <a href="https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html">Seth Morabito</a> and
@@ -538,17 +367,17 @@ block pattern, saving its location under the name <code>beg</code></li>
 </div>
 </div>
 </div>
-<div id="outline-container-orga1bc548" class="outline-2">
-<h2 id="orga1bc548">Putting It All Together</h2>
-<div class="outline-text-2" id="text-orga1bc548">
+<div id="outline-container-org8f24423" class="outline-2">
+<h2 id="org8f24423">Putting It All Together</h2>
+<div class="outline-text-2" id="text-org8f24423">
 <p>
 Check out the full source code for the site <a href="https://github.com/djliden/djliden.github.io">on GitHub</a>.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc2516bf" class="outline-2">
-<h2 id="orgc2516bf">What's Next?</h2>
-<div class="outline-text-2" id="text-orgc2516bf">
+<div id="outline-container-org19f549f" class="outline-2">
+<h2 id="org19f549f">What's Next?</h2>
+<div class="outline-text-2" id="text-org19f549f">
 <p>
 This site now has everything I need to write more with minimal need to tweak the site configuration
 every step of the way (which I found myself doing constantly when using Hugo). That said, there are
@@ -556,9 +385,9 @@ a few more things I want to do before moving this site to its permanent home und
 domain. These include:
 </p>
 </div>
-<div id="outline-container-org001fc9f" class="outline-3">
-<h3 id="org001fc9f"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, <a href="../index.html">here's the link</a>).</h3>
-<div class="outline-text-3" id="text-org001fc9f">
+<div id="outline-container-org58b4b31" class="outline-3">
+<h3 id="org58b4b31"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, <a href="../index.html">here's the link</a>).</h3>
+<div class="outline-text-3" id="text-org58b4b31">
 <p>
 <b>Update:</b> I've added this in a very simple way. I updated my <code>org-publish-project-alist</code> with:
 </p>
@@ -580,9 +409,9 @@ domain. These include:
 </div>
 </div>
 </div>
-<div id="outline-container-org3dbb71a" class="outline-3">
-<h3 id="org3dbb71a"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</h3>
-<div class="outline-text-3" id="text-org3dbb71a">
+<div id="outline-container-org2fa49be" class="outline-3">
+<h3 id="org2fa49be"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</h3>
+<div class="outline-text-3" id="text-org2fa49be">
 <p>
 I followed the guide <a href="https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html">here</a> to set up the export of "static" files using the <code>org-publish-attachment</code>
 publication function. The new section of my config looks like this:
@@ -607,14 +436,14 @@ publication function. The new section of my config looks like this:
 </div>
 </div>
 
-<div id="outline-container-org324591e" class="outline-3">
-<h3 id="org324591e"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</h3>
+<div id="outline-container-org6b6f498" class="outline-3">
+<h3 id="org6b6f498"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</h3>
 </div>
-<div id="outline-container-orgd986bf5" class="outline-3">
-<h3 id="orgd986bf5"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</h3>
+<div id="outline-container-org34d0d29" class="outline-3">
+<h3 id="org34d0d29"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</h3>
 </div>
-<div id="outline-container-org3f88836" class="outline-3">
-<h3 id="org3f88836"><span class="todo TODO">TODO</span> Make a more visually interesting home page</h3>
+<div id="outline-container-orgd477d77" class="outline-3">
+<h3 id="orgd477d77"><span class="todo TODO">TODO</span> Make a more visually interesting home page</h3>
 </div>
 </div>
 </div>

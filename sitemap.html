@@ -7,177 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
 <meta name="generator" content="Org mode" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
-    padding: 3px;
-    border: 1px solid black;
-  }
-  pre.src:hover:before { display: inline;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
-</style>
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <script type="text/javascript">
 /*
@@ -229,42 +58,42 @@ for the JavaScript code in this tag.
 <body>
 <div id="preamble" class="status">
 <div class='topnav'>
-                                     <a href='/index.html'>Home</a> / 
-                                     <a href='/archive.html'>Blog</a> /
-                                     <a href='/about.html'>About Me</a>
-                                     </div>
+  <a href='/index.html'>Home</a> /
+  <a href='/archive.html'>Blog</a> / 
+  <a href='/about.html'>About Me</a>
+</div>
 </div>
 <div id="content">
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgfc8a7a3">(2022-02-08) Daniel Liden's Home Page</a></li>
-<li><a href="#orge8a42fe">(2022-02-08) About Me</a></li>
-<li><a href="#org3fd8e24">(2022-02-08) Posts Archive</a></li>
-<li><a href="#org9531edf">posts</a>
+<li><a href="#orge6da856">(2022-06-03) Daniel Liden's Home Page</a></li>
+<li><a href="#orgbf93ee0">(2022-06-03) About Me</a></li>
+<li><a href="#org5456510">(2022-06-03) Posts Archive</a></li>
+<li><a href="#org0e44d65">posts</a>
 <ul>
-<li><a href="#org8be4177">(2022-02-08) Org Mode Headlines in Org Source Blocks</a></li>
-<li><a href="#org8bf6874">(2022-01-29) Task Repeaters in Org Mode</a></li>
-<li><a href="#orge251126">(2021-12-11) Org Babel Source Blocks for R</a></li>
-<li><a href="#org77689e4">(2021-12-03) Made with Org-Mode</a></li>
-<li><a href="#orgb61ed46">(2021-12-02) Resources</a></li>
+<li><a href="#org173d299">(2022-02-08) Org Mode Headlines in Org Source Blocks</a></li>
+<li><a href="#org6018e34">(2022-01-29) Task Repeaters in Org Mode</a></li>
+<li><a href="#orgd3b38cf">(2021-12-11) Org Babel Source Blocks for R</a></li>
+<li><a href="#org1313bb3">(2021-12-03) Made with Org-Mode</a></li>
+<li><a href="#orgfff78a5">(2021-12-02) Resources</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfc8a7a3" class="outline-2">
-<h2 id="orgfc8a7a3"><a href="index.html">(2022-02-08) Daniel Liden's Home Page</a></h2>
-<div class="outline-text-2" id="text-orgfc8a7a3">
+<div id="outline-container-orge6da856" class="outline-2">
+<h2 id="orge6da856"><a href="index.html">(2022-06-03) Daniel Liden's Home Page</a></h2>
+<div class="outline-text-2" id="text-orge6da856">
 <p>
 (No preview)
 </p>
 </div>
 </div>
-<div id="outline-container-orge8a42fe" class="outline-2">
-<h2 id="orge8a42fe"><a href="about.html">(2022-02-08) About Me</a></h2>
-<div class="outline-text-2" id="text-orge8a42fe">
+<div id="outline-container-orgbf93ee0" class="outline-2">
+<h2 id="orgbf93ee0"><a href="about.html">(2022-06-03) About Me</a></h2>
+<div class="outline-text-2" id="text-orgbf93ee0">
 <p>
 My name is Dan. I'm a data scientist at <a href="https://bit.io">bit.io</a>, where we offer the fastest and easiest way to get a
 secure, private PostgreSQL database. In this role, I write and I work on internal analytics.
@@ -275,21 +104,21 @@ Prior to starting at bit.io, I was the Director of Data Analytics at the Guinn C
 </p>
 </div>
 </div>
-<div id="outline-container-org3fd8e24" class="outline-2">
-<h2 id="org3fd8e24"><a href="archive.html">(2022-02-08) Posts Archive</a></h2>
-<div class="outline-text-2" id="text-org3fd8e24">
+<div id="outline-container-org5456510" class="outline-2">
+<h2 id="org5456510"><a href="archive.html">(2022-06-03) Posts Archive</a></h2>
+<div class="outline-text-2" id="text-org5456510">
 <p>
 (No preview)
 </p>
 </div>
 </div>
-<div id="outline-container-org9531edf" class="outline-2">
-<h2 id="org9531edf">posts</h2>
-<div class="outline-text-2" id="text-org9531edf">
+<div id="outline-container-org0e44d65" class="outline-2">
+<h2 id="org0e44d65">posts</h2>
+<div class="outline-text-2" id="text-org0e44d65">
 </div>
-<div id="outline-container-org8be4177" class="outline-3">
-<h3 id="org8be4177"><a href="posts/20220208-org-source.html">(2022-02-08) Org Mode Headlines in Org Source Blocks</a></h3>
-<div class="outline-text-3" id="text-org8be4177">
+<div id="outline-container-org173d299" class="outline-3">
+<h3 id="org173d299"><a href="posts/20220208-org-source.html">(2022-02-08) Org Mode Headlines in Org Source Blocks</a></h3>
+<div class="outline-text-3" id="text-org173d299">
 <p>
 When writing about org mode, one often wants to show what particular org
 headline look like in terms of formatting, properties, tags, options,
@@ -300,9 +129,9 @@ exported is a nicely-formatted example of an org headline.
 </p>
 </div>
 </div>
-<div id="outline-container-org8bf6874" class="outline-3">
-<h3 id="org8bf6874"><a href="posts/20220116-org-time.html">(2022-01-29) Task Repeaters in Org Mode</a></h3>
-<div class="outline-text-3" id="text-org8bf6874">
+<div id="outline-container-org6018e34" class="outline-3">
+<h3 id="org6018e34"><a href="posts/20220116-org-time.html">(2022-01-29) Task Repeaters in Org Mode</a></h3>
+<div class="outline-text-3" id="text-org6018e34">
 <p>
 I recently started using org-mode to keep track of a few habits (morning
 meditation, getting some sunlight and exercise before my morning coffee, etc.)
@@ -315,9 +144,9 @@ complete a task after the scheduled date.
 </p>
 </div>
 </div>
-<div id="outline-container-orge251126" class="outline-3">
-<h3 id="orge251126"><a href="posts/20211209-R-babel.html">(2021-12-11) Org Babel Source Blocks for R</a></h3>
-<div class="outline-text-3" id="text-orge251126">
+<div id="outline-container-orgd3b38cf" class="outline-3">
+<h3 id="orgd3b38cf"><a href="posts/20211209-R-babel.html">(2021-12-11) Org Babel Source Blocks for R</a></h3>
+<div class="outline-text-3" id="text-orgd3b38cf">
 <p>
 <a href="https://orgmode.org/worg/org-contrib/babel/intro.html">Org Babel</a> is one of the best tools available for <a href="https://www-cs-faculty.stanford.edu/~knuth/lp.html">literate programming</a>. As a data scientist, I use it
 as a plain-text alternative to Jupyter notebooks. Org-mode files are much easier to track with
@@ -329,9 +158,9 @@ science tasks in R.
 </p>
 </div>
 </div>
-<div id="outline-container-org77689e4" class="outline-3">
-<h3 id="org77689e4"><a href="posts/20211203-this-site.html">(2021-12-03) Made with Org-Mode</a></h3>
-<div class="outline-text-3" id="text-org77689e4">
+<div id="outline-container-org1313bb3" class="outline-3">
+<h3 id="org1313bb3"><a href="posts/20211203-this-site.html">(2021-12-03) Made with Org-Mode</a></h3>
+<div class="outline-text-3" id="text-org1313bb3">
 <p>
 I finally made a personal site using org-mode's built-in <code>ox-publish</code> exporter.
 </p>
@@ -346,9 +175,9 @@ on the writing and less on understanding the framework.
 </p>
 </div>
 </div>
-<div id="outline-container-orgb61ed46" class="outline-3">
-<h3 id="orgb61ed46"><a href="posts/20211201-resources.html">(2021-12-02) Resources</a></h3>
-<div class="outline-text-3" id="text-orgb61ed46">
+<div id="outline-container-orgfff78a5" class="outline-3">
+<h3 id="orgfff78a5"><a href="posts/20211201-resources.html">(2021-12-02) Resources</a></h3>
+<div class="outline-text-3" id="text-orgfff78a5">
 <p>
 Here are some resources to reference for building a simple site with org-mode. I've extensively
 used the sites listed as models for building the present site and expect to continue to reference
