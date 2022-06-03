@@ -90,6 +90,11 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
 ;; this ^ is the list produced. We can see the tree structure. (unordered (posts)) at the top
 ;; level and then ("posts" (unordered (posts))) at the lower level.
 
+(defun file-contents (file)
+  (with-temp-buffer
+    (insert-file-contents file)
+    (buffer-string)))
+
 ;;; define publishing project
 (setq org-publish-project-alist
       (list
@@ -98,11 +103,7 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :base-directory "./content"
              :publishing-directory "./public"
              :publishing-function 'org-html-publish-to-html
-             :html-preamble (concat "<div class='topnav'>
-                                     <a href='/index.html'>Home</a> / 
-                                     <a href='/archive.html'>Blog</a> /
-                                     <a href='/about.html'>About Me</a>
-                                     </div>")
+             :html-preamble (file-contents "assets/html_preamble.html")
              :with-author nil
              :with-creator t
              :with-toc t
@@ -123,10 +124,11 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :publishing-function 'org-publish-attachment
              )))
 
+
 ;;; additional settings
 (setq org-html-validation-link nil
       org-html-htmlize-output-type 'css
-      org-html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://gongzhitaao.org/orgcss/org.css\"/>"
+      org-html-style-default (file-contents "assets/head.html")
       org-export-use-babel nil)
 
 ;;; generate site output
