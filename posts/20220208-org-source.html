@@ -8,6 +8,7 @@
 <title>Org Mode Headlines in Org Source Blocks</title>
 <meta name="generator" content="Org mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -69,10 +70,10 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org1d4e92c">The Problem</a></li>
-<li><a href="#orgd8afe9b">This Headline Is in an Org Source Block</a></li>
-<li><a href="#orgcd384c9">Prepend Headlines in Source Blocks with Commas</a></li>
-<li><a href="#org3a5d5a7">An Easier Way</a></li>
+<li><a href="#orga05b790">The Problem</a></li>
+<li><a href="#orgcda1335">This Headline Is in an Org Source Block</a></li>
+<li><a href="#orgadc94df">Prepend Headlines in Source Blocks with Commas</a></li>
+<li><a href="#org0344155">An Easier Way</a></li>
 </ul>
 </div>
 </div>
@@ -81,9 +82,9 @@ for the JavaScript code in this tag.
 low-contrast. I will update this soon.</i>
 </p>
 
-<div id="outline-container-org1d4e92c" class="outline-2">
-<h2 id="org1d4e92c">The Problem</h2>
-<div class="outline-text-2" id="text-org1d4e92c">
+<div id="outline-container-orga05b790" class="outline-2">
+<h2 id="orga05b790">The Problem</h2>
+<div class="outline-text-2" id="text-orga05b790">
 <div class="PREVIEW">
 <p>
 When writing about org mode, one often wants to show what particular org
@@ -101,35 +102,35 @@ Here is an example of the issue. Below, I inserted an org source block (defined
 with <code>#+begin_src org</code>) with a first-level org headline inside,  <i>without</i> inserting
 a comma before the headline.
 </p>
-
+<hr />
 <p>
 #+begin<sub>src</sub> org
 </p>
 </div>
 </div>
-<div id="outline-container-orgd8afe9b" class="outline-2">
-<h2 id="orgd8afe9b">This Headline Is in an Org Source Block</h2>
-<div class="outline-text-2" id="text-orgd8afe9b">
+<div id="outline-container-orgcda1335" class="outline-2">
+<h2 id="orgcda1335">This Headline Is in an Org Source Block</h2>
+<div class="outline-text-2" id="text-orgcda1335">
 <p>
 And it is still parsed and exported as a headline, not as an example.
 #+end<sub>src</sub>
 </p>
-
+<hr />
 <p>
 Clearly, this isn't what we want.
 </p>
 </div>
 </div>
-<div id="outline-container-orgcd384c9" class="outline-2">
-<h2 id="orgcd384c9"><a id="ID-7B4CFE25-5585-43AA-A866-9983B5A22305"></a>Prepend Headlines in Source Blocks with Commas</h2>
-<div class="outline-text-2" id="text-orgcd384c9">
+<div id="outline-container-orgadc94df" class="outline-2">
+<h2 id="orgadc94df"><a id="ID-7B4CFE25-5585-43AA-A866-9983B5A22305"></a>Prepend Headlines in Source Blocks with Commas</h2>
+<div class="outline-text-2" id="text-orgadc94df">
 <p>
 This issue is easily resolved: just insert a comma before the headline in the
 source block (e.g. <code>,* Headline</code>). This results in the following:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-org"><span class="org-org-level-1">* This Headline Is in an Org Source Block</span>
+<pre class="src src-org"><span style="font-weight: bold;">* This Headline Is in an Org Source Block</span>
 and it looks like org source, not like an exported org file.
 </pre>
 </div>
@@ -139,8 +140,8 @@ This approach works well with more complicated org-mode syntax, as well. For
 example, the following block:
 </p>
 
-<pre class="example">
-,* Headline 1
+<div class="org-src-container">
+<pre class="src src-raw_org">,* Headline 1
 :PROPERTIES:
 :ID:       642BF4EE-3139-4B96-97C4-D3BABD86FFD5
 :END:
@@ -154,32 +155,33 @@ This headline is also prepended with a comma!
 ,#+RESULTS:
 : 2
 </pre>
+</div>
 
 <p>
 leads to the following (when we specify that it is an org source block).
 </p>
 
 <div class="org-src-container">
-<pre class="src src-org"><span class="org-org-level-1">* Headline 1</span>
-<span class="org-org-special-keyword">:PROPERTIES:</span>
-<span class="org-org-special-keyword">:ID:</span>       <span class="org-org-property-value">642BF4EE-3139-4B96-97C4-D3BABD86FFD5</span>
-<span class="org-org-special-keyword">:END:</span>
-<span class="org-org-level-2">** Headline 2</span>
+<pre class="src src-org"><span style="font-weight: bold;">* Headline 1</span>
+<span style="font-weight: bold;">:PROPERTIES:</span>
+<span style="font-weight: bold;">:ID:</span>       642BF4EE-3139-4B96-97C4-D3BABD86FFD5
+<span style="font-weight: bold;">:END:</span>
+<span style="font-weight: bold; font-style: italic;">** Headline 2</span>
 This headline is also prepended with a comma!
-<span class="org-org-level-2">** Even a Nested Source Block!</span>
-<span class="org-org-block-begin-line">#+begin_src R</span>
+<span style="font-weight: bold; font-style: italic;">** Even a Nested Source Block!</span>
+<span style="font-weight: bold; font-style: italic;">#+begin_src R</span>
 1+1
-<span class="org-org-block-end-line">#+end_src</span>
+<span style="font-weight: bold; font-style: italic;">#+end_src</span>
 
-<span class="org-org-meta-line">#+RESULTS:</span>
-<span class="org-org-code">: 2</span>
+<span style="font-weight: bold; font-style: italic;">#+RESULTS:</span>
+: 2
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org3a5d5a7" class="outline-2">
-<h2 id="org3a5d5a7">An Easier Way</h2>
-<div class="outline-text-2" id="text-org3a5d5a7">
+<div id="outline-container-org0344155" class="outline-2">
+<h2 id="org0344155">An Easier Way</h2>
+<div class="outline-text-2" id="text-org0344155">
 <p>
 We can use the <code>org-edit-special</code> command (<code>C-c '</code>) within an org source block to
 open a separate editing environment (in this case, another org buffer). We can
@@ -191,8 +193,8 @@ will be properly formatted for export.
 The following block was generated using this method:
 </p>
 
-<pre class="example">
-,* Headline 1                                                    :example_tag:
+<div class="org-src-container">
+<pre class="src src-raw_org">,* Headline 1                                                    :example_tag:
 This is an org headline with a tag.
 ,** TODO Second Headline
 SCHEDULED: &lt;2022-02-15 Tue&gt;
@@ -210,29 +212,30 @@ np.array(range(1,10))
 ,#+RESULTS:
 : array([1, 2, 3, 4, 5, 6, 7, 8, 9])
 </pre>
+</div>
 
 <p>
 Which generates:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-org"><span class="org-org-level-1">* Headline 1                                                    </span><span class="org-org-level-1"><span class="org-org-tag">:example_tag:</span></span>
+<pre class="src src-org"><span style="font-weight: bold;">* Headline 1                                                    </span><span style="font-weight: bold;">:example_tag:</span>
 This is an org headline with a tag.
-<span class="org-org-level-2">** </span><span class="org-org-todo">TODO</span><span class="org-org-level-2"> Second Headline</span>
-<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2022-02-15 Tue&gt;</span>
-<span class="org-org-special-keyword">:PROPERTIES:</span>
-<span class="org-org-special-keyword">:CUSTOM_ID:</span> <span class="org-org-property-value">headline_1</span>
-<span class="org-org-special-keyword">:END:</span>
-<span class="org-org-level-2">** Babel</span>
+<span style="font-weight: bold; font-style: italic;">** </span><span style="font-weight: bold;">TODO</span><span style="font-weight: bold; font-style: italic;"> Second Headline</span>
+<span style="font-weight: bold;">SCHEDULED:</span> <span style="text-decoration: underline;">&lt;2022-02-15 Tue&gt;</span>
+<span style="font-weight: bold;">:PROPERTIES:</span>
+<span style="font-weight: bold;">:CUSTOM_ID:</span> headline_1
+<span style="font-weight: bold;">:END:</span>
+<span style="font-weight: bold; font-style: italic;">** Babel</span>
 
-<span class="org-org-block-begin-line">#+begin_src jupyter-python :session datasci</span>
+<span style="font-weight: bold; font-style: italic;">#+begin_src jupyter-python :session datasci</span>
 import numpy as np
 
 np.array(range(1,10))
-<span class="org-org-block-end-line">#+end_src</span>
+<span style="font-weight: bold; font-style: italic;">#+end_src</span>
 
-<span class="org-org-meta-line">#+RESULTS:</span>
-<span class="org-org-code">: array([1, 2, 3, 4, 5, 6, 7, 8, 9])</span>
+<span style="font-weight: bold; font-style: italic;">#+RESULTS:</span>
+: array([1, 2, 3, 4, 5, 6, 7, 8, 9])
 </pre>
 </div>
 
