@@ -122,12 +122,18 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :publishing-directory "./public"
              :recursive t
              :publishing-function 'org-publish-attachment
-             )))
+             )
+       (list "org-site:assets"
+             :base-directory "./assets/"
+             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+             :publishing-directory "./public/"
+             :recursive t
+             :publishing-function 'org-publish-attachment)))
 
 
 ;;; additional settings
 (setq org-html-validation-link nil
-      org-html-htmlize-output-type 'css
+      org-html-htmlize-output-type 'inline-css
       org-html-style-default (file-contents "assets/head.html")
       org-export-use-babel nil)
 
