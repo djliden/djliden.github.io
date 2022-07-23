@@ -118,7 +118,7 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :sitemap-style 'tree)
        (list "org-site:static"
              :base-directory "./content/"
-             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg"
              :publishing-directory "./public"
              :recursive t
              :publishing-function 'org-publish-attachment
