@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Org Mode Headlines in Org Source Blocks</title>
-<meta name="generator" content="Org mode" />
+<meta name="generator" content="Org mode">
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <script type="text/javascript">
@@ -65,26 +63,27 @@ for the JavaScript code in this tag.
 </div>
 </div>
 <div id="content">
+<header>
 <h1 class="title">Org Mode Headlines in Org Source Blocks</h1>
-<div id="table-of-contents">
+</header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf6051e3">The Problem</a></li>
-<li><a href="#org2df096c">This Headline Is in an Org Source Block</a></li>
-<li><a href="#orga5e4da1">Prepend Headlines in Source Blocks with Commas</a></li>
-<li><a href="#org55bdb28">An Easier Way</a></li>
+<li><a href="#org982f172">The Problem</a></li>
+<li><a href="#org9d0ff8c">This Headline Is in an Org Source Block</a></li>
+<li><a href="#org51c4617">Prepend Headlines in Source Blocks with Commas</a></li>
+<li><a href="#org0008113">An Easier Way</a></li>
 </ul>
 </div>
-</div>
+</nav>
 <p>
 <i>Note: I know the org-mode syntax highlighting in the current theme is very
 low-contrast. I will update this soon.</i>
 </p>
 
-<div id="outline-container-orgf6051e3" class="outline-2">
-<h2 id="orgf6051e3">The Problem</h2>
-<div class="outline-text-2" id="text-orgf6051e3">
+<div id="outline-container-org982f172" class="outline-2">
+<h2 id="org982f172">The Problem</h2>
+<div class="outline-text-2" id="text-org982f172">
 <div class="PREVIEW">
 <p>
 When writing about org mode, one often wants to show what particular org
@@ -102,28 +101,28 @@ Here is an example of the issue. Below, I inserted an org source block (defined
 with <code>#+begin_src org</code>) with a first-level org headline inside,  <i>without</i> inserting
 a comma before the headline.
 </p>
-<hr />
+<hr>
 <p>
 #+begin<sub>src</sub> org
 </p>
 </div>
 </div>
-<div id="outline-container-org2df096c" class="outline-2">
-<h2 id="org2df096c">This Headline Is in an Org Source Block</h2>
-<div class="outline-text-2" id="text-org2df096c">
+<div id="outline-container-org9d0ff8c" class="outline-2">
+<h2 id="org9d0ff8c">This Headline Is in an Org Source Block</h2>
+<div class="outline-text-2" id="text-org9d0ff8c">
 <p>
 And it is still parsed and exported as a headline, not as an example.
 #+end<sub>src</sub>
 </p>
-<hr />
+<hr>
 <p>
 Clearly, this isn't what we want.
 </p>
 </div>
 </div>
-<div id="outline-container-orga5e4da1" class="outline-2">
-<h2 id="orga5e4da1"><a id="ID-7B4CFE25-5585-43AA-A866-9983B5A22305"></a>Prepend Headlines in Source Blocks with Commas</h2>
-<div class="outline-text-2" id="text-orga5e4da1">
+<div id="outline-container-org51c4617" class="outline-2">
+<h2 id="org51c4617"><a id="ID-7B4CFE25-5585-43AA-A866-9983B5A22305"></a>Prepend Headlines in Source Blocks with Commas</h2>
+<div class="outline-text-2" id="text-org51c4617">
 <p>
 This issue is easily resolved: just insert a comma before the headline in the
 source block (e.g. <code>,* Headline</code>). This results in the following:
@@ -179,9 +178,9 @@ This headline is also prepended with a comma!
 </div>
 </div>
 </div>
-<div id="outline-container-org55bdb28" class="outline-2">
-<h2 id="org55bdb28">An Easier Way</h2>
-<div class="outline-text-2" id="text-org55bdb28">
+<div id="outline-container-org0008113" class="outline-2">
+<h2 id="org0008113">An Easier Way</h2>
+<div class="outline-text-2" id="text-org0008113">
 <p>
 We can use the <code>org-edit-special</code> command (<code>C-c '</code>) within an org source block to
 open a separate editing environment (in this case, another org buffer). We can
