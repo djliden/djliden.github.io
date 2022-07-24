@@ -1,0 +1,120 @@
+#+TITLE: Figures and Captions Don't Appear as Expected with Default Export Options
+#+DATE: <2022-07-24 Sun>
+
+
+#+begin_preview
+I noticed that some of the formatting on this site was a little off and some of
+the org-mode components weren't being translated to HTML in quite the way I
+expected. Fixing this was simple, but /finding/ the solution wasn't. In short, it
+was necessary to set the ~org-html-doctype~ to ~html5~ (the default is
+~xhtml-strict~). Furthermore, I set ~org-html-html5-fancy~ to ~t~. These ensure the
+org export process takes advantage of block elements offered in the ~html5~
+standard.
+#+end_preview
+
+While that brief introduction should capture the necessary changes, we can get
+into more specifics.
+
+* The Problem
+
+If we use the default settings, figures aren't wrapped in ~<figure>~ blocks and
+captions aren't wrapped in ~<figcaption>~ blocks, so none of the formatting we
+want to see applied to those attributes is actually applied. Here's what we see:
+
+#+begin_export html
+<div id="org7d55a3b" class="figure">
+<p><img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px">
+</p>
+<p><span class="figure-number">Figure 1: </span>This caption is left-aligned and has no <code>&lt;figcaption&gt;</code> element</p>
+</div>
+#+end_export
+
+The image and caption appear left-aligned on the page. Here's the html:
+
+#+begin_src html
+<div id="org7d55a3b" class="figure">
+<p><img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px">
+</p>
+<p><span class="figure-number">Figure 1: </span>This caption is left-aligned and has no <code>&lt;figcaption&gt;</code> element</p>
+</div>
+#+end_src
+
+* Changes to the Site Config
+
+To address this, we need to change the ~org-html-doctype~ and ~org-html-html5-fancy~
+variables. We can do this in the export configuration's
+~org-publish-project-alist~. See [[https://github.com/djliden/djliden.github.io/blob/main/build-site.el][here]] for the updated configuration file. Here is
+what the updated ~org-publish-project-alist~ looks like—see lines 21-22 for the
+key changes.
+
+#+begin_src emacs-lisp -n
+(setq org-publish-project-alist
+      (list
+       (list "org-site:main"
+             :recursive t
+             :base-directory "./content"
+             :publishing-directory "./public"
+             :publishing-function 'org-html-publish-to-html
+             :html-preamble (file-contents "assets/html_preamble.html")
+             :with-author nil
+             :with-creator t
+             :with-toc t
+             :section-numbers nil
+             :time-stamp-file nil
+             :auto-sitemap t
+             :sitemap-title nil;"Daniel Liden's Blog"
+             :sitemap-format-entry 'my/org-publish-org-sitemap-format
+             :sitemap-function 'my/org-publish-org-sitemap
+             :sitemap-sort-files 'anti-chronologically
+             :sitemap-filename "sitemap.org"
+             :sitemap-style 'tree
+             :html-doctype "html5"
+             :html-html5-fancy t)
+       (list "org-site:static"
+             :base-directory "./content/"
+             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg"
+             :publishing-directory "./public"
+             :recursive t
+             :publishing-function 'org-publish-attachment
+             )
+       (list "org-site:assets"
+             :base-directory "./assets/"
+             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+             :publishing-directory "./public/"
+             :recursive t
+             :publishing-function 'org-publish-attachment)))
+#+end_src
+* The Results
+
+With these changes, our images and captions are now centered:
+
+#+CAPTION: This caption is now centered and wrapped in a ~<figcaption>~ tag!
+#+attr_html: :width 450px
+[[file:figures/20220719-julia-plots/fig5.png]]
+
+And the html generated from the org export now looks like this:
+
+#+begin_src html
+<figure id="orgbffad64">
+<img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px">
+
+<figcaption><span class="figure-number">Figure 1: </span>This caption is now centered and wrapped in a <code>&lt;figcaption&gt;</code> tag!</figcaption>
+</figure>
+#+end_src
+
+We now have a ~<figure>...</figure>~ block and our caption is a ~<figcaption>~
+element.
+
+As noted in [[https://orgmode.org/worg/org-tutorials/images-and-xhtml-export.html][this Worg page]]:
+
+#+begin_quote
+There is no /figure/ element in XHTML and captions are not supported at all.
+#+end_quote
+
+Setting the config to use ~html5~ gives us access to these elements.
+
+*Note*: I don't know much HTML or CSS at all. It probably shows. I was trying to
+ apply some formatting to the ~figcaption~ element in my stylesheet and it wasn't
+ having any impact, even though I was pretty sure captions were supposed to
+ export to ~figcaption~. That led me to this solution, which seems to work well
+ (for now). I invite any feedback!

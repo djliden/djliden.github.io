@@ -8,6 +8,14 @@ Prior to starting at bit.io, I was the Director of Data Analytics at the Guinn C
 * [[file:archive.org][(2021-12-02) Posts Archive]]
 (No preview)
 * posts
+** [[file:posts/20220724-html5.org][(2022-07-24) Figures and Captions Don't Appear as Expected with Default Export Options]]
+I noticed that some of the formatting on this site was a little off and some of
+the org-mode components weren't being translated to HTML in quite the way I
+expected. Fixing this was simple, but /finding/ the solution wasn't. In short, it
+was necessary to set the ~org-html-doctype~ to ~html5~ (the default is
+~xhtml-strict~). Furthermore, I set ~org-html-html5-fancy~ to ~t~. These ensure the
+org export process takes advantage of block elements offered in the ~html5~
+standard.
 ** [[file:posts/20220719-julia-plots.org][(2022-07-19) Basic Plotting in Julia]]
 In this short post, I show one of the many ways of using Julia within emacs
 org mode, and will describe some of the basic plotting functionality in Julia.
