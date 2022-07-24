@@ -83,39 +83,13 @@ in a basic way.
 #+begin_src jupyter-julia :session julia-plots :async yes
 using RDatasets, DataFrames
 mtcars = dataset("datasets", "mtcars")
-show(DataFrame(mtcars))
+mtcars[1:10,:]
 #+end_src
 
 #+RESULTS:
-#+begin_example
-[1m32×12 DataFrame[0m
-[1m Row [0m│[1m Model             [0m[1m MPG     [0m[1m Cyl   [0m[1m Disp    [0m[1m HP    [0m[1m DRat    [0m[1m WT      [0m[1m QS[0m ⋯
-[1m     [0m│[90m String31          [0m[90m Float64 [0m[90m Int64 [0m[90m Float64 [0m[90m Int64 [0m[90m Float64 [0m[90m Float64 [0m[90m Fl[0m ⋯
-─────┼──────────────────────────────────────────────────────────────────────────
-   1 │ Mazda RX4             21.0      6    160.0    110     3.9     2.62      ⋯
-   2 │ Mazda RX4 Wag         21.0      6    160.0    110     3.9     2.875
-   3 │ Datsun 710            22.8      4    108.0     93     3.85    2.32
-   4 │ Hornet 4 Drive        21.4      6    258.0    110     3.08    3.215
-   5 │ Hornet Sportabout     18.7      8    360.0    175     3.15    3.44      ⋯
-   6 │ Valiant               18.1      6    225.0    105     2.76    3.46
-   7 │ Duster 360            14.3      8    360.0    245     3.21    3.57
-   8 │ Merc 240D             24.4      4    146.7     62     3.69    3.19
-   9 │ Merc 230              22.8      4    140.8     95     3.92    3.15      ⋯
-  10 │ Merc 280              19.2      6    167.6    123     3.92    3.44
-  11 │ Merc 280C             17.8      6    167.6    123     3.92    3.44
-  ⋮  │         ⋮             ⋮       ⋮       ⋮       ⋮       ⋮        ⋮        ⋱
-  23 │ AMC Javelin           15.2      8    304.0    150     3.15    3.435
-  24 │ Camaro Z28            13.3      8    350.0    245     3.73    3.84      ⋯
-  25 │ Pontiac Firebird      19.2      8    400.0    175     3.08    3.845
-  26 │ Fiat X1-9             27.3      4     79.0     66     4.08    1.935
-  27 │ Porsche 914-2         26.0      4    120.3     91     4.43    2.14
-  28 │ Lotus Europa          30.4      4     95.1    113     3.77    1.513     ⋯
-  29 │ Ford Pantera L        15.8      8    351.0    264     4.22    3.17
-  30 │ Ferrari Dino          19.7      6    145.0    175     3.62    2.77
-  31 │ Maserati Bora         15.0      8    301.0    335     3.54    3.57
-  32 │ Volvo 142E            21.4      4    121.0    109     4.11    2.78      ⋯
-[36m                                                   5 columns and 11 rows omitted[0m
-#+end_example
+#+begin_export html
+<div class="data-frame"><p>10 rows × 12 columns (omitted printing of 3 columns)</p><table class="data-frame"><thead><tr><th></th><th>Model</th><th>MPG</th><th>Cyl</th><th>Disp</th><th>HP</th><th>DRat</th><th>WT</th><th>QSec</th><th>VS</th></tr><tr><th></th><th title="InlineStrings.String31">String31</th><th title="Float64">Float64</th><th title="Int64">Int64</th><th title="Float64">Float64</th><th title="Int64">Int64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>Mazda RX4</td><td>21.0</td><td>6</td><td>160.0</td><td>110</td><td>3.9</td><td>2.62</td><td>16.46</td><td>0</td></tr><tr><th>2</th><td>Mazda RX4 Wag</td><td>21.0</td><td>6</td><td>160.0</td><td>110</td><td>3.9</td><td>2.875</td><td>17.02</td><td>0</td></tr><tr><th>3</th><td>Datsun 710</td><td>22.8</td><td>4</td><td>108.0</td><td>93</td><td>3.85</td><td>2.32</td><td>18.61</td><td>1</td></tr><tr><th>4</th><td>Hornet 4 Drive</td><td>21.4</td><td>6</td><td>258.0</td><td>110</td><td>3.08</td><td>3.215</td><td>19.44</td><td>1</td></tr><tr><th>5</th><td>Hornet Sportabout</td><td>18.7</td><td>8</td><td>360.0</td><td>175</td><td>3.15</td><td>3.44</td><td>17.02</td><td>0</td></tr><tr><th>6</th><td>Valiant</td><td>18.1</td><td>6</td><td>225.0</td><td>105</td><td>2.76</td><td>3.46</td><td>20.22</td><td>1</td></tr><tr><th>7</th><td>Duster 360</td><td>14.3</td><td>8</td><td>360.0</td><td>245</td><td>3.21</td><td>3.57</td><td>15.84</td><td>0</td></tr><tr><th>8</th><td>Merc 240D</td><td>24.4</td><td>4</td><td>146.7</td><td>62</td><td>3.69</td><td>3.19</td><td>20.0</td><td>1</td></tr><tr><th>9</th><td>Merc 230</td><td>22.8</td><td>4</td><td>140.8</td><td>95</td><td>3.92</td><td>3.15</td><td>22.9</td><td>1</td></tr><tr><th>10</th><td>Merc 280</td><td>19.2</td><td>6</td><td>167.6</td><td>123</td><td>3.92</td><td>3.44</td><td>18.3</td><td>1</td></tr></tbody></table></div>
+#+end_export
 
 
 We can use the ~@df~ macro and access columns by prepending them with ~:~.
