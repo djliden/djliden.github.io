@@ -115,7 +115,9 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :sitemap-function 'my/org-publish-org-sitemap
              :sitemap-sort-files 'anti-chronologically
              :sitemap-filename "sitemap.org"
-             :sitemap-style 'tree)
+             :sitemap-style 'tree
+             :html-doctype "html5"
+             :html-html5-fancy t)
        (list "org-site:static"
              :base-directory "./content/"
              :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg"
