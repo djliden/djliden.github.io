@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Processing a JSON API Response with jq</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class='topnav'>
+  <a href='/index.html'>Home</a> /
+  <a href='/archive.html'>Blog</a> / 
+  <a href='/about.html'>About Me</a>
+</div>
+</div>
+<div id="content">
+<header>
+<h1 class="title">Processing a JSON API Response with jq</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgab2f3d5">Introduction</a></li>
+<li><a href="#orge14e7f4">Download the Data</a></li>
+<li><a href="#orgdedd03f">Processing the Data with <code>jq</code></a>
+<ul>
+<li><a href="#org480a7de"><code>jq</code> with no further arguments</a></li>
+<li><a href="#org10f2443">Constructing a Header Row</a></li>
+<li><a href="#org4fae864">Extracting Data Values</a></li>
+<li><a href="#orga13b000">Converting the Results to CSV</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-orgab2f3d5" class="outline-2">
+<h2 id="orgab2f3d5">Introduction</h2>
+<div class="outline-text-2" id="text-orgab2f3d5">
+<div class="preview">
+<p>
+There are countless ways of processing JSON data and converting it to different
+formats. Historically, I've used Python and loaded the data into a Pandas
+Dataframe for processing. This isn't really necessary for simple tasks,
+though. Sometimes, a lightweight command line tool does the job just fine. Enter
+<code>jq</code>. <a href="https://stedolan.github.io/jq/">jq</a> is "like <code>sed</code> for JSON data." This post walks through an example of
+downloading data from an API, extracting a few fields based on some conditions,
+and converting the results to a CSV using <code>jq</code>.
+</p>
+
+</div>
+
+<p>
+In this example, we'll download some data from the Bureau of Labor Statistics
+API, apply some minor processing, and save the results as a CSV. More
+specifically, we will:
+</p>
+
+<ol class="org-ol">
+<li>Download two BLS data series from the BLS API using <code>curl</code></li>
+<li>Extract a few different variables from different hierarchical levels of the
+JSON results using <code>jq</code></li>
+<li>Save the results as a CSV using <code>jq</code></li>
+</ol>
+
+<p>
+This mirrors a common Python task in my workflow: I make an API call using the
+<code>requests</code> module, load the JSON results as a Python <code>dict</code> type with <code>json.load</code> from
+the <code>json</code> module, and then load the results as a pandas table with
+<code>Pandas.DataFrame.from_dict</code>. There may be more (or fewer) steps depending on the
+structure of the API results, but I've repeated this broad pattern many times.
+</p>
+
+<p>
+To follow along, begin by <a href="https://stedolan.github.io/jq/download/">installing jq</a> if you haven't already.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge14e7f4" class="outline-2">
+<h2 id="orge14e7f4">Download the Data</h2>
+<div class="outline-text-2" id="text-orge14e7f4">
+<p>
+As noted above, we use <code>curl</code> to make a <code>POST</code> request agains the BLS API. We're
+downloading Consumer Price Index data since the start of 2022. We're downloading
+data from two BLS series: one for seasonally adjusted data, and one for
+unadjusted data.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
+     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ 
+</pre>
+</div>
+
+<pre class="example">
+| status":"REQUEST_SUCCEEDED","responseTime":171,"message":[],"Results               |
+| series                                                                            |
+| seriesID":"CUUR0000SA0","data":[{"year":"2022","period":"M08","periodName":"August", "latest":"true","value":"296.171","footnotes":[{}]},{"year":"2022","period":"M07","periodName":"July","value":"296.276","footnotes":[{}]},{"year":"2022","period":"M06","periodName":"June","value":"296.311","footnotes":[{}]},{"year":"2022","period":"M05","periodName":"May","value":"292.296","footnotes":[{}]},{"year":"2022","period":"M04","periodName":"April","value":"289.109","footnotes":[{}]},{"year":"2022","period":"M03","periodName":"March","value":"287.504","footnotes":[{}]},{"year":"2022","period":"M02","periodName":"February","value":"283.716","footnotes":[{}]},{"year":"2022","period":"M01","periodName":"January","value":"281.148","footnotes |
+| seriesID":"CUSR0000SA0","data":[{"year":"2022","period":"M08","periodName":"August", "latest":"true","value":"295.620","footnotes":[{}]},{"year":"2022","period":"M07","periodName":"July","value":"295.271","footnotes":[{}]},{"year":"2022","period":"M06","periodName":"June","value":"295.328","footnotes":[{}]},{"year":"2022","period":"M05","periodName":"May","value":"291.474","footnotes":[{}]},{"year":"2022","period":"M04","periodName":"April","value":"288.663","footnotes":[{}]},{"year":"2022","period":"M03","periodName":"March","value":"287.708","footnotes":[{}]},{"year":"2022","period":"M02","periodName":"February","value":"284.182","footnotes":[{}]},{"year":"2022","period":"M01","periodName":"January","value":"281.933","footnotes |
+| }}                                                                                |
+</pre>
+
+<p>
+This is technically readable, but not very nice.
+</p>
+</div>
+</div>
+<div id="outline-container-orgdedd03f" class="outline-2">
+<h2 id="orgdedd03f">Processing the Data with <code>jq</code></h2>
+<div class="outline-text-2" id="text-orgdedd03f">
+<p>
+For most use cases, the data aren't particularly usable in this format. They're
+hard to read; they include metadata about the API response; and the hierarchical
+structure makes them difficult to extract into a tabular format. Enter <code>jq</code>. We'll
+proceed step by step to show how we can use <code>jq</code> to extract specific data from the
+API results.
+</p>
+</div>
+<div id="outline-container-org480a7de" class="outline-3">
+<h3 id="org480a7de"><code>jq</code> with no further arguments</h3>
+<div class="outline-text-3" id="text-org480a7de">
+<p>
+What happens if we pass the results of the API call to <code>jq</code> with no further arguments?
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
+     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ | jq
+</pre>
+</div>
+
+<pre class="example">
+{
+  "status": "REQUEST_SUCCEEDED",
+  "responseTime": 169,
+  "message": [],
+  "Results": {
+    "series": [
+      {
+        "seriesID": "CUUR0000SA0",
+        "data": [
+          {
+            "year": "2022",
+            "period": "M08",
+            "periodName": "August",
+            "latest": "true",
+            "value": "296.171",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M07",
+            "periodName": "July",
+            "value": "296.276",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M06",
+            "periodName": "June",
+            "value": "296.311",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M05",
+            "periodName": "May",
+            "value": "292.296",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M04",
+            "periodName": "April",
+            "value": "289.109",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M03",
+            "periodName": "March",
+            "value": "287.504",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M02",
+            "periodName": "February",
+            "value": "283.716",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M01",
+            "periodName": "January",
+            "value": "281.148",
+            "footnotes": [
+              {}
+            ]
+          }
+        ]
+      },
+      {
+        "seriesID": "CUSR0000SA0",
+        "data": [
+          {
+            "year": "2022",
+            "period": "M08",
+            "periodName": "August",
+            "latest": "true",
+            "value": "295.620",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M07",
+            "periodName": "July",
+            "value": "295.271",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M06",
+            "periodName": "June",
+            "value": "295.328",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M05",
+            "periodName": "May",
+            "value": "291.474",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M04",
+            "periodName": "April",
+            "value": "288.663",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M03",
+            "periodName": "March",
+            "value": "287.708",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M02",
+            "periodName": "February",
+            "value": "284.182",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M01",
+            "periodName": "January",
+            "value": "281.933",
+            "footnotes": [
+              {}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+</pre>
+
+<p>
+We end up with our JSON output in a much more readable format. The spacing makes
+it considerably easier to visualize the data hierarchy. Looking at this, we
+observe:
+</p>
+<ul class="org-ul">
+<li>The data we want are under the <code>Results</code> key</li>
+<li>Each series under <code>Results</code> has a <code>SeriesID</code> and <code>data</code>: we want the <code>seriesID</code> and
+the <code>data</code> values as rows in our resulting table.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org10f2443" class="outline-3">
+<h3 id="org10f2443">Constructing a Header Row</h3>
+<div class="outline-text-3" id="text-org10f2443">
+<p>
+We want our resulting table to have a header row. The process of making this row
+provides a lot of insight into how <code>jq</code> works.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
+     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span style="font-style: italic;">\</span>
+    | jq -r <span style="font-style: italic;">'.Results | (.series[0].data[0] | ["seriesID"] + keys_unsorted)'</span>
+</pre>
+</div>
+
+<pre class="example">
+[
+  "seriesID",
+  "year",
+  "period",
+  "periodName",
+  "latest",
+  "value",
+  "footnotes"
+]
+
+</pre>
+
+<p>
+What's happening here?
+</p>
+
+<ul class="org-ul">
+<li>Calling <code>jq</code> with the <code>-r</code> argument specifies that we want raw output rather than
+output formatted and quoted as a JSON string.</li>
+<li><code>.Results</code> specifies that we're working under the <code>Results</code> key. We aren't
+interested in the <code>status</code> or <code>responseTime</code> or <code>message</code> keys. The data are all
+under <code>Results</code>. If we had started with <code>jq -r '.'</code>, we'd be starting from the top
+of the hierarchy.</li>
+<li><p>
+Parentheses serve as grouping operators. In many cases, in <code>jq</code>, parentheses are
+used to specify the particular level of the data hierarchy we're working
+with. For example, <code>(.series[0].data[0]) | ...</code> specifies that we're working
+with the first data entry of the first series, which looks like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">{
+    <span style="font-style: italic;">"year"</span>: <span style="font-style: italic;">"2022"</span>,
+    <span style="font-style: italic;">"period"</span>: <span style="font-style: italic;">"M08"</span>,
+    <span style="font-style: italic;">"periodName"</span>: <span style="font-style: italic;">"August"</span>,
+    <span style="font-style: italic;">"latest"</span>: <span style="font-style: italic;">"true"</span>,
+    <span style="font-style: italic;">"value"</span>: <span style="font-style: italic;">"296.171"</span>,
+    <span style="font-style: italic;">"footnotes"</span>: [
+        {}
+    ]
+}
+</pre>
+</div></li>
+<li>The pipe operator <code>|</code> combines filters: it passes the output of the filter on
+the left as the input to the filter on the right. This is very much like the
+Unix shell pipe. Recall that, in this case, the first filter returned the JSON
+object above, so subsequent filters and functions in this set of parentheses
+will operate on that object.</li>
+<li><code>keys_unsorted</code> is a function that returns the keys from a given object, sorted
+"roughly in insertion order."</li>
+<li><code>+</code> does array concatenation, so <code>["seriesID"] + keys</code> returns a single array
+containing <code>"SeriesID"</code> and the keys returned by the <code>keys</code> function.</li>
+</ul>
+
+<p>
+The most important thing to note here is how we use filters to navigate the JSON
+hierarchy. We start with <code>.Results</code> to specify that we're working in the context
+of the <code>"Results"</code> key, and then, in the parentheses, we narrow to
+<code>.series[0].data[0]</code> to specify the first entry in the first series. In the next
+section, we'll see how to extract data from multiple sections.
+</p>
+</div>
+</div>
+<div id="outline-container-org4fae864" class="outline-3">
+<h3 id="org4fae864">Extracting Data Values</h3>
+<div class="outline-text-3" id="text-org4fae864">
+<p>
+Based on the header rows, we need to extract, for each data entry, the series
+ID, footnotes, period, period name, year, value, and whether it's the latest
+data from the BLS. We can't use the exact approach we used to construct the
+headers, though, for two key reasons:
+</p>
+<ul class="org-ul">
+<li>We need to get data from each object, not just one</li>
+<li>We need data from different levels of the hierarchy: <code>seriesID</code> is at a higher
+level than the other values we need.</li>
+</ul>
+
+<pre class="example">
+"series": [
+    {
+        "seriesID": "CUUR0000SA0",
+        "data": [
+            {
+                "year": "2022",
+                "period": "M08",
+                "periodName": "August",
+                "latest": "true",
+                "value": "296.171",
+                "footnotes": [
+                    {}
+                ]
+            },
+            ...
+        ]
+</pre>
+
+<p>
+Here's how we might start to approach this.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
+     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span style="font-style: italic;">\</span>
+    | jq -r <span style="font-style: italic;">'.Results | (.series[] | [.seriesID] + (.data[] | map(.)))'</span>  
+</pre>
+</div>
+
+<pre class="example">
+[
+  "CUUR0000SA0",
+  "2022",
+  "M08",
+  "August",
+  "true",
+  "296.171",
+  [
+    {}
+  ]
+]
+[
+  "CUUR0000SA0",
+  "2022",
+  "M07",
+  "July",
+  "296.276",
+  [
+    {}
+  ]
+]
+
+...
+
+[
+  "CUSR0000SA0",
+  "2022",
+  "M01",
+  "January",
+  "281.933",
+  [
+    {}
+  ]
+]
+</pre>
+
+<p>
+This gets us part of the way there. We'll work through this part of the query
+and show what happened: <code>(.series[] | [.seriesID] + (.data[] | map(.)))</code>.
+</p>
+<ul class="org-ul">
+<li>The first filter focuses on <code>.series[]</code>.</li>
+<li>The empty bracket <code>[]</code> (with no index specified) returns all elements of the
+array. So <code>.series[]</code> will iterate through everything contained under
+<code>series</code>. There are two series, each with their own <code>seriesID</code> and <code>data</code>.</li>
+<li>The <code>[.seriesID]</code> section after the filter will extract the ID from each series.</li>
+<li>The <code>(.data[] | map(.))</code> section will, for each series, iterate through the <code>data</code>
+array. The <code>map(.)</code> function says to return each value in the <code>data</code> array without
+modifying it.</li>
+</ul>
+
+<p>
+The main thing we've accomplished here is extracting elements from different
+levels of the hierarchy: the <code>seriesID</code> from the higher level and the <code>data</code> values
+from the lower level.
+</p>
+
+<p>
+Ultimately, we'd like to convert these data to a CSV. This is possible with <code>jq</code>,
+but there's an issue: the <code>footnotes</code> field is itself a JSON object and cannot be
+converted directly to the CSV format. So we have a little more work to do.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
+     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span style="font-style: italic;">\</span>
+    | jq -r <span style="font-style: italic;">'.Results | (.series[] | [.seriesID] +</span>
+<span style="font-style: italic;">  (.data[] | [with_entries(select(.key=="footnotes" | not)) | values[]] + [.footnotes[]|join(",")]))'</span>
+</pre>
+</div>
+
+<pre class="example">
+[
+  "CUUR0000SA0",
+  "2022",
+  "M08",
+  "August",
+  "true",
+  "296.171",
+  ""
+]
+[
+  "CUUR0000SA0",
+  "2022",
+  "M07",
+  "July",
+  "296.276",
+  ""
+]
+
+...
+
+[
+  "CUSR0000SA0",
+  "2022",
+  "M01",
+  "January",
+  "281.933",
+  ""
+]
+</pre>
+
+<p>
+We've made some changes in how we extract the data from the <code>data</code> key. Before, it
+was just <code>(.data[] | map(.))</code> Now it looks like <code>(.data[] | [with_entries(select(.key=="footnotes" | not)) | values[]] + [.footnotes[]|join(",")])</code> .
+</p>
+
+<p>
+What do these changes mean?
+</p>
+<ul class="org-ul">
+<li><code>with_entries</code> converts its input to key-value pairs with the format <code>{key: k,
+  value: v}</code>. This lets us filter based on the names of the keys and to return
+the values we want.</li>
+<li><code>select()</code> takes a boolean expression and returns its input if it matches the
+boolean expresison. In this case, the boolean expression is
+<code>.key=="footnotes" | not</code>, which means "key does not equal 'footnotes'". So we
+are excluding the "footnotes" field for now but returning all of the others.</li>
+<li><code>values[]</code> returns all of the values from the key-value pairs, excluding
+<code>footnotes</code>.</li>
+<li>Lastly, we re-add the "footnotes" field with <code>+ [.footnotes[]|join(",")]</code>. This
+iterates through the elements of the <code>footnotes</code> object in each <code>data</code> entry and
+converts them into comma-separated strings, which the CSV converter can handle
+without issue.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga13b000" class="outline-3">
+<h3 id="orga13b000">Converting the Results to CSV</h3>
+<div class="outline-text-3" id="text-orga13b000">
+<p>
+Lastly, we convert the transformed results to a CSV using the <code>@csv</code> formatter.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
+     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span style="font-style: italic;">\</span>
+    | jq -r <span style="font-style: italic;">'.Results | (.series[0].data[0]| ["seriesID"] +</span>
+<span style="font-style: italic;">  (keys_unsorted)), (.series[] | [.seriesID] +</span>
+<span style="font-style: italic;">  (.data[] | [with_entries(select(.key=="footnotes" | not)) | values[]] + [.footnotes[]|join(",")])) | @csv'</span>
+</pre>
+</div>
+
+<pre class="example">
+"seriesID","year","period","periodName","latest","value","footnotes"
+"CUUR0000SA0","2022","M08","August","true","296.171",""
+"CUUR0000SA0","2022","M07","July","296.276",""
+"CUUR0000SA0","2022","M06","June","296.311",""
+"CUUR0000SA0","2022","M05","May","292.296",""
+"CUUR0000SA0","2022","M04","April","289.109",""
+"CUUR0000SA0","2022","M03","March","287.504",""
+"CUUR0000SA0","2022","M02","February","283.716",""
+"CUUR0000SA0","2022","M01","January","281.148",""
+"CUSR0000SA0","2022","M08","August","true","295.620",""
+"CUSR0000SA0","2022","M07","July","295.271",""
+"CUSR0000SA0","2022","M06","June","295.328",""
+"CUSR0000SA0","2022","M05","May","291.474",""
+"CUSR0000SA0","2022","M04","April","288.663",""
+"CUSR0000SA0","2022","M03","March","287.708",""
+"CUSR0000SA0","2022","M02","February","284.182",""
+"CUSR0000SA0","2022","M01","January","281.933",""
+</pre>
+
+<p>
+There is one outstanding issue: only the first row of data actually contains the
+<code>latest</code> entry; the rest are empty. There are a number of solutions to this, from
+dropping that column entirely to explicitly adding a "False" value to all of the
+other rows. We won't get into that here.
+</p>
+
+<p>
+Now that you've read this post, you should have a better idea of how to use <code>jq</code>
+to access and process data at different hierarchical levels of a JSON data
+structure.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2022-09-18 Sun 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>
