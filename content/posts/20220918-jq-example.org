@@ -1,0 +1,503 @@
+#+TITLE: Processing a JSON API Response with jq
+#+DATE: <2022-09-18 Sun>
+
+* Introduction
+#+begin_preview
+There are countless ways of processing JSON data and converting it to different
+formats. Historically, I've used Python and loaded the data into a Pandas
+Dataframe for processing. This isn't really necessary for simple tasks,
+though. Sometimes, a lightweight command line tool does the job just fine. Enter
+~jq~. [[https://stedolan.github.io/jq/][jq]] is "like ~sed~ for JSON data." This post walks through an example of
+downloading data from an API, extracting a few fields based on some conditions,
+and converting the results to a CSV using ~jq~.
+#+end_preview
+
+In this example, we'll download some data from the Bureau of Labor Statistics
+API, apply some minor processing, and save the results as a CSV. More
+specifically, we will:
+
+1. Download two BLS data series from the BLS API using ~curl~
+2. Extract a few different variables from different hierarchical levels of the
+   JSON results using ~jq~
+3. Save the results as a CSV using ~jq~
+
+This mirrors a common Python task in my workflow: I make an API call using the
+~requests~ module, load the JSON results as a Python ~dict~ type with ~json.load~ from
+the ~json~ module, and then load the results as a pandas table with
+~Pandas.DataFrame.from_dict~. There may be more (or fewer) steps depending on the
+structure of the API results, but I've repeated this broad pattern many times.
+
+To follow along, begin by [[https://stedolan.github.io/jq/download/][installing jq]] if you haven't already.
+
+* Download the Data
+
+As noted above, we use ~curl~ to make a ~POST~ request agains the BLS API. We're
+downloading Consumer Price Index data since the start of 2022. We're downloading
+data from two BLS series: one for seasonally adjusted data, and one for
+unadjusted data.
+
+#+begin_src shell
+curl -X POST -H 'Content-Type: application/json' \
+     -d '{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}' \
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ 
+#+end_src
+
+#+begin_example
+| status":"REQUEST_SUCCEEDED","responseTime":171,"message":[],"Results               |
+| series                                                                            |
+| seriesID":"CUUR0000SA0","data":[{"year":"2022","period":"M08","periodName":"August", "latest":"true","value":"296.171","footnotes":[{}]},{"year":"2022","period":"M07","periodName":"July","value":"296.276","footnotes":[{}]},{"year":"2022","period":"M06","periodName":"June","value":"296.311","footnotes":[{}]},{"year":"2022","period":"M05","periodName":"May","value":"292.296","footnotes":[{}]},{"year":"2022","period":"M04","periodName":"April","value":"289.109","footnotes":[{}]},{"year":"2022","period":"M03","periodName":"March","value":"287.504","footnotes":[{}]},{"year":"2022","period":"M02","periodName":"February","value":"283.716","footnotes":[{}]},{"year":"2022","period":"M01","periodName":"January","value":"281.148","footnotes |
+| seriesID":"CUSR0000SA0","data":[{"year":"2022","period":"M08","periodName":"August", "latest":"true","value":"295.620","footnotes":[{}]},{"year":"2022","period":"M07","periodName":"July","value":"295.271","footnotes":[{}]},{"year":"2022","period":"M06","periodName":"June","value":"295.328","footnotes":[{}]},{"year":"2022","period":"M05","periodName":"May","value":"291.474","footnotes":[{}]},{"year":"2022","period":"M04","periodName":"April","value":"288.663","footnotes":[{}]},{"year":"2022","period":"M03","periodName":"March","value":"287.708","footnotes":[{}]},{"year":"2022","period":"M02","periodName":"February","value":"284.182","footnotes":[{}]},{"year":"2022","period":"M01","periodName":"January","value":"281.933","footnotes |
+| }}                                                                                |
+#+end_example
+
+This is technically readable, but not very nice.
+* Processing the Data with ~jq~
+
+For most use cases, the data aren't particularly usable in this format. They're
+hard to read; they include metadata about the API response; and the hierarchical
+structure makes them difficult to extract into a tabular format. Enter ~jq~. We'll
+proceed step by step to show how we can use ~jq~ to extract specific data from the
+API results.
+** ~jq~ with no further arguments
+
+What happens if we pass the results of the API call to ~jq~ with no further arguments?
+#+begin_src shell :results output
+curl -X POST -H 'Content-Type: application/json' \
+     -d '{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}' \
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ | jq
+#+end_src
+
+#+RESULTS:
+#+begin_example js
+{
+  "status": "REQUEST_SUCCEEDED",
+  "responseTime": 169,
+  "message": [],
+  "Results": {
+    "series": [
+      {
+        "seriesID": "CUUR0000SA0",
+        "data": [
+          {
+            "year": "2022",
+            "period": "M08",
+            "periodName": "August",
+            "latest": "true",
+            "value": "296.171",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M07",
+            "periodName": "July",
+            "value": "296.276",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M06",
+            "periodName": "June",
+            "value": "296.311",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M05",
+            "periodName": "May",
+            "value": "292.296",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M04",
+            "periodName": "April",
+            "value": "289.109",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M03",
+            "periodName": "March",
+            "value": "287.504",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M02",
+            "periodName": "February",
+            "value": "283.716",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M01",
+            "periodName": "January",
+            "value": "281.148",
+            "footnotes": [
+              {}
+            ]
+          }
+        ]
+      },
+      {
+        "seriesID": "CUSR0000SA0",
+        "data": [
+          {
+            "year": "2022",
+            "period": "M08",
+            "periodName": "August",
+            "latest": "true",
+            "value": "295.620",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M07",
+            "periodName": "July",
+            "value": "295.271",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M06",
+            "periodName": "June",
+            "value": "295.328",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M05",
+            "periodName": "May",
+            "value": "291.474",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M04",
+            "periodName": "April",
+            "value": "288.663",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M03",
+            "periodName": "March",
+            "value": "287.708",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M02",
+            "periodName": "February",
+            "value": "284.182",
+            "footnotes": [
+              {}
+            ]
+          },
+          {
+            "year": "2022",
+            "period": "M01",
+            "periodName": "January",
+            "value": "281.933",
+            "footnotes": [
+              {}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+#+end_example
+
+We end up with our JSON output in a much more readable format. The spacing makes
+it considerably easier to visualize the data hierarchy. Looking at this, we
+observe:
+- The data we want are under the ~Results~ key
+- Each series under ~Results~ has a ~SeriesID~ and ~data~: we want the ~seriesID~ and
+  the ~data~ values as rows in our resulting table.
+** Constructing a Header Row
+We want our resulting table to have a header row. The process of making this row
+provides a lot of insight into how ~jq~ works.
+
+#+begin_src shell :results output
+curl -X POST -H 'Content-Type: application/json' \
+     -d '{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}' \
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ \
+    | jq -r '.Results | (.series[0].data[0] | ["seriesID"] + keys_unsorted)'
+#+end_src
+
+#+RESULTS:
+: [
+:   "seriesID",
+:   "year",
+:   "period",
+:   "periodName",
+:   "latest",
+:   "value",
+:   "footnotes"
+: ]
+
+What's happening here?
+
+- Calling ~jq~ with the ~-r~ argument specifies that we want raw output rather than
+  output formatted and quoted as a JSON string.
+- ~.Results~ specifies that we're working under the ~Results~ key. We aren't
+  interested in the ~status~ or ~responseTime~ or ~message~ keys. The data are all
+  under ~Results~. If we had started with ~jq -r '.'~, we'd be starting from the top
+  of the hierarchy.
+- Parentheses serve as grouping operators. In many cases, in ~jq~, parentheses are
+  used to specify the particular level of the data hierarchy we're working
+  with. For example, ~(.series[0].data[0]) | ...~ specifies that we're working
+  with the first data entry of the first series, which looks like this:
+
+  #+begin_src js
+{
+    "year": "2022",
+    "period": "M08",
+    "periodName": "August",
+    "latest": "true",
+    "value": "296.171",
+    "footnotes": [
+        {}
+    ]
+}
+  #+end_src
+- The pipe operator ~|~ combines filters: it passes the output of the filter on
+  the left as the input to the filter on the right. This is very much like the
+  Unix shell pipe. Recall that, in this case, the first filter returned the JSON
+  object above, so subsequent filters and functions in this set of parentheses
+  will operate on that object.
+- ~keys_unsorted~ is a function that returns the keys from a given object, sorted
+  "roughly in insertion order."
+- ~+~ does array concatenation, so ~["seriesID"] + keys~ returns a single array
+  containing ~"SeriesID"~ and the keys returned by the ~keys~ function.
+
+The most important thing to note here is how we use filters to navigate the JSON
+hierarchy. We start with ~.Results~ to specify that we're working in the context
+of the ~"Results"~ key, and then, in the parentheses, we narrow to
+~.series[0].data[0]~ to specify the first entry in the first series. In the next
+section, we'll see how to extract data from multiple sections.
+** Extracting Data Values
+
+Based on the header rows, we need to extract, for each data entry, the series
+ID, footnotes, period, period name, year, value, and whether it's the latest
+data from the BLS. We can't use the exact approach we used to construct the
+headers, though, for two key reasons:
+- We need to get data from each object, not just one
+- We need data from different levels of the hierarchy: ~seriesID~ is at a higher
+  level than the other values we need.
+  
+#+CAPTION: ~SeriesID~ is at a higher level in the hierarchy.
+#+begin_example js
+"series": [
+    {
+        "seriesID": "CUUR0000SA0",
+        "data": [
+            {
+                "year": "2022",
+                "period": "M08",
+                "periodName": "August",
+                "latest": "true",
+                "value": "296.171",
+                "footnotes": [
+                    {}
+                ]
+            },
+            ...
+        ]
+#+end_example
+
+Here's how we might start to approach this.
+
+
+#+begin_src shell :results output
+curl -X POST -H 'Content-Type: application/json' \
+     -d '{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}' \
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ \
+    | jq -r '.Results | (.series[] | [.seriesID] + (.data[] | map(.)))'  
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[
+  "CUUR0000SA0",
+  "2022",
+  "M08",
+  "August",
+  "true",
+  "296.171",
+  [
+    {}
+  ]
+]
+[
+  "CUUR0000SA0",
+  "2022",
+  "M07",
+  "July",
+  "296.276",
+  [
+    {}
+  ]
+]
+
+...
+
+[
+  "CUSR0000SA0",
+  "2022",
+  "M01",
+  "January",
+  "281.933",
+  [
+    {}
+  ]
+]
+#+end_example
+
+This gets us part of the way there. We'll work through this part of the query
+and show what happened: ~(.series[] | [.seriesID] + (.data[] | map(.)))~.
+- The first filter focuses on ~.series[]~.
+- The empty bracket ~[]~ (with no index specified) returns all elements of the
+  array. So ~.series[]~ will iterate through everything contained under
+  ~series~. There are two series, each with their own ~seriesID~ and ~data~.
+- The ~[.seriesID]~ section after the filter will extract the ID from each series.
+- The ~(.data[] | map(.))~ section will, for each series, iterate through the ~data~
+  array. The ~map(.)~ function says to return each value in the ~data~ array without
+  modifying it.
+
+The main thing we've accomplished here is extracting elements from different
+levels of the hierarchy: the ~seriesID~ from the higher level and the ~data~ values
+from the lower level.
+
+Ultimately, we'd like to convert these data to a CSV. This is possible with ~jq~,
+but there's an issue: the ~footnotes~ field is itself a JSON object and cannot be
+converted directly to the CSV format. So we have a little more work to do.
+
+
+#+begin_src shell :results output
+curl -X POST -H 'Content-Type: application/json' \
+     -d '{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}' \
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ \
+    | jq -r '.Results | (.series[] | [.seriesID] +
+  (.data[] | [with_entries(select(.key=="footnotes" | not)) | values[]] + [.footnotes[]|join(",")]))'
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[
+  "CUUR0000SA0",
+  "2022",
+  "M08",
+  "August",
+  "true",
+  "296.171",
+  ""
+]
+[
+  "CUUR0000SA0",
+  "2022",
+  "M07",
+  "July",
+  "296.276",
+  ""
+]
+
+...
+
+[
+  "CUSR0000SA0",
+  "2022",
+  "M01",
+  "January",
+  "281.933",
+  ""
+]
+#+end_example
+
+We've made some changes in how we extract the data from the ~data~ key. Before, it
+was just ~(.data[] | map(.))~ Now it looks like ~(.data[] | [with_entries(select(.key=="footnotes" | not)) | values[]] + [.footnotes[]|join(",")])~ .
+
+What do these changes mean?
+- ~with_entries~ converts its input to key-value pairs with the format ~{key: k,
+  value: v}~. This lets us filter based on the names of the keys and to return
+  the values we want.
+- ~select()~ takes a boolean expression and returns its input if it matches the
+  boolean expresison. In this case, the boolean expression is
+  ~.key=="footnotes" | not~, which means "key does not equal 'footnotes'". So we
+  are excluding the "footnotes" field for now but returning all of the others.
+- ~values[]~ returns all of the values from the key-value pairs, excluding
+  ~footnotes~.
+- Lastly, we re-add the "footnotes" field with ~+ [.footnotes[]|join(",")]~. This
+  iterates through the elements of the ~footnotes~ object in each ~data~ entry and
+  converts them into comma-separated strings, which the CSV converter can handle
+  without issue.
+** Converting the Results to CSV
+
+Lastly, we convert the transformed results to a CSV using the ~@csv~ formatter.
+
+#+begin_src shell :results output
+curl -X POST -H 'Content-Type: application/json' \
+     -d '{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}' \
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ \
+    | jq -r '.Results | (.series[0].data[0]| ["seriesID"] +
+  (keys_unsorted)), (.series[] | [.seriesID] +
+  (.data[] | [with_entries(select(.key=="footnotes" | not)) | values[]] + [.footnotes[]|join(",")])) | @csv'
+#+end_src
+
+#+RESULTS:
+#+begin_example CSV
+"seriesID","year","period","periodName","latest","value","footnotes"
+"CUUR0000SA0","2022","M08","August","true","296.171",""
+"CUUR0000SA0","2022","M07","July","296.276",""
+"CUUR0000SA0","2022","M06","June","296.311",""
+"CUUR0000SA0","2022","M05","May","292.296",""
+"CUUR0000SA0","2022","M04","April","289.109",""
+"CUUR0000SA0","2022","M03","March","287.504",""
+"CUUR0000SA0","2022","M02","February","283.716",""
+"CUUR0000SA0","2022","M01","January","281.148",""
+"CUSR0000SA0","2022","M08","August","true","295.620",""
+"CUSR0000SA0","2022","M07","July","295.271",""
+"CUSR0000SA0","2022","M06","June","295.328",""
+"CUSR0000SA0","2022","M05","May","291.474",""
+"CUSR0000SA0","2022","M04","April","288.663",""
+"CUSR0000SA0","2022","M03","March","287.708",""
+"CUSR0000SA0","2022","M02","February","284.182",""
+"CUSR0000SA0","2022","M01","January","281.933",""
+#+end_example
+
+There is one outstanding issue: only the first row of data actually contains the
+~latest~ entry; the rest are empty. There are a number of solutions to this, from
+dropping that column entirely to explicitly adding a "False" value to all of the
+other rows. We won't get into that here.
+
+Now that you've read this post, you should have a better idea of how to use ~jq~
+to access and process data at different hierarchical levels of a JSON data
+structure.
