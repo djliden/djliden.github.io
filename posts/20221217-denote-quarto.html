@@ -69,15 +69,15 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8380f92">Custom Filetypes in Denote</a></li>
-<li><a href="#org5f56d01">A More Concise Approach</a></li>
+<li><a href="#orga2887da">Custom Filetypes in Denote</a></li>
+<li><a href="#org46def5c">Modifying the <code>markdown-yaml</code> file type</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org8380f92" class="outline-2">
-<h2 id="org8380f92">Custom Filetypes in Denote</h2>
-<div class="outline-text-2" id="text-org8380f92">
+<div id="outline-container-orga2887da" class="outline-2">
+<h2 id="orga2887da">Custom Filetypes in Denote</h2>
+<div class="outline-text-2" id="text-orga2887da">
 <div class="PREVIEW">
 <p>
 The latest release of <a href="https://protesilaos.com/emacs/denote">Denote</a> (by the inimitable Protesilaos Stavrou) introduced
@@ -92,7 +92,7 @@ when creating a new Denote file.
 </div>
 
 <p>
-If you just want the code snippet, go <a href="#org5f56d01">here</a>.
+Find the code snippet <a href="#org46def5c">here</a>.
 </p>
 
 <p>
@@ -130,7 +130,8 @@ markdown file type definition, changing the name to <code>quarto</code> and the 
                <span style="font-weight: bold;">:front-matter</span> denote-yaml-front-matter
                <span style="font-weight: bold;">:title-key-regexp</span> <span style="font-style: italic;">"^title\\s-*:"</span>
                <span style="font-weight: bold;">:title-value-function</span> denote-surround-with-quotes
-               <span style="font-weight: bold;">:title-value-reverse-function</span> denote-trim-whitespace-then-quotes <span style="font-weight: bold;">:keywords-key-regexp</span> <span style="font-style: italic;">"^tags\\s-*:"</span>
+               <span style="font-weight: bold;">:title-value-reverse-function</span> denote-trim-whitespace-then-quotes
+               <span style="font-weight: bold;">:keywords-key-regexp</span> <span style="font-style: italic;">"^tags\\s-*:"</span>
                <span style="font-weight: bold;">:keywords-value-function</span> denote-format-keywords-for-md-front-matter
                <span style="font-weight: bold;">:keywords-value-reverse-function</span> denote-extract-keywords-from-front-matter
                <span style="font-weight: bold;">:link</span> denote-md-link-format
@@ -144,14 +145,15 @@ markdown file type definition, changing the name to <code>quarto</code> and the 
 
 
 <p>
-We can do this more concisely (and learn a litle bit of emacs lisp on the way).
+We can do this more concisely (and learn a litle bit of emacs lisp on the way)
+by modifying the <code>markdown-yaml</code> file type definition.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org5f56d01" class="outline-2">
-<h2 id="org5f56d01">A More Concise Approach</h2>
-<div class="outline-text-2" id="text-org5f56d01">
+<div id="outline-container-org46def5c" class="outline-2">
+<h2 id="org46def5c">Modifying the <code>markdown-yaml</code> file type</h2>
+<div class="outline-text-2" id="text-org46def5c">
 <p>
 As noted, all we're actually doing is changing the file extension in the
 existing markdown type. So instead of writing out all of the redundant details,
