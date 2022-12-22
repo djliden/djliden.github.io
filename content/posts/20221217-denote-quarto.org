@@ -12,7 +12,7 @@ Observable. The setup detailed here will allow one to choose the .qmd filetype
 when creating a new Denote file.
 #+END_PREVIEW
 
-If you just want the code snippet, go [[*A More Concise Approach][here]].
+Find the code snippet [[*Modifying the ~markdown-yaml~ file type][here]].
 
 All the details about creating a custom Denote filetype can be found
 [[https://protesilaos.com/codelog/2022-10-30-demo-denote-custom-file-type/][here]]. First, let's inspect the ~denote-file-types~ alist to understand what a file
@@ -40,7 +40,8 @@ markdown file type definition, changing the name to ~quarto~ and the extension t
                :front-matter denote-yaml-front-matter
                :title-key-regexp "^title\\s-*:"
                :title-value-function denote-surround-with-quotes
-               :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:"
+               :title-value-reverse-function denote-trim-whitespace-then-quotes
+               :keywords-key-regexp "^tags\\s-*:"
                :keywords-value-function denote-format-keywords-for-md-front-matter
                :keywords-value-reverse-function denote-extract-keywords-from-front-matter
                :link denote-md-link-format
@@ -50,9 +51,10 @@ markdown file type definition, changing the name to ~quarto~ and the extension t
 #+RESULTS:
 : ((quarto :extension ".qmd" :date-function denote-date-iso-8601 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (quarto :extension ".qmd" :date-function denote-date-rfc3339 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (org :extension ".org" :date-function denote-date-org-timestamp :front-matter denote-org-front-matter :title-key-regexp "^#\\+title\\s-*:" :title-value-function identity :title-value-reverse-function denote-trim-whitespace :keywords-key-regexp "^#\\+filetags\\s-*:" :keywords-value-function denote-format-keywords-for-org-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-org-link-format :link-in-context-regexp denote-org-link-in-context-regexp) (markdown-yaml :extension ".qmd" :date-function denote-date-rfc3339 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (markdown-toml :extension ".md" :date-function denote-date-rfc3339 :front-matter denote-toml-front-matter :title-key-regexp "^title\\s-*=" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*=" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (text :extension ".txt" :date-function denote-date-iso-8601 :front-matter denote-text-front-matter :title-key-regexp "^title\\s-*:" :title-value-function identity :title-value-reverse-function denote-trim-whitespace :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-text-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-org-link-format :link-in-context-regexp denote-org-link-in-context-regexp))
 
-We can do this more concisely (and learn a litle bit of emacs lisp on the way).
+We can do this more concisely (and learn a litle bit of emacs lisp on the way)
+by modifying the ~markdown-yaml~ file type definition.
 
-* A More Concise Approach
+* Modifying the ~markdown-yaml~ file type
 
 As noted, all we're actually doing is changing the file extension in the
 existing markdown type. So instead of writing out all of the redundant details,
