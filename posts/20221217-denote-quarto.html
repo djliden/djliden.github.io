@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using Quarto Files with Denote</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class='topnav'>
+  <a href='/index.html'>Home</a> /
+  <a href='/archive.html'>Blog</a> / 
+  <a href='/about.html'>About Me</a>
+</div>
+</div>
+<div id="content">
+<header>
+<h1 class="title">Using Quarto Files with Denote</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org8380f92">Custom Filetypes in Denote</a></li>
+<li><a href="#org5f56d01">A More Concise Approach</a></li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-org8380f92" class="outline-2">
+<h2 id="org8380f92">Custom Filetypes in Denote</h2>
+<div class="outline-text-2" id="text-org8380f92">
+<div class="PREVIEW">
+<p>
+The latest release of <a href="https://protesilaos.com/emacs/denote">Denote</a> (by the inimitable Protesilaos Stavrou) introduced
+support for <a href="https://protesilaos.com/codelog/2022-10-30-demo-denote-custom-file-type/">custom file types</a> in addition to the defaults, Org, Markdown+YAML,
+Markdown+TOML, and plain text. This post shows how to add <a href="https://quarto.org/">Quarto</a> files
+(.qmd). Quarto, the successor to R Markdown, is "an open-source scientific and
+technical publishing system" with support for Python, R, Julia, and
+Observable. The setup detailed here will allow one to choose the .qmd filetype
+when creating a new Denote file.
+</p>
+
+</div>
+
+<p>
+If you just want the code snippet, go <a href="#org5f56d01">here</a>.
+</p>
+
+<p>
+All the details about creating a custom Denote filetype can be found
+<a href="https://protesilaos.com/codelog/2022-10-30-demo-denote-custom-file-type/">here</a>. First, let's inspect the <code>denote-file-types</code> alist to understand what a file
+type definition looks like.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(print denote-file-types)
+</pre>
+</div>
+
+<pre class="example">
+((quarto :extension ".qmd" :date-function denote-date-iso-8601 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (quarto :extension ".qmd" :date-function denote-date-rfc3339 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (org :extension ".org" :date-function denote-date-org-timestamp :front-matter denote-org-front-matter :title-key-regexp "^#\\+title\\s-*:" :title-value-function identity :title-value-reverse-function denote-trim-whitespace :keywords-key-regexp "^#\\+filetags\\s-*:" :keywords-value-function denote-format-keywords-for-org-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-org-link-format :link-in-context-regexp denote-org-link-in-context-regexp) (markdown-yaml :extension ".qmd" :date-function denote-date-rfc3339 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (markdown-toml :extension ".md" :date-function denote-date-rfc3339 :front-matter denote-toml-front-matter :title-key-regexp "^title\\s-*=" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*=" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (text :extension ".txt" :date-function denote-date-iso-8601 :front-matter denote-text-front-matter :title-key-regexp "^title\\s-*:" :title-value-function identity :title-value-reverse-function denote-trim-whitespace :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-text-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-org-link-format :link-in-context-regexp denote-org-link-in-context-regexp))
+</pre>
+
+
+<p>
+We need to add to this list. We can define a new filetype in this alist by
+defining a new element of the form <code>(SYMBOL PROPERTY-LIST)</code>.
+</p>
+
+<p>
+Adding a basic quarto file should be very simple. We only need to duplicatge the
+markdown file type definition, changing the name to <code>quarto</code> and the extension to
+<code>".qmd"</code>. We could do this as follows.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(add-to-list 'denote-file-types
+             '(quarto
+               <span style="font-weight: bold;">:extension</span> <span style="font-style: italic;">".qmd"</span>
+               <span style="font-weight: bold;">:date-function</span> denote-date-iso-8601
+               <span style="font-weight: bold;">:front-matter</span> denote-yaml-front-matter
+               <span style="font-weight: bold;">:title-key-regexp</span> <span style="font-style: italic;">"^title\\s-*:"</span>
+               <span style="font-weight: bold;">:title-value-function</span> denote-surround-with-quotes
+               <span style="font-weight: bold;">:title-value-reverse-function</span> denote-trim-whitespace-then-quotes <span style="font-weight: bold;">:keywords-key-regexp</span> <span style="font-style: italic;">"^tags\\s-*:"</span>
+               <span style="font-weight: bold;">:keywords-value-function</span> denote-format-keywords-for-md-front-matter
+               <span style="font-weight: bold;">:keywords-value-reverse-function</span> denote-extract-keywords-from-front-matter
+               <span style="font-weight: bold;">:link</span> denote-md-link-format
+               <span style="font-weight: bold;">:link-in-context-regexp</span> denote-md-link-in-context-regexp))
+</pre>
+</div>
+
+<pre class="example">
+((quarto :extension ".qmd" :date-function denote-date-iso-8601 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (quarto :extension ".qmd" :date-function denote-date-rfc3339 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (org :extension ".org" :date-function denote-date-org-timestamp :front-matter denote-org-front-matter :title-key-regexp "^#\\+title\\s-*:" :title-value-function identity :title-value-reverse-function denote-trim-whitespace :keywords-key-regexp "^#\\+filetags\\s-*:" :keywords-value-function denote-format-keywords-for-org-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-org-link-format :link-in-context-regexp denote-org-link-in-context-regexp) (markdown-yaml :extension ".qmd" :date-function denote-date-rfc3339 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (markdown-toml :extension ".md" :date-function denote-date-rfc3339 :front-matter denote-toml-front-matter :title-key-regexp "^title\\s-*=" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*=" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (text :extension ".txt" :date-function denote-date-iso-8601 :front-matter denote-text-front-matter :title-key-regexp "^title\\s-*:" :title-value-function identity :title-value-reverse-function denote-trim-whitespace :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-text-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-org-link-format :link-in-context-regexp denote-org-link-in-context-regexp))
+</pre>
+
+
+<p>
+We can do this more concisely (and learn a litle bit of emacs lisp on the way).
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5f56d01" class="outline-2">
+<h2 id="org5f56d01">A More Concise Approach</h2>
+<div class="outline-text-2" id="text-org5f56d01">
+<p>
+As noted, all we're actually doing is changing the file extension in the
+existing markdown type. So instead of writing out all of the redundant details,
+let's just copy them from the markdown type.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="font-weight: bold;">let</span> ((quarto (cdr (assoc 'markdown-yaml denote-file-types))))
+  (<span style="font-weight: bold;">setf</span> (plist-get quarto <span style="font-weight: bold;">:extension</span>) <span style="font-style: italic;">".qmd"</span>)
+  (add-to-list 'denote-file-types (cons 'quarto quarto)))
+
+(print denote-file-types)
+</pre>
+</div>
+
+<pre class="example">
+((quarto :extension ".qmd" :date-function denote-date-rfc3339 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (org :extension ".org" :date-function denote-date-org-timestamp :front-matter denote-org-front-matter :title-key-regexp "^#\\+title\\s-*:" :title-value-function identity :title-value-reverse-function denote-trim-whitespace :keywords-key-regexp "^#\\+filetags\\s-*:" :keywords-value-function denote-format-keywords-for-org-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-org-link-format :link-in-context-regexp denote-org-link-in-context-regexp) (markdown-yaml :extension ".qmd" :date-function denote-date-rfc3339 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (markdown-toml :extension ".md" :date-function denote-date-rfc3339 :front-matter denote-toml-front-matter :title-key-regexp "^title\\s-*=" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*=" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp) (text :extension ".txt" :date-function denote-date-iso-8601 :front-matter denote-text-front-matter :title-key-regexp "^title\\s-*:" :title-value-function identity :title-value-reverse-function denote-trim-whitespace :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-text-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-org-link-format :link-in-context-regexp denote-org-link-in-context-regexp))
+</pre>
+
+
+<p>
+What's actually happening here? Let's go through it step by step.
+</p>
+
+<p>
+The <code>assoc</code> function takes a key and an alist as arguments and returns the first
+element of that alist whose CAR is equal to the key. In effect, we're searching
+the <code>denote-file-types</code> alist for the element whose CAR is <code>markdown-yaml</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(assoc 'markdown-yaml denote-file-types)
+</pre>
+</div>
+
+<pre class="example">
+(markdown-yaml :extension ".qmd" :date-function denote-date-rfc3339 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp)
+</pre>
+
+
+
+<p>
+We only want the CDR of this element (everything but the <code>markdown-yaml</code> at the
+beginning).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(cdr (assoc 'markdown-yaml denote-file-types))
+</pre>
+</div>
+
+<pre class="example">
+(:extension ".qmd" :date-function denote-date-rfc3339 :front-matter denote-yaml-front-matter :title-key-regexp "^title\\s-*:" :title-value-function denote-surround-with-quotes :title-value-reverse-function denote-trim-whitespace-then-quotes :keywords-key-regexp "^tags\\s-*:" :keywords-value-function denote-format-keywords-for-md-front-matter :keywords-value-reverse-function denote-extract-keywords-from-front-matter :link denote-md-link-format :link-in-context-regexp denote-md-link-in-context-regexp)
+</pre>
+
+
+
+<p>
+We use <code>let</code> to say that, for the purposes of this procedure, we want to associate
+the above plist with the name <code>quarto</code>.
+</p>
+
+<p>
+Next, we need to change the extension from <code>.md</code> to <code>.qmd</code>. We use <code>plist-get</code> to get
+the desired property (<code>:extension</code>) and <code>setf</code> to set it to <code>".qmd"</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="font-weight: bold;">setf</span> (plist-get (cdr (assoc 'markdown-yaml denote-file-types)) <span style="font-weight: bold;">:extension</span>) <span style="font-style: italic;">".qmd"</span>)
+</pre>
+</div>
+
+<pre class="example">
+.qmd
+</pre>
+
+
+<p>
+In the end, we add the <code>quarto</code> plist to the <code>denote-file-types</code> alist with
+<code>(add-to-list 'denote-file-types (cons 'quarto quarto))</code>. The <code>cons</code> function
+creates a new <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Cons-Cells.html">cons</a> from a <code>CAR</code> and a <code>CDR</code> (in this case, <code>quarto</code>
+and the modified copy of the  <code>markdown-yaml</code> plist with the changed extension).
+</p>
+
+<p>
+And with that, we can now create new quarto files with denote!
+</p>
+
+<p>
+
+<style>
+.figure-number {
+    display: none;
+}
+</style>
+
+</p>
+
+
+<figure>
+<img src="figures/20221217-denote-quarto/quarto_denote.png" alt="quarto_denote.png">
+
+<figcaption><span class="figure-number">Figure 1: </span><i>Quarto in the Denote Menu!</i></figcaption>
+</figure>
+
+<p>
+Check out <a href="https://github.com/quarto-dev/quarto-emacs">quarto-emacs</a> if you're interested in working with quarto files in
+emacs (though I have to admit that working with quarto files in RStudio is a joy
+and is at least worth a try before commiting to an emacs-only workflow).
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2022-12-22 Thu 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
