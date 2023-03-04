@@ -1,0 +1,228 @@
+#+TITLE: Using the ChatGTP API with Julia Part 1: the HTTP.jl Library
+#+DATE: <2023-03-04 Sat>
+
+* Introduction
+:PROPERTIES:
+:header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
+:END:
+#+begin_preview
+This brief post shows the basics of using the Julia ~HTTP~ library to interact
+with the OpenAI ChatGTP API, which was made public a few days ago. This post
+will only include the minimum necessary detail for getting started with the
+API. Future posts will go into a little more detail on how to send message
+histories and engage more interactively with the API.
+#+end_preview
+* curl Example
+:PROPERTIES:
+:header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
+:END:
+[[https://platform.openai.com/docs/api-reference/chat/create][Here]] is the API documentation on OpenAI's website. An example request with ~curl~
+looks like this:
+
+#+begin_src bash
+curl https://api.openai.com/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -d '{
+  "model": "gpt-3.5-turbo",
+  "messages": [{"role": "user", "content": "Hello!"}]
+}'
+#+end_src
+
+* Julia example
+:PROPERTIES:
+:header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
+:END:
+
+And here's how we can re-create this with the Julia HTTP library:
+
+# #+begin_src jupyter-julia :eval no-export :results silent
+# using Pkg
+# Pkg.activate("/Users/dliden/projects/ChatREPL/")
+# include("/Users/dliden/projects/ChatREPL/.env.jl")
+# OPENAI_API_KEY = ENV["OPENAI_API_KEY"]
+# #+end_src
+
+#+begin_src jupyter-julia
+OPENAI_API_KEY = ENV["OPENAI_API_KEY"]
+
+using HTTP
+using JSON
+
+headers = HTTP.Headers([
+    "Authorization" => "Bearer $OPENAI_API_KEY",
+    "Content-Type" => "application/json",
+])
+
+body = json(Dict("model" => "gpt-3.5-turbo",
+                 "messages" => [Dict("role" => "user", "content" => "Hello!")]))
+
+
+response = HTTP.post(
+    "https://api.openai.com/v1/chat/completions",
+    headers,
+    body;
+    verbose = false,
+)
+
+# Parse the response body as JSON
+result = JSON.parse(String(response.body))
+print(result)
+#+end_src
+
+#+RESULTS:
+: Dict{String, Any}("choices" => Any[Dict{String, Any}("finish_reason" => "stop", "message" => Dict{String, Any}("role" => "assistant", "content" => "\n\nHello there! How may I be of assistance?"), "index" => 0)], "model" => "gpt-3.5-turbo-0301", "usage" => Dict{String, Any}("completion_tokens" => 12, "total_tokens" => 21, "prompt_tokens" => 9), "id" => "chatcmpl-6qMM6OmdVRZ8VtdKgKFtb7aRDYWkF", "object" => "chat.completion", "created" => 1677937010)
+
+Note that ~OPENAI_API_KEY~ is stored as an environment variable on my system, so I
+was able to access it with ~OPENAI_API_KEY = ENV["OPENAI_API_KEY"]~.
+
+We can extract the completion itself from the "choices" dictionary entry.
+
+#+begin_src jupyter-julia
+chat_response = result["choices"]
+chat_response[1]["message"]["content"]
+#+end_src
+
+#+RESULTS:
+: "\n\nHello there! How may I be of assistance?"
+* A little more detail about sending messages
+:PROPERTIES:
+:header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
+:END:
+One of the things that makes ChatGTP useful is its ability to "remember" past
+parts of a conversation. We can send whole conversations to the API using the
+"messages" part of the request body. ~messages~ is an array of ~Dict~s, each of
+which has a "role" and a "content." There are three options for "role":
+1. ~system~: sets the behavior of the assistant. The ~content~ might be, for
+   example, ~you are a helpful assistant~ or ~you are a very polite customer
+   support agent~ or ~you are a senior software engineer in a mentorship role~.
+2. ~user~: The human interacting with ChatGTP.
+3. ~assistant~: the responses from ChatGTP
+
+So we can send a more complete conversation and get some richer details in
+response. For example:
+
+#+begin_src jupyter-julia
+messages=[Dict("role" => "system", "content" => "You are a knowledgable and helpful Julia developer."),
+         Dict("role" => "user", "content" => "Can you show me how to make a POST request with the HTTP library?")]
+
+body = json(Dict("model" => "gpt-3.5-turbo",
+                 "messages" => messages))
+
+response = HTTP.post(
+    "https://api.openai.com/v1/chat/completions",
+    headers,
+    body;
+    verbose = false,
+)
+
+# Parse the response body as JSON
+result = JSON.parse(String(response.body))
+print(result["choices"][1]["message"]["content"])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+```julia
+using HTTP
+
+# URL to POST to
+url = "https://httpbin.org/post"
+
+# Data to include in the POST request (in JSON format)
+data = Dict("name" => "John", "age" => 30)
+json_data = JSON.json(data)
+
+# Headers to specify that we're sending JSON data
+headers = Dict("Content-Type" => "application/json")
+
+# Make the POST request
+response = HTTP.request("POST", url, headers, json_data)
+
+# Get the response body as a string
+body = String(response.body)
+
+# Print the response status code and body
+println("Status code: $(response.status)")
+println("Response body: $body")
+```
+
+In this example, we're sending a JSON object with a name and age property to https://httpbin.org/post, which is an HTTP testing service. The `headers` argument specifies that we're sending JSON data, while the `json_data` argument is the actual data we want to send.
+
+The `HTTP.request` function is called with the POST method, the URL to POST to, the headers we want to send, and the data we want to include. The response is then captured in the `response` variable.
+
+Finally, we extract the body of the response as a string using `String(response.body)`, and print both the status code and response body to the console.Yes, I can. Here's an example code snippet that shows how to make a POST request using the HTTP library in Julia:
+
+```julia
+using HTTP
+
+url = "https://jsonplaceholder.typicode.com/posts"
+data = "{\"title\":\"foo\",\"body\":\"bar\",\"userId\":1}"
+
+response = HTTP.post(url, data, ["Content-Type" => "application/json"])
+println(String(response.body))
+```
+
+In this example, we first specify the url of the endpoint we want to send our request to. Next, we create a string representation of the JSON data we want to send in our request. We use `HTTP.post()` to send a POST request to the specified url, including the JSON data in the request body, and with a content type header that specifies that the data is JSON (application/json). Finally, we print the response contents converted to a string by the `String()` function.
+#+end_example
+
+And if we want to send a followup referring to an earlier part in the conversation, we can extend the ~messages~ array as follows:
+
+#+begin_src jupyter-julia
+# include the assistant's previous response
+push!(messages, result["choices"][1]["message"])
+
+# ask a new question referring to an earlier part of the conversation
+push!(messages, Dict("role" => "user",
+                     "content" => "Can you please provide a shorter, simpler example?"))
+
+#+end_src
+
+#+RESULTS:
+: 4-element Vector{Dict{String, String}}:
+:  Dict("role" => "system", "content" => "You are a knowledgable and helpful Julia developer.")
+:  Dict("role" => "user", "content" => "Can you show me how to make a POST request with the HTTP library?")
+:  Dict("role" => "assistant", "content" => "Yes, I can. Here's an example code snippet that shows how to make a POST request using the HTTP library in Julia:\n\n```julia\nusing HTTP\n\nurl = \"https://jsonplaceholder.typicode.com/posts\"\ndata = \"{\\\"title\\\":\\\"foo\\\",\\\"body\\\":\\\"bar\\\",\\\"userId\\\":1}\"\n\nresponse = HTTP.post(url, data, [\"Content-Type\" => \"application/json\"])\nprintln(String(response.body))\n```\n\nIn this example, we first specify the url of the endpoint we want to send our request to. Next, we create a string representation of the JSON data we want to send in our request. We use `HTTP.post()` to send a POST request to the specified url, including the JSON data in the request body, and with a content type header that specifies that the data is JSON (application/json). Finally, we print the response contents converted to a string by the `String()` function.")
+:  Dict("role" => "user", "content" => "Can you please provide a shorter, simpler example?")
+
+And then request another response:
+
+#+begin_src jupyter-julia
+body = json(Dict("model" => "gpt-3.5-turbo",
+                 "messages" => messages))
+
+response = HTTP.post(
+    "https://api.openai.com/v1/chat/completions",
+    headers,
+    body;
+    verbose = false,
+)
+
+# Parse the response body as JSON
+result = JSON.parse(String(response.body))
+print(result["choices"][1]["message"]["content"])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Sure, here's a simpler example:
+
+```julia
+using HTTP
+
+url = "https://jsonplaceholder.typicode.com/posts"
+
+response = HTTP.post(url, form = [("title", "foo"), ("body", "bar"), ("userId", "1")])
+println(String(response.body))
+```
+
+In this example, we are sending a POST request with form data rather than JSON data. We specify the form data using an array of tuples with the keys and values for the form fields. Note that we use the `form` argument to pass the form data to `HTTP.post()`. The response is then printed in the same way as before.
+#+end_example
+* Next Up...
+
+This post showed basic usage of the ChatGTP API with Julia. In the next post,
+I'll show how to make this more modular and useful. We'll create a ~Struct~ for
+conversations and a function to call on the API based on the conversation
+history in that ~Struct~. After that, I'll write about how to make it interactive,
+perhaps as a Julia REPL mode, but at least as a command line utility.
