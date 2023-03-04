@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using the ChatGTP API with Julia Part 1: the HTTP.jl Library</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class='topnav'>
+  <a href='/index.html'>Home</a> /
+  <a href='/archive.html'>Blog</a> / 
+  <a href='/about.html'>About Me</a>
+</div>
+</div>
+<div id="content">
+<header>
+<h1 class="title">Using the ChatGTP API with Julia Part 1: the HTTP.jl Library</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org645d9dc">Introduction</a></li>
+<li><a href="#org8f2abee">curl Example</a></li>
+<li><a href="#org9705c5a">Julia example</a></li>
+<li><a href="#org33261d9">A little more detail about sending messages</a></li>
+<li><a href="#orgb2aa5d2">Next Up&#x2026;</a></li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-org645d9dc" class="outline-2">
+<h2 id="org645d9dc">Introduction</h2>
+<div class="outline-text-2" id="text-org645d9dc">
+<div class="preview">
+<p>
+This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
+with the OpenAI ChatGTP API, which was made public a few days ago. This post
+will only include the minimum necessary detail for getting started with the
+API. Future posts will go into a little more detail on how to send message
+histories and engage more interactively with the API.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org8f2abee" class="outline-2">
+<h2 id="org8f2abee">curl Example</h2>
+<div class="outline-text-2" id="text-org8f2abee">
+<p>
+<a href="https://platform.openai.com/docs/api-reference/chat/create">Here</a> is the API documentation on OpenAI's website. An example request with <code>curl</code>
+looks like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">curl https://api.openai.com/v1/chat/completions <span style="font-style: italic;">\</span>
+  -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
+  -H <span style="font-style: italic;">'Authorization: Bearer YOUR_API_KEY'</span> <span style="font-style: italic;">\</span>
+  -d <span style="font-style: italic;">'{</span>
+<span style="font-style: italic;">  "model": "gpt-3.5-turbo",</span>
+<span style="font-style: italic;">  "messages": [{"role": "user", "content": "Hello!"}]</span>
+<span style="font-style: italic;">}'</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9705c5a" class="outline-2">
+<h2 id="org9705c5a">Julia example</h2>
+<div class="outline-text-2" id="text-org9705c5a">
+<p>
+And here's how we can re-create this with the Julia HTTP library:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-julia">OPENAI_API_KEY = ENV["OPENAI_API_KEY"]
+
+using HTTP
+using JSON
+
+headers = HTTP.Headers([
+    "Authorization" =&gt; "Bearer $OPENAI_API_KEY",
+    "Content-Type" =&gt; "application/json",
+])
+
+body = json(Dict("model" =&gt; "gpt-3.5-turbo",
+                 "messages" =&gt; [Dict("role" =&gt; "user", "content" =&gt; "Hello!")]))
+
+
+response = HTTP.post(
+    "https://api.openai.com/v1/chat/completions",
+    headers,
+    body;
+    verbose = false,
+)
+
+# Parse the response body as JSON
+result = JSON.parse(String(response.body))
+print(result)
+</pre>
+</div>
+
+<pre class="example">
+Dict{String, Any}("choices" =&gt; Any[Dict{String, Any}("finish_reason" =&gt; "stop", "message" =&gt; Dict{String, Any}("role" =&gt; "assistant", "content" =&gt; "\n\nHello there! How may I be of assistance?"), "index" =&gt; 0)], "model" =&gt; "gpt-3.5-turbo-0301", "usage" =&gt; Dict{String, Any}("completion_tokens" =&gt; 12, "total_tokens" =&gt; 21, "prompt_tokens" =&gt; 9), "id" =&gt; "chatcmpl-6qMM6OmdVRZ8VtdKgKFtb7aRDYWkF", "object" =&gt; "chat.completion", "created" =&gt; 1677937010)
+</pre>
+
+
+<p>
+Note that <code>OPENAI_API_KEY</code> is stored as an environment variable on my system, so I
+was able to access it with <code>OPENAI_API_KEY = ENV["OPENAI_API_KEY"]</code>.
+</p>
+
+<p>
+We can extract the completion itself from the "choices" dictionary entry.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-julia">chat_response = result["choices"]
+chat_response[1]["message"]["content"]
+</pre>
+</div>
+
+<pre class="example">
+"\n\nHello there! How may I be of assistance?"
+</pre>
+</div>
+</div>
+<div id="outline-container-org33261d9" class="outline-2">
+<h2 id="org33261d9">A little more detail about sending messages</h2>
+<div class="outline-text-2" id="text-org33261d9">
+<p>
+One of the things that makes ChatGTP useful is its ability to "remember" past
+parts of a conversation. We can send whole conversations to the API using the
+"messages" part of the request body. <code>messages</code> is an array of ~Dict~s, each of
+which has a "role" and a "content." There are three options for "role":
+</p>
+<ol class="org-ol">
+<li><code>system</code>: sets the behavior of the assistant. The <code>content</code> might be, for
+example, <code>you are a helpful assistant</code> or <code>you are a very polite customer
+   support agent</code> or <code>you are a senior software engineer in a mentorship role</code>.</li>
+<li><code>user</code>: The human interacting with ChatGTP.</li>
+<li><code>assistant</code>: the responses from ChatGTP</li>
+</ol>
+
+<p>
+So we can send a more complete conversation and get some richer details in
+response. For example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-julia">messages=[Dict("role" =&gt; "system", "content" =&gt; "You are a knowledgable and helpful Julia developer."),
+         Dict("role" =&gt; "user", "content" =&gt; "Can you show me how to make a POST request with the HTTP library?")]
+
+body = json(Dict("model" =&gt; "gpt-3.5-turbo",
+                 "messages" =&gt; messages))
+
+response = HTTP.post(
+    "https://api.openai.com/v1/chat/completions",
+    headers,
+    body;
+    verbose = false,
+)
+
+# Parse the response body as JSON
+result = JSON.parse(String(response.body))
+print(result["choices"][1]["message"]["content"])
+</pre>
+</div>
+
+<pre class="example">
+
+```julia
+using HTTP
+
+# URL to POST to
+url = "https://httpbin.org/post"
+
+# Data to include in the POST request (in JSON format)
+data = Dict("name" =&gt; "John", "age" =&gt; 30)
+json_data = JSON.json(data)
+
+# Headers to specify that we're sending JSON data
+headers = Dict("Content-Type" =&gt; "application/json")
+
+# Make the POST request
+response = HTTP.request("POST", url, headers, json_data)
+
+# Get the response body as a string
+body = String(response.body)
+
+# Print the response status code and body
+println("Status code: $(response.status)")
+println("Response body: $body")
+```
+
+In this example, we're sending a JSON object with a name and age property to https://httpbin.org/post, which is an HTTP testing service. The `headers` argument specifies that we're sending JSON data, while the `json_data` argument is the actual data we want to send.
+
+The `HTTP.request` function is called with the POST method, the URL to POST to, the headers we want to send, and the data we want to include. The response is then captured in the `response` variable.
+
+Finally, we extract the body of the response as a string using `String(response.body)`, and print both the status code and response body to the console.Yes, I can. Here's an example code snippet that shows how to make a POST request using the HTTP library in Julia:
+
+```julia
+using HTTP
+
+url = "https://jsonplaceholder.typicode.com/posts"
+data = "{\"title\":\"foo\",\"body\":\"bar\",\"userId\":1}"
+
+response = HTTP.post(url, data, ["Content-Type" =&gt; "application/json"])
+println(String(response.body))
+```
+
+In this example, we first specify the url of the endpoint we want to send our request to. Next, we create a string representation of the JSON data we want to send in our request. We use `HTTP.post()` to send a POST request to the specified url, including the JSON data in the request body, and with a content type header that specifies that the data is JSON (application/json). Finally, we print the response contents converted to a string by the `String()` function.
+</pre>
+
+<p>
+And if we want to send a followup referring to an earlier part in the conversation, we can extend the <code>messages</code> array as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-julia"># include the assistant's previous response
+push!(messages, result["choices"][1]["message"])
+
+# ask a new question referring to an earlier part of the conversation
+push!(messages, Dict("role" =&gt; "user",
+                     "content" =&gt; "Can you please provide a shorter, simpler example?"))
+
+</pre>
+</div>
+
+<pre class="example">
+4-element Vector{Dict{String, String}}:
+ Dict("role" =&gt; "system", "content" =&gt; "You are a knowledgable and helpful Julia developer.")
+ Dict("role" =&gt; "user", "content" =&gt; "Can you show me how to make a POST request with the HTTP library?")
+ Dict("role" =&gt; "assistant", "content" =&gt; "Yes, I can. Here's an example code snippet that shows how to make a POST request using the HTTP library in Julia:\n\n```julia\nusing HTTP\n\nurl = \"https://jsonplaceholder.typicode.com/posts\"\ndata = \"{\\\"title\\\":\\\"foo\\\",\\\"body\\\":\\\"bar\\\",\\\"userId\\\":1}\"\n\nresponse = HTTP.post(url, data, [\"Content-Type\" =&gt; \"application/json\"])\nprintln(String(response.body))\n```\n\nIn this example, we first specify the url of the endpoint we want to send our request to. Next, we create a string representation of the JSON data we want to send in our request. We use `HTTP.post()` to send a POST request to the specified url, including the JSON data in the request body, and with a content type header that specifies that the data is JSON (application/json). Finally, we print the response contents converted to a string by the `String()` function.")
+ Dict("role" =&gt; "user", "content" =&gt; "Can you please provide a shorter, simpler example?")
+</pre>
+
+
+<p>
+And then request another response:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-julia">body = json(Dict("model" =&gt; "gpt-3.5-turbo",
+                 "messages" =&gt; messages))
+
+response = HTTP.post(
+    "https://api.openai.com/v1/chat/completions",
+    headers,
+    body;
+    verbose = false,
+)
+
+# Parse the response body as JSON
+result = JSON.parse(String(response.body))
+print(result["choices"][1]["message"]["content"])
+</pre>
+</div>
+
+<pre class="example">
+Sure, here's a simpler example:
+
+```julia
+using HTTP
+
+url = "https://jsonplaceholder.typicode.com/posts"
+
+response = HTTP.post(url, form = [("title", "foo"), ("body", "bar"), ("userId", "1")])
+println(String(response.body))
+```
+
+In this example, we are sending a POST request with form data rather than JSON data. We specify the form data using an array of tuples with the keys and values for the form fields. Note that we use the `form` argument to pass the form data to `HTTP.post()`. The response is then printed in the same way as before.
+</pre>
+</div>
+</div>
+<div id="outline-container-orgb2aa5d2" class="outline-2">
+<h2 id="orgb2aa5d2">Next Up&#x2026;</h2>
+<div class="outline-text-2" id="text-orgb2aa5d2">
+<p>
+This post showed basic usage of the ChatGTP API with Julia. In the next post,
+I'll show how to make this more modular and useful. We'll create a <code>Struct</code> for
+conversations and a function to call on the API based on the conversation
+history in that <code>Struct</code>. After that, I'll write about how to make it interactive,
+perhaps as a Julia REPL mode, but at least as a command line utility.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2023-03-04 Sat 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
