@@ -65,9 +65,9 @@ for the JavaScript code in this tag.
 <div id="content">
 <header>
 <h1 class="title">Daniel Liden's Home Page</h1>
-</header><div id="outline-container-orgc7351d2" class="outline-2">
-<h2 id="orgc7351d2">Welcome</h2>
-<div class="outline-text-2" id="text-orgc7351d2">
+</header><div id="outline-container-org8039113" class="outline-2">
+<h2 id="org8039113">Welcome</h2>
+<div class="outline-text-2" id="text-org8039113">
 <p>
 My name is Dan. I am a data scientist at bit.io, which offers the fastest way to
 get a cloud PostgreSQL database. In my role, I use bit.io databases to manage
@@ -78,25 +78,41 @@ turnover</a>, <a href="https://medium.com/the-inner-join/a-case-for-doubling-the
 </p>
 </div>
 </div>
-<div id="outline-container-org46f2f5e" class="outline-2">
-<h2 id="org46f2f5e">Recent Posts</h2>
-<div class="outline-text-2" id="text-org46f2f5e">
+<div id="outline-container-org40d873d" class="outline-2">
+<h2 id="org40d873d">Recent Posts</h2>
+<div class="outline-text-2" id="text-org40d873d">
 </div>
-<div id="outline-container-org37494ba" class="outline-3">
-<h3 id="org37494ba"><a href="posts/20230303-chatgtp-julia.html">(2023-03-04) Using the ChatGTP API with Julia Part 1: the HTTP.jl Library</a></h3>
-<div class="outline-text-3" id="text-org37494ba">
+<div id="outline-container-orgfe3e4ba" class="outline-3">
+<h3 id="orgfe3e4ba"><a href="posts/20230310-chatgpt-julia-2.html">(2023-03-10) Using the ChatGPT API with Julia Part 2: Defining a Chat Struct</a></h3>
+<div class="outline-text-3" id="text-orgfe3e4ba">
+<p>
+One of the things that makes working with the ChatGPT API a little different
+from working with, e.g., the <code>davinci-text-003</code> model api is the need to maintain
+the history of a given chat session. A Julia <code>Struct</code> containing the chat
+history, coupled with a function that acts on that Struct, provides a good way
+to work with the ChatGPT API.
+</p>
+
+<p>
+For the basics of working with the ChatGPT API, check out <a href="20230303-chatgpt-julia.html">part 1</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-orgca7c8b5" class="outline-3">
+<h3 id="orgca7c8b5"><a href="posts/20230303-chatgpt-julia.html">(2023-03-04) Using the ChatGPT API with Julia Part 1: the HTTP.jl Library</a></h3>
+<div class="outline-text-3" id="text-orgca7c8b5">
 <p>
 This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
-with the OpenAI ChatGTP API, which was made public a few days ago. This post
+with the OpenAI ChatGPT API, which was made public a few days ago. This post
 will only include the minimum necessary detail for getting started with the
 API. Future posts will go into a little more detail on how to send message
 histories and engage more interactively with the API.
 </p>
 </div>
 </div>
-<div id="outline-container-orgcb361ba" class="outline-3">
-<h3 id="orgcb361ba"><a href="posts/20221217-denote-quarto.html">(2022-12-22) Using Quarto Files with Denote</a></h3>
-<div class="outline-text-3" id="text-orgcb361ba">
+<div id="outline-container-org042e6b4" class="outline-3">
+<h3 id="org042e6b4"><a href="posts/20221217-denote-quarto.html">(2022-12-22) Using Quarto Files with Denote</a></h3>
+<div class="outline-text-3" id="text-org042e6b4">
 <p>
 The latest release of <a href="https://protesilaos.com/emacs/denote">Denote</a> (by the inimitable Protesilaos Stavrou) introduced
 support for <a href="https://protesilaos.com/codelog/2022-10-30-demo-denote-custom-file-type/">custom file types</a> in addition to the defaults, Org, Markdown+YAML,
@@ -108,9 +124,9 @@ when creating a new Denote file.
 </p>
 </div>
 </div>
-<div id="outline-container-orgfdb433f" class="outline-3">
-<h3 id="orgfdb433f"><a href="posts/20220918-jq-example.html">(2022-09-18) Processing a JSON API Response with jq</a></h3>
-<div class="outline-text-3" id="text-orgfdb433f">
+<div id="outline-container-org83871b6" class="outline-3">
+<h3 id="org83871b6"><a href="posts/20220918-jq-example.html">(2022-09-18) Processing a JSON API Response with jq</a></h3>
+<div class="outline-text-3" id="text-org83871b6">
 <p>
 There are countless ways of processing JSON data and converting it to different
 formats. Historically, I've used Python and loaded the data into a Pandas
@@ -122,38 +138,20 @@ and converting the results to a CSV using <code>jq</code>.
 </p>
 </div>
 </div>
-<div id="outline-container-orgf9952de" class="outline-3">
-<h3 id="orgf9952de"><a href="posts/20220724-html5.html">(2022-07-24) Figures and Captions Don't Appear as Expected with Default Export Options</a></h3>
-<div class="outline-text-3" id="text-orgf9952de">
+<div id="outline-container-orgb3ab6ee" class="outline-3">
+<h3 id="orgb3ab6ee"><a href="posts/20220724-html5.html">(2022-07-24) Figures and Captions Don't Appear as Expected with Default Export Options</a></h3>
+<div class="outline-text-3" id="text-orgb3ab6ee">
 <p>
 I noticed that some of the formatting on this site was a little off and some of
 the org-mode components weren't being translated to HTML in quite the way I
 expected. Fixing this was simple, but <i>finding</i> the solution wasn't. In short, it
-was necessary to set the <code>org-html-doctype</code> to <code>html5</code> (the default is
-<code>xhtml-strict</code>). Furthermore, I set <code>org-html-html5-fancy</code> to <code>t</code>. These ensure the
-org export process takes advantage of block elements offered in the <code>html5</code>
-standard.
 </p>
 </div>
 </div>
-<div id="outline-container-orgf45201c" class="outline-3">
-<h3 id="orgf45201c"><a href="posts/20220719-julia-plots.html">(2022-07-19) Basic Plotting in Julia</a></h3>
-<div class="outline-text-3" id="text-orgf45201c">
-<p>
-In this short post, I show one of the many ways of using Julia within emacs
-org mode, and will describe some of the basic plotting functionality in Julia.
-</p>
 </div>
-</div>
-<div id="outline-container-org19398f3" class="outline-3">
-<h3 id="org19398f3"><a href="posts/20220208-org-source.html">(2022-02-08) Org Mode Headlines in Org Source Blocks</a></h3>
-<div class="outline-text-3" id="text-org19398f3">
-</div>
-</div>
-</div>
-<div id="outline-container-orgc0b7840" class="outline-2">
-<h2 id="orgc0b7840">Post Archive</h2>
-<div class="outline-text-2" id="text-orgc0b7840">
+<div id="outline-container-org4161310" class="outline-2">
+<h2 id="org4161310">Post Archive</h2>
+<div class="outline-text-2" id="text-org4161310">
 <p>
 <a href="archive.html">All Posts</a>
 </p>

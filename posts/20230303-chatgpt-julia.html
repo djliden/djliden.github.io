@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Using the ChatGTP API with Julia Part 1: the HTTP.jl Library</title>
+<title>Using the ChatGPT API with Julia Part 1: the HTTP.jl Library</title>
 <meta name="generator" content="Org mode">
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
@@ -64,27 +64,27 @@ for the JavaScript code in this tag.
 </div>
 <div id="content">
 <header>
-<h1 class="title">Using the ChatGTP API with Julia Part 1: the HTTP.jl Library</h1>
+<h1 class="title">Using the ChatGPT API with Julia Part 1: the HTTP.jl Library</h1>
 </header><nav id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org645d9dc">Introduction</a></li>
-<li><a href="#org8f2abee">curl Example</a></li>
-<li><a href="#org9705c5a">Julia example</a></li>
-<li><a href="#org33261d9">A little more detail about sending messages</a></li>
-<li><a href="#orgb2aa5d2">Next Up&#x2026;</a></li>
+<li><a href="#org2a37fb3">Introduction</a></li>
+<li><a href="#org5bd3935">curl Example</a></li>
+<li><a href="#org9a7ef7b">Julia example</a></li>
+<li><a href="#orgdabb095">A little more detail about sending messages</a></li>
+<li><a href="#org55fac2e">Next Up&#x2026;</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org645d9dc" class="outline-2">
-<h2 id="org645d9dc">Introduction</h2>
-<div class="outline-text-2" id="text-org645d9dc">
+<div id="outline-container-org2a37fb3" class="outline-2">
+<h2 id="org2a37fb3">Introduction</h2>
+<div class="outline-text-2" id="text-org2a37fb3">
 <div class="preview">
 <p>
 This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
-with the OpenAI ChatGTP API, which was made public a few days ago. This post
+with the OpenAI ChatGPT API, which was made public a few days ago. This post
 will only include the minimum necessary detail for getting started with the
 API. Future posts will go into a little more detail on how to send message
 histories and engage more interactively with the API.
@@ -93,9 +93,9 @@ histories and engage more interactively with the API.
 </div>
 </div>
 </div>
-<div id="outline-container-org8f2abee" class="outline-2">
-<h2 id="org8f2abee">curl Example</h2>
-<div class="outline-text-2" id="text-org8f2abee">
+<div id="outline-container-org5bd3935" class="outline-2">
+<h2 id="org5bd3935">curl Example</h2>
+<div class="outline-text-2" id="text-org5bd3935">
 <p>
 <a href="https://platform.openai.com/docs/api-reference/chat/create">Here</a> is the API documentation on OpenAI's website. An example request with <code>curl</code>
 looks like this:
@@ -114,9 +114,9 @@ looks like this:
 </div>
 </div>
 
-<div id="outline-container-org9705c5a" class="outline-2">
-<h2 id="org9705c5a">Julia example</h2>
-<div class="outline-text-2" id="text-org9705c5a">
+<div id="outline-container-org9a7ef7b" class="outline-2">
+<h2 id="org9a7ef7b">Julia example</h2>
+<div class="outline-text-2" id="text-org9a7ef7b">
 <p>
 And here's how we can re-create this with the Julia HTTP library:
 </p>
@@ -174,11 +174,11 @@ chat_response[1]["message"]["content"]
 </pre>
 </div>
 </div>
-<div id="outline-container-org33261d9" class="outline-2">
-<h2 id="org33261d9">A little more detail about sending messages</h2>
-<div class="outline-text-2" id="text-org33261d9">
+<div id="outline-container-orgdabb095" class="outline-2">
+<h2 id="orgdabb095">A little more detail about sending messages</h2>
+<div class="outline-text-2" id="text-orgdabb095">
 <p>
-One of the things that makes ChatGTP useful is its ability to "remember" past
+One of the things that makes ChatGPT useful is its ability to "remember" past
 parts of a conversation. We can send whole conversations to the API using the
 "messages" part of the request body. <code>messages</code> is an array of ~Dict~s, each of
 which has a "role" and a "content." There are three options for "role":
@@ -187,8 +187,8 @@ which has a "role" and a "content." There are three options for "role":
 <li><code>system</code>: sets the behavior of the assistant. The <code>content</code> might be, for
 example, <code>you are a helpful assistant</code> or <code>you are a very polite customer
    support agent</code> or <code>you are a senior software engineer in a mentorship role</code>.</li>
-<li><code>user</code>: The human interacting with ChatGTP.</li>
-<li><code>assistant</code>: the responses from ChatGTP</li>
+<li><code>user</code>: The human interacting with ChatGPT.</li>
+<li><code>assistant</code>: the responses from ChatGPT</li>
 </ol>
 
 <p>
@@ -322,11 +322,11 @@ In this example, we are sending a POST request with form data rather than JSON d
 </pre>
 </div>
 </div>
-<div id="outline-container-orgb2aa5d2" class="outline-2">
-<h2 id="orgb2aa5d2">Next Up&#x2026;</h2>
-<div class="outline-text-2" id="text-orgb2aa5d2">
+<div id="outline-container-org55fac2e" class="outline-2">
+<h2 id="org55fac2e">Next Up&#x2026;</h2>
+<div class="outline-text-2" id="text-org55fac2e">
 <p>
-This post showed basic usage of the ChatGTP API with Julia. In the next post,
+This post showed basic usage of the ChatGPT API with Julia. In the next post,
 I'll show how to make this more modular and useful. We'll create a <code>Struct</code> for
 conversations and a function to call on the API based on the conversation
 history in that <code>Struct</code>. After that, I'll write about how to make it interactive,
