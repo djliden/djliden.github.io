@@ -1,4 +1,4 @@
-#+TITLE: Using the ChatGTP API with Julia Part 1: the HTTP.jl Library
+#+TITLE: Using the ChatGPT API with Julia Part 1: the HTTP.jl Library
 #+DATE: <2023-03-04 Sat>
 
 * Introduction
@@ -7,7 +7,7 @@
 :END:
 #+begin_preview
 This brief post shows the basics of using the Julia ~HTTP~ library to interact
-with the OpenAI ChatGTP API, which was made public a few days ago. This post
+with the OpenAI ChatGPT API, which was made public a few days ago. This post
 will only include the minimum necessary detail for getting started with the
 API. Future posts will go into a little more detail on how to send message
 histories and engage more interactively with the API.
@@ -89,15 +89,15 @@ chat_response[1]["message"]["content"]
 :PROPERTIES:
 :header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
 :END:
-One of the things that makes ChatGTP useful is its ability to "remember" past
+One of the things that makes ChatGPT useful is its ability to "remember" past
 parts of a conversation. We can send whole conversations to the API using the
 "messages" part of the request body. ~messages~ is an array of ~Dict~s, each of
 which has a "role" and a "content." There are three options for "role":
 1. ~system~: sets the behavior of the assistant. The ~content~ might be, for
    example, ~you are a helpful assistant~ or ~you are a very polite customer
    support agent~ or ~you are a senior software engineer in a mentorship role~.
-2. ~user~: The human interacting with ChatGTP.
-3. ~assistant~: the responses from ChatGTP
+2. ~user~: The human interacting with ChatGPT.
+3. ~assistant~: the responses from ChatGPT
 
 So we can send a more complete conversation and get some richer details in
 response. For example:
@@ -221,7 +221,7 @@ In this example, we are sending a POST request with form data rather than JSON d
 #+end_example
 * Next Up...
 
-This post showed basic usage of the ChatGTP API with Julia. In the next post,
+This post showed basic usage of the ChatGPT API with Julia. In the next post,
 I'll show how to make this more modular and useful. We'll create a ~Struct~ for
 conversations and a function to call on the API based on the conversation
 history in that ~Struct~. After that, I'll write about how to make it interactive,

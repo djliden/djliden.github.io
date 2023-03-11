@@ -1,0 +1,212 @@
+#+TITLE: Using the ChatGPT API with Julia Part 2: Defining a Chat Struct
+#+DATE: <2023-03-10 Fri>
+
+#+begin_preview
+One of the things that makes working with the ChatGPT API a little different
+from working with, e.g., the ~davinci-text-003~ model api is the need to maintain
+the history of a given chat session. A Julia ~Struct~ containing the chat
+history, coupled with a function that acts on that Struct, provides a good way
+to work with the ChatGPT API.
+
+For the basics of working with the ChatGPT API, check out [[file:20230303-chatgpt-julia.org][part 1]].
+#+end_preview
+
+* Defining the Struct
+:PROPERTIES:
+:header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
+:END:
+A ~struct~, also referred to as a [[https://docs.julialang.org/en/v1/manual/types/#Composite-Types][composite type]], is "a collection of named
+fields, an instance of which can be treated as a single value." By default,
+structs are immutable: they can't be modified after construction. This doesn't
+work for our use case because want to keep adding messages as the chat
+continues. So we'll use a ~mutable struct~.
+
+One obvious question: what should the named fields of the struct be? Should the
+struct define all of the behavior of the model (e.g. model choice, parameters
+such as ~temperature~ and ~max_tokens~, etc.)? Or should it narrowly contain the
+message comprising the chat?
+
+I think the latter approach makes the most sense. It's possible to change model
+parameters, and even the model itself, mid-chat. They are features of /what we
+are doing to the chat/, not of the chat itself.
+
+With that in mind, here is a possible approach to a ~struct~ for ChatGPT.
+
+#+begin_src jupyter-julia
+"""
+    struct Chat
+
+Represents a conversation between a user and a chatbot powered by OpenAI's GPT.
+
+# Fields
+
+- `messages::Array{Dict{String, String}}`: An array of dictionaries representing the chat messages.
+
+# Constructors
+
+- `Chat(system_message::String="You are a helpful assistant")`: Create a new `Chat` object with a single system message.
+
+# Example
+
+```julia
+chat = Chat("You are a helpful assistant.")
+```
+This creates a new Chat object with a single message representing the system message "You are a helpful assistant.".
+"""
+
+mutable struct Chat
+    messages::Array{Dict{String, String}}
+    
+    function Chat(system_message=nothing)
+        if isnothing(system_message)
+            system_message = "You are a helpful assistant"
+        end
+        messages = [Dict("role" => "system", "content" => system_message)]
+        new(messages)
+    end
+end
+#+end_src
+
+This struct includes an /inner constructor/. [[https://docs.julialang.org/en/v1/manual/constructors/#man-inner-constructor-methods][Inner Constructor Methods]] allow for
+the construction of self-referential objects. In this case, we want to be able
+to Initialize an instance of ~Chat~ with just the system message: we don't want
+to require the user to provide the whole ~messages~ array. That's where the
+self-referential part comes in. The inner constructor method takes an argument,
+~system_message~, nests it in a properly-formatted array of dictionaries, and,
+using the ~new~ function, creates a new instance of the ~Chat~ struct with the
+~messages~ array constructed from the ~system_message~.
+
+We can now make a new chat instance, initialized with a system message, with:
+
+#+begin_src jupyter-julia
+julia_helper = Chat("You are a helpful assistant who knows a lot about writing Julia code")
+#+end_src
+
+#+RESULTS:
+: Chat([Dict("role" => "system", "content" => "You are a helpful assistant who knows a lot about writing Julia code")])
+
+Now that we have a method for keeping track of the chat history, we need to be
+able to act on it. For that, we'll define a function.
+
+* Defining the function
+:PROPERTIES:
+:header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
+:END:
+
+The purpose of this function is to:
+1. Get a prompt from the user
+2. Append that prompt to a ~Chat~ instance's ~messages~ array
+3. Query the ChatGPT API with the ~messages~ array, possibly with some parameters
+   specifying e.g. the specific model to use, temperature, etc.
+4. Append the API response message to the ~Chat~ instance's ~messages~ array
+5. Return the API response.
+
+This function acts on the ~Chat~ type. It modifies an instance of ~Chat~ in
+place. Here's the function:
+
+#+begin_src jupyter-julia
+"""
+    chat!(chat, message::String, api_key=ENV["OPENAI_API_KEY"]; kwargs...)
+
+Add a new message to the chat history and get a response from the OpenAI GPT-3 API.
+
+# Arguments
+
+- `chat`: A `Chat` object representing the chat history.
+- `message`: A string representing the user's message.
+- `api_key::String=ENV["OPENAI_API_KEY"]`: Your OpenAI API key. If not provided, the function will attempt to get it from the `OPENAI_API_KEY` environment variable.
+- `kwargs...`: Any additional keyword arguments to pass as part of the API request body.
+
+# Returns
+
+A string representing the response from the chatbot.
+
+# Example
+
+```julia
+chat = Chat("You are a helpful assistant")
+response = chat!(chat, "How are you?")
+```
+
+This adds a new message to the Chat object chat, representing the user's message "How are you?", and gets a response from the OpenAI ChatGPT API. The response from the chatbot is returned as a string in the response variable.
+"""
+function chat!(chat::Chat, message::String, api_key=ENV["OPENAI_API_KEY"]; kwargs...)
+    if isnothing(api_key)
+        error("API key is required")
+    end
+    headers = HTTP.Headers([
+        "Authorization" => "Bearer $api_key",
+        "Content-Type" => "application/json",
+    ])
+
+    formatted_query = Dict("role" => "user", "content" => message)
+
+    messages = push!(chat.messages, formatted_query)
+
+    # Merge the default and keyword parameters
+    params = merge(Dict("model" => "gpt-3.5-turbo", "messages" => messages), kwargs)
+
+    # Convert the parameters to JSON
+    body = json(params)
+
+    # Make a POST request to the OpenAI API endpoint with the query as data
+    response = HTTP.post(
+        "https://api.openai.com/v1/chat/completions",
+        headers,
+        body;
+        verbose = false,
+    )
+
+    # Parse the response body as JSON
+    result = JSON.parse(String(response.body))
+
+    # Append the response to chat.messages
+    push!(chat.messages, result["choices"][1]["message"])
+
+    # Return the text field of the result as a string
+    return result["choices"][1]["message"]["content"]
+end
+#+end_src
+
+A quick note about the function name: According to the [[https://docs.julialang.org/en/v1/manual/style-guide/#bang-convention][Julia style guide]], we append ~!~
+to the names of functions that modify their arguments. [[https://docs.julialang.org/en/v1/manual/style-guide/#Write-functions-with-argument-ordering-similar-to-Julia-Base][Furthermore]], inputs that
+are mutated go before inputs that are not mutated in a function's argument
+list. The ~chat~ function follows both of these conventions.
+* Giving it a Try
+:PROPERTIES:
+:header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
+:END:
+
+So, does it work? Let's try it out.
+
+#+begin_src jupyter-julia
+chat!(julia_helper, "What are the main differences between a Julia Struct and a Python Class?")
+#+end_src
+
+#+RESULTS:
+: ""Both Julia `struct` and Python `class` are used for creating custom data types, but there are some differences between them:\n\n1. **Type stability:** One of the most significant differences is that Julia `structs` have a static and immutable type, which makes them more type-stable than Python `classes`. In contrast, Python classes are more dynamic, meaning that their attributes can be modified at runtime.\n\n2. **Performance:** In general, Julia `structs` have better performance than Python `classes` due to its type-stability, just-in-time (JIT) compilation, and parallel processing.\n\n3. **Syntax:** The syntax for defining a Julia `struct` is `struct Name{T<:AbstractType} a::T b::Int end`, while in Python, you define a `class` with `class MyClass: def __init__(self, a, b): self.a = a self.b = b`. \n\n4. **Inheritance:** Both Julia and Python support inheritance, but they have different syntax and behavior. In Julia, you use the keyword ` <: ` to specify that a `struct` is a subtype of another `struct`. In Python, you use parentheses after the class name to indicate which class to inherit from.\n\n5. **Typing:** Julia uses type annotations to specify the type of variables, while Python follows the duck typing philosophy, which means that the type of a variable is determined at runtime based on its behavior.\n\nIn summary, while both Julia `structs` and Python `classes` are flexible and powerful tools for creating custom data types, the main differences lie in their type stability, performance, syntax, inheritance, and typing.""
+
+And does it "remember" earlier parts of the conversation correctly?
+
+#+begin_src jupyter-julia
+chat!(julia_helper, "I only have the attention span for Twitter. Summarize in 280 characters.")
+#+end_src
+
+#+RESULTS:
+: "Julia structs & Python classes are used for custom data types but differ in: \n1. Type stability: Julia is static, immutable; Python is dynamic.\n2. Performance: Julia > Python due to type-stability, JIT compilation & parallel processing.\n3. Syntax: structs use \"struct Name{T} a::T end;\" & classes use \"class MyClass: def __init__(self):\".\n4. Inheritance: Julia uses \"<:\" to specify subtypes; Python uses parentheses for inheritance.\n5. Typing: Julia uses type annotation; Python uses duck-typing."
+
+
+Well, it's a little longer than I asked for. But clearly we successfully sent
+the message history in the second API request.
+* What's next?
+
+There are a few additional avenues I want to explore, in no particular order:
+
+1. What happens if we counterfeit a message history? That is, what if we send a
+   message history with fake "assistant" messages? Will the assistant mimic the
+   fake responses?
+2. Can we make a Julia REPL mode that gives rapid access to a ChatGPT assistant?
+3. Can we make a (private) replacement for ChatGPT Plus using the ChatGPT API?
+   It would likely be considerably cheaper. And doing it in Julia would be an
+   interesting project.
+4. Can we use the streaming output in Julia? How does that work?
