@@ -3,7 +3,7 @@
 
 * Introduction
 :PROPERTIES:
-:header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
+:header-args:julia: :session chatgtp :display plain :async yes :kernel julia-1.8
 :END:
 #+begin_preview
 This brief post shows the basics of using the Julia ~HTTP~ library to interact
@@ -14,7 +14,7 @@ histories and engage more interactively with the API.
 #+end_preview
 * curl Example
 :PROPERTIES:
-:header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
+:header-args:julia: :session chatgtp :display plain :async yes :kernel julia-1.8
 :END:
 [[https://platform.openai.com/docs/api-reference/chat/create][Here]] is the API documentation on OpenAI's website. An example request with ~curl~
 looks like this:
@@ -31,19 +31,19 @@ curl https://api.openai.com/v1/chat/completions \
 
 * Julia example
 :PROPERTIES:
-:header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
+:header-args:julia: :session chatgtp :display plain :async yes :kernel julia-1.8
 :END:
 
 And here's how we can re-create this with the Julia HTTP library:
 
-# #+begin_src jupyter-julia :eval no-export :results silent
+# #+begin_src julia :eval no-export :results silent
 # using Pkg
 # Pkg.activate("/Users/dliden/projects/ChatREPL/")
 # include("/Users/dliden/projects/ChatREPL/.env.jl")
 # OPENAI_API_KEY = ENV["OPENAI_API_KEY"]
 # #+end_src
 
-#+begin_src jupyter-julia
+#+begin_src julia
 OPENAI_API_KEY = ENV["OPENAI_API_KEY"]
 
 using HTTP
@@ -78,7 +78,7 @@ was able to access it with ~OPENAI_API_KEY = ENV["OPENAI_API_KEY"]~.
 
 We can extract the completion itself from the "choices" dictionary entry.
 
-#+begin_src jupyter-julia
+#+begin_src julia
 chat_response = result["choices"]
 chat_response[1]["message"]["content"]
 #+end_src
@@ -87,7 +87,7 @@ chat_response[1]["message"]["content"]
 : "\n\nHello there! How may I be of assistance?"
 * A little more detail about sending messages
 :PROPERTIES:
-:header-args:jupyter-julia: :session chatgtp :display plain :async yes :kernel julia-1.8
+:header-args:julia: :session chatgtp :display plain :async yes :kernel julia-1.8
 :END:
 One of the things that makes ChatGPT useful is its ability to "remember" past
 parts of a conversation. We can send whole conversations to the API using the
@@ -102,7 +102,7 @@ which has a "role" and a "content." There are three options for "role":
 So we can send a more complete conversation and get some richer details in
 response. For example:
 
-#+begin_src jupyter-julia
+#+begin_src julia
 messages=[Dict("role" => "system", "content" => "You are a knowledgable and helpful Julia developer."),
          Dict("role" => "user", "content" => "Can you show me how to make a POST request with the HTTP library?")]
 
@@ -169,7 +169,7 @@ In this example, we first specify the url of the endpoint we want to send our re
 
 And if we want to send a followup referring to an earlier part in the conversation, we can extend the ~messages~ array as follows:
 
-#+begin_src jupyter-julia
+#+begin_src julia
 # include the assistant's previous response
 push!(messages, result["choices"][1]["message"])
 
@@ -188,7 +188,7 @@ push!(messages, Dict("role" => "user",
 
 And then request another response:
 
-#+begin_src jupyter-julia
+#+begin_src julia
 body = json(Dict("model" => "gpt-3.5-turbo",
                  "messages" => messages))
 

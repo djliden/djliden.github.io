@@ -5,15 +5,17 @@
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
+(package-refresh-contents)
 
-;;;; Install dependencies
-(package-install 'htmlize)
+;; Check and install dependencies
+(dolist (package '(htmlize julia-mode ess))
+  (unless (package-installed-p package)
+    (package-install package)))
+
+(require 'julia-mode)
 
 ;; Load publishing system
 (require 'ox-publish)
-
 
 ;;; Sitemap preprocessing
 ;;;; Get Preview
@@ -118,6 +120,7 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :sitemap-style 'tree
              :html-doctype "html5"
              :html-html5-fancy t
+             :htmlized-source t
              )
        (list "org-site:static"
              :base-directory "./content/"
@@ -136,7 +139,7 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
 
 ;;; additional settings
 (setq org-html-validation-link nil
-      org-html-htmlize-output-type 'inline-css
+      org-html-htmlize-output-type 'css
       org-html-style-default (file-contents "assets/head.html")
       org-export-use-babel nil)
 
