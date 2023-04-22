@@ -69,15 +69,15 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd0dfd81">Custom Filetypes in Denote</a></li>
-<li><a href="#org4b9386e">Modifying the <code>markdown-yaml</code> file type</a></li>
+<li><a href="#org3a722da">Custom Filetypes in Denote</a></li>
+<li><a href="#org0fa2f9c">Modifying the <code>markdown-yaml</code> file type</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orgd0dfd81" class="outline-2">
-<h2 id="orgd0dfd81">Custom Filetypes in Denote</h2>
-<div class="outline-text-2" id="text-orgd0dfd81">
+<div id="outline-container-org3a722da" class="outline-2">
+<h2 id="org3a722da">Custom Filetypes in Denote</h2>
+<div class="outline-text-2" id="text-org3a722da">
 <div class="PREVIEW">
 <p>
 The latest release of <a href="https://protesilaos.com/emacs/denote">Denote</a> (by the inimitable Protesilaos Stavrou) introduced
@@ -92,7 +92,7 @@ when creating a new Denote file.
 </div>
 
 <p>
-Find the code snippet <a href="#org4b9386e">here</a>.
+Find the code snippet <a href="#org0fa2f9c">here</a>.
 </p>
 
 <p>
@@ -125,17 +125,17 @@ markdown file type definition, changing the name to <code>quarto</code> and the 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-to-list 'denote-file-types
              '(quarto
-               <span style="font-weight: bold;">:extension</span> <span style="font-style: italic;">".qmd"</span>
-               <span style="font-weight: bold;">:date-function</span> denote-date-iso-8601
-               <span style="font-weight: bold;">:front-matter</span> denote-yaml-front-matter
-               <span style="font-weight: bold;">:title-key-regexp</span> <span style="font-style: italic;">"^title\\s-*:"</span>
-               <span style="font-weight: bold;">:title-value-function</span> denote-surround-with-quotes
-               <span style="font-weight: bold;">:title-value-reverse-function</span> denote-trim-whitespace-then-quotes
-               <span style="font-weight: bold;">:keywords-key-regexp</span> <span style="font-style: italic;">"^tags\\s-*:"</span>
-               <span style="font-weight: bold;">:keywords-value-function</span> denote-format-keywords-for-md-front-matter
-               <span style="font-weight: bold;">:keywords-value-reverse-function</span> denote-extract-keywords-from-front-matter
-               <span style="font-weight: bold;">:link</span> denote-md-link-format
-               <span style="font-weight: bold;">:link-in-context-regexp</span> denote-md-link-in-context-regexp))
+               <span class="org-builtin">:extension</span> <span class="org-string">".qmd"</span>
+               <span class="org-builtin">:date-function</span> denote-date-iso-8601
+               <span class="org-builtin">:front-matter</span> denote-yaml-front-matter
+               <span class="org-builtin">:title-key-regexp</span> <span class="org-string">"^title\\s-*:"</span>
+               <span class="org-builtin">:title-value-function</span> denote-surround-with-quotes
+               <span class="org-builtin">:title-value-reverse-function</span> denote-trim-whitespace-then-quotes
+               <span class="org-builtin">:keywords-key-regexp</span> <span class="org-string">"^tags\\s-*:"</span>
+               <span class="org-builtin">:keywords-value-function</span> denote-format-keywords-for-md-front-matter
+               <span class="org-builtin">:keywords-value-reverse-function</span> denote-extract-keywords-from-front-matter
+               <span class="org-builtin">:link</span> denote-md-link-format
+               <span class="org-builtin">:link-in-context-regexp</span> denote-md-link-in-context-regexp))
 </pre>
 </div>
 
@@ -151,9 +151,9 @@ by modifying the <code>markdown-yaml</code> file type definition.
 </div>
 </div>
 
-<div id="outline-container-org4b9386e" class="outline-2">
-<h2 id="org4b9386e">Modifying the <code>markdown-yaml</code> file type</h2>
-<div class="outline-text-2" id="text-org4b9386e">
+<div id="outline-container-org0fa2f9c" class="outline-2">
+<h2 id="org0fa2f9c">Modifying the <code>markdown-yaml</code> file type</h2>
+<div class="outline-text-2" id="text-org0fa2f9c">
 <p>
 As noted, all we're actually doing is changing the file extension in the
 existing markdown type. So instead of writing out all of the redundant details,
@@ -161,8 +161,8 @@ let's just copy them from the markdown type.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="font-weight: bold;">let</span> ((quarto (cdr (assoc 'markdown-yaml denote-file-types))))
-  (<span style="font-weight: bold;">setf</span> (plist-get quarto <span style="font-weight: bold;">:extension</span>) <span style="font-style: italic;">".qmd"</span>)
+<pre class="src src-emacs-lisp">(<span class="org-keyword">let</span> ((quarto (cdr (assoc 'markdown-yaml denote-file-types))))
+  (<span class="org-keyword">setf</span> (plist-get quarto <span class="org-builtin">:extension</span>) <span class="org-string">".qmd"</span>)
   (add-to-list 'denote-file-types (cons 'quarto quarto)))
 
 (print denote-file-types)
@@ -221,7 +221,7 @@ the desired property (<code>:extension</code>) and <code>setf</code> to set it t
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="font-weight: bold;">setf</span> (plist-get (cdr (assoc 'markdown-yaml denote-file-types)) <span style="font-weight: bold;">:extension</span>) <span style="font-style: italic;">".qmd"</span>)
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setf</span> (plist-get (cdr (assoc 'markdown-yaml denote-file-types)) <span class="org-builtin">:extension</span>) <span class="org-string">".qmd"</span>)
 </pre>
 </div>
 

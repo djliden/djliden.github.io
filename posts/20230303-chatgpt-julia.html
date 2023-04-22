@@ -69,18 +69,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgeaf1c85">Introduction</a></li>
-<li><a href="#org3aecd80">curl Example</a></li>
-<li><a href="#orgcbabe33">Julia example</a></li>
-<li><a href="#orgc1f43e0">A little more detail about sending messages</a></li>
-<li><a href="#orgdae77c0">Next Up&#x2026;</a></li>
+<li><a href="#org007f063">Introduction</a></li>
+<li><a href="#org2ab4768">curl Example</a></li>
+<li><a href="#orgc83b5d4">Julia example</a></li>
+<li><a href="#org4f3f9c2">A little more detail about sending messages</a></li>
+<li><a href="#org121442a">Next Up&#x2026;</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orgeaf1c85" class="outline-2">
-<h2 id="orgeaf1c85">Introduction</h2>
-<div class="outline-text-2" id="text-orgeaf1c85">
+<div id="outline-container-org007f063" class="outline-2">
+<h2 id="org007f063">Introduction</h2>
+<div class="outline-text-2" id="text-org007f063">
 <div class="preview">
 <p>
 This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
@@ -93,57 +93,57 @@ histories and engage more interactively with the API.
 </div>
 </div>
 </div>
-<div id="outline-container-org3aecd80" class="outline-2">
-<h2 id="org3aecd80">curl Example</h2>
-<div class="outline-text-2" id="text-org3aecd80">
+<div id="outline-container-org2ab4768" class="outline-2">
+<h2 id="org2ab4768">curl Example</h2>
+<div class="outline-text-2" id="text-org2ab4768">
 <p>
 <a href="https://platform.openai.com/docs/api-reference/chat/create">Here</a> is the API documentation on OpenAI's website. An example request with <code>curl</code>
 looks like this:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash">curl https://api.openai.com/v1/chat/completions <span style="font-style: italic;">\</span>
-  -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
-  -H <span style="font-style: italic;">'Authorization: Bearer YOUR_API_KEY'</span> <span style="font-style: italic;">\</span>
-  -d <span style="font-style: italic;">'{</span>
-<span style="font-style: italic;">  "model": "gpt-3.5-turbo",</span>
-<span style="font-style: italic;">  "messages": [{"role": "user", "content": "Hello!"}]</span>
-<span style="font-style: italic;">}'</span>
+<pre class="src src-bash">curl https://api.openai.com/v1/chat/completions <span class="org-sh-escaped-newline">\</span>
+  -H <span class="org-string">'Content-Type: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+  -H <span class="org-string">'Authorization: Bearer YOUR_API_KEY'</span> <span class="org-sh-escaped-newline">\</span>
+  -d <span class="org-string">'{</span>
+<span class="org-string">  "model": "gpt-3.5-turbo",</span>
+<span class="org-string">  "messages": [{"role": "user", "content": "Hello!"}]</span>
+<span class="org-string">}'</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgcbabe33" class="outline-2">
-<h2 id="orgcbabe33">Julia example</h2>
-<div class="outline-text-2" id="text-orgcbabe33">
+<div id="outline-container-orgc83b5d4" class="outline-2">
+<h2 id="orgc83b5d4">Julia example</h2>
+<div class="outline-text-2" id="text-orgc83b5d4">
 <p>
 And here's how we can re-create this with the Julia HTTP library:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-julia">OPENAI_API_KEY = ENV["OPENAI_API_KEY"]
+<pre class="src src-julia">OPENAI_API_KEY = ENV[<span class="org-string">"OPENAI_API_KEY"</span>]
 
-using HTTP
-using JSON
+<span class="org-keyword">using</span> HTTP
+<span class="org-keyword">using</span> JSON
 
 headers = HTTP.Headers([
-    "Authorization" =&gt; "Bearer $OPENAI_API_KEY",
-    "Content-Type" =&gt; "application/json",
+    <span class="org-string">"Authorization"</span> =&gt; <span class="org-string">"Bearer $OPENAI_API_KEY"</span>,
+    <span class="org-string">"Content-Type"</span> =&gt; <span class="org-string">"application/json"</span>,
 ])
 
-body = json(Dict("model" =&gt; "gpt-3.5-turbo",
-                 "messages" =&gt; [Dict("role" =&gt; "user", "content" =&gt; "Hello!")]))
+body = json(Dict(<span class="org-string">"model"</span> =&gt; <span class="org-string">"gpt-3.5-turbo"</span>,
+                 <span class="org-string">"messages"</span> =&gt; [Dict(<span class="org-string">"role"</span> =&gt; <span class="org-string">"user"</span>, <span class="org-string">"content"</span> =&gt; <span class="org-string">"Hello!"</span>)]))
 
 
 response = HTTP.post(
-    "https://api.openai.com/v1/chat/completions",
+    <span class="org-string">"https://api.openai.com/v1/chat/completions"</span>,
     headers,
     body;
-    verbose = false,
+    verbose = <span class="org-constant">false</span>,
 )
 
-# Parse the response body as JSON
+<span class="org-comment-delimiter"># </span><span class="org-comment">Parse the response body as JSON</span>
 result = JSON.parse(String(response.body))
 print(result)
 </pre>
@@ -164,8 +164,8 @@ We can extract the completion itself from the "choices" dictionary entry.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-julia">chat_response = result["choices"]
-chat_response[1]["message"]["content"]
+<pre class="src src-julia">chat_response = result[<span class="org-string">"choices"</span>]
+chat_response[1][<span class="org-string">"message"</span>][<span class="org-string">"content"</span>]
 </pre>
 </div>
 
@@ -174,9 +174,9 @@ chat_response[1]["message"]["content"]
 </pre>
 </div>
 </div>
-<div id="outline-container-orgc1f43e0" class="outline-2">
-<h2 id="orgc1f43e0">A little more detail about sending messages</h2>
-<div class="outline-text-2" id="text-orgc1f43e0">
+<div id="outline-container-org4f3f9c2" class="outline-2">
+<h2 id="org4f3f9c2">A little more detail about sending messages</h2>
+<div class="outline-text-2" id="text-org4f3f9c2">
 <p>
 One of the things that makes ChatGPT useful is its ability to "remember" past
 parts of a conversation. We can send whole conversations to the API using the
@@ -197,22 +197,22 @@ response. For example:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-julia">messages=[Dict("role" =&gt; "system", "content" =&gt; "You are a knowledgable and helpful Julia developer."),
-         Dict("role" =&gt; "user", "content" =&gt; "Can you show me how to make a POST request with the HTTP library?")]
+<pre class="src src-julia">messages=[Dict(<span class="org-string">"role"</span> =&gt; <span class="org-string">"system"</span>, <span class="org-string">"content"</span> =&gt; <span class="org-string">"You are a knowledgable and helpful Julia developer."</span>),
+         Dict(<span class="org-string">"role"</span> =&gt; <span class="org-string">"user"</span>, <span class="org-string">"content"</span> =&gt; <span class="org-string">"Can you show me how to make a POST request with the HTTP library?"</span>)]
 
-body = json(Dict("model" =&gt; "gpt-3.5-turbo",
-                 "messages" =&gt; messages))
+body = json(Dict(<span class="org-string">"model"</span> =&gt; <span class="org-string">"gpt-3.5-turbo"</span>,
+                 <span class="org-string">"messages"</span> =&gt; messages))
 
 response = HTTP.post(
-    "https://api.openai.com/v1/chat/completions",
+    <span class="org-string">"https://api.openai.com/v1/chat/completions"</span>,
     headers,
     body;
-    verbose = false,
+    verbose = <span class="org-constant">false</span>,
 )
 
-# Parse the response body as JSON
+<span class="org-comment-delimiter"># </span><span class="org-comment">Parse the response body as JSON</span>
 result = JSON.parse(String(response.body))
-print(result["choices"][1]["message"]["content"])
+print(result[<span class="org-string">"choices"</span>][1][<span class="org-string">"message"</span>][<span class="org-string">"content"</span>])
 </pre>
 </div>
 
@@ -266,12 +266,12 @@ And if we want to send a followup referring to an earlier part in the conversati
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-julia"># include the assistant's previous response
-push!(messages, result["choices"][1]["message"])
+<pre class="src src-julia"><span class="org-comment-delimiter"># </span><span class="org-comment">include the assistant's previous response</span>
+push!(messages, result[<span class="org-string">"choices"</span>][1][<span class="org-string">"message"</span>])
 
-# ask a new question referring to an earlier part of the conversation
-push!(messages, Dict("role" =&gt; "user",
-                     "content" =&gt; "Can you please provide a shorter, simpler example?"))
+<span class="org-comment-delimiter"># </span><span class="org-comment">ask a new question referring to an earlier part of the conversation</span>
+push!(messages, Dict(<span class="org-string">"role"</span> =&gt; <span class="org-string">"user"</span>,
+                     <span class="org-string">"content"</span> =&gt; <span class="org-string">"Can you please provide a shorter, simpler example?"</span>))
 
 </pre>
 </div>
@@ -290,19 +290,19 @@ And then request another response:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-julia">body = json(Dict("model" =&gt; "gpt-3.5-turbo",
-                 "messages" =&gt; messages))
+<pre class="src src-julia">body = json(Dict(<span class="org-string">"model"</span> =&gt; <span class="org-string">"gpt-3.5-turbo"</span>,
+                 <span class="org-string">"messages"</span> =&gt; messages))
 
 response = HTTP.post(
-    "https://api.openai.com/v1/chat/completions",
+    <span class="org-string">"https://api.openai.com/v1/chat/completions"</span>,
     headers,
     body;
-    verbose = false,
+    verbose = <span class="org-constant">false</span>,
 )
 
-# Parse the response body as JSON
+<span class="org-comment-delimiter"># </span><span class="org-comment">Parse the response body as JSON</span>
 result = JSON.parse(String(response.body))
-print(result["choices"][1]["message"]["content"])
+print(result[<span class="org-string">"choices"</span>][1][<span class="org-string">"message"</span>][<span class="org-string">"content"</span>])
 </pre>
 </div>
 
@@ -322,9 +322,9 @@ In this example, we are sending a POST request with form data rather than JSON d
 </pre>
 </div>
 </div>
-<div id="outline-container-orgdae77c0" class="outline-2">
-<h2 id="orgdae77c0">Next Up&#x2026;</h2>
-<div class="outline-text-2" id="text-orgdae77c0">
+<div id="outline-container-org121442a" class="outline-2">
+<h2 id="org121442a">Next Up&#x2026;</h2>
+<div class="outline-text-2" id="text-org121442a">
 <p>
 This post showed basic usage of the ChatGPT API with Julia. In the next post,
 I'll show how to make this more modular and useful. We'll create a <code>Struct</code> for

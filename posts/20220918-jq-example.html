@@ -69,23 +69,23 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5e65106">Introduction</a></li>
-<li><a href="#orgef85397">Download the Data</a></li>
-<li><a href="#org6c51940">Processing the Data with <code>jq</code></a>
+<li><a href="#org3e30183">Introduction</a></li>
+<li><a href="#orgb62af06">Download the Data</a></li>
+<li><a href="#org9267cdb">Processing the Data with <code>jq</code></a>
 <ul>
-<li><a href="#org855e6e7"><code>jq</code> with no further arguments</a></li>
-<li><a href="#org86f51a0">Constructing a Header Row</a></li>
-<li><a href="#org3e35933">Extracting Data Values</a></li>
-<li><a href="#org077f63b">Converting the Results to CSV</a></li>
+<li><a href="#orgbd1edb4"><code>jq</code> with no further arguments</a></li>
+<li><a href="#org6b364dc">Constructing a Header Row</a></li>
+<li><a href="#org8983e29">Extracting Data Values</a></li>
+<li><a href="#org4168d5f">Converting the Results to CSV</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org5e65106" class="outline-2">
-<h2 id="org5e65106">Introduction</h2>
-<div class="outline-text-2" id="text-org5e65106">
+<div id="outline-container-org3e30183" class="outline-2">
+<h2 id="org3e30183">Introduction</h2>
+<div class="outline-text-2" id="text-org3e30183">
 <div class="preview">
 <p>
 There are countless ways of processing JSON data and converting it to different
@@ -126,9 +126,9 @@ To follow along, begin by <a href="https://stedolan.github.io/jq/download/">inst
 </div>
 </div>
 
-<div id="outline-container-orgef85397" class="outline-2">
-<h2 id="orgef85397">Download the Data</h2>
-<div class="outline-text-2" id="text-orgef85397">
+<div id="outline-container-orgb62af06" class="outline-2">
+<h2 id="orgb62af06">Download the Data</h2>
+<div class="outline-text-2" id="text-orgb62af06">
 <p>
 As noted above, we use <code>curl</code> to make a <code>POST</code> request agains the BLS API. We're
 downloading Consumer Price Index data since the start of 2022. We're downloading
@@ -137,8 +137,8 @@ unadjusted data.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
-     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
+<pre class="src src-shell">curl -X POST -H <span class="org-string">'Content-Type: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     -d <span class="org-string">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span class="org-sh-escaped-newline">\</span>
      https://api.bls.gov/publicAPI/v2/timeseries/data/ 
 </pre>
 </div>
@@ -156,9 +156,9 @@ This is technically readable, but not very nice.
 </p>
 </div>
 </div>
-<div id="outline-container-org6c51940" class="outline-2">
-<h2 id="org6c51940">Processing the Data with <code>jq</code></h2>
-<div class="outline-text-2" id="text-org6c51940">
+<div id="outline-container-org9267cdb" class="outline-2">
+<h2 id="org9267cdb">Processing the Data with <code>jq</code></h2>
+<div class="outline-text-2" id="text-org9267cdb">
 <p>
 For most use cases, the data aren't particularly usable in this format. They're
 hard to read; they include metadata about the API response; and the hierarchical
@@ -167,15 +167,15 @@ proceed step by step to show how we can use <code>jq</code> to extract specific 
 API results.
 </p>
 </div>
-<div id="outline-container-org855e6e7" class="outline-3">
-<h3 id="org855e6e7"><code>jq</code> with no further arguments</h3>
-<div class="outline-text-3" id="text-org855e6e7">
+<div id="outline-container-orgbd1edb4" class="outline-3">
+<h3 id="orgbd1edb4"><code>jq</code> with no further arguments</h3>
+<div class="outline-text-3" id="text-orgbd1edb4">
 <p>
 What happens if we pass the results of the API call to <code>jq</code> with no further arguments?
 </p>
 <div class="org-src-container">
-<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
-     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
+<pre class="src src-shell">curl -X POST -H <span class="org-string">'Content-Type: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     -d <span class="org-string">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span class="org-sh-escaped-newline">\</span>
      https://api.bls.gov/publicAPI/v2/timeseries/data/ | jq
 </pre>
 </div>
@@ -360,19 +360,19 @@ the <code>data</code> values as rows in our resulting table.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org86f51a0" class="outline-3">
-<h3 id="org86f51a0">Constructing a Header Row</h3>
-<div class="outline-text-3" id="text-org86f51a0">
+<div id="outline-container-org6b364dc" class="outline-3">
+<h3 id="org6b364dc">Constructing a Header Row</h3>
+<div class="outline-text-3" id="text-org6b364dc">
 <p>
 We want our resulting table to have a header row. The process of making this row
 provides a lot of insight into how <code>jq</code> works.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
-     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
-     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span style="font-style: italic;">\</span>
-    | jq -r <span style="font-style: italic;">'.Results | (.series[0].data[0] | ["seriesID"] + keys_unsorted)'</span>
+<pre class="src src-shell">curl -X POST -H <span class="org-string">'Content-Type: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     -d <span class="org-string">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span class="org-sh-escaped-newline">\</span>
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span class="org-sh-escaped-newline">\</span>
+    | jq -r <span class="org-string">'.Results | (.series[0].data[0] | ["seriesID"] + keys_unsorted)'</span>
 </pre>
 </div>
 
@@ -409,12 +409,12 @@ with the first data entry of the first series, which looks like this:
 
 <div class="org-src-container">
 <pre class="src src-js">{
-    <span style="font-style: italic;">"year"</span>: <span style="font-style: italic;">"2022"</span>,
-    <span style="font-style: italic;">"period"</span>: <span style="font-style: italic;">"M08"</span>,
-    <span style="font-style: italic;">"periodName"</span>: <span style="font-style: italic;">"August"</span>,
-    <span style="font-style: italic;">"latest"</span>: <span style="font-style: italic;">"true"</span>,
-    <span style="font-style: italic;">"value"</span>: <span style="font-style: italic;">"296.171"</span>,
-    <span style="font-style: italic;">"footnotes"</span>: [
+    <span class="org-string">"year"</span>: <span class="org-string">"2022"</span>,
+    <span class="org-string">"period"</span>: <span class="org-string">"M08"</span>,
+    <span class="org-string">"periodName"</span>: <span class="org-string">"August"</span>,
+    <span class="org-string">"latest"</span>: <span class="org-string">"true"</span>,
+    <span class="org-string">"value"</span>: <span class="org-string">"296.171"</span>,
+    <span class="org-string">"footnotes"</span>: [
         {}
     ]
 }
@@ -440,9 +440,9 @@ section, we'll see how to extract data from multiple sections.
 </p>
 </div>
 </div>
-<div id="outline-container-org3e35933" class="outline-3">
-<h3 id="org3e35933">Extracting Data Values</h3>
-<div class="outline-text-3" id="text-org3e35933">
+<div id="outline-container-org8983e29" class="outline-3">
+<h3 id="org8983e29">Extracting Data Values</h3>
+<div class="outline-text-3" id="text-org8983e29">
 <p>
 Based on the header rows, we need to extract, for each data entry, the series
 ID, footnotes, period, period name, year, value, and whether it's the latest
@@ -480,10 +480,10 @@ Here's how we might start to approach this.
 
 
 <div class="org-src-container">
-<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
-     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
-     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span style="font-style: italic;">\</span>
-    | jq -r <span style="font-style: italic;">'.Results | (.series[] | [.seriesID] + (.data[] | map(.)))'</span>  
+<pre class="src src-shell">curl -X POST -H <span class="org-string">'Content-Type: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     -d <span class="org-string">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span class="org-sh-escaped-newline">\</span>
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span class="org-sh-escaped-newline">\</span>
+    | jq -r <span class="org-string">'.Results | (.series[] | [.seriesID] + (.data[] | map(.)))'</span>  
 </pre>
 </div>
 
@@ -553,11 +553,11 @@ converted directly to the CSV format. So we have a little more work to do.
 
 
 <div class="org-src-container">
-<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
-     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
-     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span style="font-style: italic;">\</span>
-    | jq -r <span style="font-style: italic;">'.Results | (.series[] | [.seriesID] +</span>
-<span style="font-style: italic;">  (.data[] | [with_entries(select(.key=="footnotes" | not)) | values[]] + [.footnotes[]|join(",")]))'</span>
+<pre class="src src-shell">curl -X POST -H <span class="org-string">'Content-Type: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     -d <span class="org-string">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span class="org-sh-escaped-newline">\</span>
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span class="org-sh-escaped-newline">\</span>
+    | jq -r <span class="org-string">'.Results | (.series[] | [.seriesID] +</span>
+<span class="org-string">  (.data[] | [with_entries(select(.key=="footnotes" | not)) | values[]] + [.footnotes[]|join(",")]))'</span>
 </pre>
 </div>
 
@@ -617,20 +617,20 @@ without issue.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org077f63b" class="outline-3">
-<h3 id="org077f63b">Converting the Results to CSV</h3>
-<div class="outline-text-3" id="text-org077f63b">
+<div id="outline-container-org4168d5f" class="outline-3">
+<h3 id="org4168d5f">Converting the Results to CSV</h3>
+<div class="outline-text-3" id="text-org4168d5f">
 <p>
 Lastly, we convert the transformed results to a CSV using the <code>@csv</code> formatter.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-shell">curl -X POST -H <span style="font-style: italic;">'Content-Type: application/json'</span> <span style="font-style: italic;">\</span>
-     -d <span style="font-style: italic;">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span style="font-style: italic;">\</span>
-     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span style="font-style: italic;">\</span>
-    | jq -r <span style="font-style: italic;">'.Results | (.series[0].data[0]| ["seriesID"] +</span>
-<span style="font-style: italic;">  (keys_unsorted)), (.series[] | [.seriesID] +</span>
-<span style="font-style: italic;">  (.data[] | [with_entries(select(.key=="footnotes" | not)) | values[]] + [.footnotes[]|join(",")])) | @csv'</span>
+<pre class="src src-shell">curl -X POST -H <span class="org-string">'Content-Type: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     -d <span class="org-string">'{"seriesid": ["CUUR0000SA0","CUSR0000SA0"], "startyear":2022, "endyear":2022}'</span> <span class="org-sh-escaped-newline">\</span>
+     https://api.bls.gov/publicAPI/v2/timeseries/data/ <span class="org-sh-escaped-newline">\</span>
+    | jq -r <span class="org-string">'.Results | (.series[0].data[0]| ["seriesID"] +</span>
+<span class="org-string">  (keys_unsorted)), (.series[] | [.seriesID] +</span>
+<span class="org-string">  (.data[] | [with_entries(select(.key=="footnotes" | not)) | values[]] + [.footnotes[]|join(",")])) | @csv'</span>
 </pre>
 </div>
 

@@ -69,27 +69,27 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga53177a">Background</a></li>
-<li><a href="#orgca1fc58">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</a></li>
-<li><a href="#org7b7c08b">Repeat Intervals</a>
+<li><a href="#orgb27a61b">Background</a></li>
+<li><a href="#org1ab2f4a">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</a></li>
+<li><a href="#org6e5de31">Repeat Intervals</a>
 <ul>
-<li><a href="#orgac248ab">Different Types of Repeat Intervals</a>
+<li><a href="#orgdbda64c">Different Types of Repeat Intervals</a>
 <ul>
-<li><a href="#org631a8d5">The <code>.+</code> Repeater</a></li>
-<li><a href="#orgb83ee15">The <code>++</code> Repeater</a></li>
+<li><a href="#org96b4948">The <code>.+</code> Repeater</a></li>
+<li><a href="#org4972200">The <code>++</code> Repeater</a></li>
 </ul>
 </li>
-<li><a href="#org42e1594">Marking Tasks with Repeaters <code>DONE</code> (For Good)</a></li>
+<li><a href="#orgd20e95c">Marking Tasks with Repeaters <code>DONE</code> (For Good)</a></li>
 </ul>
 </li>
-<li><a href="#org99f48d4">Further Reading</a></li>
+<li><a href="#org6ab25d1">Further Reading</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orga53177a" class="outline-2">
-<h2 id="orga53177a">Background</h2>
-<div class="outline-text-2" id="text-orga53177a">
+<div id="outline-container-orgb27a61b" class="outline-2">
+<h2 id="orgb27a61b">Background</h2>
+<div class="outline-text-2" id="text-orgb27a61b">
 <div class="PREVIEW">
 <p>
 I recently started using org-mode to keep track of a few habits (morning
@@ -105,9 +105,9 @@ complete a task after the scheduled date.
 </div>
 </div>
 </div>
-<div id="outline-container-orgca1fc58" class="outline-2">
-<h2 id="orgca1fc58">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</h2>
-<div class="outline-text-2" id="text-orgca1fc58">
+<div id="outline-container-org1ab2f4a" class="outline-2">
+<h2 id="org1ab2f4a">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</h2>
+<div class="outline-text-2" id="text-org1ab2f4a">
 <p>
 The <a href="https://orgmode.org/manual/Dates-and-Times.html">org-mode manual</a> provides plenty of details on the basics of dates and
 times. Here's a quick review:
@@ -155,9 +155,9 @@ appointment) that occurs <i>on</i> a given date.
 </ul>
 </div>
 </div>
-<div id="outline-container-org7b7c08b" class="outline-2">
-<h2 id="org7b7c08b">Repeat Intervals</h2>
-<div class="outline-text-2" id="text-org7b7c08b">
+<div id="outline-container-org6e5de31" class="outline-2">
+<h2 id="org6e5de31">Repeat Intervals</h2>
+<div class="outline-text-2" id="text-org6e5de31">
 <p>
 Org-mode makes it possible to schedule recurring events without manually
 specifying each repetition date. There are three key formats for repeated
@@ -177,9 +177,9 @@ When specifying repeat intervals, <code>y</code> means "yearly", <code>m</code> 
 <code>+&lt;number&gt;</code> tells how often the event should be repeated.
 </p>
 </div>
-<div id="outline-container-orgac248ab" class="outline-3">
-<h3 id="orgac248ab">Different Types of Repeat Intervals</h3>
-<div class="outline-text-3" id="text-orgac248ab">
+<div id="outline-container-orgdbda64c" class="outline-3">
+<h3 id="orgdbda64c">Different Types of Repeat Intervals</h3>
+<div class="outline-text-3" id="text-orgdbda64c">
 <p>
 Here's where I ran into trouble. I scheduled some events as daily "habits." For
 example, I wanted to take a walk each morning, so I included the following in my
@@ -187,8 +187,8 @@ planner file:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-org"><span style="font-weight: bold;">* </span><span style="font-weight: bold;">TODO</span><span style="font-weight: bold;"> Walk 1000 steps before coffee</span>
-<span style="font-weight: bold;">SCHEDULED:</span> <span style="text-decoration: underline;">&lt;2022-01-29 Sat&gt;</span>
+<pre class="src src-org"><span class="org-org-level-1">* </span><span class="org-org-todo">TODO</span><span class="org-org-level-1"> Walk 1000 steps before coffee</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2022-01-29 Sat&gt;</span>
 </pre>
 </div>
 
@@ -206,8 +206,8 @@ again on <code>&lt;2022-01-29 Sat&gt;</code>. Here's what happens on <code>&lt;2
 <b>State before marking <code>DONE</code>:</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-org"><span style="font-weight: bold;">* </span><span style="font-weight: bold;">TODO</span><span style="font-weight: bold;"> Walk 1000 steps before coffee</span>
-<span style="font-weight: bold;">SCHEDULED:</span> <span style="text-decoration: underline;">&lt;2022-01-25 Tue +1d&gt;</span>
+<pre class="src src-org"><span class="org-org-level-1">* </span><span class="org-org-todo">TODO</span><span class="org-org-level-1"> Walk 1000 steps before coffee</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2022-01-25 Tue +1d&gt;</span>
 </pre>
 </div>
 
@@ -216,12 +216,12 @@ again on <code>&lt;2022-01-29 Sat&gt;</code>. Here's what happens on <code>&lt;2
 </p>
 
 <div class="org-src-container">
-<pre class="src src-org"><span style="font-weight: bold;">* </span><span style="font-weight: bold;">TODO</span><span style="font-weight: bold;"> Walk 1000 steps before coffee</span>
-<span style="font-weight: bold;">SCHEDULED:</span> <span style="text-decoration: underline;">&lt;2022-01-26 Wed +1d&gt;</span>
-<span style="font-weight: bold;">:PROPERTIES:</span>
-<span style="font-weight: bold;">:LAST_REPEAT:</span> <span style="text-decoration: underline;">[2022-01-29 Sat 09:11]</span>
-<span style="font-weight: bold;">:END:</span>
-- State "DONE"       from "TODO"       <span style="text-decoration: underline;">[2022-01-29 Sat 09:11]</span>
+<pre class="src src-org"><span class="org-org-level-1">* </span><span class="org-org-todo">TODO</span><span class="org-org-level-1"> Walk 1000 steps before coffee</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2022-01-26 Wed +1d&gt;</span>
+<span class="org-org-drawer">:PROPERTIES:</span>
+<span class="org-org-special-keyword">:LAST_REPEAT:</span> <span class="org-org-date">[2022-01-29 Sat 09:11]</span>
+<span class="org-org-drawer">:END:</span>
+- State "DONE"       from "TODO"       <span class="org-org-date">[2022-01-29 Sat 09:11]</span>
 </pre>
 </div>
 
@@ -238,9 +238,9 @@ and I plan to complete the task again <i>tomorrow</i>.
 There are two special repeaters for situations like this.
 </p>
 </div>
-<div id="outline-container-org631a8d5" class="outline-4">
-<h4 id="org631a8d5">The <code>.+</code> Repeater</h4>
-<div class="outline-text-4" id="text-org631a8d5">
+<div id="outline-container-org96b4948" class="outline-4">
+<h4 id="org96b4948">The <code>.+</code> Repeater</h4>
+<div class="outline-text-4" id="text-org96b4948">
 <p>
 Instead of scheduling with <code>+1d</code>, we can use <code>.+1d</code> to specify that, after we mark a
 task <code>DONE</code> it should advance by exactly one day from the date (and time, if the
@@ -253,8 +253,8 @@ weekly thereafter. But suppose I didn't get to it until Saturday, January 29.
 <b>State before marking <code>DONE</code>:</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-org"><span style="font-weight: bold;">* </span><span style="font-weight: bold;">TODO</span><span style="font-weight: bold;"> Clean the Kitchen</span>
-<span style="font-weight: bold;">SCHEDULED:</span> <span style="text-decoration: underline;">&lt;2022-01-09 Sun .+1w&gt;</span>
+<pre class="src src-org"><span class="org-org-level-1">* </span><span class="org-org-todo">TODO</span><span class="org-org-level-1"> Clean the Kitchen</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2022-01-09 Sun .+1w&gt;</span>
 </pre>
 </div>
 
@@ -262,12 +262,12 @@ weekly thereafter. But suppose I didn't get to it until Saturday, January 29.
 <b>State after marking <code>DONE</code>:</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-org"><span style="font-weight: bold;">* </span><span style="font-weight: bold;">TODO</span><span style="font-weight: bold;"> Clean the Kitchen</span>
-<span style="font-weight: bold;">SCHEDULED:</span> <span style="text-decoration: underline;">&lt;2022-02-05 Sat .+1w&gt;</span>
-<span style="font-weight: bold;">:PROPERTIES:</span>
-<span style="font-weight: bold;">:LAST_REPEAT:</span> <span style="text-decoration: underline;">[2022-01-29 Sat 09:28]</span>
-<span style="font-weight: bold;">:END:</span>
-- State "DONE"       from "TODO"       <span style="text-decoration: underline;">[2022-01-29 Sat 09:28]</span>
+<pre class="src src-org"><span class="org-org-level-1">* </span><span class="org-org-todo">TODO</span><span class="org-org-level-1"> Clean the Kitchen</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2022-02-05 Sat .+1w&gt;</span>
+<span class="org-org-drawer">:PROPERTIES:</span>
+<span class="org-org-special-keyword">:LAST_REPEAT:</span> <span class="org-org-date">[2022-01-29 Sat 09:28]</span>
+<span class="org-org-drawer">:END:</span>
+- State "DONE"       from "TODO"       <span class="org-org-date">[2022-01-29 Sat 09:28]</span>
 </pre>
 </div>
 <p>
@@ -281,9 +281,9 @@ one week from when it was marked <code>DONE</code>, a Saturday.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb83ee15" class="outline-4">
-<h4 id="orgb83ee15">The <code>++</code> Repeater</h4>
-<div class="outline-text-4" id="text-orgb83ee15">
+<div id="outline-container-org4972200" class="outline-4">
+<h4 id="org4972200">The <code>++</code> Repeater</h4>
+<div class="outline-text-4" id="text-org4972200">
 <p>
 The <code>++</code> repeater is very similar to the <code>.+</code> repeater insofar as it will also
 advance the scheduled date into the future. However, it will <i>also</i> match the
@@ -295,8 +295,8 @@ updated to use the <code>++</code> syntax.
 <b>State before marking <code>DONE</code>:</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-org"><span style="font-weight: bold;">* </span><span style="font-weight: bold;">TODO</span><span style="font-weight: bold;"> Clean the Kitchen</span>
-<span style="font-weight: bold;">SCHEDULED:</span> <span style="text-decoration: underline;">&lt;2022-01-09 Sun ++1w&gt;</span>
+<pre class="src src-org"><span class="org-org-level-1">* </span><span class="org-org-todo">TODO</span><span class="org-org-level-1"> Clean the Kitchen</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2022-01-09 Sun ++1w&gt;</span>
 </pre>
 </div>
 
@@ -304,12 +304,12 @@ updated to use the <code>++</code> syntax.
 <b>State after marking <code>DONE</code>:</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-org"><span style="font-weight: bold;">* </span><span style="font-weight: bold;">TODO</span><span style="font-weight: bold;"> Clean the Kitchen</span>
-<span style="font-weight: bold;">SCHEDULED:</span> <span style="text-decoration: underline;">&lt;2022-01-30 Sun ++1w&gt;</span>
-<span style="font-weight: bold;">:PROPERTIES:</span>
-<span style="font-weight: bold;">:LAST_REPEAT:</span> <span style="text-decoration: underline;">[2022-01-29 Sat 09:35]</span>
-<span style="font-weight: bold;">:END:</span>
-- State "DONE"       from "TODO"       <span style="text-decoration: underline;">[2022-01-29 Sat 09:35]</span>
+<pre class="src src-org"><span class="org-org-level-1">* </span><span class="org-org-todo">TODO</span><span class="org-org-level-1"> Clean the Kitchen</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2022-01-30 Sun ++1w&gt;</span>
+<span class="org-org-drawer">:PROPERTIES:</span>
+<span class="org-org-special-keyword">:LAST_REPEAT:</span> <span class="org-org-date">[2022-01-29 Sat 09:35]</span>
+<span class="org-org-drawer">:END:</span>
+- State "DONE"       from "TODO"       <span class="org-org-date">[2022-01-29 Sat 09:35]</span>
 </pre>
 </div>
 
@@ -330,9 +330,9 @@ Sunday, only four days later.
 </div>
 </div>
 </div>
-<div id="outline-container-org42e1594" class="outline-3">
-<h3 id="org42e1594">Marking Tasks with Repeaters <code>DONE</code> (For Good)</h3>
-<div class="outline-text-3" id="text-org42e1594">
+<div id="outline-container-orgd20e95c" class="outline-3">
+<h3 id="orgd20e95c">Marking Tasks with Repeaters <code>DONE</code> (For Good)</h3>
+<div class="outline-text-3" id="text-orgd20e95c">
 <p>
 You may want to end a repeated task—stop it from appearing in your agenda and
 mark it <code>DONE</code> —without entirely deleting the task. Maybe you want to maintain the
@@ -357,9 +357,9 @@ to square brackets, indicating an inactive timestamp.</li>
 </div>
 </div>
 </div>
-<div id="outline-container-org99f48d4" class="outline-2">
-<h2 id="org99f48d4">Further Reading</h2>
-<div class="outline-text-2" id="text-org99f48d4">
+<div id="outline-container-org6ab25d1" class="outline-2">
+<h2 id="org6ab25d1">Further Reading</h2>
+<div class="outline-text-2" id="text-org6ab25d1">
 <p>
 The org-mode manual is the best place to learn more about timestamps, schedules,
 and deadlines in general and repeated tasks in particular. Here are some places

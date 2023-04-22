@@ -69,9 +69,9 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org642d4f4">The Problem</a></li>
-<li><a href="#orgeeb00a3">Changes to the Site Config</a></li>
-<li><a href="#orgdd62e61">The Results</a></li>
+<li><a href="#org0adf2c5">The Problem</a></li>
+<li><a href="#org7c78260">Changes to the Site Config</a></li>
+<li><a href="#org7b7ab89">The Results</a></li>
 </ul>
 </div>
 </nav>
@@ -93,9 +93,9 @@ While that brief introduction should capture the necessary changes, we can get
 into more specifics.
 </p>
 
-<div id="outline-container-org642d4f4" class="outline-2">
-<h2 id="org642d4f4">The Problem</h2>
-<div class="outline-text-2" id="text-org642d4f4">
+<div id="outline-container-org0adf2c5" class="outline-2">
+<h2 id="org0adf2c5">The Problem</h2>
+<div class="outline-text-2" id="text-org0adf2c5">
 <p>
 If we use the default settings, figures aren't wrapped in <code>&lt;figure&gt;</code> blocks and
 captions aren't wrapped in <code>&lt;figcaption&gt;</code> blocks, so none of the formatting we
@@ -113,19 +113,19 @@ The image and caption appear left-aligned on the page. Here's the html:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-html">&lt;<span style="font-weight: bold;">div</span> <span style="font-weight: bold; font-style: italic;">id</span>=<span style="font-style: italic;">"org7d55a3b"</span> <span style="font-weight: bold; font-style: italic;">class</span>=<span style="font-style: italic;">"figure"</span>&gt;
-&lt;<span style="font-weight: bold;">p</span>&gt;&lt;<span style="font-weight: bold;">img</span> <span style="font-weight: bold; font-style: italic;">src</span>=<span style="font-style: italic;">"figures/20220719-julia-plots/fig5.png"</span> <span style="font-weight: bold; font-style: italic;">alt</span>=<span style="font-style: italic;">"fig5.png"</span> <span style="font-weight: bold; font-style: italic;">width</span>=<span style="font-style: italic;">"450px"</span>&gt;
-&lt;/<span style="font-weight: bold;">p</span>&gt;
-&lt;<span style="font-weight: bold;">p</span>&gt;&lt;<span style="font-weight: bold;">span</span> <span style="font-weight: bold; font-style: italic;">class</span>=<span style="font-style: italic;">"figure-number"</span>&gt;Figure 1: &lt;/<span style="font-weight: bold;">span</span>&gt;This caption is left-aligned and has no &lt;<span style="font-weight: bold;">code</span>&gt;<span style="font-weight: bold; font-style: italic;">&amp;lt;</span>figcaption<span style="font-weight: bold; font-style: italic;">&amp;gt;</span>&lt;/<span style="font-weight: bold;">code</span>&gt; element&lt;/<span style="font-weight: bold;">p</span>&gt;
-&lt;/<span style="font-weight: bold;">div</span>&gt;
+<pre class="src src-html">&lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"org7d55a3b"</span> <span class="org-variable-name">class</span>=<span class="org-string">"figure"</span>&gt;
+&lt;<span class="org-function-name">p</span>&gt;&lt;<span class="org-function-name">img</span> <span class="org-variable-name">src</span>=<span class="org-string">"figures/20220719-julia-plots/fig5.png"</span> <span class="org-variable-name">alt</span>=<span class="org-string">"fig5.png"</span> <span class="org-variable-name">width</span>=<span class="org-string">"450px"</span>&gt;
+&lt;/<span class="org-function-name">p</span>&gt;
+&lt;<span class="org-function-name">p</span>&gt;&lt;<span class="org-function-name">span</span> <span class="org-variable-name">class</span>=<span class="org-string">"figure-number"</span>&gt;Figure 1: &lt;/<span class="org-function-name">span</span>&gt;This caption is left-aligned and has no &lt;<span class="org-function-name">code</span>&gt;<span class="org-variable-name">&amp;lt;</span>figcaption<span class="org-variable-name">&amp;gt;</span>&lt;/<span class="org-function-name">code</span>&gt; element&lt;/<span class="org-function-name">p</span>&gt;
+&lt;/<span class="org-function-name">div</span>&gt;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgeeb00a3" class="outline-2">
-<h2 id="orgeeb00a3">Changes to the Site Config</h2>
-<div class="outline-text-2" id="text-orgeeb00a3">
+<div id="outline-container-org7c78260" class="outline-2">
+<h2 id="org7c78260">Changes to the Site Config</h2>
+<div class="outline-text-2" id="text-org7c78260">
 <p>
 To address this, we need to change the <code>org-html-doctype</code> and <code>org-html-html5-fancy</code>
 variables. We can do this in the export configuration's
@@ -135,48 +135,48 @@ key changes.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span class="linenr"> 1: </span>(<span style="font-weight: bold;">setq</span> org-publish-project-alist
+<pre class="src src-emacs-lisp"><span class="linenr"> 1: </span>(<span class="org-keyword">setq</span> org-publish-project-alist
 <span class="linenr"> 2: </span>      (list
-<span class="linenr"> 3: </span>       (list <span style="font-style: italic;">"org-site:main"</span>
-<span class="linenr"> 4: </span>             <span style="font-weight: bold;">:recursive</span> t
-<span class="linenr"> 5: </span>             <span style="font-weight: bold;">:base-directory</span> <span style="font-style: italic;">"./content"</span>
-<span class="linenr"> 6: </span>             <span style="font-weight: bold;">:publishing-directory</span> <span style="font-style: italic;">"./public"</span>
-<span class="linenr"> 7: </span>             <span style="font-weight: bold;">:publishing-function</span> 'org-html-publish-to-html
-<span class="linenr"> 8: </span>             <span style="font-weight: bold;">:html-preamble</span> (file-contents <span style="font-style: italic;">"assets/html_preamble.html"</span>)
-<span class="linenr"> 9: </span>             <span style="font-weight: bold;">:with-author</span> nil
-<span class="linenr">10: </span>             <span style="font-weight: bold;">:with-creator</span> t
-<span class="linenr">11: </span>             <span style="font-weight: bold;">:with-toc</span> t
-<span class="linenr">12: </span>             <span style="font-weight: bold;">:section-numbers</span> nil
-<span class="linenr">13: </span>             <span style="font-weight: bold;">:time-stamp-file</span> nil
-<span class="linenr">14: </span>             <span style="font-weight: bold;">:auto-sitemap</span> t
-<span class="linenr">15: </span>             <span style="font-weight: bold;">:sitemap-title</span> nil<span style="font-weight: bold; font-style: italic;">;</span><span style="font-weight: bold; font-style: italic;">"Daniel Liden's Blog"</span>
-<span class="linenr">16: </span>             <span style="font-weight: bold;">:sitemap-format-entry</span> 'my/org-publish-org-sitemap-format
-<span class="linenr">17: </span>             <span style="font-weight: bold;">:sitemap-function</span> 'my/org-publish-org-sitemap
-<span class="linenr">18: </span>             <span style="font-weight: bold;">:sitemap-sort-files</span> 'anti-chronologically
-<span class="linenr">19: </span>             <span style="font-weight: bold;">:sitemap-filename</span> <span style="font-style: italic;">"sitemap.org"</span>
-<span class="linenr">20: </span>             <span style="font-weight: bold;">:sitemap-style</span> 'tree
-<span class="linenr">21: </span>             <span style="font-weight: bold;">:html-doctype</span> <span style="font-style: italic;">"html5"</span>
-<span class="linenr">22: </span>             <span style="font-weight: bold;">:html-html5-fancy</span> t)
-<span class="linenr">23: </span>       (list <span style="font-style: italic;">"org-site:static"</span>
-<span class="linenr">24: </span>             <span style="font-weight: bold;">:base-directory</span> <span style="font-style: italic;">"./content/"</span>
-<span class="linenr">25: </span>             <span style="font-weight: bold;">:base-extension</span> <span style="font-style: italic;">"css</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">js</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">png</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">jpg</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">gif</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">pdf</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">mp3</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">ogg</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">swf</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">svg"</span>
-<span class="linenr">26: </span>             <span style="font-weight: bold;">:publishing-directory</span> <span style="font-style: italic;">"./public"</span>
-<span class="linenr">27: </span>             <span style="font-weight: bold;">:recursive</span> t
-<span class="linenr">28: </span>             <span style="font-weight: bold;">:publishing-function</span> 'org-publish-attachment
+<span class="linenr"> 3: </span>       (list <span class="org-string">"org-site:main"</span>
+<span class="linenr"> 4: </span>             <span class="org-builtin">:recursive</span> t
+<span class="linenr"> 5: </span>             <span class="org-builtin">:base-directory</span> <span class="org-string">"./content"</span>
+<span class="linenr"> 6: </span>             <span class="org-builtin">:publishing-directory</span> <span class="org-string">"./public"</span>
+<span class="linenr"> 7: </span>             <span class="org-builtin">:publishing-function</span> 'org-html-publish-to-html
+<span class="linenr"> 8: </span>             <span class="org-builtin">:html-preamble</span> (file-contents <span class="org-string">"assets/html_preamble.html"</span>)
+<span class="linenr"> 9: </span>             <span class="org-builtin">:with-author</span> nil
+<span class="linenr">10: </span>             <span class="org-builtin">:with-creator</span> t
+<span class="linenr">11: </span>             <span class="org-builtin">:with-toc</span> t
+<span class="linenr">12: </span>             <span class="org-builtin">:section-numbers</span> nil
+<span class="linenr">13: </span>             <span class="org-builtin">:time-stamp-file</span> nil
+<span class="linenr">14: </span>             <span class="org-builtin">:auto-sitemap</span> t
+<span class="linenr">15: </span>             <span class="org-builtin">:sitemap-title</span> nil<span class="org-comment-delimiter">;</span><span class="org-comment">"Daniel Liden's Blog"</span>
+<span class="linenr">16: </span>             <span class="org-builtin">:sitemap-format-entry</span> 'my/org-publish-org-sitemap-format
+<span class="linenr">17: </span>             <span class="org-builtin">:sitemap-function</span> 'my/org-publish-org-sitemap
+<span class="linenr">18: </span>             <span class="org-builtin">:sitemap-sort-files</span> 'anti-chronologically
+<span class="linenr">19: </span>             <span class="org-builtin">:sitemap-filename</span> <span class="org-string">"sitemap.org"</span>
+<span class="linenr">20: </span>             <span class="org-builtin">:sitemap-style</span> 'tree
+<span class="linenr">21: </span>             <span class="org-builtin">:html-doctype</span> <span class="org-string">"html5"</span>
+<span class="linenr">22: </span>             <span class="org-builtin">:html-html5-fancy</span> t)
+<span class="linenr">23: </span>       (list <span class="org-string">"org-site:static"</span>
+<span class="linenr">24: </span>             <span class="org-builtin">:base-directory</span> <span class="org-string">"./content/"</span>
+<span class="linenr">25: </span>             <span class="org-builtin">:base-extension</span> <span class="org-string">"css</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">js</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">png</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">jpg</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">gif</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">pdf</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">mp3</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">ogg</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">swf</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">svg"</span>
+<span class="linenr">26: </span>             <span class="org-builtin">:publishing-directory</span> <span class="org-string">"./public"</span>
+<span class="linenr">27: </span>             <span class="org-builtin">:recursive</span> t
+<span class="linenr">28: </span>             <span class="org-builtin">:publishing-function</span> 'org-publish-attachment
 <span class="linenr">29: </span>             )
-<span class="linenr">30: </span>       (list <span style="font-style: italic;">"org-site:assets"</span>
-<span class="linenr">31: </span>             <span style="font-weight: bold;">:base-directory</span> <span style="font-style: italic;">"./assets/"</span>
-<span class="linenr">32: </span>             <span style="font-weight: bold;">:base-extension</span> <span style="font-style: italic;">"css</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">js</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">png</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">jpg</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">gif</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">pdf</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">mp3</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">ogg</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">swf"</span>
-<span class="linenr">33: </span>             <span style="font-weight: bold;">:publishing-directory</span> <span style="font-style: italic;">"./public/"</span>
-<span class="linenr">34: </span>             <span style="font-weight: bold;">:recursive</span> t
-<span class="linenr">35: </span>             <span style="font-weight: bold;">:publishing-function</span> 'org-publish-attachment)))
+<span class="linenr">30: </span>       (list <span class="org-string">"org-site:assets"</span>
+<span class="linenr">31: </span>             <span class="org-builtin">:base-directory</span> <span class="org-string">"./assets/"</span>
+<span class="linenr">32: </span>             <span class="org-builtin">:base-extension</span> <span class="org-string">"css</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">js</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">png</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">jpg</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">gif</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">pdf</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">mp3</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">ogg</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">swf"</span>
+<span class="linenr">33: </span>             <span class="org-builtin">:publishing-directory</span> <span class="org-string">"./public/"</span>
+<span class="linenr">34: </span>             <span class="org-builtin">:recursive</span> t
+<span class="linenr">35: </span>             <span class="org-builtin">:publishing-function</span> 'org-publish-attachment)))
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgdd62e61" class="outline-2">
-<h2 id="orgdd62e61">The Results</h2>
-<div class="outline-text-2" id="text-orgdd62e61">
+<div id="outline-container-org7b7ab89" class="outline-2">
+<h2 id="org7b7ab89">The Results</h2>
+<div class="outline-text-2" id="text-org7b7ab89">
 <p>
 With these changes, our images and captions are now centered:
 </p>
@@ -193,11 +193,11 @@ And the html generated from the org export now looks like this:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-html">&lt;<span style="font-weight: bold;">figure</span> <span style="font-weight: bold; font-style: italic;">id</span>=<span style="font-style: italic;">"orgbffad64"</span>&gt;
-&lt;<span style="font-weight: bold;">img</span> <span style="font-weight: bold; font-style: italic;">src</span>=<span style="font-style: italic;">"figures/20220719-julia-plots/fig5.png"</span> <span style="font-weight: bold; font-style: italic;">alt</span>=<span style="font-style: italic;">"fig5.png"</span> <span style="font-weight: bold; font-style: italic;">width</span>=<span style="font-style: italic;">"450px"</span>&gt;
+<pre class="src src-html">&lt;<span class="org-function-name">figure</span> <span class="org-variable-name">id</span>=<span class="org-string">"orgbffad64"</span>&gt;
+&lt;<span class="org-function-name">img</span> <span class="org-variable-name">src</span>=<span class="org-string">"figures/20220719-julia-plots/fig5.png"</span> <span class="org-variable-name">alt</span>=<span class="org-string">"fig5.png"</span> <span class="org-variable-name">width</span>=<span class="org-string">"450px"</span>&gt;
 
-&lt;<span style="font-weight: bold;">figcaption</span>&gt;&lt;<span style="font-weight: bold;">span</span> <span style="font-weight: bold; font-style: italic;">class</span>=<span style="font-style: italic;">"figure-number"</span>&gt;Figure 1: &lt;/<span style="font-weight: bold;">span</span>&gt;This caption is now centered and wrapped in a &lt;<span style="font-weight: bold;">code</span>&gt;<span style="font-weight: bold; font-style: italic;">&amp;lt;</span>figcaption<span style="font-weight: bold; font-style: italic;">&amp;gt;</span>&lt;/<span style="font-weight: bold;">code</span>&gt; tag!&lt;/<span style="font-weight: bold;">figcaption</span>&gt;
-&lt;/<span style="font-weight: bold;">figure</span>&gt;
+&lt;<span class="org-function-name">figcaption</span>&gt;&lt;<span class="org-function-name">span</span> <span class="org-variable-name">class</span>=<span class="org-string">"figure-number"</span>&gt;Figure 1: &lt;/<span class="org-function-name">span</span>&gt;This caption is now centered and wrapped in a &lt;<span class="org-function-name">code</span>&gt;<span class="org-variable-name">&amp;lt;</span>figcaption<span class="org-variable-name">&amp;gt;</span>&lt;/<span class="org-function-name">code</span>&gt; tag!&lt;/<span class="org-function-name">figcaption</span>&gt;
+&lt;/<span class="org-function-name">figure</span>&gt;
 </pre>
 </div>
 
