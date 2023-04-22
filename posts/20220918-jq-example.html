@@ -69,23 +69,23 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3e30183">Introduction</a></li>
-<li><a href="#orgb62af06">Download the Data</a></li>
-<li><a href="#org9267cdb">Processing the Data with <code>jq</code></a>
+<li><a href="#orge045e38">Introduction</a></li>
+<li><a href="#orgd305c8a">Download the Data</a></li>
+<li><a href="#orgbe4e00a">Processing the Data with <code>jq</code></a>
 <ul>
-<li><a href="#orgbd1edb4"><code>jq</code> with no further arguments</a></li>
-<li><a href="#org6b364dc">Constructing a Header Row</a></li>
-<li><a href="#org8983e29">Extracting Data Values</a></li>
-<li><a href="#org4168d5f">Converting the Results to CSV</a></li>
+<li><a href="#orgfd7f5b4"><code>jq</code> with no further arguments</a></li>
+<li><a href="#org7ae075b">Constructing a Header Row</a></li>
+<li><a href="#orgfb5b5eb">Extracting Data Values</a></li>
+<li><a href="#org1bc6eb9">Converting the Results to CSV</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org3e30183" class="outline-2">
-<h2 id="org3e30183">Introduction</h2>
-<div class="outline-text-2" id="text-org3e30183">
+<div id="outline-container-orge045e38" class="outline-2">
+<h2 id="orge045e38">Introduction</h2>
+<div class="outline-text-2" id="text-orge045e38">
 <div class="preview">
 <p>
 There are countless ways of processing JSON data and converting it to different
@@ -126,9 +126,9 @@ To follow along, begin by <a href="https://stedolan.github.io/jq/download/">inst
 </div>
 </div>
 
-<div id="outline-container-orgb62af06" class="outline-2">
-<h2 id="orgb62af06">Download the Data</h2>
-<div class="outline-text-2" id="text-orgb62af06">
+<div id="outline-container-orgd305c8a" class="outline-2">
+<h2 id="orgd305c8a">Download the Data</h2>
+<div class="outline-text-2" id="text-orgd305c8a">
 <p>
 As noted above, we use <code>curl</code> to make a <code>POST</code> request agains the BLS API. We're
 downloading Consumer Price Index data since the start of 2022. We're downloading
@@ -156,9 +156,9 @@ This is technically readable, but not very nice.
 </p>
 </div>
 </div>
-<div id="outline-container-org9267cdb" class="outline-2">
-<h2 id="org9267cdb">Processing the Data with <code>jq</code></h2>
-<div class="outline-text-2" id="text-org9267cdb">
+<div id="outline-container-orgbe4e00a" class="outline-2">
+<h2 id="orgbe4e00a">Processing the Data with <code>jq</code></h2>
+<div class="outline-text-2" id="text-orgbe4e00a">
 <p>
 For most use cases, the data aren't particularly usable in this format. They're
 hard to read; they include metadata about the API response; and the hierarchical
@@ -167,9 +167,9 @@ proceed step by step to show how we can use <code>jq</code> to extract specific 
 API results.
 </p>
 </div>
-<div id="outline-container-orgbd1edb4" class="outline-3">
-<h3 id="orgbd1edb4"><code>jq</code> with no further arguments</h3>
-<div class="outline-text-3" id="text-orgbd1edb4">
+<div id="outline-container-orgfd7f5b4" class="outline-3">
+<h3 id="orgfd7f5b4"><code>jq</code> with no further arguments</h3>
+<div class="outline-text-3" id="text-orgfd7f5b4">
 <p>
 What happens if we pass the results of the API call to <code>jq</code> with no further arguments?
 </p>
@@ -360,9 +360,9 @@ the <code>data</code> values as rows in our resulting table.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org6b364dc" class="outline-3">
-<h3 id="org6b364dc">Constructing a Header Row</h3>
-<div class="outline-text-3" id="text-org6b364dc">
+<div id="outline-container-org7ae075b" class="outline-3">
+<h3 id="org7ae075b">Constructing a Header Row</h3>
+<div class="outline-text-3" id="text-org7ae075b">
 <p>
 We want our resulting table to have a header row. The process of making this row
 provides a lot of insight into how <code>jq</code> works.
@@ -440,9 +440,9 @@ section, we'll see how to extract data from multiple sections.
 </p>
 </div>
 </div>
-<div id="outline-container-org8983e29" class="outline-3">
-<h3 id="org8983e29">Extracting Data Values</h3>
-<div class="outline-text-3" id="text-org8983e29">
+<div id="outline-container-orgfb5b5eb" class="outline-3">
+<h3 id="orgfb5b5eb">Extracting Data Values</h3>
+<div class="outline-text-3" id="text-orgfb5b5eb">
 <p>
 Based on the header rows, we need to extract, for each data entry, the series
 ID, footnotes, period, period name, year, value, and whether it's the latest
@@ -617,9 +617,9 @@ without issue.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org4168d5f" class="outline-3">
-<h3 id="org4168d5f">Converting the Results to CSV</h3>
-<div class="outline-text-3" id="text-org4168d5f">
+<div id="outline-container-org1bc6eb9" class="outline-3">
+<h3 id="org1bc6eb9">Converting the Results to CSV</h3>
+<div class="outline-text-3" id="text-org1bc6eb9">
 <p>
 Lastly, we convert the transformed results to a CSV using the <code>@csv</code> formatter.
 </p>
