@@ -1,0 +1,41 @@
+#+TITLE: Book Review: Machine Learning Yearning by Andrew Ng
+#+DATE: <2019-06-14>
+
+#+begin_preview
+/This is the first of a few posts I'm migrating from my old site, which you can
+still find [[https://pensive-wing-19c199.netlify.app/][here]]. This is a review of Machine Learning Yearning by Andrew Ng./
+#+end_preview
+
+** Introduction and Perspective
+In this post, I am briefly reviewing the draft of Andrew Ng's /Machine Learning Yearning/, which can currently be obtained for free [[https://www.mlyearning.org/][here]]. This is a work in progress, so my comments will be brief and not particularly critical. I obtained the copy I read on May 11; the page numbers and content may have changed since then.
+
+I read the book because I have not had the chance to do too much machine learning work in the recent past. I feared that my skills were getting rusty, so I wanted to "dip my toes" back in the ML water and refresh my memory of that world. This is an ongoing process.
+
+Most of my ML education comes from working through much of the classic /Elements of Statistical Learning/ during my Statistics MS, so my perspective is significantly influenced by my experience with that book.
+
+** Overview of the Book
+In /Machine Learning Yearning/, Ng states that "after finishing this book, you will have a deep understanding of how to set technical direction for a machine learning project" (pg. 8). The key element of that statement is /technical direction./ This book does not teach (and does not claim to teach) any particular ML algorithms. There is no code. There is very, very little mathematical notation. This book covers broad topics such as structuring training/dev/test sets and conducting error analyses, and it does so in a way that is largely agnostic to the ML algorithms used (though, at times, it is fairly clear that it is geared largely toward deep learning/neural networks).
+
+As of May 11, 2019, the book is divided into 58 chapters. Most chapters are only a page or two long. Ng states that the brevity of the chapters is such that "you can print them out and get your teammates to read just the 1-2 pages you need them to know." The short chapters did make the book easy to read as it divided the content into (very) short and easily-digestible pieces. However, I often did not find the chapters sufficiently self-contained to justify the divisions. I don't think the book would have suffered from having chapters 5-10 pages in length instead of 1-2 pages, and slightly longer chapters may have made the flow of information a little easier to follow (not that it was ever a significant challenge).
+
+Core topics covered include:
+- Composition of the train/dev/test sets (chapters 5-7, 11-2)
+- Good characteristics of optimization metrics (chapters 8-12)
+- Error analysis (chapters 14-19)
+- Bias-Variance Trade-off; training vs. test error (chapters 20-32)
+- Comparisons to human-level performance (chapters 33-35)
+- Training/Testing on different data distributions; data mismatch errors; generalization from training to dev set (chapters 36-43)
+- Optimization Verification Testing (chapters 44-46)
+- End-to-end learning vs. pipeline learning (chapters 47-49)
+- Pipeline learning: choosing components; error analysis by parts (chapters 50-57)
+
+** General Thoughts on the Topic
+
+I found that this book provided a valuable supplement to my past reading and experience with machine learning insofar as it got "out of the weeds" and discussed the /process/ rather than the specific implementations. When learning specific ML techniques for the first time, it's easy to get lost in the weeds. And when something goes wrong, that's where one might look for solutions: in the weeds. Is the implementation wrong? Do I need to improve my feature selection? Is the particular method I'm using wrong? This book offers another perspective. Regardless of the techniques used, it may be possible to improve one's model by, for example, seeking out more training examples; conducting a careful error analysis; or increasing the size/complexity of the model. These "big picture" considerations are often taught as an afterthought, if at all, in more mathematically-focused ML books and courses. But they should be taught sooner as they provide an excellent framework for thinking about any given ML approach.
+
+The book naturally had some limitations. Once again, this is an early version; it is entirely possible that some or all of these issues will be addressed at some point in the future. I believe the book should have been clearer from the beginning that the focus was on deep learning/neural networks. Midway through the book, Ng notes that reducing the number of features is not recommended for reducing variance, as feature selection in general is de-emphasized in modern deep learning. Aside from this and the selection of examples, I don't think the deep learning focus is entirely clear. Furthermore, the prerequisites are a little vague. The book was very easy to follow, but it sometimes suffered from avoiding too much detail. Casual references to "regularization" or "early stopping," without more than a cursory explanation of those terms, may be confusing (or simply unnecessary) to some readers.
+
+The book would benefit greatly from a set of simple but well-implemented examples, perhaps in R Shiny or in a Jupyter notebook, of the various key points made throughout the book. This could be done without expecting much, if any, programming experience on the part of the reader, and it would go a long way toward illustrating some of the concepts that may not be entirely intuitive. For example, the reader could explore the impact of trying to generalize a cat identifying tool from pictures found online to pictures taken from smartphones, or the difference in a sentiment analyzer based in an "end-to-end" vs. learning pipeline approach. The examples in the text are certainly useful, but the ability to make changes and explore the results would significantly enhance the experience.
+
+The barriers to entry for ML are decreasing. Specific knowledge of the algorithms themselves is becoming less and less of a requirement (whether this /should/ be the case is a different question, and one I will not attempt to address here). Books like this will be invaluable for guiding the next generation of ML practitioners, many of whom will benefit more from a strong understanding of the big-picture process than from a more theoretical understanding of the specific methods being used. This is a good book; many will find it useful.
+
