@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Simple PyTorch Model for the Numerai Tournament</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class='topnav'>
+  <a href='/index.html'>Home</a> /
+  <a href='/archive.html'>Blog</a> / 
+  <a href='/about.html'>About Me</a>
+</div>
+</div>
+<div id="content">
+<header>
+<h1 class="title">A Simple PyTorch Model for the Numerai Tournament</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org33bddac">Background</a>
+<ul>
+<li><a href="#org1241d20">Problem Setting</a></li>
+</ul>
+</li>
+<li><a href="#org268b8d8">Original <code>fastai</code> model</a>
+<ul>
+<li><a href="#orgb1731ed">Data Setup</a></li>
+<li><a href="#orgfe8c0f4">Model Setup</a></li>
+<li><a href="#org9372e15">Training Loop</a></li>
+<li><a href="#org8046b2d">Summary</a></li>
+</ul>
+</li>
+<li><a href="#org4f8dba1">A Simple PyTorch Model</a>
+<ul>
+<li><a href="#orgd585542">Data Setup</a></li>
+<li><a href="#org8607482">The Model</a></li>
+<li><a href="#orga787df8">The Training Loop</a></li>
+<li><a href="#org986247e">Train the Model</a></li>
+</ul>
+</li>
+<li><a href="#org821b517">Summary</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview">
+<p>
+<i>This is another one from the archives. It covers how to train a basic PyTorch
+model for use in the Numerai tournament, at least as it was in May 2021. See the original post <a href="https://pensive-wing-19c199.netlify.app/post/mlp-numerai-05082021/">here.</a></i>
+</p>
+
+</div>
+
+<div id="outline-container-org33bddac" class="outline-2">
+<h2 id="org33bddac">Background</h2>
+<div class="outline-text-2" id="text-org33bddac">
+<p>
+This short write up is in pursuit of a personal goal to put more of my work and thoughts to
+paper. I'm sure the topic will still be useful to others, but it's not yet fully developed. It's a
+sketch of a work in progress.
+</p>
+
+<p>
+Last August, I took the fast.ai <i>Practical Deep Learning for Coders</i> online course (and worked through
+the accompanying book). The course taught the fundamentals of deep learning using the <code>fastai</code> Python
+library, which offers a higher-level API (and a vast range of useful features and tools) for
+<code>PyTorch</code>. The course (and book) followed a "top-down" approach: learn how to effectively apply the
+models first, and then go back and learn the more foundational concepts, math, etc., in greater
+detail.
+</p>
+
+<p>
+After spending several months using <code>fastai</code> for a number of tasks (including the <a href="https://www.kaggle.com/c/cassava-leaf-disease-classification">Kaggle Cassava Leaf
+Disease Classification competition</a>, the <a href="https://numer.ai/tournament">numer.ai</a> tournament, and a <a href="https://github.com/djliden/fastai-turtle-classifier">turtle classifier</a>), I decided I
+wanted to "pull back the curtain" and start to learn how to use PyTorch. The numer.ai tournament
+seemed like an excellent opportunity to do so. The tournament data come in a very "clean" and
+ready-to-use format, so grappling with the data doesn't have to be a huge part of the modeling
+process. The dataset is big enough for deep learning but not so huge that the models can't be run
+locally. And I already have a working fast.ai model up and running, and I know it's running PyTorch
+under the hood, so I know that it will work!
+</p>
+
+<p>
+One quick note: trying to learn PyTorch is inspired by a desire to learn more; <i>not</i> by any serious
+perceived weaknesses in <code>fastai</code>. Many <code>fastai</code> users and community members, such as Zachary Mueller
+(see the excellent <a href="https://walkwithfastai.com/">walk with fastai</a> project) have shown that <code>fastai</code> is extremely flexible and
+extensible. That said:
+</p>
+<ul class="org-ul">
+<li>Implementations of new methods often appear first as PyTorch models. Using them directly is easier
+to me than translating them to a <code>fastai</code> context.</li>
+<li><code>fastai</code> sometimes hides so many details that I find it hard to determine what, exactly, my models
+are doing. For example, it took me a while to discover that the <code>fastai</code> tabular model I was using
+for the Numerai tournament was implementing batchnorm and dropout layers. The architecture of the
+model was, at least initially, opaque to me.</li>
+<li>While <code>fastai</code> <i>allows</i> plenty of flexibility, it isn't necessarily built for it. I often need to do
+quite a bit of research to figure out how to tweak my training loop in a way that would be trivial
+in a direct PyTorch implementation.</li>
+<li>Some of the other learning resources I've been using, such as the excellent <a href="http://www.d2l.ai/">Dive into Deep
+Learning</a> book, use PyTorch. Rather than translating their code into <code>fastai</code>, I would prefer to
+learn PyTorch directly.</li>
+</ul>
+
+<p>
+In this post, I will first briefly show the <code>fastai</code> model I was previously using, and then introduce
+a (simpler) model written in PyTorch. I will conclude with some reflections on the process.
+</p>
+</div>
+<div id="outline-container-org1241d20" class="outline-3">
+<h3 id="org1241d20">Problem Setting</h3>
+<div class="outline-text-3" id="text-org1241d20">
+<p>
+I won't go into much detail about the Numerai tournament itself &#x2013; the interested reader can learn
+more about it <a href="https://docs.numer.ai/tournament/learn">here</a>. This isn't intended as an introduction to the tournament and I'm not reproducing
+my whole data preparation and processing pipeline. That said, it should be very straightforward to
+apply the code here to data obtained from the tournament.
+</p>
+
+<p>
+The features are all numeric and all take on values of 0, 0.25, 0.5, 0.75, or 1. The targets can
+take the same values. Numerai competitors have tested and discussed the impact of treating the
+targets as categorical rather than as numeric responses and have generally found that
+regression approaches work better than classification approaches. So we will treat this as a
+regression problem with numeric features and targets. The criterion we are trying to optimize is the
+Spearman's rank correlation coefficient. That is, we want to be able to predict the <i>order</i> of the
+responses as accurately as possible. Most users approximate this by directly optimizing mean squared
+error (MSE); we will do the same.
+</p>
+
+<p>
+An obvious question at this phase is: given a large number of observations but a small number of
+targets (recall: all targets take values of 0, 0.25, 0.5, 0.75, or 1), how exactly are we supposed
+to create a meaningful ordering? Well, there are a couple of answers to that. First and foremost:
+we're only aiming for a rough ordering. If we could just make sure all of the "0" targets were
+predicted lower than all of the "1" targets, we'd be off to a great start! In general, in this
+problem, there is a lot of "noise" and very little "signal." We're not going to be able to
+precisely order all of the observations, so having only a few targets to work with doesn't hurt as
+much as it may seem.
+</p>
+
+<p>
+Second, it's possible to obtain reasonably high Spearman correlation values when "blocks" of
+predictions are correctly ordered but when the observations within those blocks are completely
+shuffled. The figure below shows the results of a simulation wherein 5000 observations were divided
+into five targets roughly in proportion to those in the Numerai tournament. "Predictions" were
+generated such that all of the predictions in the lowest category were lower than all of the
+predictions in the next category for all categories. For example, any prediction in category 0.25
+was guaranteed to be lower than any prediction in category 0.5. Within each category, however, the
+predictions were shuffled. This experiment was repeated 5000 times. The average Spearman correlation
+coefficient was 0.859 (the highest possible is 1).
+</p>
+<div class="org-center">
+
+<figure>
+<img src="./figures/20210514-pytorch-numerai/spearman-sim.png" alt="spearman-sim.png">
+
+<figcaption><span class="figure-number">Figure 1: </span>Even when predictions were shuffled within "blocks," high Spearman correlation coefficients were obtained when those blocks were placed in order.</figcaption>
+</figure>
+</div>
+
+<p>
+So even when large "blocks" of predictions were shuffled internally, as long as those "blocks" were
+ordered correctly relative to each other, the Spearman correlation coefficients remained high.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org268b8d8" class="outline-2">
+<h2 id="org268b8d8">Original <code>fastai</code> model</h2>
+<div class="outline-text-2" id="text-org268b8d8">
+<p>
+My original <code>fastai</code> implementation does not differ appreciably from the implementation detailed in
+the official <a href="https://docs.fast.ai/tutorial.tabular.html">fastai Tabular Training tutorial</a>. The components are, briefly:
+</p>
+</div>
+<div id="outline-container-orgb1731ed" class="outline-3">
+<h3 id="orgb1731ed">Data Setup</h3>
+<div class="outline-text-3" id="text-orgb1731ed">
+<p>
+First, we use the <a href="https://docs.fast.ai/tabular.core.html#TabularPandas">TabularPandas</a> helper to load the data and to generate our <code>DataLoaders</code>. <code>DataLoaders</code>
+provide a convenient wrapper around the training and validation data and facilitate passing batches
+of data to the model during the training loop.
+</p>
+
+<p>
+Our data (including training and validation examples) exist in a Pandas DataFrame called
+<code>training_data</code>. We have defined indices <code>train_idx</code> and <code>val_idx</code> corresponding to the training and
+validation examples.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">splits</span> = (<span class="org-builtin">list</span>(train_idx), <span class="org-builtin">list</span>(val_idx))
+<span class="org-variable-name">data</span> = TabularPandas(training_data, cat_names=<span class="org-constant">None</span>,
+                    cont_names=<span class="org-builtin">list</span>(feature_cols.values),
+                    y_names=target_cols, splits = splits)
+
+<span class="org-variable-name">dls</span> = data.dataloaders(bs = 2048)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfe8c0f4" class="outline-3">
+<h3 id="orgfe8c0f4">Model Setup</h3>
+<div class="outline-text-3" id="text-orgfe8c0f4">
+<p>
+We will use a <code>fastai</code> <a href="https://docs.fast.ai/tabular.learner.html#tabular_learner">tabular<sub>learner</sub></a> without much modification and without adjusting many of the
+possible options. As noted above, we're using the MSE loss function. <code>fastai</code> also lets us directly
+specify that we want to see the Spearman correlation coefficient as a "metric." It's not used in the
+optimization process, but we get to see the change in the Spearman correlation coefficient after
+each epoch.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">learn</span> = tabular_learner(dls, layers=[200,200],
+                        loss_func=MSELossFlat(),
+                        metrics = [SpearmanCorrCoef()])
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9372e15" class="outline-3">
+<h3 id="org9372e15">Training Loop</h3>
+<div class="outline-text-3" id="text-org9372e15">
+<p>
+<code>fastai</code> handles the training loop for us &#x2013; we don't need to write it out manually. Here we say to
+train the model for three epochs and to apply a weight decay (l2 penalty) of 0.1.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">learn.fit_one_cycle(3, wd = 0.1)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8046b2d" class="outline-3">
+<h3 id="org8046b2d">Summary</h3>
+<div class="outline-text-3" id="text-org8046b2d">
+<p>
+Without going into too much detail &#x2013; this is, after all, supposed to be a post about PyTorch, which
+I've scarcely mentioned so far &#x2013; I want to highlight some of the key features and shortcomings of
+this approach:
+</p>
+<ul class="org-ul">
+<li>It's concise: we've created a suitable data iterator, defined the model, and run through the
+training loop in only a few lines of code. The training loop in particular took only one line!</li>
+<li>A lot of detail is hidden. We rely on "sane defaults" to a very high degree. What is the model
+architecture? Which optimizer is used? How will information be presented to us throughout the
+training loop?</li>
+<li>It <i>does</i> readily expose some of the key hyperparameters we'll likely wish to experiment with, such
+as weight decay and the number and size of layers. Ultimately, once we have a better understanding
+of the architecture, it's also not too difficult to modify hyperparameters associated with dropout
+and batchnorm.</li>
+</ul>
+
+<p>
+In short, this method gets you from a blank screen to a trainable deep learning model with some
+easily-accessible hyperparameters to optimize about as quickly as one could ask for, but it keeps a
+lot of the details hidden.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4f8dba1" class="outline-2">
+<h2 id="org4f8dba1">A Simple PyTorch Model</h2>
+<div class="outline-text-2" id="text-org4f8dba1">
+<p>
+In an effort to learn some basic PyTorch, I set out to develop a very simple working model. It
+doesn't have all of the bells and whistles of the fastai model &#x2013; no batchnorm, no dropout, no
+weight decay &#x2013; but it works and it is generally easy to understand what the model is doing. This
+provides a good foundation for further experimentation with more complex architectures.
+</p>
+</div>
+<div id="outline-container-orgd585542" class="outline-3">
+<h3 id="orgd585542">Data Setup</h3>
+<div class="outline-text-3" id="text-orgd585542">
+<p>
+A common theme throughout this section is that "It takes a bit more code to do <code>____</code> in PyTorch than
+in <code>fastai</code>. Setting up the data is no exception. I mostly followed <a href="https://pytorch.org/tutorials/beginner/basics/data_tutorial.html#preparing-your-data-for-training-with-dataloaders">this guide</a> for setting up the data
+for use by the PyTorch model.
+</p>
+
+<p>
+The biggest additional step is that we must define a
+custom class inheriting from the PyTorch <code>DataSet</code> class. The class must define:
+</p>
+<ul class="org-ul">
+<li><code>__len__()</code>: a method for finding the length of the dataset; and</li>
+<li><code>__getitem__()</code>: a method for returning an item from the dataset given an index.</li>
+</ul>
+
+<p>
+I wrote the <code>NumerData</code> class for this purpose as shown below. Note that the <code>data</code> argument refers to
+the whole training dataset; <code>feature_cols</code> is a list of the feature column names; and <code>target_cols</code> is a
+named list of the target column names.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">class</span> <span class="org-type">NumerData</span>(Dataset):
+    <span class="org-keyword">def</span> <span class="org-function-name">__init__</span>(<span class="org-keyword">self</span>, data, feature_cols, target_cols):
+        <span class="org-keyword">self</span>.data = data
+        <span class="org-keyword">self</span>.features = data[feature_cols].copy().values.astype(np.float32)
+        <span class="org-keyword">self</span>.targets = data[target_cols].copy().values.astype(np.float32)
+        <span class="org-keyword">self</span>.eras = data.era.copy().values
+
+    <span class="org-keyword">def</span> <span class="org-function-name">__len__</span>(<span class="org-keyword">self</span>):
+        <span class="org-keyword">return</span>(<span class="org-builtin">len</span>(<span class="org-keyword">self</span>.data))
+    
+    <span class="org-keyword">def</span> <span class="org-function-name">__getitem__</span>(<span class="org-keyword">self</span>, idx):
+        <span class="org-keyword">if</span> torch.is_tensor(idx):
+            <span class="org-variable-name">idx</span> = idx.tolist() 
+
+        <span class="org-keyword">return</span> <span class="org-keyword">self</span>.features[idx], <span class="org-keyword">self</span>.targets[idx], <span class="org-keyword">self</span>.eras[idx]
+</pre>
+</div>
+
+<p>
+The dataset ended up being the biggest performance bottleneck for me, at least at first. I had
+initially put off some amount of the processing to the <code>__getitem__()</code> method, which meant that every
+time the <code>DataLoader</code> needed to return a new batch of data, it needed to do a lot more indexing and
+processing than it should have. A couple of examples:
+</p>
+<ul class="org-ul">
+<li>I explicitly included type conversions (to tensors) in the <code>__getitem__()</code> method. This was
+unnecessary as the <code>DataLoader</code> handles this by default. It also took time.</li>
+<li>I made the <code>DataLoader</code> pull the features and targets from the full dataset each time instead of
+storing them as separate objects. That is, instead of just <code>return self.features[idx]</code>, I first
+defined <code>self.features = data[feature_cols]</code>. This should be handled in the <code>__init__()</code> method, not
+each time <code>__getitem__()</code> is called.</li>
+</ul>
+
+<p>
+Note that the <code>NumerData</code> class currently does not define any data. We need to instantiate an object of
+type <code>NumerData</code> with some data in order to use it. We will define separate ~DataSet~s for the
+training and validation data.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">train_ds</span> = NumerData(training_data.iloc[train_idx],
+                     feature_cols, target_cols)
+
+<span class="org-variable-name">val_ds</span> = NumerData(training_data.iloc[val_idx],
+                     feature_cols, target_cols)
+</pre>
+</div>
+
+<p>
+With these defined, we can use use the PyTorch <code>DataLoader</code> to handle iteration through the ~DataSet~s
+in batches. Again, we instantiate separate ~DataLoader~s for our train and validation sets:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">train_dl</span> = DataLoader(train_ds, batch_size = 2048, shuffle=<span class="org-constant">False</span>, num_workers=0)
+<span class="org-variable-name">val_dl</span> = DataLoader(val_ds, batch_size = <span class="org-builtin">len</span>(val_ds), shuffle=<span class="org-constant">False</span>)
+</pre>
+</div>
+
+<p>
+Now our data are ready to go and we can define the model.
+</p>
+</div>
+</div>
+<div id="outline-container-org8607482" class="outline-3">
+<h3 id="org8607482">The Model</h3>
+<div class="outline-text-3" id="text-org8607482">
+<p>
+The model has a few separate components &#x2013; a fact that is easy to miss when working with
+<code>fastai</code>. We need to define:
+</p>
+<ul class="org-ul">
+<li>The model architecture itself</li>
+<li>The loss function (or criterion)</li>
+<li>The optimizer</li>
+</ul>
+
+<p>
+Furthermore, when defining the model, we need to be (just a little bit) mindful of the dimension of
+our inputs (another thing <code>fastai</code> takes care of automatically). Ultimately, none of this is
+particularly onerous:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">n_feat</span> = <span class="org-builtin">len</span>(feature_cols)
+<span class="org-variable-name">net</span> = nn.Sequential(nn.Linear(n_feat, 256),
+                    nn.ReLU(),
+                    nn.Linear(256, 1))
+
+<span class="org-variable-name">criterion</span> = nn.MSELoss()
+<span class="org-variable-name">optim</span> = torch.optim.Adam(params = net.parameters())
+</pre>
+</div>
+
+<p>
+The model we have defined is a simple multilayer perceptron (MLP). Our input batch is passed to a
+linear layer with 256 "neurons." The output of this layer is passed to the <code>ReLU()</code>, or <i>rectified
+linear unit</i>, layer. The output of this layer is passed to another linear layer, which produces the
+one-dimensional output.
+</p>
+
+<p>
+As noted above, we use MSE as our loss function. We use the <code>Adam</code> optimizer; details on this
+optimizer can be found <a href="https://pytorch.org/docs/master/generated/torch.optim.Adam.html">here</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-orga787df8" class="outline-3">
+<h3 id="orga787df8">The Training Loop</h3>
+<div class="outline-text-3" id="text-orga787df8">
+<p>
+The training loop represents the part of the implementation where <code>fastai</code> provides the most help. In
+<code>fastai</code>, the whole process is largely automatic. We called <code>learn.fit_one_cycle()</code>, specified the number
+of epochs, and let the model run. But a lot is happening behind the scenes, and we need to write
+that logic manually in PyTorch.
+</p>
+
+<p>
+We will write a method to train a single epoch. We can then put this in a loop to train multiple
+epochs if needed.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">def</span> <span class="org-function-name">train</span>(epoch, model):
+    <span class="org-variable-name">device</span> = torch.device(<span class="org-string">"cuda:0"</span> <span class="org-keyword">if</span> torch.cuda.is_available() <span class="org-keyword">else</span> <span class="org-string">"cpu"</span>)
+    <span class="org-variable-name">model</span> = model.to(device)
+    
+    <span class="org-comment-delimiter"># </span><span class="org-comment">set up tqdm bar</span>
+    <span class="org-variable-name">pbar</span> = tqdm(<span class="org-builtin">enumerate</span>(BackgroundGenerator(train_dl)),
+                total=<span class="org-builtin">len</span>(train_dl), position=0, leave=<span class="org-constant">False</span>)
+    
+    <span class="org-keyword">for</span> batch_idx, (data, target, era) <span class="org-keyword">in</span> pbar:
+        <span class="org-variable-name">data</span>, <span class="org-variable-name">target</span> = data.to(device), target.to(device)
+        
+        <span class="org-comment-delimiter"># </span><span class="org-comment">reset gradients</span>
+        optim.zero_grad()
+        
+        <span class="org-comment-delimiter"># </span><span class="org-comment">forward pass</span>
+        <span class="org-variable-name">out</span> = model(data)
+
+        <span class="org-comment-delimiter">#</span><span class="org-comment">compute loss</span>
+        <span class="org-variable-name">loss</span> = criterion(out, target)
+
+        <span class="org-comment-delimiter">#</span><span class="org-comment">backpropagation</span>
+        loss.backward()
+        
+        <span class="org-comment-delimiter">#</span><span class="org-comment">update the parameters</span>
+        optim.step()
+
+        <span class="org-keyword">if</span> batch_idx % 100 == 0:
+            <span class="org-keyword">print</span>(f<span class="org-string">'Train Epoch/Batch: {epoch}/{batch_idx}\tTraining Loss: {loss.item():.4f}'</span>)
+</pre>
+</div>
+
+<p>
+In this method, we:
+</p>
+<ol class="org-ol">
+<li>Identify whether we have a GPU available for training and, if so, pass the model to the GPU.</li>
+<li>Using the <code>tqdm</code> package, set up a progress bar for tracking model progress.</li>
+<li>For each batch in the <code>DataLoader</code>:
+<ol class="org-ol">
+<li>Send the features/targets to the appropriate device (GPU if available)</li>
+<li>Reset the gradients</li>
+<li>Compute the forward pass: pass the batch through the model and compute the outputs for each
+observation in the batch</li>
+<li>Compute the loss</li>
+<li>Back-propagate (compute the gradient of the loss function with respect to the weights)</li>
+<li>Update the weights</li>
+<li>Occasionally print the training loss</li>
+</ol></li>
+</ol>
+
+<p>
+We can define a similar method for evaluating our model performance on the validation set (without
+updating model weights). Suppose we've defined a function called <code>era_spearman</code> to calculate the
+average Spearman correlation coefficient across Numerai tournament eras in the validation data. Then
+we can define a validation method as:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">def</span> <span class="org-function-name">test</span>(model):
+    <span class="org-variable-name">device</span> = torch.device(<span class="org-string">"cuda:0"</span> <span class="org-keyword">if</span> torch.cuda.is_available() <span class="org-keyword">else</span> <span class="org-string">"cpu"</span>)
+
+    <span class="org-variable-name">test_loss</span> = 0
+    <span class="org-keyword">with</span> torch.no_grad():
+        <span class="org-keyword">for</span> data, target, era <span class="org-keyword">in</span> val_dl:
+            <span class="org-variable-name">data</span>, <span class="org-variable-name">target</span> = data.to(device), target.to(device)
+            
+            <span class="org-variable-name">out</span> = model(data)
+            <span class="org-variable-name">test_loss</span> += criterion(out, target).item() <span class="org-comment-delimiter"># </span><span class="org-comment">sum up batch loss</span>
+            <span class="org-variable-name">val_corr</span> = era_spearman(preds = out.cpu().numpy().squeeze(),
+                                    targs = target.cpu().numpy().squeeze(),
+                                    eras = era)
+
+        <span class="org-comment-delimiter">#</span><span class="org-comment">test_loss /= len(val_dl.dataset)</span>
+        <span class="org-keyword">print</span>(f<span class="org-string">'Test Loss: {test_loss:.4f}, Test Correlation: {val_corr:.4f}'</span>)
+</pre>
+</div>
+
+<p>
+This follows much of the same logic as the training method, with some key exceptions:
+</p>
+<ul class="org-ul">
+<li>Everything happens under the <code>torch.no_grad()</code> context handler. Why? We're only using the validation
+data to assess the performance of our model; we don't want to compute any gradients and we
+certainly do not want to use these data to update our model weights.</li>
+<li>We make sure to calculate the metric we're really interested in (the Spearman correlation). This
+is useful to check in case the loss function (MSE) does not actually improve the Spearman
+correlation.</li>
+<li>In this particular case, I did <i>not</i> divide the validation data into batches (put differently, the
+batch size is the length of the validation set). It certainly could have been divided into
+batches, though, and doing so may be necessary with larger datasets or in the face of significant
+memory constraints.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org986247e" class="outline-3">
+<h3 id="org986247e">Train the Model</h3>
+<div class="outline-text-3" id="text-org986247e">
+<p>
+We can finally train the model! This part is a simple <code>for</code> loop.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">for</span> epoch <span class="org-keyword">in</span> <span class="org-builtin">range</span>(6):
+    train(epoch, net)
+    test(net)
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org821b517" class="outline-2">
+<h2 id="org821b517">Summary</h2>
+<div class="outline-text-2" id="text-org821b517">
+<p>
+I wrote a lot more code to implement a comparatively-simple PyTorch model than to implement the
+<code>fastai</code> model. The PyTorch model forces us to better understand the structure of the model and the
+logic of the training loop, though it likely takes more time and more finessing to obtain an
+efficiently-performing model with decent results. The <code>fastai</code> model, on the other hand, is very quick
+to implement but does not expose as many of the details. It is relatively quick and easy to get a
+model running and returning decent results, but it can take a bit more work to understand the
+structure of the model and of the training loop.
+</p>
+
+<p>
+I'll be writing more &#x2013; and more complicated &#x2013; PyTorch models in the future. I hope to add in some
+of the additional features included in the <code>fastai</code> tabular implementation, such as dropout layers. I
+also want to experiment further with regularization &#x2013; L2 penalization is very easy to use in
+PyTorch, but I've found L1 penalization to work far better for regression models in the Numerai
+tournament and I want to see if that distinction also holds true for regression models.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2021-05-14 Fri 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
