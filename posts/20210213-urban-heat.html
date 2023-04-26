@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapping Urban Heat by Census Tract in R</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class='topnav'>
+  <a href='/index.html'>Home</a> /
+  <a href='/archive.html'>Blog</a> / 
+  <a href='/about.html'>About Me</a>
+</div>
+</div>
+<div id="content">
+<header>
+<h1 class="title">Mapping Urban Heat by Census Tract in R</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgc95352a">Background</a></li>
+<li><a href="#org37cc55c">Getting the Data</a>
+<ul>
+<li><a href="#org60b4c59">Unpacking and Visualizing the Raw Data</a></li>
+</ul>
+</li>
+<li><a href="#orgc761e90">Mapping Heat by Census Tract</a></li>
+<li><a href="#org3cb9f22">Final Maps</a></li>
+<li><a href="#org31f770d">Resources</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview">
+<p>
+/Another one from the archives&#x2013;this is one of my projects from my time at the
+Guinn Center, and something I very much wish I could have developed further: an
+analysis of urban heat in Las Vegas./
+</p>
+
+</div>
+
+<div id="outline-container-orgc95352a" class="outline-2">
+<h2 id="orgc95352a">Background</h2>
+<div class="outline-text-2" id="text-orgc95352a">
+<p>
+For the past several months, I have been working on an analysis on the effects
+of urban heat on vulnerable populations, particularly during a public health
+crisis. For some background, I currently live in Las Vegas, where summer heat
+can exceed 110 degrees. Last summer included a 45-day-long streak of
+temperatures over 100 degrees.
+</p>
+
+<p>
+Urban heat is not distributed evenly within cities. Features such as parks or
+ponds can lead to cooler temperatures in some areas, while areas without foliage
+or with dark surfaces such as roads and buildings lead to warmer
+temperatures. This effect is particularly pronounced at night: urban surfaces
+absorb heat during the daytime, warming the air at night.
+</p>
+
+<p>
+An NPR Special Series titled <a href="https://www.npr.org/series/756048128/urban-heat">Heat and Health in American Cities</a> compared urban
+heat to household income in the 100 most populated cities. They found that, in
+many cities, income and urban heat were inversely related: lower-income
+households tended to be in the parts of cities most affected by urban heat,
+while higher-income households were more often found in cooler areas.
+</p>
+
+<p>
+The key to this research was aggregating urban heat data within census
+boundaries (such as tracts or blocks). I decided to recreate this analysis in
+<code>R</code>. Once urban heat data is linked to Census-designated boundaries, it can easily
+be compared to metrics such as income, poverty, disability, access to health
+insurance, demographics, any many other data points collected by the U.S. Census
+Bureau's American Community Survey (ACS). In R, obtaining and mapping these
+metrics is a relatively simple process with packages such as <code>tidycensus</code> and
+<code>tigris</code>.
+</p>
+
+<p>
+The remainder of this post will provide a very brief overview of how to obtain
+satellite surface temperature data; aggregate those data points within census
+tracts; and plot the results. I don't know if this mapping exercise will make it
+into the final project report, but I learned a lot from working through it, and
+I wanted to make sure to document my steps here.
+</p>
+
+<p>
+Though it should be possible to follow this guide without much prior experience
+working with spatial data, <a href="https://geocompr.robinlovelace.net/">This free book</a>, <i>Geocomputation with R</i> by Robin
+Lovelace, Jakub Nowosad, Jannes Muenchow, is an excellent resource for those
+interested in learning more. It is particularly useful for understanding topics
+such as <i>projections</i> and the differences between raster and vector data. The
+section on <a href="https://geocompr.robinlovelace.net/geometric-operations.html#raster-vector">Raster-vector interactions</a> is particularly relevant to this task as
+we will be taking raster values (the heat map) and aggregating them within
+polygon boundaries (census tracts).
+</p>
+</div>
+</div>
+
+<div id="outline-container-org37cc55c" class="outline-2">
+<h2 id="org37cc55c">Getting the Data</h2>
+<div class="outline-text-2" id="text-org37cc55c">
+<p>
+I obtained surface temperature satellite data from the NASA/USGS Landsat 8
+satellite. The data can be obtained through an API, though for this example, I
+downloaded the data manually. I looked for data meeting the following criteria:
+</p>
+<ul class="org-ul">
+<li>From June-August 2020</li>
+<li>Cloud cover less than 4%</li>
+<li>Landsat C1 Analysis-Ready Data (ARD) datasets</li>
+<li>I ultimately downloaded a raster map with ID
+<code>LC08_CU_005011_20200806_20200824_C01_V01</code>. This map came from 06
+August, 2020. Details, including a download link, can be found <a href="https://earthexplorer.usgs.gov/scene/metadata/full/5e83a38b677b457d/LC08_CU_005011_20200806_C01_V01/">here</a>.</li>
+</ul>
+
+<p>
+So what data did we actually obtain? Downloading the "Provisional Land Surface
+Temperature" file returns a <code>.tar</code> file with a number of <code>.tif</code> raster images. We're
+interested in the one with <code>ST.tif</code> at the end (ST for Surface Temperature). This
+provides a raster map of the region, at 30-meter spatial resolution, with
+surface temperatures in tenths of a degree Kelvin. That is, each 30-meter "cell"
+in the map is associated with a surface temperature value.
+</p>
+</div>
+
+<div id="outline-container-org60b4c59" class="outline-3">
+<h3 id="org60b4c59">Unpacking and Visualizing the Raw Data</h3>
+<div class="outline-text-3" id="text-org60b4c59">
+<p>
+This section requires the <code>raster</code> and <code>sf</code> packages. Below, we untar the map and
+extract the map of interest.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R"><span class="org-ess-modifiers">library</span>(raster)
+<span class="org-ess-modifiers">library</span>(sf)
+
+<span class="org-comment-delimiter">## </span><span class="org-comment">untar the data</span>
+untar(tarfile = <span class="org-string">"PATH-TO-TARFILE.tar"</span>, exdir = <span class="org-string">"DESTINATION-DIRECTORY"</span>)
+file.copy(<span class="org-string">"./data/raw/testsat/LC08_CU_005011_20200806_20200824_C01_V01_ST.tif"</span>,
+          <span class="org-string">"IMAGE-DESTINATION/st_map.tif"</span>)
+
+<span class="org-comment-delimiter">## </span><span class="org-comment">Access the file as a raster image, plot, and save as png</span>
+st_map = raster(<span class="org-string">"./data/processed/st_map.tif"</span>)
+png(file = <span class="org-string">"./figs/st_map.png"</span>)
+plot(st_map)
+dev.off()
+</pre>
+</div>
+
+<div class="org-center">
+
+<figure>
+<img src="./figures/20210213-urban-heat/st_map.png" alt="st_map.png">
+
+<figcaption><span class="figure-number">Figure 1: </span>Raw raster map of surface temperatures around Las Vegas area</figcaption>
+</figure>
+</div>
+
+<p>
+Starting from this map, we want to (1) crop to the area immediately surrounding
+Las Vegas, and (2) average the temperature values within each census tract,
+allowing us to compare tract-level surface temperatures to other data collected
+at the census tract level.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc761e90" class="outline-2">
+<h2 id="orgc761e90">Mapping Heat by Census Tract</h2>
+<div class="outline-text-2" id="text-orgc761e90">
+<p>
+First, we'll use the <code>tigris</code> package to download the census tract boundaries in
+Nevada and crop to the Las Vegas area.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-R">lv_tracts <span class="org-ess-assignment">&lt;-</span> tigris::tracts(state=<span class="org-string">"NV"</span>) <span class="org-ess-XopX">%&gt;%</span>
+  st_crop(xmin=-115.38, ymin=35.92, xmax = -114.88, ymax = 36.38) 
+</pre>
+</div>
+
+<p>
+Next, we'll reproject our tract-level data such that it has the same projection
+as the raster data. Computationally, transforming vector data (our tract data)
+is much less expensive than transforming raster data. After reprojecting, we can
+use the <code>crop</code> function from the <code>raster</code> package to crop the raster image to the
+Las Vegas area as defined in <code>lv_tracts</code>.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-R">lv_tracts_reprojected = st_transform(lv_racts, crs(st_map))
+sat_cropped = crop(st_map, lv_tracts_reprojected)
+</pre>
+</div>
+
+<p>
+With this accomplished, we use the <code>raster::extract()</code> function to extract the
+mean of the raster values within the boundaries defined by
+<code>lv_tracts_reprojected</code>, which contains the census tract boundaries projected to
+align with the raster map.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">heat_map = extract(sat_cropped,           <span class="org-comment-delimiter"># </span><span class="org-comment">cropped raster object</span>
+                   lv_tracts_reprojected, <span class="org-comment-delimiter"># </span><span class="org-comment">vector map of LV</span>
+                   df=<span class="org-ess-constant">TRUE</span>,               <span class="org-comment-delimiter"># </span><span class="org-comment">return as data frame</span>
+                   fun=mean,              <span class="org-comment-delimiter"># </span><span class="org-comment">return the mean of each polygon</span>
+                   sp=<span class="org-ess-constant">TRUE</span>)               <span class="org-comment-delimiter"># </span><span class="org-comment">append to lv_tracts_reprojected</span>
+
+<span class="org-comment-delimiter">## </span><span class="org-comment">Visualize</span>
+sf_heat_map = st_as_sf(heat_map)          <span class="org-comment-delimiter"># </span><span class="org-comment">Convert to simple features (sf) vector data</span>
+png(file=<span class="org-string">"IMAGE_DESTINATION/heatmaptest.png"</span>)
+plot(out[<span class="org-string">"st_map"</span>])                       <span class="org-comment-delimiter"># </span><span class="org-comment">plot the column of raster values</span>
+dev.off()
+</pre>
+</div>
+
+<div class="org-center">
+
+<figure>
+<img src="./figures/20210213-urban-heat/heatmaptest.png" alt="heatmaptest.png">
+
+<figcaption><span class="figure-number">Figure 2: </span>Average Surface Temperatures by Census Tract in Las Vegas, Nevada (tenths of a degree Kelvin)</figcaption>
+</figure>
+</div>
+
+<p>
+We're closer to our goal, but not quite there yet. Our map is rotated, and the
+scale (tenths of a degree Kelvin) isn't especially interpretable. First, we'll
+reproject the map to the correct orientation (back to the original projection of
+the census tract data).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">heat_tracts_transformed = st_transform(x=sf_heat_map, crs = crs(lv_tracts))
+png(<span class="org-string">"tract_repro.png"</span>)
+plot(heat_tracts_transformed[<span class="org-string">"st_map"</span>])
+dev.off()
+</pre>
+</div>
+
+<div class="org-center">
+
+<figure>
+<img src="./figures/20210213-urban-heat/tract_repro.png" alt="tract_repro.png">
+
+<figcaption><span class="figure-number">Figure 3: </span>Re-projected Map of Surface Temperatures by Census Tract</figcaption>
+</figure>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3cb9f22" class="outline-2">
+<h2 id="org3cb9f22">Final Maps</h2>
+<div class="outline-text-2" id="text-org3cb9f22">
+<p>
+Lastly, we can apply some formatting to make it more interpretable. I used
+<code>ggplot2</code> for all of the visual tweaks (details not shown).
+</p>
+
+<div class="org-center">
+
+<figure>
+<img src="./figures/20210213-urban-heat/ST_LV.png" alt="ST_LV.png">
+
+<figcaption><span class="figure-number">Figure 4: </span>Visualizing Urban Heat by Census Tract in Las Vegas, Nevada</figcaption>
+</figure>
+</div>
+
+<p>
+We can now plot other metrics by census tract and visually compare them to our
+urban heat map. For example, we can look at poverty by census tract:
+</p>
+
+<div class="org-center">
+
+<figure>
+<img src="./figures/20210213-urban-heat/poverty.png" alt="poverty.png">
+
+<figcaption><span class="figure-number">Figure 5: </span>Poverty by Census Tract in Las Vegas, Nevada</figcaption>
+</figure>
+</div>
+
+<p>
+A quick visual inspection of these two maps shows that the Sunrise Manor and
+Winchester areas have relatively high temperatures and a high proportion of
+residents living abelow the poverty line. Conversely, the Summerlin area on the
+west side of Las Vegas has among the lowest temperatures and the lowest rates of
+poverty.
+</p>
+
+<p>
+There are plenty of additional analyses we can conduct from here. The NPR report
+linked above calculated correlations between tract-level surface temperatures
+and household incomes to determine that the two were inversely correlated. There
+are also a variety of <a href="https://maczokni.github.io/crimemapping_textbook_bookdown/spatial-regression-models.html">spatial regression models</a> and <a href="https://geocompr.robinlovelace.net/spatial-cv.html">statistical learning/machine
+learning</a> techniques that can be applied to spatial data. Understanding how to
+connect different sources of spatial data &#x2013; such as the census tracts and heat
+data above &#x2013; is an important first step to conducting these analyses.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org31f770d" class="outline-2">
+<h2 id="org31f770d">Resources</h2>
+<div class="outline-text-2" id="text-org31f770d">
+<ul class="org-ul">
+<li><a href="https://cran.r-project.org/web/views/Spatial.html">CRAN Task View: Analysis
+of Spatial Data</a>: A CRAN hub explaining the <code>R</code> ecosystem of spatial data
+analysis packages</li>
+<li><a href="https://rspatial.org/raster/index.html">Spatial Data Science with R</a>: A site providing a broad overview of spatial data
+science concepts and methods in <code>R</code>.</li>
+<li><a href="https://geocompr.robinlovelace.net/">Geocomputation with R</a>: A book by Robin Lovelace, Jakub Nowosad, and Jannes
+Muenchow, now published by CRC press. I learned most of what I presented above
+from this book, which provides a thorough account of the ways of manipulating,
+mapping, and analyzing spatial data, with numerous excellent examples.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2021-02-13 Sat 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
