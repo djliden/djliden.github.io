@@ -1,0 +1,50 @@
+#+title: Writing on AI and Postgres
+* Background
+
+#+begin_preview
+Since this start of this year, I've been working on and writing about AI tools
+for working with Postgres databases. Most of this work has involved finding
+different ways to integrate ChatGPT (and previously Codex) with other tools and
+workflows. I wanted to collect and share some of that writing here, as it's
+related to a lot of the other things I write about on my personal blog.
+#+end_preview
+
+
+* [[https://innerjoin.bit.io/making-a-production-llm-prompt-for-text-to-sql-translation-b798b6e94783][Making a Production LLM Prompt for Text-to-SQL Translation]]
+This article introduces our work on AI+databases. Our original goal was simple:
+make a great natural language to SQL translation system. This article talks
+about some of the challenges and opportunities in that area and introduces a
+[[https://github.com/bitdotioinc/pg-text-query/tree/liden/test_suite/playground][Streamlit app]] we put together for testing text-to-SQL translation prompts.
+* [[https://innerjoin.bit.io/make-chatgpt-stop-chatting-and-start-writing-sql-fd5560049ae4][Make ChatGPT Stop Chatting and Start Writing SQL]]
+I wrote this article after the ChatGPT API was released. We started by using the
+Codex code completion models but the much lower price of ~gpt-3.5-turbo~ made a
+compelling case for switching to ChatGPT. This proved to be a timely article:
+shortly after we published this article, OpenAI announced that they were
+discontinuing the Codex model. This article provides a useful guide for using
+ChatGPT to get much of the same functionality.
+* [[https://innerjoin.bit.io/llm-sql-translation-prompt-testing-part-1-comparing-chatgpt-to-codex-78da57213ebe][LLM Prompt Testing Part 1: Comparing ChatGPT to Codex]]
+This article presents a simple suite of text-to-SQL translations and compares
+the performance of the Codex and ChatGPT models.
+* [[https://innerjoin.bit.io/use-llms-with-other-tools-for-better-sql-translation-21e35de8f03e][Use LLMs with Other Tools for Better SQL Translation]]
+#+begin_quote
+The Unix Philosophy considers text streams a universal interface, and emphasizes
+the composability of processes that act on text streams. This is what LLMs do:
+they act on and return text streams.
+#+end_quote
+
+This article urges readers to think of how LLMs might interface with other
+tools. As shown by projects such as LangChain and AutoGPT, their usefulness is
+multiplied when they are integrated with other projects and tools, not just used
+for chatting.
+* [[https://innerjoin.bit.io/vector-similarity-search-in-postgres-with-bit-io-and-pgvector-c58ac34f408b][Vector Similarity Search in Postgres with bit.io and pgvector]]
+In this article, I briefly show how to use the ~pgvector~ Postgres extension for
+semantic search. I exported all of bit.io's docs to a Postgres database, created
+vector embeddings from the docs, and showed how to use ~pgvector~ to query the
+embeddings. Then I used ChatGPT to generate summaries from the results of
+semantic search applied to the docs.
+* [[https://innerjoin.bit.io/pre-classify-tasks-for-better-chatgpt-completions-f197ad01618c][Pre-Classify Tasks for Better ChatGPT Completions]]
+In my most recent article, I described how we used a two-step process to
+generate API calls using ChatGPT. We first used ChatGPT to identify the /task/
+that the user wanted to complete, and then we combined the user prompt with a
+task-specific prompt to generate API call completions. The task-specific prompt
+left much less room for error and resulted in better completion quality.
