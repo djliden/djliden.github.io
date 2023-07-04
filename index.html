@@ -59,19 +59,19 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="preamble" class="status">
-<h1>Daniel Liden</h1>
-<div class='topnav'>
-  <a href='/index.html'>Home</a> /
-  <a href='/archive.html'>Blog</a> / 
-  <a href='/about.html'>About Me</a> /
-  <a href='/photos.html'>Photos</a>
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2> 
+  <div>
+    <a href='/index.html' style='font-weight:bold; font-style:italic;'>Home</a> /
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a>
+  </div>
 </div>
+<hr style="border-top: 1px solid black;">
 </div>
 <div id="content">
-
-<div id="outline-container-orge64cf00" class="outline-2">
-<h2 id="orge64cf00">Welcome</h2>
-<div class="outline-text-2" id="text-orge64cf00">
 <p>
 My name is Dan. I am a developer advocate at Databricks. I focus on MLops and
 LLMops.
@@ -85,15 +85,32 @@ and written about topics such as <a href="https://innerjoin.bit.io/the-high-clim
 turnover</a>, <a href="https://medium.com/the-inner-join/a-case-for-doubling-the-size-of-the-us-house-of-representatives-2799a5268920">the size of the House of Representatives</a>, and much more.
 <a href="./about.html">Read more&#x2026;</a>
 </p>
+<div id="outline-container-orge520fa4" class="outline-2">
+<h2 id="orge520fa4">Recent Posts</h2>
+<div class="outline-text-2" id="text-orge520fa4">
+</div>
+<div id="outline-container-org08997d6" class="outline-3">
+<h3 id="org08997d6"><a href="posts/20230619-yasnippet-chatgpt-shell.html">(2023-06-19) Yasnippet for Prompt Templates for Chatgpt-Shell</a></h3>
+<div class="outline-text-3" id="text-org08997d6">
+<p>
+The wonderful <a href="https://github.com/xenodium/chatgpt-shell">chatgpt-shell</a> package lets you interact with the gpt-3.5 and gpt-4
+APIs in emacs via a handy shell built on top of <code>comint-mode</code>. It also integrates
+well with <code>org-mode</code>.
+</p>
+
+<p>
+I find that I tend to re-use a few prompt patterns for specific tasks. Yasnippet provides a great
+way to create prompt <i>templates</i> made up of some fixed component with placeholders
+for user input. I can easily insert these prompt templates when working with
+<code>chatgpt-shell</code> to gain easy access to reusable, task-specific prompts. This post
+describes how to start using Yasnippet for prompt templates for use with
+<code>chatgpt-shell</code>.
+</p>
 </div>
 </div>
-<div id="outline-container-org0015cf2" class="outline-2">
-<h2 id="org0015cf2">Recent Posts</h2>
-<div class="outline-text-2" id="text-org0015cf2">
-</div>
-<div id="outline-container-org6c102a1" class="outline-3">
-<h3 id="org6c102a1"><a href="posts/20230428-ai-db-writing.html">(2023-06-01) Writing on AI and Postgres</a></h3>
-<div class="outline-text-3" id="text-org6c102a1">
+<div id="outline-container-org32cf709" class="outline-3">
+<h3 id="org32cf709"><a href="posts/20230428-ai-db-writing.html">(2023-06-01) Writing on AI and Postgres</a></h3>
+<div class="outline-text-3" id="text-org32cf709">
 <p>
 Since this start of this year, I've been working on and writing about AI tools
 for working with Postgres databases. Most of this work has involved finding
@@ -103,9 +120,9 @@ related to a lot of the other things I write about on my personal blog.
 </p>
 </div>
 </div>
-<div id="outline-container-org1df0205" class="outline-3">
-<h3 id="org1df0205"><a href="posts/20230310-chatgpt-julia-2.html">(2023-03-10) Using the ChatGPT API with Julia Part 2: Defining a Chat Struct</a></h3>
-<div class="outline-text-3" id="text-org1df0205">
+<div id="outline-container-org46065b5" class="outline-3">
+<h3 id="org46065b5"><a href="posts/20230310-chatgpt-julia-2.html">(2023-03-10) Using the ChatGPT API with Julia Part 2: Defining a Chat Struct</a></h3>
+<div class="outline-text-3" id="text-org46065b5">
 <p>
 One of the things that makes working with the ChatGPT API a little different
 from working with, e.g., the <code>davinci-text-003</code> model api is the need to maintain
@@ -119,9 +136,9 @@ For the basics of working with the ChatGPT API, check out <a href="20230303-chat
 </p>
 </div>
 </div>
-<div id="outline-container-orgcb45715" class="outline-3">
-<h3 id="orgcb45715"><a href="posts/20230303-chatgpt-julia.html">(2023-03-04) Using the ChatGPT API with Julia Part 1: the HTTP.jl Library</a></h3>
-<div class="outline-text-3" id="text-orgcb45715">
+<div id="outline-container-orgf172d86" class="outline-3">
+<h3 id="orgf172d86"><a href="posts/20230303-chatgpt-julia.html">(2023-03-04) Using the ChatGPT API with Julia Part 1: the HTTP.jl Library</a></h3>
+<div class="outline-text-3" id="text-orgf172d86">
 <p>
 This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
 with the OpenAI ChatGPT API, which was made public a few days ago. This post
@@ -131,36 +148,19 @@ histories and engage more interactively with the API.
 </p>
 </div>
 </div>
-<div id="outline-container-orgcc515f6" class="outline-3">
-<h3 id="orgcc515f6"><a href="posts/20221217-denote-quarto.html">(2022-12-22) Using Quarto Files with Denote</a></h3>
-<div class="outline-text-3" id="text-orgcc515f6">
+<div id="outline-container-orgbe6731b" class="outline-3">
+<h3 id="orgbe6731b"><a href="posts/20221217-denote-quarto.html">(2022-12-22) Using Quarto Files with Denote</a></h3>
+<div class="outline-text-3" id="text-orgbe6731b">
 <p>
 The latest release of <a href="https://protesilaos.com/emacs/denote">Denote</a> (by the inimitable Protesilaos Stavrou) introduced
 support for <a href="https://protesilaos.com/codelog/2022-10-30-demo-denote-custom-file-type/">custom file types</a> in addition to the defaults, Org, Markdown+YAML,
-Markdown+TOML, and plain text. This post shows how to add <a href="https://quarto.org/">Quarto</a> files
-(.qmd). Quarto, the successor to R Markdown, is "an open-source scientific and
-technical publishing system" with support for Python, R, Julia, and
-Observable. The setup detailed here will allow one to choose the .qmd filetype
-when creating a new Denote file.
-</p>
-</div>
-</div>
-<div id="outline-container-org1a6f5d9" class="outline-3">
-<h3 id="org1a6f5d9"><a href="posts/20220918-jq-example.html">(2022-09-18) Processing a JSON API Response with jq</a></h3>
-<div class="outline-text-3" id="text-org1a6f5d9">
-<p>
-There are countless ways of processing JSON data and converting it to different
-formats. Historically, I've used Python and loaded the data into a Pandas
-Dataframe for processing. This isn't really necessary for simple tasks,
-though. Sometimes, a lightweight command line tool does the job just fine. Enter
-<code>jq</code>. <a href="https://stedolan.github.io/jq/">jq</a> is "like <code>sed</code> for JSON data." This post walks through an example of
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orge6a543e" class="outline-2">
-<h2 id="orge6a543e">Post Archive</h2>
-<div class="outline-text-2" id="text-orge6a543e">
+<div id="outline-container-orgce0596b" class="outline-2">
+<h2 id="orgce0596b">Post Archive</h2>
+<div class="outline-text-2" id="text-orgce0596b">
 <p>
 <a href="archive.html">All Posts</a>
 </p>

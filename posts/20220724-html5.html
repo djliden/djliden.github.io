@@ -59,13 +59,17 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="preamble" class="status">
-<h1>Daniel Liden</h1>
-<div class='topnav'>
-  <a href='/index.html'>Home</a> /
-  <a href='/archive.html'>Blog</a> / 
-  <a href='/about.html'>About Me</a> /
-  <a href='/photos.html'>Photos</a>
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2> 
+  <div>
+    <a href='/index.html' style='font-weight:bold; font-style:italic;'>Home</a> /
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a>
+  </div>
 </div>
+<hr style="border-top: 1px solid black;">
 </div>
 <div id="content">
 <header>
@@ -74,9 +78,9 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org83309db">The Problem</a></li>
-<li><a href="#org4dcb406">Changes to the Site Config</a></li>
-<li><a href="#org20b03ab">The Results</a></li>
+<li><a href="#orgb1c0b32">The Problem</a></li>
+<li><a href="#orga275989">Changes to the Site Config</a></li>
+<li><a href="#orgd565826">The Results</a></li>
 </ul>
 </div>
 </nav>
@@ -98,9 +102,9 @@ While that brief introduction should capture the necessary changes, we can get
 into more specifics.
 </p>
 
-<div id="outline-container-org83309db" class="outline-2">
-<h2 id="org83309db">The Problem</h2>
-<div class="outline-text-2" id="text-org83309db">
+<div id="outline-container-orgb1c0b32" class="outline-2">
+<h2 id="orgb1c0b32">The Problem</h2>
+<div class="outline-text-2" id="text-orgb1c0b32">
 <p>
 If we use the default settings, figures aren't wrapped in <code>&lt;figure&gt;</code> blocks and
 captions aren't wrapped in <code>&lt;figcaption&gt;</code> blocks, so none of the formatting we
@@ -128,9 +132,9 @@ The image and caption appear left-aligned on the page. Here's the html:
 </div>
 </div>
 
-<div id="outline-container-org4dcb406" class="outline-2">
-<h2 id="org4dcb406">Changes to the Site Config</h2>
-<div class="outline-text-2" id="text-org4dcb406">
+<div id="outline-container-orga275989" class="outline-2">
+<h2 id="orga275989">Changes to the Site Config</h2>
+<div class="outline-text-2" id="text-orga275989">
 <p>
 To address this, we need to change the <code>org-html-doctype</code> and <code>org-html-html5-fancy</code>
 variables. We can do this in the export configuration's
@@ -179,9 +183,9 @@ key changes.
 </div>
 </div>
 </div>
-<div id="outline-container-org20b03ab" class="outline-2">
-<h2 id="org20b03ab">The Results</h2>
-<div class="outline-text-2" id="text-org20b03ab">
+<div id="outline-container-orgd565826" class="outline-2">
+<h2 id="orgd565826">The Results</h2>
+<div class="outline-text-2" id="text-orgd565826">
 <p>
 With these changes, our images and captions are now centered:
 </p>
