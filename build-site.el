@@ -121,6 +121,7 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :html-doctype "html5"
              :html-html5-fancy t
              :htmlized-source t
+             :exclude ".*/posts/drafts/.*"  ; Exclude drafts directory from publishing
              )
        (list "org-site:static"
              :base-directory "./content/"
@@ -128,6 +129,7 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :publishing-directory "./public"
              :recursive t
              :publishing-function 'org-publish-attachment
+             :exclude ".*/posts/drafts/.*"  ; Exclude drafts directory from publishing
              )
        (list "org-site:assets"
              :base-directory "./assets/"
