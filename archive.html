@@ -75,9 +75,199 @@ for the JavaScript code in this tag.
 <header>
 <h1 class="title">Posts Archive</h1>
 </header>
-<div id="outline-container-org2066b4b" class="outline-2">
-<h2 id="org2066b4b"><a href="posts/20230619-yasnippet-chatgpt-shell.html">(2023-06-19) Yasnippet for Prompt Templates for Chatgpt-Shell</a></h2>
-<div class="outline-text-2" id="text-org2066b4b">
+<div id="outline-container-org6669554" class="outline-2">
+<h2 id="org6669554"><a href="posts/20230428-ai-db-writing.html">(2023-06-01) Writing on AI and Postgres</a></h2>
+<div class="outline-text-2" id="text-org6669554">
+<p>
+Since this start of this year, I've been working on and writing about AI tools
+for working with Postgres databases. Most of this work has involved finding
+different ways to integrate ChatGPT (and previously Codex) with other tools and
+workflows. I wanted to collect and share some of that writing here, as it's
+related to a lot of the other things I write about on my personal blog.
+</p>
+</div>
+</div>
+<div id="outline-container-org4ad7be2" class="outline-2">
+<h2 id="org4ad7be2"><a href="posts/20230310-chatgpt-julia-2.html">(2023-03-10) Using the ChatGPT API with Julia Part 2: Defining a Chat Struct</a></h2>
+<div class="outline-text-2" id="text-org4ad7be2">
+<p>
+One of the things that makes working with the ChatGPT API a little different
+from working with, e.g., the <code>davinci-text-003</code> model api is the need to maintain
+the history of a given chat session. A Julia <code>Struct</code> containing the chat
+history, coupled with a function that acts on that Struct, provides a good way
+to work with the ChatGPT API.
+</p>
+
+<p>
+For the basics of working with the ChatGPT API, check out <a href="20230303-chatgpt-julia.html">part 1</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-orga8db3d7" class="outline-2">
+<h2 id="orga8db3d7"><a href="posts/20230303-chatgpt-julia.html">(2023-03-04) Using the ChatGPT API with Julia Part 1: the HTTP.jl Library</a></h2>
+<div class="outline-text-2" id="text-orga8db3d7">
+<p>
+This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
+with the OpenAI ChatGPT API, which was made public a few days ago. This post
+will only include the minimum necessary detail for getting started with the
+API. Future posts will go into a little more detail on how to send message
+histories and engage more interactively with the API.
+</p>
+</div>
+</div>
+<div id="outline-container-orgd49e6a7" class="outline-2">
+<h2 id="orgd49e6a7"><a href="posts/20221217-denote-quarto.html">(2022-12-22) Using Quarto Files with Denote</a></h2>
+<div class="outline-text-2" id="text-orgd49e6a7">
+<p>
+The latest release of <a href="https://protesilaos.com/emacs/denote">Denote</a> (by the inimitable Protesilaos Stavrou) introduced
+support for <a href="https://protesilaos.com/codelog/2022-10-30-demo-denote-custom-file-type/">custom file types</a> in addition to the defaults, Org, Markdown+YAML,
+Markdown+TOML, and plain text. This post shows how to add <a href="https://quarto.org/">Quarto</a> files
+(.qmd). Quarto, the successor to R Markdown, is "an open-source scientific and
+technical publishing system" with support for Python, R, Julia, and
+Observable. The setup detailed here will allow one to choose the .qmd filetype
+when creating a new Denote file.
+</p>
+</div>
+</div>
+<div id="outline-container-org2ec0bdf" class="outline-2">
+<h2 id="org2ec0bdf"><a href="posts/20220918-jq-example.html">(2022-09-18) Processing a JSON API Response with jq</a></h2>
+<div class="outline-text-2" id="text-org2ec0bdf">
+<p>
+There are countless ways of processing JSON data and converting it to different
+formats. Historically, I've used Python and loaded the data into a Pandas
+Dataframe for processing. This isn't really necessary for simple tasks,
+though. Sometimes, a lightweight command line tool does the job just fine. Enter
+<code>jq</code>. <a href="https://stedolan.github.io/jq/">jq</a> is "like <code>sed</code> for JSON data." This post walks through an example of
+downloading data from an API, extracting a few fields based on some conditions,
+and converting the results to a CSV using <code>jq</code>.
+</p>
+</div>
+</div>
+<div id="outline-container-orgfb0538c" class="outline-2">
+<h2 id="orgfb0538c"><a href="posts/20220724-html5.html">(2022-07-24) Figures and Captions Don't Appear as Expected with Default Export Options</a></h2>
+<div class="outline-text-2" id="text-orgfb0538c">
+<p>
+I noticed that some of the formatting on this site was a little off and some of
+the org-mode components weren't being translated to HTML in quite the way I
+expected. Fixing this was simple, but <i>finding</i> the solution wasn't. In short, it
+was necessary to set the <code>org-html-doctype</code> to <code>html5</code> (the default is
+<code>xhtml-strict</code>). Furthermore, I set <code>org-html-html5-fancy</code> to <code>t</code>. These ensure the
+org export process takes advantage of block elements offered in the <code>html5</code>
+standard.
+</p>
+</div>
+</div>
+<div id="outline-container-org220d0a9" class="outline-2">
+<h2 id="org220d0a9"><a href="posts/20220719-julia-plots.html">(2022-07-19) Basic Plotting in Julia</a></h2>
+<div class="outline-text-2" id="text-org220d0a9">
+<p>
+In this short post, I show one of the many ways of using Julia within emacs
+org mode, and will describe some of the basic plotting functionality in Julia.
+</p>
+</div>
+</div>
+<div id="outline-container-org1838fa3" class="outline-2">
+<h2 id="org1838fa3"><a href="posts/20220208-org-source.html">(2022-02-08) Org Mode Headlines in Org Source Blocks</a></h2>
+<div class="outline-text-2" id="text-org1838fa3">
+<p>
+When writing about org mode, one often wants to show what particular org
+headline look like in terms of formatting, properties, tags, options,
+etc,. However, even within a babel org source block, an org header will be
+parsed and exported as a header. We can get around this by prepending the
+headline with a comma. The comma won't show up when exported: all that is
+exported is a nicely-formatted example of an org headline.
+</p>
+</div>
+</div>
+<div id="outline-container-orgaa3f412" class="outline-2">
+<h2 id="orgaa3f412"><a href="posts/20220116-org-time.html">(2022-01-29) Task Repeaters in Org Mode</a></h2>
+<div class="outline-text-2" id="text-orgaa3f412">
+<p>
+I recently started using org-mode to keep track of a few habits (morning
+meditation, getting some sunlight and exercise before my morning coffee, etc.)
+and needed to make use of org-mode's calendar features to do so. I've previously
+set deadlines and scheduled dates for my <code>TODO</code> entries, but have seldom used
+repeat intervals. My early attempts ( <code>date +1d</code>) worked fine but required some
+extra steps if I ever missed a day. This post discusses the <code>.+</code> and <code>++</code>
+-style repeat intervals, which allow more control over what happens when you
+complete a task after the scheduled date.
+</p>
+</div>
+</div>
+<div id="outline-container-orgefe7563" class="outline-2">
+<h2 id="orgefe7563"><a href="posts/20211209-R-babel.html">(2021-12-11) Org Babel Source Blocks for R</a></h2>
+<div class="outline-text-2" id="text-orgefe7563">
+<p>
+<a href="https://orgmode.org/worg/org-contrib/babel/intro.html">Org Babel</a> is one of the best tools available for <a href="https://www-cs-faculty.stanford.edu/~knuth/lp.html">literate programming</a>. As a data scientist, I use it
+as a plain-text alternative to Jupyter notebooks. Org-mode files are much easier to track with
+version control and don't require the overhead of a browser. There are tradeoffs: Jupyter notebooks
+handle the display of different types of output (text results, images, interactive figures, etc.) in
+a way that is both seamless and visually appealing. Displaying figures at all can be a challenge
+when getting started with org-babel. This post covers the basics of using org-babel for common data
+science tasks in R.
+</p>
+</div>
+</div>
+<div id="outline-container-org0d871c8" class="outline-2">
+<h2 id="org0d871c8"><a href="posts/20211203-this-site.html">(2021-12-03) Made with Org-Mode</a></h2>
+<div class="outline-text-2" id="text-org0d871c8">
+<p>
+I finally made a personal site using org-mode's built-in <code>ox-publish</code> exporter.
+</p>
+
+<p>
+I've written my personal website with org-mode for years (it is, after all, <a href="https://karl-voit.at/2017/09/23/orgmode-as-markup-only/">one of the most
+reasonable markup languages to use for text</a>). But until this point, I've used Hugo (with the <code>ox-Hugo</code>
+exporter). It worked fine, but it always seemed <i>just a little bit too complicated</i> for my needs. I
+wanted to find something where I could basically understand all of the components and where the gap
+between my org-mode files and the published output was as small as possible. I wanted to focus more
+on the writing and less on understanding the framework.
+</p>
+</div>
+</div>
+<div id="outline-container-orgd9f1bf2" class="outline-2">
+<h2 id="orgd9f1bf2"><a href="posts/20211201-resources.html">(2021-12-02) Resources</a></h2>
+<div class="outline-text-2" id="text-orgd9f1bf2">
+<p>
+Here are some resources to reference for building a simple site with org-mode. I've extensively
+used the sites listed as models for building the present site and expect to continue to reference
+them for some time.
+</p>
+</div>
+</div>
+<div id="outline-container-org7e9cee7" class="outline-2">
+<h2 id="org7e9cee7"><a href="posts/20210514-pytorch-numerai.html">(2021-05-14) A Simple PyTorch Model for the Numerai Tournament</a></h2>
+<div class="outline-text-2" id="text-org7e9cee7">
+<p>
+<i>This is another one from the archives. It covers how to train a basic PyTorch
+model for use in the Numerai tournament, at least as it was in May 2021. See the original post <a href="https://pensive-wing-19c199.netlify.app/post/mlp-numerai-05082021/">here.</a></i>
+</p>
+</div>
+</div>
+<div id="outline-container-org3b7c958" class="outline-2">
+<h2 id="org3b7c958"><a href="posts/20210213-urban-heat.html">(2021-02-13) Mapping Urban Heat by Census Tract in R</a></h2>
+<div class="outline-text-2" id="text-org3b7c958">
+<p>
+<i>Another one from the archives&#x2013;this is one of my projects from my time at the Guinn Center, and something I very much wish I could have developed further: an analysis of urban heat in Las Vegas.</i>
+</p>
+</div>
+</div>
+<div id="outline-container-org538243a" class="outline-2">
+<h2 id="org538243a"><a href="posts/20190614-ml-yearning-review.html">(2019-06-14) Book Review: Machine Learning Yearning by Andrew Ng</a></h2>
+<div class="outline-text-2" id="text-org538243a">
+<p>
+<i>This is the first of a few posts I'm migrating from my old site, which you can
+still find <a href="https://pensive-wing-19c199.netlify.app/">here</a>. This is a review of Machine Learning Yearning by Andrew Ng.</i>
+</p>
+</div>
+</div>
+<div id="outline-container-orgfcfa5c2" class="outline-2">
+<h2 id="orgfcfa5c2">drafts</h2>
+<div class="outline-text-2" id="text-orgfcfa5c2">
+</div>
+<div id="outline-container-org98a619a" class="outline-3">
+<h3 id="org98a619a"><a href="posts/drafts/20230619-yasnippet-chatgpt-shell.html">(2023-06-19) Yasnippet for Prompt Templates for Chatgpt-Shell</a></h3>
+<div class="outline-text-3" id="text-org98a619a">
 <p>
 The wonderful <a href="https://github.com/xenodium/chatgpt-shell">chatgpt-shell</a> package lets you interact with the gpt-3.5 and gpt-4
 APIs in emacs via a handy shell built on top of <code>comint-mode</code>. It also integrates
@@ -93,191 +283,6 @@ describes how to start using Yasnippet for prompt templates for use with
 <code>chatgpt-shell</code>.
 </p>
 </div>
-</div>
-<div id="outline-container-org0a4ffb9" class="outline-2">
-<h2 id="org0a4ffb9"><a href="posts/20230428-ai-db-writing.html">(2023-06-01) Writing on AI and Postgres</a></h2>
-<div class="outline-text-2" id="text-org0a4ffb9">
-<p>
-Since this start of this year, I've been working on and writing about AI tools
-for working with Postgres databases. Most of this work has involved finding
-different ways to integrate ChatGPT (and previously Codex) with other tools and
-workflows. I wanted to collect and share some of that writing here, as it's
-related to a lot of the other things I write about on my personal blog.
-</p>
-</div>
-</div>
-<div id="outline-container-orgc5b191d" class="outline-2">
-<h2 id="orgc5b191d"><a href="posts/20230310-chatgpt-julia-2.html">(2023-03-10) Using the ChatGPT API with Julia Part 2: Defining a Chat Struct</a></h2>
-<div class="outline-text-2" id="text-orgc5b191d">
-<p>
-One of the things that makes working with the ChatGPT API a little different
-from working with, e.g., the <code>davinci-text-003</code> model api is the need to maintain
-the history of a given chat session. A Julia <code>Struct</code> containing the chat
-history, coupled with a function that acts on that Struct, provides a good way
-to work with the ChatGPT API.
-</p>
-
-<p>
-For the basics of working with the ChatGPT API, check out <a href="20230303-chatgpt-julia.html">part 1</a>.
-</p>
-</div>
-</div>
-<div id="outline-container-orga5d07cf" class="outline-2">
-<h2 id="orga5d07cf"><a href="posts/20230303-chatgpt-julia.html">(2023-03-04) Using the ChatGPT API with Julia Part 1: the HTTP.jl Library</a></h2>
-<div class="outline-text-2" id="text-orga5d07cf">
-<p>
-This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
-with the OpenAI ChatGPT API, which was made public a few days ago. This post
-will only include the minimum necessary detail for getting started with the
-API. Future posts will go into a little more detail on how to send message
-histories and engage more interactively with the API.
-</p>
-</div>
-</div>
-<div id="outline-container-orgc231168" class="outline-2">
-<h2 id="orgc231168"><a href="posts/20221217-denote-quarto.html">(2022-12-22) Using Quarto Files with Denote</a></h2>
-<div class="outline-text-2" id="text-orgc231168">
-<p>
-The latest release of <a href="https://protesilaos.com/emacs/denote">Denote</a> (by the inimitable Protesilaos Stavrou) introduced
-support for <a href="https://protesilaos.com/codelog/2022-10-30-demo-denote-custom-file-type/">custom file types</a> in addition to the defaults, Org, Markdown+YAML,
-Markdown+TOML, and plain text. This post shows how to add <a href="https://quarto.org/">Quarto</a> files
-(.qmd). Quarto, the successor to R Markdown, is "an open-source scientific and
-technical publishing system" with support for Python, R, Julia, and
-Observable. The setup detailed here will allow one to choose the .qmd filetype
-when creating a new Denote file.
-</p>
-</div>
-</div>
-<div id="outline-container-org695b9f2" class="outline-2">
-<h2 id="org695b9f2"><a href="posts/20220918-jq-example.html">(2022-09-18) Processing a JSON API Response with jq</a></h2>
-<div class="outline-text-2" id="text-org695b9f2">
-<p>
-There are countless ways of processing JSON data and converting it to different
-formats. Historically, I've used Python and loaded the data into a Pandas
-Dataframe for processing. This isn't really necessary for simple tasks,
-though. Sometimes, a lightweight command line tool does the job just fine. Enter
-<code>jq</code>. <a href="https://stedolan.github.io/jq/">jq</a> is "like <code>sed</code> for JSON data." This post walks through an example of
-downloading data from an API, extracting a few fields based on some conditions,
-and converting the results to a CSV using <code>jq</code>.
-</p>
-</div>
-</div>
-<div id="outline-container-orgd6010fe" class="outline-2">
-<h2 id="orgd6010fe"><a href="posts/20220724-html5.html">(2022-07-24) Figures and Captions Don't Appear as Expected with Default Export Options</a></h2>
-<div class="outline-text-2" id="text-orgd6010fe">
-<p>
-I noticed that some of the formatting on this site was a little off and some of
-the org-mode components weren't being translated to HTML in quite the way I
-expected. Fixing this was simple, but <i>finding</i> the solution wasn't. In short, it
-was necessary to set the <code>org-html-doctype</code> to <code>html5</code> (the default is
-<code>xhtml-strict</code>). Furthermore, I set <code>org-html-html5-fancy</code> to <code>t</code>. These ensure the
-org export process takes advantage of block elements offered in the <code>html5</code>
-standard.
-</p>
-</div>
-</div>
-<div id="outline-container-org2556d12" class="outline-2">
-<h2 id="org2556d12"><a href="posts/20220719-julia-plots.html">(2022-07-19) Basic Plotting in Julia</a></h2>
-<div class="outline-text-2" id="text-org2556d12">
-<p>
-In this short post, I show one of the many ways of using Julia within emacs
-org mode, and will describe some of the basic plotting functionality in Julia.
-</p>
-</div>
-</div>
-<div id="outline-container-orgfea3183" class="outline-2">
-<h2 id="orgfea3183"><a href="posts/20220208-org-source.html">(2022-02-08) Org Mode Headlines in Org Source Blocks</a></h2>
-<div class="outline-text-2" id="text-orgfea3183">
-<p>
-When writing about org mode, one often wants to show what particular org
-headline look like in terms of formatting, properties, tags, options,
-etc,. However, even within a babel org source block, an org header will be
-parsed and exported as a header. We can get around this by prepending the
-headline with a comma. The comma won't show up when exported: all that is
-exported is a nicely-formatted example of an org headline.
-</p>
-</div>
-</div>
-<div id="outline-container-orgc14c4f8" class="outline-2">
-<h2 id="orgc14c4f8"><a href="posts/20220116-org-time.html">(2022-01-29) Task Repeaters in Org Mode</a></h2>
-<div class="outline-text-2" id="text-orgc14c4f8">
-<p>
-I recently started using org-mode to keep track of a few habits (morning
-meditation, getting some sunlight and exercise before my morning coffee, etc.)
-and needed to make use of org-mode's calendar features to do so. I've previously
-set deadlines and scheduled dates for my <code>TODO</code> entries, but have seldom used
-repeat intervals. My early attempts ( <code>date +1d</code>) worked fine but required some
-extra steps if I ever missed a day. This post discusses the <code>.+</code> and <code>++</code>
--style repeat intervals, which allow more control over what happens when you
-complete a task after the scheduled date.
-</p>
-</div>
-</div>
-<div id="outline-container-org3a76f0b" class="outline-2">
-<h2 id="org3a76f0b"><a href="posts/20211209-R-babel.html">(2021-12-11) Org Babel Source Blocks for R</a></h2>
-<div class="outline-text-2" id="text-org3a76f0b">
-<p>
-<a href="https://orgmode.org/worg/org-contrib/babel/intro.html">Org Babel</a> is one of the best tools available for <a href="https://www-cs-faculty.stanford.edu/~knuth/lp.html">literate programming</a>. As a data scientist, I use it
-as a plain-text alternative to Jupyter notebooks. Org-mode files are much easier to track with
-version control and don't require the overhead of a browser. There are tradeoffs: Jupyter notebooks
-handle the display of different types of output (text results, images, interactive figures, etc.) in
-a way that is both seamless and visually appealing. Displaying figures at all can be a challenge
-when getting started with org-babel. This post covers the basics of using org-babel for common data
-science tasks in R.
-</p>
-</div>
-</div>
-<div id="outline-container-orge425ad6" class="outline-2">
-<h2 id="orge425ad6"><a href="posts/20211203-this-site.html">(2021-12-03) Made with Org-Mode</a></h2>
-<div class="outline-text-2" id="text-orge425ad6">
-<p>
-I finally made a personal site using org-mode's built-in <code>ox-publish</code> exporter.
-</p>
-
-<p>
-I've written my personal website with org-mode for years (it is, after all, <a href="https://karl-voit.at/2017/09/23/orgmode-as-markup-only/">one of the most
-reasonable markup languages to use for text</a>). But until this point, I've used Hugo (with the <code>ox-Hugo</code>
-exporter). It worked fine, but it always seemed <i>just a little bit too complicated</i> for my needs. I
-wanted to find something where I could basically understand all of the components and where the gap
-between my org-mode files and the published output was as small as possible. I wanted to focus more
-on the writing and less on understanding the framework.
-</p>
-</div>
-</div>
-<div id="outline-container-org8a55207" class="outline-2">
-<h2 id="org8a55207"><a href="posts/20211201-resources.html">(2021-12-02) Resources</a></h2>
-<div class="outline-text-2" id="text-org8a55207">
-<p>
-Here are some resources to reference for building a simple site with org-mode. I've extensively
-used the sites listed as models for building the present site and expect to continue to reference
-them for some time.
-</p>
-</div>
-</div>
-<div id="outline-container-orgc4b7361" class="outline-2">
-<h2 id="orgc4b7361"><a href="posts/20210514-pytorch-numerai.html">(2021-05-14) A Simple PyTorch Model for the Numerai Tournament</a></h2>
-<div class="outline-text-2" id="text-orgc4b7361">
-<p>
-<i>This is another one from the archives. It covers how to train a basic PyTorch
-model for use in the Numerai tournament, at least as it was in May 2021. See the original post <a href="https://pensive-wing-19c199.netlify.app/post/mlp-numerai-05082021/">here.</a></i>
-</p>
-</div>
-</div>
-<div id="outline-container-org07fe32b" class="outline-2">
-<h2 id="org07fe32b"><a href="posts/20210213-urban-heat.html">(2021-02-13) Mapping Urban Heat by Census Tract in R</a></h2>
-<div class="outline-text-2" id="text-org07fe32b">
-<p>
-<i>Another one from the archives&#x2013;this is one of my projects from my time at the Guinn Center, and something I very much wish I could have developed further: an analysis of urban heat in Las Vegas.</i>
-</p>
-</div>
-</div>
-<div id="outline-container-orge06c778" class="outline-2">
-<h2 id="orge06c778"><a href="posts/20190614-ml-yearning-review.html">(2019-06-14) Book Review: Machine Learning Yearning by Andrew Ng</a></h2>
-<div class="outline-text-2" id="text-orge06c778">
-<p>
-<i>This is the first of a few posts I'm migrating from my old site, which you can
-still find <a href="https://pensive-wing-19c199.netlify.app/">here</a>. This is a review of Machine Learning Yearning by Andrew Ng.</i>
-</p>
 </div>
 </div>
 </div>
