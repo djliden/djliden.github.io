@@ -1,0 +1,234 @@
+#+TITLE: Yasnippet for Prompt Templates for Chatgpt-Shell
+#+Author: Daniel Liden
+#+Date: <2023-07-09 Sun>
+* Introduction
+#+begin_preview
+The wonderful [[https://github.com/xenodium/chatgpt-shell][chatgpt-shell]] package by [[https://github.com/xenodium][Xenodium]] lets you interact with the gpt-3.5 and gpt-4
+APIs in emacs via a handy shell built on top of ~comint-mode~. It also integrates
+well with ~org-mode~.
+
+I find that I tend to re-use a few prompt patterns for specific tasks. Yasnippet provides a great
+way to create prompt /templates/ made up of some fixed component with placeholders
+for user input. I can easily insert these prompt templates when working with
+~chatgpt-shell~ to gain easy access to reusable, task-specific prompts. This post
+describes how to start using Yasnippet for prompt templates for use with
+~chatgpt-shell~.
+#+end_preview
+* Setting up ChatGPT Shell
+First of all, if you haven't already tried ~chatgpt-shell~, it's worth taking a
+few minutes to set up and try out. If you live in emacs, you'll probably prefer
+~chatgpt-shell~ to the chatgpt web interface.
+
+You can find the installation instructions [[https://github.com/xenodium/chatgpt-shell#install][here]]. I use straight.el for package
+management, and here is my configuration:
+
+#+begin_src emacs-lisp
+(use-package shell-maker
+  :straight (:host github :repo "xenodium/chatgpt-shell" :files ("shell-maker.el")
+                   :branch "main"))
+
+(use-package chatgpt-shell
+  :after (shell-maker)
+  :straight (:host github :repo "xenodium/chatgpt-shell" :files ("chatgpt-shell.el")
+                   :branch "main")
+  :config
+  (setq chatgpt-shell-openai-key
+      (lambda ()
+        (auth-source-pick-first-password :host "api.openai.com"))))
+
+(use-package ob-chatgpt-shell
+  :straight (:host github :repo "xenodium/chatgpt-shell" :files ("ob-chatgpt-shell.el")
+                   :branch "main")
+  :ensure t )
+#+end_src
+
+~chatgpt-shell~ is built on ~shell-maker~, which is "a way to create shells for any
+service (local or cloud)." ~ob-chatgpt-shell~ provides a way to interact with
+~chatgpt-shell~ via org babel source blocks. For more details on these, read the
+[[https://github.com/xenodium/chatgpt-shell][documentation]] (and consider [[https://github.com/sponsors/xenodium][sponsoring]] Xenodium).
+* YASnippet
+
+[[https://github.com/joaotavora/yasnippet][YASnippet]] is a template system for emacs. It is very powerful, and I'm only
+familiar with a small fraction of its capabilities. But when I work with
+ChatGPT in other systems, I almost always use some form of templating
+system. What does that mean? Suppose I'm working on some kind of text
+summarization system. On the one hand, I could write a bunch of separate prompts
+of the form:
+
+#+begin_quote
+Summarize the following text:
+<some text>
+
+Summarize the following text:
+<some more text>
+
+Summarize the following text:
+<even more text>
+#+end_quote
+
+But the instruction, "Summarize the following text," is the same each time. So
+I'd rather put that in a template, which I can fill in as many times as needed
+with the part of the prompt that actually changes: the prompt to summarize.
+
+This might look like:
+
+#+BEGIN_SRC emacs-lisp :results output
+
+(defun summary_template (text_to_summarize)
+  (interactive "sText to Summarize: ")
+  (concat "Summarize the following text:\n" text_to_summarize))
+
+(print (summary_template "Some text"))
+(print (summary_template "Some more text"))
+(print (summary_template "Even more text"))
+#+END_SRC
+
+#+RESULTS:
+: 
+: "Summarize the following text:
+: Some text"
+: 
+: "Summarize the following text:
+: Some more text"
+: 
+: "Summarize the following text:
+: Even more text"
+
+YASnippet provides an easy way for us to define and populate templates for use
+in ~chatgpt-shell~ buffers.
+** Defining a Snippet
+First, you'll need to [[https://github.com/joaotavora/yasnippet/blob/master/README.mdown#installation][install YASnippet]].
+
+We can define a new snippet with ~M-x yas-new-snippet~. This will open a new
+buffer for defining out snippet.
+
+#+begin_center
+#+CAPTION: YASnippet new snippet interface
+[[./figures/20230709-yasnippet-chatgpt-shell/yas-new-snippet.png]]
+#+end_center
+
+In this example, I'm only going to show how to make templates with text and
+placeholders. YASnippet is incredibly powerful and supports highly complex
+templates; [[https://joaotavora.github.io/yasnippet/][read the documentation]] if you want to explore further. For now, let's
+just replicate the summarization template.
+
+We'll mostly use /tab stop fields/ and /placeholder fields/ when building our
+templates. You can read more about them, and about more advanced templating,
+[[https://joaotavora.github.io/yasnippet/snippet-development.html][here]].
+
+Here's what a summarization snippet might look like:
+
+#+begin_src
+# -*- mode: snippet -*-
+# name: Concise Summary
+# key: gptsum
+# contributor: Daniel Liden
+# --
+<text>$1</text>
+
+Provide a concise summary of the above text within <text> tags.
+$0
+#+end_src
+
+The ~$1~ and ~$0~ are called /tab stop fields/. When inserting the snippet with
+e.g. ~yas-insert-snippet~ or by triggering [[https://joaotavora.github.io/yasnippet/snippet-expansion.html][snippet expansion]], you can
+interactively ~TAB~ and ~S-TAB~ back and forth through the various tab stop fields,
+filling them in with whatever you want. In this case, you could type/yank a text
+to summarize in the ~$1~ position.
+
+~$0~ has a special meaning: it is the /exit point/, the place the cursor ends up
+after completing all of the other tab stop fields.
+
+If you want a default value for a given completion field, you can use a
+/placeholder/, which is formatted as ~${N:default value}~. We might modify the above
+snippet, for example, to say:
+
+#+begin_src
+# -*- mode: snippet -*-
+# name: Concise Summary
+# key: gptsum
+# contributor: Daniel Liden
+# --
+<text>${1:The user forgot to include text to summarize. Remind them!}</text>
+
+Provide a concise summary of the above text within <text> tags.
+$0
+#+end_src
+
+Once you've defined the snippet in the ~yas-new-snippet~ buffer, you can save it
+with ~C-c C-c~. You will then be prompted to choose a "table." This essentially
+means specifying the emacs mode with which you'd like the snippet to be
+associated. In this case, for ~chatgpt-shell~, it's ~chatgpt-shell-mode~. Specifying
+the mode ensures the snippet will be available when you're in
+~chatgpt-shell-mode~. You will also be asked whether you want to save the snippet;
+go ahead and do so if you intend to use it in the future.
+
+To modify a snippet, you can use ~yas-visit-snippet-file~, make changes, and again
+go through the saving dialogue with ~C-c C-c~.
+
+** Using a Snippet
+Note that, in the example snippets above, I've defined a ~key~: this is for
+[[https://joaotavora.github.io/yasnippet/snippet-expansion.html][snippet expansion]] (follow the link for more details). With my configuration, in
+a ~chatgpt-shell-mode~ buffer, I can type ~gptsum~ followed by ~TAB~ to insert this
+snippet. Alternately, I can select from all available snippets with ~M-x
+yas-insert-snippet~.
+
+Upon inserting the snippet, my cursor will be at the first tab stop. I can then
+insert whatever text I want. Upon hitting ~TAB~, the cursor will jump to the next
+tab stop. In this case, there was only one, so the cursor will jump to the ~$0~
+position at the end of the prompt.
+
+#+begin_center
+#+CAPTION: Inserting a Snippet
+[[./figures/20230709-yasnippet-chatgpt-shell/text_summarize_snippet.gif]]
+#+end_center
+
+With multiple tab stops (e.g. ~$1~, ~$2~, etc.), pressing ~TAB~ multiple times would
+move forward through each position, allowing you to fill in the desired
+text. ~S-TAB~ enables you to move backward through the tab stops.
+** Inserting the Last Item in the Kill Ring
+
+We're unlike to ever need to summarize text that we manually type into a
+~chatgpt-shell~. But we might want to copy some text to the kill ring and ask for
+a summary, or copy some code and ask for an explanation. We can write a template
+to accomplish this.
+
+We'll use one more advanced feature of ~YASnippet~ to accomplish this: we can
+embed Emacs-lisp code in a snippet by enclosing it in backticks (~``~).
+
+Here's a snippet for explaining code by pasting (yanking) the most recent text
+from the kill ring:
+
+#+begin_src
+# key: gptce
+# name: code-explainer
+# --
+Explain the following code:
+`(yank)`
+
+In particular:
+- Step-by-step, what does it do?
+- What are the parameters?
+- Are there any other noteworthy features of this code?
+
+Answer concisely.
+$0
+#+end_src
+
+To use this template, you would first copy or kill some code from a buffer, then
+navigate to your ~chatgpt-shell~ buffer, then insert the snippet. The ~`(yank)`~
+part will automatically be replaced by the copied code.
+
+
+
+#+begin_center
+#+CAPTION: Inserting from the Kill Ring
+[[./figures/20230709-yasnippet-chatgpt-shell/code_explain.gif]]
+#+end_center
+* Next Steps
+
+There's a lot more to explore here. YASnippet is a very powerful templating
+system, and I've only scratched the surface of the ways to use it for developing
+useful prompt templates for ~chatgpt-shell~ (and I haven't tried any for the org
+babel integration yet). Read the YASnippet manual, write some new snippets, and
+let me know what you come up with!
