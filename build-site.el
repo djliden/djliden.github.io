@@ -8,7 +8,7 @@
 (package-refresh-contents)
 
 ;; Check and install dependencies
-(dolist (package '(htmlize julia-mode ess))
+(dolist (package '(htmlize julia-mode ess ox-rss))
   (unless (package-installed-p package)
     (package-install package)))
 
@@ -16,6 +16,7 @@
 
 ;; Load publishing system
 (require 'ox-publish)
+(require 'ox-rss)
 
 ;;; Sitemap preprocessing
 ;;;; Get Preview
@@ -136,7 +137,19 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|ico"
              :publishing-directory "./public/"
              :recursive t
-             :publishing-function 'org-publish-attachment)))
+             :publishing-function 'org-publish-attachment)
+       (list "blog-rss"
+             :base-directory "./content/"
+             :base-extension "org"
+             :publishing-directory "./public/"
+             :publishing-function 'org-rss-publish-to-rss
+             :html-link-home "https://danliden.com/"
+             :html-link-use-abs-url t
+             :rss-extension "xml"
+             :exclude ".*"
+             :include "./sitemap.org"
+             )
+       ))
 
 
 ;;; additional settings
