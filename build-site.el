@@ -38,35 +38,12 @@ https://ogbe.net/blog/blogging_with_org.html"
                         (match-beginning 0))))
         (buffer-substring beg end)))))
 
-;;;; Format sitemap entries
-(defun my/sitemap-entry (entry style project)
-  "sitemap entry formatter
-
-See code here for foundation:
-https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
-  (print entry)
-  (when (not (directory-name-p entry)) ; when not a directory
-    (format (string-join
-             '("*[[file:%s][%s]]\n"
-               "#+BEGIN_published\n\n"
-               "%s\n"
-               "#END_published\n\n"
-               "%s\n"
-               "----------\n"))
-            entry
-            (org-publish-find-title entry project)
-            (format-time-string "%A, %B %_d %Y at %l:%M %p %Z" (org-publish-find-date entry project))
-            ;(let ((preview (my/get-preview (concat "content/" entry))))
-             ; (insert preview))
-            )))    
 ;;;; Format Sitemap
-;; modify this one! (if necessary)
 (defun my/org-publish-org-sitemap (title list)
   "Sitemap generation function."
   (concat "#+OPTIONS: toc:nil")
   (org-list-to-subtree list))
 
-;; modify this one!
 (defun my/org-publish-org-sitemap-format (entry style project)
   "Custom sitemap entry formatting: add date"
   (cond ((not (directory-name-p entry))
@@ -139,16 +116,23 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :recursive t
              :publishing-function 'org-publish-attachment)
        (list "blog-rss"
-             :base-directory "./content/"
+             :base-directory "./content/posts/"
              :base-extension "org"
-             :publishing-directory "./public/"
-             :publishing-function 'org-rss-publish-to-rss
+             :recursive nil
+             :exclude (regexp-opt '("rss.org" "drafts/"))
+             :publishing-function 'rw/org-rss-publish-to-rss
+             :publishing-directory "./public"
+             :rss-extension "xml"
              :html-link-home "https://danliden.com/"
              :html-link-use-abs-url t
-             :rss-extension "xml"
-             :exclude ".*"
-             :include "./sitemap.org"
-             )
+             :html-link-org-files-as-html t
+             :auto-sitemap t
+             :sitemap-filename "rss.org"
+             :sitemap-title "RSS Feed"
+             :sitemap-style 'list
+             :sitemap-sort-files 'anti-chronologically
+             :sitemap-function 'rw/format-rss-feed
+             :sitemap-format-entry 'rw/format-rss-feed-entry)
        ))
 
 
