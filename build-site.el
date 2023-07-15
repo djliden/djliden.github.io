@@ -115,24 +115,6 @@ https://ogbe.net/blog/blogging_with_org.html"
              :publishing-directory "./public/"
              :recursive t
              :publishing-function 'org-publish-attachment)
-       (list "blog-rss"
-             :base-directory "./content/posts/"
-             :base-extension "org"
-             :recursive nil
-             :exclude (regexp-opt '("rss.org" "drafts/"))
-             :publishing-function 'rw/org-rss-publish-to-rss
-             :publishing-directory "./public"
-             :rss-extension "xml"
-             :html-link-home "https://danliden.com/"
-             :html-link-use-abs-url t
-             :html-link-org-files-as-html t
-             :auto-sitemap t
-             :sitemap-filename "rss.org"
-             :sitemap-title "RSS Feed"
-             :sitemap-style 'list
-             :sitemap-sort-files 'anti-chronologically
-             :sitemap-function 'rw/format-rss-feed
-             :sitemap-format-entry 'rw/format-rss-feed-entry)
        ))
 
 
