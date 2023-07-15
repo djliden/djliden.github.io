@@ -8,7 +8,7 @@
 (package-refresh-contents)
 
 ;; Check and install dependencies
-(dolist (package '(htmlize julia-mode ess))
+(dolist (package '(htmlize julia-mode ess ox-rss webfeeder esxml))
   (unless (package-installed-p package)
     (package-install package)))
 
@@ -16,6 +16,9 @@
 
 ;; Load publishing system
 (require 'ox-publish)
+(require 'ox-rss)
+(require 'webfeeder)
+(require 'esxml)
 
 ;;; Sitemap preprocessing
 ;;;; Get Preview
@@ -37,35 +40,12 @@ https://ogbe.net/blog/blogging_with_org.html"
                         (match-beginning 0))))
         (buffer-substring beg end)))))
 
-;;;; Format sitemap entries
-(defun my/sitemap-entry (entry style project)
-  "sitemap entry formatter
-
-See code here for foundation:
-https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
-  (print entry)
-  (when (not (directory-name-p entry)) ; when not a directory
-    (format (string-join
-             '("*[[file:%s][%s]]\n"
-               "#+BEGIN_published\n\n"
-               "%s\n"
-               "#END_published\n\n"
-               "%s\n"
-               "----------\n"))
-            entry
-            (org-publish-find-title entry project)
-            (format-time-string "%A, %B %_d %Y at %l:%M %p %Z" (org-publish-find-date entry project))
-            ;(let ((preview (my/get-preview (concat "content/" entry))))
-             ; (insert preview))
-            )))    
 ;;;; Format Sitemap
-;; modify this one! (if necessary)
 (defun my/org-publish-org-sitemap (title list)
   "Sitemap generation function."
   (concat "#+OPTIONS: toc:nil")
   (org-list-to-subtree list))
 
-;; modify this one!
 (defun my/org-publish-org-sitemap-format (entry style project)
   "Custom sitemap entry formatting: add date"
   (cond ((not (directory-name-p entry))
@@ -136,7 +116,8 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
              :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|ico"
              :publishing-directory "./public/"
              :recursive t
-             :publishing-function 'org-publish-attachment)))
+             :publishing-function 'org-publish-attachment)
+       ))
 
 
 ;;; additional settings
@@ -147,5 +128,40 @@ https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html"
 
 ;;; generate site output
 (org-publish-all t)
+
+;;; build RSS feed
+
+;;;; https://codeberg.org/SystemCrafters/systemcrafters-site/src/commit/ce3717201ab727f709f9e739842b209d10c8c51a/publish.el#L411
+;;;; https://codeberg.org/SystemCrafters/systemcrafters-site/src/commit/ce3717201ab727f709f9e739842b209d10c8c51a/publish.el#L418
+(defun dw/rss-extract-date (html-file)
+  "Extract the post date from an HTML file."
+  (with-temp-buffer
+    (insert-file-contents html-file)
+    (let* ((dom (libxml-parse-html-region (point-min) (point-max)))
+           (date-string (dom-text (car (dom-by-class dom "date"))))
+           (parsed-date (parse-time-string date-string))
+           (day (nth 3 parsed-date))
+           (month (nth 4 parsed-date))
+           (year (nth 5 parsed-date)))
+      ;; NOTE: Hardcoding this at 8am for now
+      (encode-time 0 0 8 day month year))))
+
+;(defun dw/rss-extract-summary (html-file)
+;  )
+
+(setq webfeeder-date-function #'dw/rss-extract-date)
+
+;;;; https://gitlab.com/ambrevar/emacs-webfeeder/-/blob/master/webfeeder.el
+(webfeeder-build "rss.xml"
+                 "./public"
+                 "https://danliden.com"
+                 (mapcar (lambda (file) (concat "posts/" file))
+                         (let ((default-directory (expand-file-name "./public/posts/")))
+                           (directory-files-recursively "./" ".*\\.html$")))
+                 :builder 'webfeeder-make-rss
+                 :title "Daniel Liden's Blog"
+                 :description "Data, AI, and other writing from Daniel Liden"
+                 :author "Daniel Liden")
+
 
 (message "Build Complete!")
