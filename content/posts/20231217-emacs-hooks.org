@@ -1,0 +1,20 @@
+#+TITLE: Introduction to Emacs Hooks
+#+Author: Daniel Liden
+#+Date: <2023-12-17 Sun>
+* Emacs Hooks
+#+begin_preview
+Today I was customizing the appearance of org files displayed with [[https://github.com/takaxp/org-tree-slide][org-tree-slide]]. In particular, I wanted to increase the font size and start [[https://github.com/rnkn/olivetti][olivetti mode]] whenever I started ~org-tree-slide-mode~ and return everything to normal when I was done. This, I quickly discovered, required the use of [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html][hooks]]. Hooks are not especially complicated, but they are useful and worth taking a few minutes to understand. This post will cover the basics of working with hooks in emacs.
+#+end_preview
+* What do hooks do?
+A /hook/ is a list of functions that are run on specifically-defined occasions, trigged by calls to a ~run-hooks~ or ~run-mode-hooks~ function.
+
+Hooks are very commonly run when major modes (and, often, minor modes) are initialized in an emacs session. They provide a way to set up mode-specific configurations when a mode is initialized or when some specific action is undertaken by the user.
+
+For a specific example, ~org-tree-slide-mode~ defines the hooks ~org-tree-slide-play-hook~ and ~org-tree-slide-stop-hook~, which define what happens when a slide show is started or stopped. I wanted to increase the font size, decrease the width of the displayed text, and remove the header line when the slide show was active, and reset them when it was finished.
+
+
+#+begin_center
+#+CAPTION: Invoking ~org-tree-slide-mode~ runs ~org-tree-slide-play-hook~, a list of functions means to run when a slide show is started in ~org-tree-slide-mode~.
+ [[./figures/20231217-emacs-hooks/hooks_screen_capture.gif]]
+#+end_center
+
