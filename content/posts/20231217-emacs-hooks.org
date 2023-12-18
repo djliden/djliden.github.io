@@ -34,7 +34,7 @@ First, we'll define the hook variable. This is the same as defining any other va
 
 #+RESULTS:
 
-Next, we'll add some hooks to this variable. These will just be simple hooks that print some output.
+Next, we'll add some hooks to this variable. These will just be simple functions that print some output.
 
 #+begin_src emacs-lisp
 (defun hook-function-1 ()
@@ -50,14 +50,7 @@ Next, we'll add some hooks to this variable. These will just be simple hooks tha
 
 Now, if we inspect ~my-example-hook~ (with ~C-h v my-example-hook~), we see:
 
-#+begin_quote
-my-example-hook’s value is (hook-function-2 hook-function-1)
-Local in buffer 20231217-emacs-hooks.org; global value is nil
-
-Not documented as a variable.
-
-  This variable may be risky if used as a file-local variable.
-#+end_quote
+~my-example-hook’s value is (hook-function-2 hook-function-1)~
 
 Now we can run the hook with the ~run-hooks~ function.
 
