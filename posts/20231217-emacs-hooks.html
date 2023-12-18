@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Introduction to Emacs Hooks</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2> 
+  <div>
+    <a href='/index.html' style='font-weight:bold; font-style:italic;'>Home</a> /
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content">
+<header>
+<h1 class="title">Introduction to Emacs Hooks</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org02dd542">Emacs Hooks</a></li>
+<li><a href="#orgd603f1c">What do hooks do?</a></li>
+<li><a href="#orgc75edcc">How do hooks work?</a>
+<ul>
+<li><a href="#orgb0e59a7">Hooks Example</a></li>
+</ul>
+</li>
+<li><a href="#orgd7dcfaf">Mode Hooks</a></li>
+<li><a href="#org370baf0">Appendix: Hooks in use-package</a></li>
+<li><a href="#org18f5808">Further Reading</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-org02dd542" class="outline-2">
+<h2 id="org02dd542">Emacs Hooks</h2>
+<div class="outline-text-2" id="text-org02dd542">
+<div class="preview">
+<p>
+Today I was customizing the appearance of org files displayed with <a href="https://github.com/takaxp/org-tree-slide">org-tree-slide</a>. In particular, I wanted to increase the font size and start <a href="https://github.com/rnkn/olivetti">Olivetti mode</a> whenever I started <code>org-tree-slide-mode</code> and return everything to normal when I was done. This, I quickly discovered, required the use of <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">hooks</a>. Hooks are not especially complicated, but they are useful and worth taking a few minutes to understand. This post will cover the basics of working with hooks in emacs.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgd603f1c" class="outline-2">
+<h2 id="orgd603f1c">What do hooks do?</h2>
+<div class="outline-text-2" id="text-orgd603f1c">
+<p>
+A <i>hook</i> is a list of functions that are run on specifically-defined occasions, triggered by calls to a <code>run-hooks</code> or <code>run-mode-hooks</code> function.
+</p>
+
+<p>
+Hooks are very commonly run when major modes (and, often, minor modes) are initialized in an emacs session. They provide a way to set up mode-specific configurations when a mode is initialized or when some specific action is undertaken by the user.
+</p>
+
+<p>
+For a specific example, <code>org-tree-slide-mode</code> defines the hooks <code>org-tree-slide-play-hook</code> and <code>org-tree-slide-stop-hook</code>, which define what happens when a slide show is started or stopped. I wanted to increase the font size, decrease the width of the displayed text, and remove the header line when the slide show was active, and reset them when it was finished.
+</p>
+
+
+<div class="org-center">
+
+<figure>
+<img src="./figures/20231217-emacs-hooks/hooks_screen_capture.gif" alt="hooks_screen_capture.gif">
+
+<figcaption><span class="figure-number">Figure 1: </span>Invoking <code>org-tree-slide-mode</code> runs <code>org-tree-slide-play-hook</code>, a list of functions meant to run when a slide show is started in <code>org-tree-slide-mode</code>. In this case, the hook makes the text larger and centered in the buffer.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc75edcc" class="outline-2">
+<h2 id="orgc75edcc">How do hooks work?</h2>
+<div class="outline-text-2" id="text-orgc75edcc">
+<p>
+First, a quick glossary of terms:
+</p>
+<ul class="org-ul">
+<li>a <b>hook</b> is a variable defining a list of functions. These variables typically end in <code>-hook</code>, such as <code>org-mode-hook</code>.</li>
+<li>a <b>hook function</b> is one of the functions that comprise the hook.</li>
+<li>There are <i>normal</i> and <i>abnormal</i> hooks. Most hooks are normal. For the purposes of this post, I am focusing on <i>normal hooks</i>. In a normal hook, none of the hook functions take any arguments, and emacs calls each hook function in the list sequentially. Abnormal hooks may take arguments or exhibit other behaviors when called that require special attention/documentation.</li>
+</ul>
+
+<p>
+Hooks are run when specific functions call them. Such functions are often called at specific points in the initialization or use of emacs modes, but they are not limited to those circumstances. Here is a minimal example.
+</p>
+</div>
+<div id="outline-container-orgb0e59a7" class="outline-3">
+<h3 id="orgb0e59a7">Hooks Example</h3>
+<div class="outline-text-3" id="text-orgb0e59a7">
+<p>
+First, we'll define the hook variable. This is the same as defining any other variable.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> my-example-hook nil)
+</pre>
+</div>
+
+<p>
+Next, we'll add some hooks to this variable. These will just be simple hooks that print some output.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">hook-function-1</span> ()
+  (message <span class="org-string">"Output of the first hook function"</span>))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">hook-function-2</span> ()
+  (message <span class="org-string">"Output of the second hook function"</span>))
+
+
+(add-hook 'my-example-hook 'hook-function-1)
+(add-hook 'my-example-hook 'hook-function-2)
+</pre>
+</div>
+
+<p>
+Now, if we inspect <code>my-example-hook</code> (with <code>C-h v my-example-hook</code>), we see:
+</p>
+
+<blockquote>
+<p>
+my-example-hook’s value is (hook-function-2 hook-function-1)
+Local in buffer 20231217-emacs-hooks.org; global value is nil
+</p>
+
+<p>
+Not documented as a variable.
+</p>
+
+<p>
+This variable may be risky if used as a file-local variable.
+</p>
+</blockquote>
+
+<p>
+Now we can run the hook with the <code>run-hooks</code> function.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(run-hooks 'my-example-hook)
+</pre>
+</div>
+
+
+<p>
+Which prints the following to the messages buffer:
+</p>
+
+<pre class="example">
+Output of the second hook function
+Output of the first hook function
+</pre>
+
+
+
+<p>
+There are three key components to pay attention to in this example:
+</p>
+<ol class="org-ol">
+<li>The hook variable <code>my-example-hook</code>. We use <code>add-hook</code> to populate this variable with hook functions.</li>
+<li>The hook functions <code>hook-function-1</code> and <code>hook-function-2</code>. These functions, intended for use in a normal hook, take no arguments.</li>
+<li>The function that runs the hook; in this case <code>run-hooks</code>. There are a few different functions for running hooks. The <code>run-mode-hooks</code> function, for example, is specialized to the case of running mode hooks, or hooks that are associated with initializing a mode (e.g. <code>prog-mode-hook</code>).</li>
+</ol>
+
+<p>
+There's nothing especially unique about any of these components. We assign the variable in (1) a name ending in <code>-hook</code> by convention, but it works the same with any name. The hook functions defined in (2) are normal functions; the one noteworthy point is that they <i>take no arguments</i>. The function in (3) is a built-in standard function in Emacs Lisp designed for running hook functions.
+</p>
+
+<div class="org-center">
+
+<figure>
+<img src="./figures/20231217-emacs-hooks/hooks-diagram-2.png" alt="hooks-diagram-2.png">
+
+<figcaption><span class="figure-number">Figure 2: </span>Diagram of the basic process of working with normal hooks</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd7dcfaf" class="outline-2">
+<h2 id="orgd7dcfaf">Mode Hooks</h2>
+<div class="outline-text-2" id="text-orgd7dcfaf">
+<p>
+Hooks are most commonly encountered in the context of modes. Modes generally define hooks to which users can add functions that will be called at the end of the mode's initialization. For example, I wanted to display line numbers whenever I was in a buffer with code, so I have the following line in my config:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+</pre>
+</div>
+
+<p>
+Inspecting the hook shows:
+</p>
+
+<blockquote>
+<p>
+prog-mode-hook is a variable defined in ‘prog-mode.el’.
+</p>
+
+<p>
+Its value is (outline-minor-mode display-line-numbers-mode)
+Original value was nil
+</p>
+
+<p>
+Normal hook run when entering programming modes.
+</p>
+
+<p>
+This variable may be risky if used as a file-local variable.
+You can customize this variable.
+Probably introduced at or before Emacs version 24.1.
+</p>
+</blockquote>
+
+<p>
+and, indeed, when I open an e.g. Python buffer, line numbers appear as desired.
+</p>
+</div>
+</div>
+<div id="outline-container-org370baf0" class="outline-2">
+<h2 id="org370baf0">Appendix: Hooks in use-package</h2>
+<div class="outline-text-2" id="text-org370baf0">
+<p>
+I use <code>use-package</code> for managing my emacs packages. <code>use-package</code> declarations allow users to pass a <code>:hooks</code> option in the package declaration in order to add functions to hooks. Hooks can be configured in <code>use-package</code> by defining a cons cell as follows.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package package-name
+  <span class="org-builtin">:hook</span>
+  ('mode-name . 'function-to-add-to-hook)
+  )
+</pre>
+</div>
+
+<p>
+Note that we do <i>not</i> refer to <code>mode-name-hook</code> in the hook configuration. <code>use-package</code> adds the <code>-hook</code> automatically by default. The above will add <code>function-to-add-to-hook</code> to <code>mode-name-hook</code>.
+</p>
+</div>
+</div>
+<div id="outline-container-org18f5808" class="outline-2">
+<h2 id="org18f5808">Further Reading</h2>
+<div class="outline-text-2" id="text-org18f5808">
+<ul class="org-ul">
+<li><a href="https://gitlab.com/dliden/coffeemacs">My Emacs config</a>. This has not, admittedly, been structured for broad consumption, but with a little searching you can find how I've configured some hooks. In particular, <a href="https://gitlab.com/dliden/coffeemacs/-/blob/master/orgconfig.el?ref_type=heads#L219">here</a> is my <code>org-tree-slide</code> configuration, which I mentioned at the beginning.</li>
+<li><a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">Emacs Docs</a>, which go into some more detail on abnormal hooks among other topics.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2023-12-17 Sun 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
