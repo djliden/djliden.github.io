@@ -19,7 +19,7 @@ For a specific example, ~org-tree-slide-mode~ defines the hooks ~org-tree-slide-
 #+end_center
 * How do hooks work?
 First, a quick glossary of terms:
-- a *hook* is a variable defining a list of functions. These variables typically end in ~-hook~, such as ~org-mode-hook~.
+- a *hook* is a variable defining a list of functions. These variables typically end in ~-hook~, such as ~org-mode-hook~. Hooks may also end in ~-functions~; these so-called "abnormal hooks" are not the focus of this post. Still, if you're searching for hooks, it is good to know that this pattern exists.
 - a *hook function* is one of the functions that comprise the hook.
 - There are /normal/ and /abnormal/ hooks. Most hooks are normal. For the purposes of this post, I am focusing on /normal hooks/. In a normal hook, none of the hook functions take any arguments, and emacs calls each hook function in the list sequentially. Abnormal hooks may take arguments or exhibit other behaviors when called that require special attention/documentation.
 
