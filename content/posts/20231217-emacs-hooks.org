@@ -14,7 +14,7 @@ For a specific example, ~org-tree-slide-mode~ defines the hooks ~org-tree-slide-
 
 
 #+begin_center
-#+CAPTION: Invoking ~org-tree-slide-mode~ runs ~org-tree-slide-play-hook~, a list of functions means to run when a slide show is started in ~org-tree-slide-mode~.
+#+CAPTION: Invoking ~org-tree-slide-mode~ runs ~org-tree-slide-play-hook~, a list of functions meant to run when a slide show is started in ~org-tree-slide-mode~. In this case, the hook makes the text larger and centered in the buffer.
  [[./figures/20231217-emacs-hooks/hooks_screen_capture.gif]]
 #+end_center
 * How do hooks work?
@@ -47,9 +47,6 @@ Next, we'll add some hooks to this variable. These will just be simple hooks tha
 (add-hook 'my-example-hook 'hook-function-1)
 (add-hook 'my-example-hook 'hook-function-2)
 #+end_src
-
-#+RESULTS:
-| hook-function-2 | hook-function-1 |
 
 Now, if we inspect ~my-example-hook~ (with ~C-h v my-example-hook~), we see:
 
