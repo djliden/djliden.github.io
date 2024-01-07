@@ -82,22 +82,22 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge5f9c1d">Emacs Hooks</a></li>
-<li><a href="#org3300212">What do hooks do?</a></li>
-<li><a href="#org24f4e36">How do hooks work?</a>
+<li><a href="#org26c54fd">Emacs Hooks</a></li>
+<li><a href="#org036041c">What do hooks do?</a></li>
+<li><a href="#orgea0db81">How do hooks work?</a>
 <ul>
-<li><a href="#orga98a646">Hooks Example</a></li>
+<li><a href="#org304584e">Hooks Example</a></li>
 </ul>
 </li>
-<li><a href="#org77087fc">Mode Hooks</a></li>
-<li><a href="#orgdad1d29">Appendix: Hooks in use-package</a></li>
-<li><a href="#org2082f5e">Further Reading</a></li>
+<li><a href="#org549261b">Mode Hooks</a></li>
+<li><a href="#org044d1ce">Appendix: Hooks in use-package</a></li>
+<li><a href="#org518d0ef">Further Reading</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orge5f9c1d" class="outline-2">
-<h2 id="orge5f9c1d">Emacs Hooks</h2>
-<div class="outline-text-2" id="text-orge5f9c1d">
+<div id="outline-container-org26c54fd" class="outline-2">
+<h2 id="org26c54fd">Emacs Hooks</h2>
+<div class="outline-text-2" id="text-org26c54fd">
 <div class="preview">
 <p>
 Today I was customizing the appearance of org files displayed with <a href="https://github.com/takaxp/org-tree-slide">org-tree-slide</a>. In particular, I wanted to increase the font size and start <a href="https://github.com/rnkn/olivetti">Olivetti mode</a> whenever I started <code>org-tree-slide-mode</code> and return everything to normal when I was done. This, I quickly discovered, required the use of <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">hooks</a>. Hooks are not especially complicated, but they are useful and worth taking a few minutes to understand. This post will cover the basics of working with hooks in emacs.
@@ -106,9 +106,9 @@ Today I was customizing the appearance of org files displayed with <a href="http
 </div>
 </div>
 </div>
-<div id="outline-container-org3300212" class="outline-2">
-<h2 id="org3300212">What do hooks do?</h2>
-<div class="outline-text-2" id="text-org3300212">
+<div id="outline-container-org036041c" class="outline-2">
+<h2 id="org036041c">What do hooks do?</h2>
+<div class="outline-text-2" id="text-org036041c">
 <p>
 A <i>hook</i> is a list of functions that are run on specifically-defined occasions, triggered by calls to a <code>run-hooks</code> or <code>run-mode-hooks</code> function.
 </p>
@@ -132,9 +132,9 @@ For a specific example, <code>org-tree-slide-mode</code> defines the hooks <code
 </div>
 </div>
 </div>
-<div id="outline-container-org24f4e36" class="outline-2">
-<h2 id="org24f4e36">How do hooks work?</h2>
-<div class="outline-text-2" id="text-org24f4e36">
+<div id="outline-container-orgea0db81" class="outline-2">
+<h2 id="orgea0db81">How do hooks work?</h2>
+<div class="outline-text-2" id="text-orgea0db81">
 <p>
 First, a quick glossary of terms:
 </p>
@@ -148,9 +148,9 @@ First, a quick glossary of terms:
 Hooks are run when specific functions call them. Such functions are often called at specific points in the initialization or use of emacs modes, but they are not limited to those circumstances. Here is a minimal example.
 </p>
 </div>
-<div id="outline-container-orga98a646" class="outline-3">
-<h3 id="orga98a646">Hooks Example</h3>
-<div class="outline-text-3" id="text-orga98a646">
+<div id="outline-container-org304584e" class="outline-3">
+<h3 id="org304584e">Hooks Example</h3>
+<div class="outline-text-3" id="text-org304584e">
 <p>
 First, we'll define the hook variable. This is the same as defining any other variable.
 </p>
@@ -231,9 +231,9 @@ There's nothing especially unique about any of these components. We assign the v
 </div>
 </div>
 
-<div id="outline-container-org77087fc" class="outline-2">
-<h2 id="org77087fc">Mode Hooks</h2>
-<div class="outline-text-2" id="text-org77087fc">
+<div id="outline-container-org549261b" class="outline-2">
+<h2 id="org549261b">Mode Hooks</h2>
+<div class="outline-text-2" id="text-org549261b">
 <p>
 Hooks are most commonly encountered in the context of modes. Modes generally define hooks to which users can add functions that will be called at the end of the mode's initialization. For example, I wanted to display line numbers whenever I was in a buffer with code, so I have the following line in my config:
 </p>
@@ -273,9 +273,9 @@ and, indeed, when I open an e.g. Python buffer, line numbers appear as desired.
 </p>
 </div>
 </div>
-<div id="outline-container-orgdad1d29" class="outline-2">
-<h2 id="orgdad1d29">Appendix: Hooks in use-package</h2>
-<div class="outline-text-2" id="text-orgdad1d29">
+<div id="outline-container-org044d1ce" class="outline-2">
+<h2 id="org044d1ce">Appendix: Hooks in use-package</h2>
+<div class="outline-text-2" id="text-org044d1ce">
 <p>
 I use <code>use-package</code> for managing my emacs packages. <code>use-package</code> declarations allow users to pass a <code>:hooks</code> option in the package declaration in order to add functions to hooks. Hooks can be configured in <code>use-package</code> by defining a cons cell as follows.
 </p>
@@ -293,9 +293,9 @@ Note that we do <i>not</i> refer to <code>mode-name-hook</code> in the hook conf
 </p>
 </div>
 </div>
-<div id="outline-container-org2082f5e" class="outline-2">
-<h2 id="org2082f5e">Further Reading</h2>
-<div class="outline-text-2" id="text-org2082f5e">
+<div id="outline-container-org518d0ef" class="outline-2">
+<h2 id="org518d0ef">Further Reading</h2>
+<div class="outline-text-2" id="text-org518d0ef">
 <ul class="org-ul">
 <li><a href="https://gitlab.com/dliden/coffeemacs">My Emacs config</a>. This has not, admittedly, been structured for broad consumption, but with a little searching you can find how I've configured some hooks. In particular, <a href="https://gitlab.com/dliden/coffeemacs/-/blob/master/orgconfig.el?ref_type=heads#L219">here</a> is my <code>org-tree-slide</code> configuration, which I mentioned at the beginning.</li>
 <li><a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">Emacs Docs</a>, which go into some more detail on abnormal hooks among other topics.</li>
