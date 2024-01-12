@@ -83,30 +83,30 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org942136d">Background</a></li>
-<li><a href="#org795192c">R Source Headers</a>
+<li><a href="#org98d8838">Background</a></li>
+<li><a href="#orgbe7d6b5">R Source Headers</a>
 <ul>
-<li><a href="#orgd1a13e7">Code</a>
+<li><a href="#org40c3a84">Code</a>
 <ul>
-<li><a href="#org2e9139e">Displaying Tabular Output</a></li>
+<li><a href="#org9aabcf6">Displaying Tabular Output</a></li>
 </ul>
 </li>
-<li><a href="#org0e45577">Figures</a>
+<li><a href="#orgdf785bb">Figures</a>
 <ul>
-<li><a href="#org050fab7">Base R</a></li>
-<li><a href="#org9f159e6">Ggplot and Lattice</a></li>
+<li><a href="#org36a5204">Base R</a></li>
+<li><a href="#orgba779bf">Ggplot and Lattice</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org5be352a">An Alternative: Emacs-Jupyter</a></li>
+<li><a href="#org8181e3e">An Alternative: Emacs-Jupyter</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org942136d" class="outline-2">
-<h2 id="org942136d">Background</h2>
-<div class="outline-text-2" id="text-org942136d">
+<div id="outline-container-org98d8838" class="outline-2">
+<h2 id="org98d8838">Background</h2>
+<div class="outline-text-2" id="text-org98d8838">
 <div class="preview">
 <p>
 <a href="https://orgmode.org/worg/org-contrib/babel/intro.html">Org Babel</a> is one of the best tools available for <a href="https://www-cs-faculty.stanford.edu/~knuth/lp.html">literate programming</a>. As a data scientist, I use it
@@ -132,16 +132,16 @@ depend on the specifics of your org-babel configuration; you can see mine below<
 </p>
 </div>
 </div>
-<div id="outline-container-org795192c" class="outline-2">
-<h2 id="org795192c">R Source Headers</h2>
-<div class="outline-text-2" id="text-org795192c">
+<div id="outline-container-orgbe7d6b5" class="outline-2">
+<h2 id="orgbe7d6b5">R Source Headers</h2>
+<div class="outline-text-2" id="text-orgbe7d6b5">
 <p>
 I tend to use two different header configurations, one for code output and one for figures.
 </p>
 </div>
-<div id="outline-container-orgd1a13e7" class="outline-3">
-<h3 id="orgd1a13e7">Code</h3>
-<div class="outline-text-3" id="text-orgd1a13e7">
+<div id="outline-container-org40c3a84" class="outline-3">
+<h3 id="org40c3a84">Code</h3>
+<div class="outline-text-3" id="text-org40c3a84">
 <div class="org-src-container">
 <pre class="src src-org"><span class="org-org-block-begin-line">#+begin_src R :session mysession</span>
 <span class="org-org-block"><span class="org-comment-delimiter"># </span></span><span class="org-org-block"><span class="org-comment">Code goes here</span></span>
@@ -172,9 +172,9 @@ add_1(99)
 100
 </pre>
 </div>
-<div id="outline-container-org2e9139e" class="outline-4">
-<h4 id="org2e9139e">Displaying Tabular Output</h4>
-<div class="outline-text-4" id="text-org2e9139e">
+<div id="outline-container-org9aabcf6" class="outline-4">
+<h4 id="org9aabcf6">Displaying Tabular Output</h4>
+<div class="outline-text-4" id="text-org9aabcf6">
 <p>
 When not dealing with plotting outputs, there are two main header options for result formatting that I tend
 to use: <code>:results output</code> and <code>:results value</code> (the default). You can find details on these two modes
@@ -189,8 +189,8 @@ readable exports, though.
 </p>
 </div>
 <ul class="org-ul">
-<li><a id="orgfb6e47f"></a>Value<br>
-<div class="outline-text-5" id="text-orgfb6e47f">
+<li><a id="orga75510a"></a>Value<br>
+<div class="outline-text-5" id="text-orga75510a">
 <p>
 (With <code>:results value</code> header arg).
 </p>
@@ -334,8 +334,8 @@ correctly.
 </div>
 </li>
 
-<li><a id="orgf2f4b59"></a>Output<br>
-<div class="outline-text-5" id="text-orgf2f4b59">
+<li><a id="org32408aa"></a>Output<br>
+<div class="outline-text-5" id="text-org32408aa">
 <p>
 (With <code>:results output</code> header arg).
 </p>
@@ -359,9 +359,9 @@ Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
 </div>
 </div>
 
-<div id="outline-container-org0e45577" class="outline-3">
-<h3 id="org0e45577">Figures</h3>
-<div class="outline-text-3" id="text-org0e45577">
+<div id="outline-container-orgdf785bb" class="outline-3">
+<h3 id="orgdf785bb">Figures</h3>
+<div class="outline-text-3" id="text-orgdf785bb">
 <p>
 I don't find the display and exporting of figures particularly intuitive and finding help tends to
 be challening because of differences depending on the plotting system and because of changes over
@@ -369,9 +369,9 @@ time. <i>This approach works as of December 2021</i>. Further details on exporti
 found <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org7fbd9c2">here</a>.
 </p>
 </div>
-<div id="outline-container-org050fab7" class="outline-4">
-<h4 id="org050fab7">Base R</h4>
-<div class="outline-text-4" id="text-org050fab7">
+<div id="outline-container-org36a5204" class="outline-4">
+<h4 id="org36a5204">Base R</h4>
+<div class="outline-text-4" id="text-org36a5204">
 <p>
 Using Base R graphics, the following header argument will produce a link to a file which can then be
 previewed in your org-mode buffer and exported.
@@ -398,8 +398,8 @@ grid()
 </figure>
 </div>
 <ul class="org-ul">
-<li><a id="orgf5e9afe"></a>Setting Graphical Parameters with Header Arguments<br>
-<div class="outline-text-5" id="text-orgf5e9afe">
+<li><a id="orgbd64b63"></a>Setting Graphical Parameters with Header Arguments<br>
+<div class="outline-text-5" id="text-orgbd64b63">
 <p>
 We can also set some graphical parameters such as figure height and width through the header
 arguments. For example, to set the with, height, and resolution, we add <code>:width 6 :height 3 :units in
@@ -422,9 +422,9 @@ grid()
 </ul>
 </div>
 
-<div id="outline-container-org9f159e6" class="outline-4">
-<h4 id="org9f159e6">Ggplot and Lattice</h4>
-<div class="outline-text-4" id="text-org9f159e6">
+<div id="outline-container-orgba779bf" class="outline-4">
+<h4 id="orgba779bf">Ggplot and Lattice</h4>
+<div class="outline-text-4" id="text-orgba779bf">
 <p>
 Can we just use this approach for everything? From <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org075fa45">the documentation</a>,
 </p>
@@ -461,9 +461,9 @@ ggplot(data=mtcars, mapping=aes(x=hp, y=mpg)) + geom_point()
 </div>
 </div>
 
-<div id="outline-container-org5be352a" class="outline-2">
-<h2 id="org5be352a">An Alternative: Emacs-Jupyter</h2>
-<div class="outline-text-2" id="text-org5be352a">
+<div id="outline-container-org8181e3e" class="outline-2">
+<h2 id="org8181e3e">An Alternative: Emacs-Jupyter</h2>
+<div class="outline-text-2" id="text-org8181e3e">
 <p>
 The excellent <a href="https://github.com/nnicandro/emacs-jupyter">emacs-jupyter</a> package is a solid alternative to the approaches described above. To use
 it for R, install the <code>emacs-jupyter</code> package (e.g. with <code>(use-package jupyter)</code>. In R, install <code>IRkernel</code>
