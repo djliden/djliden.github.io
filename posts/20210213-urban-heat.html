@@ -83,15 +83,15 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org0f7ec8e">Background</a></li>
-<li><a href="#orgdf6875b">Getting the Data</a>
+<li><a href="#orgb52dd35">Background</a></li>
+<li><a href="#orgdcd1b92">Getting the Data</a>
 <ul>
-<li><a href="#org989de0b">Unpacking and Visualizing the Raw Data</a></li>
+<li><a href="#org18784e9">Unpacking and Visualizing the Raw Data</a></li>
 </ul>
 </li>
-<li><a href="#org1d62ba5">Mapping Heat by Census Tract</a></li>
-<li><a href="#orgf25e6fa">Final Maps</a></li>
-<li><a href="#org7c03ef4">Resources</a></li>
+<li><a href="#org072ebc5">Mapping Heat by Census Tract</a></li>
+<li><a href="#orgd87829b">Final Maps</a></li>
+<li><a href="#org93620e0">Resources</a></li>
 </ul>
 </div>
 </nav>
@@ -102,9 +102,9 @@ for the JavaScript code in this tag.
 
 </div>
 
-<div id="outline-container-org0f7ec8e" class="outline-2">
-<h2 id="org0f7ec8e">Background</h2>
-<div class="outline-text-2" id="text-org0f7ec8e">
+<div id="outline-container-orgb52dd35" class="outline-2">
+<h2 id="orgb52dd35">Background</h2>
+<div class="outline-text-2" id="text-orgb52dd35">
 <p>
 For the past several months, I have been working on an analysis on the effects
 of urban heat on vulnerable populations, particularly during a public health
@@ -161,9 +161,9 @@ polygon boundaries (census tracts).
 </div>
 </div>
 
-<div id="outline-container-orgdf6875b" class="outline-2">
-<h2 id="orgdf6875b">Getting the Data</h2>
-<div class="outline-text-2" id="text-orgdf6875b">
+<div id="outline-container-orgdcd1b92" class="outline-2">
+<h2 id="orgdcd1b92">Getting the Data</h2>
+<div class="outline-text-2" id="text-orgdcd1b92">
 <p>
 I obtained surface temperature satellite data from the NASA/USGS Landsat 8
 satellite. The data can be obtained through an API, though for this example, I
@@ -188,9 +188,9 @@ in the map is associated with a surface temperature value.
 </p>
 </div>
 
-<div id="outline-container-org989de0b" class="outline-3">
-<h3 id="org989de0b">Unpacking and Visualizing the Raw Data</h3>
-<div class="outline-text-3" id="text-org989de0b">
+<div id="outline-container-org18784e9" class="outline-3">
+<h3 id="org18784e9">Unpacking and Visualizing the Raw Data</h3>
+<div class="outline-text-3" id="text-org18784e9">
 <p>
 This section requires the <code>raster</code> and <code>sf</code> packages. Below, we untar the map and
 extract the map of interest.
@@ -232,9 +232,9 @@ at the census tract level.
 </div>
 </div>
 
-<div id="outline-container-org1d62ba5" class="outline-2">
-<h2 id="org1d62ba5">Mapping Heat by Census Tract</h2>
-<div class="outline-text-2" id="text-org1d62ba5">
+<div id="outline-container-org072ebc5" class="outline-2">
+<h2 id="org072ebc5">Mapping Heat by Census Tract</h2>
+<div class="outline-text-2" id="text-org072ebc5">
 <p>
 First, we'll use the <code>tigris</code> package to download the census tract boundaries in
 Nevada and crop to the Las Vegas area.
@@ -319,9 +319,9 @@ dev.off()
 </div>
 </div>
 
-<div id="outline-container-orgf25e6fa" class="outline-2">
-<h2 id="orgf25e6fa">Final Maps</h2>
-<div class="outline-text-2" id="text-orgf25e6fa">
+<div id="outline-container-orgd87829b" class="outline-2">
+<h2 id="orgd87829b">Final Maps</h2>
+<div class="outline-text-2" id="text-orgd87829b">
 <p>
 Lastly, we can apply some formatting to make it more interpretable. I used
 <code>ggplot2</code> for all of the visual tweaks (details not shown).
@@ -370,9 +370,9 @@ data above &#x2013; is an important first step to conducting these analyses.
 </div>
 </div>
 
-<div id="outline-container-org7c03ef4" class="outline-2">
-<h2 id="org7c03ef4">Resources</h2>
-<div class="outline-text-2" id="text-org7c03ef4">
+<div id="outline-container-org93620e0" class="outline-2">
+<h2 id="org93620e0">Resources</h2>
+<div class="outline-text-2" id="text-org93620e0">
 <ul class="org-ul">
 <li><a href="https://cran.r-project.org/web/views/Spatial.html">CRAN Task View: Analysis
 of Spatial Data</a>: A CRAN hub explaining the <code>R</code> ecosystem of spatial data
