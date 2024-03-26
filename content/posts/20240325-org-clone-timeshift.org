@@ -1,0 +1,88 @@
+#+TITLE: Making headings for recurring tasks in org mode
+#+DATE: <2024-03-25 Mon>
+
+#+begin_preview
+This short post shows how to use the ~org-clone-subtree-with-time-shift~ command to make org headings for recurring tasks. I was recently trying to add a five-week class to my org agenda and I didn't want to manually create each heading and add or modify the timestamp. This approach made it very easy.
+#+end_preview
+
+* How it works
+
+Suppose I have an org mode heading representing a scheduled event, like a class:
+
+#+begin_src org 
+,* Class
+SCHEDULED: <2024-03-26 Tue>
+#+end_src
+
+Now suppose this class is scheduled weekly for the next five weeks. We don't necessarily want to manually copy the heading and manually update each timestamp (though, admittedly, it would only take a minute or two). This is where ~org-clone-subtree-with-time-shift~ comes in.
+
+When we invoke this function with the cursor on the first heading, we will be prompted for (1) the number of clones to create and (2) the time shift we want to use. In this example, we specify 4 clones (for a total of 5 headings) and a ~+1w~ time shift, to shift each heading by one week. 
+
+#+begin_src org
+,* Class
+SCHEDULED: <2024-03-26 Tue>
+,* Class
+SCHEDULED: <2024-04-02 Tue>
+,* Class
+SCHEDULED: <2024-04-09 Tue>
+,* Class
+SCHEDULED: <2024-04-16 Tue>
+,* Class
+SCHEDULED: <2024-04-23 Tue>
+#+end_src
+
+* Limitations
+In some cases, you may want to change the names of the headers somewhat (such as by adding a counter; class 1, class 2, etc.). There are many different approaches to handle this programmatically, but it's beyond the scope of this short post. In this case, it takes just a few seconds to add a class number to each heading manually.
+
+* Further reading
+
+Most helpfully, here is the documenation from ~C-h f org-clone-subtree-with-time-shift~:
+
+#+begin_quote
+org-clone-subtree-with-time-shift is an interactive Lisp closure in
+‘org.el’.
+
+It is bound to C-c C-x c.
+
+(org-clone-subtree-with-time-shift N &optional SHIFT)
+
+Clone the task (subtree) at point N times.
+The clones will be inserted as siblings.
+
+In interactive use, the user will be prompted for the number of
+clones to be produced.  If the entry has a timestamp, the user
+will also be prompted for a time shift, which may be a repeater
+as used in time stamps, for example ‘+3d’.  To disable this,
+you can call the function with a universal prefix argument.
+
+When a valid repeater is given and the entry contains any time
+stamps, the clones will become a sequence in time, with time
+stamps in the subtree shifted for each clone produced.  If SHIFT
+is nil or the empty string, time stamps will be left alone.  The
+ID property of the original subtree is removed.
+
+In each clone, all the CLOCK entries will be removed.  This
+prevents Org from considering that the clocked times overlap.
+
+If the original subtree did contain time stamps with a repeater,
+the following will happen:
+- the repeater will be removed in each clone
+- an additional clone will be produced, with the current, unshifted
+  date(s) in the entry.
+- the original entry will be placed *after* all the clones, with
+  repeater intact.
+- the start days in the repeater in the original entry will be shifted
+  to past the last clone.
+In this way you can spell out a number of instances of a repeating task,
+and still retain the repeater to cover future instances of the task.
+
+As described above, N+1 clones are produced when the original
+subtree has a repeater.  Setting N to 0, then, can be used to
+remove the repeater from a subtree and create a shifted clone
+with the original repeater.
+#+end_quote
+
+For more, you can also consult:
+
+- [[https://orgmode.org/manual/Structure-Editing.html#index-C_002dc-C_002dx-c][Entry in the Structure Editing docs]]
+- [[https://emacs.ch/@dliden/112094606592802616][Mastodon discussion]] on the topic, including some discussion of workarounds for the aforementioned limitations.
