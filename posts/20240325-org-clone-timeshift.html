@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Making headings for recurring tasks in org mode</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2> 
+  <div>
+    <a href='/index.html' style='font-weight:bold; font-style:italic;'>Home</a> /
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content">
+<header>
+<h1 class="title">Making headings for recurring tasks in org mode</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org4967525">How it works</a></li>
+<li><a href="#org8dcd347">Limitations</a></li>
+<li><a href="#org9b744db">Further reading</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview">
+<p>
+This short post shows how to use the <code>org-clone-subtree-with-time-shift</code> command to make org headings for recurring tasks. I was recently trying to add a five-week class to my org agenda and I didn't want to manually create each heading and add or modify the timestamp. This approach made it very easy.
+</p>
+
+</div>
+
+<div id="outline-container-org4967525" class="outline-2">
+<h2 id="org4967525">How it works</h2>
+<div class="outline-text-2" id="text-org4967525">
+<p>
+Suppose I have an org mode heading representing a scheduled event, like a class:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-level-1">* Class</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2024-03-26 Tue&gt;</span>
+</pre>
+</div>
+
+<p>
+Now suppose this class is scheduled weekly for the next five weeks. We don't necessarily want to manually copy the heading and manually update each timestamp (though, admittedly, it would only take a minute or two). This is where <code>org-clone-subtree-with-time-shift</code> comes in.
+</p>
+
+<p>
+When we invoke this function with the cursor on the first heading, we will be prompted for (1) the number of clones to create and (2) the time shift we want to use. In this example, we specify 4 clones (for a total of 5 headings) and a <code>+1w</code> time shift, to shift each heading by one week. 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-level-1">* Class</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2024-03-26 Tue&gt;</span>
+<span class="org-org-level-1">* Class</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2024-04-02 Tue&gt;</span>
+<span class="org-org-level-1">* Class</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2024-04-09 Tue&gt;</span>
+<span class="org-org-level-1">* Class</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2024-04-16 Tue&gt;</span>
+<span class="org-org-level-1">* Class</span>
+<span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2024-04-23 Tue&gt;</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8dcd347" class="outline-2">
+<h2 id="org8dcd347">Limitations</h2>
+<div class="outline-text-2" id="text-org8dcd347">
+<p>
+In some cases, you may want to change the names of the headers somewhat (such as by adding a counter; class 1, class 2, etc.). There are many different approaches to handle this programmatically, but it's beyond the scope of this short post. In this case, it takes just a few seconds to add a class number to each heading manually.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9b744db" class="outline-2">
+<h2 id="org9b744db">Further reading</h2>
+<div class="outline-text-2" id="text-org9b744db">
+<p>
+Most helpfully, here is the documenation from <code>C-h f org-clone-subtree-with-time-shift</code>:
+</p>
+
+<blockquote>
+<p>
+org-clone-subtree-with-time-shift is an interactive Lisp closure in
+‘org.el’.
+</p>
+
+<p>
+It is bound to C-c C-x c.
+</p>
+
+<p>
+(org-clone-subtree-with-time-shift N &amp;optional SHIFT)
+</p>
+
+<p>
+Clone the task (subtree) at point N times.
+The clones will be inserted as siblings.
+</p>
+
+<p>
+In interactive use, the user will be prompted for the number of
+clones to be produced.  If the entry has a timestamp, the user
+will also be prompted for a time shift, which may be a repeater
+as used in time stamps, for example ‘+3d’.  To disable this,
+you can call the function with a universal prefix argument.
+</p>
+
+<p>
+When a valid repeater is given and the entry contains any time
+stamps, the clones will become a sequence in time, with time
+stamps in the subtree shifted for each clone produced.  If SHIFT
+is nil or the empty string, time stamps will be left alone.  The
+ID property of the original subtree is removed.
+</p>
+
+<p>
+In each clone, all the CLOCK entries will be removed.  This
+prevents Org from considering that the clocked times overlap.
+</p>
+
+<p>
+If the original subtree did contain time stamps with a repeater,
+the following will happen:
+</p>
+<ul class="org-ul">
+<li>the repeater will be removed in each clone</li>
+<li>an additional clone will be produced, with the current, unshifted
+date(s) in the entry.</li>
+<li>the original entry will be placed <b>after</b> all the clones, with
+repeater intact.</li>
+<li>the start days in the repeater in the original entry will be shifted
+to past the last clone.</li>
+</ul>
+<p>
+In this way you can spell out a number of instances of a repeating task,
+and still retain the repeater to cover future instances of the task.
+</p>
+
+<p>
+As described above, N+1 clones are produced when the original
+subtree has a repeater.  Setting N to 0, then, can be used to
+remove the repeater from a subtree and create a shifted clone
+with the original repeater.
+</p>
+</blockquote>
+
+<p>
+For more, you can also consult:
+</p>
+
+<ul class="org-ul">
+<li><a href="https://orgmode.org/manual/Structure-Editing.html#index-C_002dc-C_002dx-c">Entry in the Structure Editing docs</a></li>
+<li><a href="https://emacs.ch/@dliden/112094606592802616">Mastodon discussion</a> on the topic, including some discussion of workarounds for the aforementioned limitations.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-03-25 Mon 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
