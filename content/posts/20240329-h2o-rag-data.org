@@ -1,0 +1,156 @@
+#+TITLE: Retrieving Data for the H2o RAG Benchmark
+#+DATE: <2024-03-29 Fri>
+
+#+begin_preview
+I was looking for a good dataset to use for comparing different models in a RAG application when I found [[https://www.reddit.com/r/LocalLLaMA/comments/1bpo5uo/rag_benchmark_of_databricksdbrx/][this post]] on Reddit. It compares a bunch of models on a collection of questions over a set of documents provided by [[h2o.ai][H2O.ai]].
+
+I wasn't super interested in the benchmark, but the files (mostly pdfs, one mp3, jpg, other file types) interested me for use in my own testing. This short post shows how to get them using the scripts provided by h2o.ai.
+#+end_preview
+
+To get started with the H2O RAG benchmark, first clone the =enterprise-h2ogpte= repo and navigate to the =rag_benchmark= directory:
+
+#+BEGIN_SRC sh
+git clone https://github.com/h2oai/enterprise-h2ogpte.git
+cd enterprise-h2ogpte/rag_benchmark
+#+END_SRC
+
+Next, perhaps in a notebook, instantiate each of the documents.
+
+#+BEGIN_SRC python
+from datasets import CachedFile
+
+femsa = CachedFile(
+    "Femsa",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Coca-Cola-FEMSA-Results-1Q23-vf-2.pdf",
+)
+wells_fargo = CachedFile(
+    "WellsFargo",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/wellsfargo-2022-annual-report.pdf",
+)
+citi_report = CachedFile(
+    "CitiAnnual",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/citi-2022-annual-report.pdf",
+)
+kaiser = CachedFile(
+    "Kaiser",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/kp-annual-report-en-2019.pdf",
+)
+cba = CachedFile(
+    "CBA-Spreads",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/2023-Annual-Report-Spreads.pdf",
+)
+cba_fullpage = CachedFile(
+    "CBA-Annual",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/CBA.2023.Annual.Report.pdf",
+)
+cba_wheel = CachedFile(
+    "CBA-Wheel",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/CBA-1H23-Results-Presentation_wheel.pdf",
+)
+nyl_all = CachedFile(
+    "NYL_All",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/2022-nyl-investment-report.pdf",
+)
+bradesco = CachedFile(
+    "Bradesco",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/bradesco-2022-integrated-report.pdf",
+)
+tabasco = CachedFile(
+    "Tabasco",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Tabasco_Ingredients_Products_Guide.pdf",
+)
+citi_report_pg6 = CachedFile(
+    "Citi6",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/citi-2022-annual-report-page6.pdf",
+)
+citi_report_pg1_2 = CachedFile(
+    "Citi1_2",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/citi-2022-annual-report-pages1-2.pdf",
+)
+nyl_report_pg5_15 = CachedFile(
+    "NYL5_15",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/2022-nyl-investment-report-pages-5-and-15.pdf",
+)
+aluminum_int = CachedFile(
+    "AluminumInt",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Aluminum.Intelligence.Report.November.2022.pdf",
+)
+albumentations_markdown = CachedFile(
+    "AlbumentationsREADME",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/albumentations-README.md",
+)
+best_buy = CachedFile(
+    "BestBuy",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Best-Buy-Investor-Event-March-2022.pdf",
+)
+
+example_rst = CachedFile(
+    "ExampleRST",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/example-rst2.rst",
+)
+
+audio_label_genie = CachedFile(
+    "AudioLabelGenie",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/label-genie-intro-youtube.mp3",
+)
+
+fast_food = CachedFile(
+    "FastFood",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/fastfood.jpg",
+)
+
+sanepar_pg4 = CachedFile(
+    "Sanepar_4",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Demonstracoes-Financeiras-Anuaanepar-2022-12-31-gmdgFjGq-page4.pdf",
+)
+
+dell_scanned_pr = CachedFile(
+    "dell_scanned_pr",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Q2 FY24 Financial Results Press Release.pdf",
+)
+
+jpeg_xr_image = CachedFile(
+    "JPEG-XR",
+    "https://enterprise-h2ogpt-public-data.s3.amazonaws.com/gilgamesh_tablet_1.jxr",
+)
+#+END_SRC
+
+
+Next, use the ~get()~ method from each ~CachedFile~ instance to download its file.
+
+#+BEGIN_SRC python
+instances = [
+    femsa,
+    wells_fargo,
+    citi_report,
+    kaiser,
+    cba,
+    cba_fullpage,
+    cba_wheel,
+    nyl_all,
+    bradesco,
+    tabasco,
+    citi_report_pg6,
+    citi_report_pg1_2,
+    nyl_report_pg5_15,
+    aluminum_int,
+    albumentations_markdown,
+    best_buy,
+    example_rst,
+    audio_label_genie,
+    fast_food,
+    sanepar_pg4,
+    dell_scanned_pr,
+    jpeg_xr_image,
+]
+
+for instance in instances:
+    try:
+        result = instance.get()
+        print("---")
+    except Exception as e:
+        print(f"Error occurred for instance {instance}: {str(e)}")
+        print("---")
+#+END_SRC
+
+Run the notebook cells to fetch the files. They will be stored in the =/data/cached= directory under =rag_benchmark=. You can now use them for whatever you want.
