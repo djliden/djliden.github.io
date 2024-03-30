@@ -1,10 +1,56 @@
-* [[file:about.org][(2022-09-21) About Me]]
+* [[file:notes.org][(2024-03-30) Notes and Drafts]]
 (No preview)
-* [[file:index.org][(2022-06-04) Daniel Liden's Home Page]]
+* [[file:photos.org][(2024-01-21) Photos]]
 (No preview)
-* [[file:archive.org][(2021-12-02) Posts Archive]]
+* [[file:index.org][(2024-01-11) Daniel Liden]]
 (No preview)
+* [[file:about.org][(2024-01-11) About Me]]
+(No preview)
+* [[file:archive.org][(2023-07-12) Posts Archive]]
+(No preview)
+* notes
+** [[file:notes/test_note.org][(2024-03-30) This is a test note]]
+Does this work?
 * posts
+** [[file:posts/20240329-h2o-rag-data.org][(2024-03-29) Retrieving Data for the H2o RAG Benchmark]]
+I was looking for a good dataset to use for comparing different models in a RAG application when I found [[https://www.reddit.com/r/LocalLLaMA/comments/1bpo5uo/rag_benchmark_of_databricksdbrx/][this post]] on Reddit. It compares a bunch of models on a collection of questions over a set of documents provided by [[https://h2o.ai][H2O.ai]].
+
+I wasn't super interested in the benchmark, but the files (mostly pdfs, one mp3, jpg, other file types) interested me for use in my own testing. This short post shows how to get them using the scripts provided by h2o.ai.
+** [[file:posts/20240325-org-clone-timeshift.org][(2024-03-25) Making headings for recurring tasks in org mode]]
+This short post shows how to use the ~org-clone-subtree-with-time-shift~ command to make org headings for recurring tasks. I was recently trying to add a five-week class to my org agenda and I didn't want to manually create each heading and add or modify the timestamp. This approach made it very easy.
+** [[file:posts/20231217-emacs-hooks.org][(2023-12-17) Introduction to Emacs Hooks]]
+Today I was customizing the appearance of org files displayed with [[https://github.com/takaxp/org-tree-slide][org-tree-slide]]. In particular, I wanted to increase the font size and start [[https://github.com/rnkn/olivetti][Olivetti mode]] whenever I started ~org-tree-slide-mode~ and return everything to normal when I was done. This, I quickly discovered, required the use of [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html][hooks]]. Hooks are not especially complicated, but they are useful and worth taking a few minutes to understand. This post will cover the basics of working with hooks in emacs.
+** [[file:posts/20230709-yasnippet-chatgpt-shell.org][(2023-07-09) YASnippet for Prompt Templates for Chatgpt-Shell]]
+The wonderful [[https://github.com/xenodium/chatgpt-shell][chatgpt-shell]] package by [[https://github.com/xenodium][Xenodium]] lets you interact with the gpt-3.5 and gpt-4
+APIs in emacs via a handy shell built on top of ~comint-mode~. It also integrates
+well with ~org-mode~.
+
+I find that I tend to re-use a few prompt patterns for specific tasks. Yasnippet provides a great
+way to create prompt /templates/ made up of some fixed component with placeholders
+for user input. I can easily insert these prompt templates when working with
+~chatgpt-shell~ to gain easy access to reusable, task-specific prompts. This post
+describes how to start using Yasnippet for prompt templates for use with
+~chatgpt-shell~.
+** [[file:posts/20230428-ai-db-writing.org][(2023-06-01) Writing on AI and Postgres]]
+Since this start of this year, I've been working on and writing about AI tools
+for working with Postgres databases. Most of this work has involved finding
+different ways to integrate ChatGPT (and previously Codex) with other tools and
+workflows. I wanted to collect and share some of that writing here, as it's
+related to a lot of the other things I write about on my personal blog.
+** [[file:posts/20230310-chatgpt-julia-2.org][(2023-03-10) Using the ChatGPT API with Julia Part 2: Defining a Chat Struct]]
+One of the things that makes working with the ChatGPT API a little different
+from working with, e.g., the ~davinci-text-003~ model api is the need to maintain
+the history of a given chat session. A Julia ~Struct~ containing the chat
+history, coupled with a function that acts on that Struct, provides a good way
+to work with the ChatGPT API.
+
+For the basics of working with the ChatGPT API, check out [[file:20230303-chatgpt-julia.org][part 1]].
+** [[file:posts/20230303-chatgpt-julia.org][(2023-03-04) Using the ChatGPT API with Julia Part 1: the HTTP.jl Library]]
+This brief post shows the basics of using the Julia ~HTTP~ library to interact
+with the OpenAI ChatGPT API, which was made public a few days ago. This post
+will only include the minimum necessary detail for getting started with the
+API. Future posts will go into a little more detail on how to send message
+histories and engage more interactively with the API.
 ** [[file:posts/20221217-denote-quarto.org][(2022-12-22) Using Quarto Files with Denote]]
 The latest release of [[https://protesilaos.com/emacs/denote][Denote]] (by the inimitable Protesilaos Stavrou) introduced
 support for [[https://protesilaos.com/codelog/2022-10-30-demo-denote-custom-file-type/][custom file types]] in addition to the defaults, Org, Markdown+YAML,
@@ -69,17 +115,11 @@ on the writing and less on understanding the framework.
 Here are some resources to reference for building a simple site with org-mode. I've extensively
 used the sites listed as models for building the present site and expect to continue to reference
 them for some time.
-** drafts
-*** [[file:posts/drafts/20220611-vertex.org][(2022-06-11) Getting Started with Vertex AI Custom Model Training]]
-I have long wanted an easy solution to training a small version of a deep learning
-model on my laptop and then training a larger version in the cloud with as
-little extra code as possible. In an ideal world, this would mean passing a
-~--cloud~ argument to the training utility.
-
-This post describes an approach that, while not perfect, does begin to solve the
-problem of simple scaling from local prototyping on a laptop to training a much
-larger model in the cloud. It uses Google's [[https://cloud.google.com/vertex-ai/docs/training/custom-training][[Vertex AI Custom Training]​]] API
-(via the Python SDK). The existing documentation on this use case for Vertex AI
-is not very good. I hope this guide will provide a straightforward approach to a
-local prototyping/cloud scaling approach to model training that will be
-accessible to those without a lot of experience in cloud ML Ops.
+** [[file:posts/20210514-pytorch-numerai.org][(2021-05-14) A Simple PyTorch Model for the Numerai Tournament]]
+/This is another one from the archives. It covers how to train a basic PyTorch
+model for use in the Numerai tournament, at least as it was in May 2021. See the original post [[https://pensive-wing-19c199.netlify.app/post/mlp-numerai-05082021/][here.]]/
+** [[file:posts/20210213-urban-heat.org][(2021-02-13) Mapping Urban Heat by Census Tract in R]]
+/Another one from the archives--this is one of my projects from my time at the Guinn Center, and something I very much wish I could have developed further: an analysis of urban heat in Las Vegas./
+** [[file:posts/20190614-ml-yearning-review.org][(2019-06-14) Book Review: Machine Learning Yearning by Andrew Ng]]
+/This is the first of a few posts I'm migrating from my old site, which you can
+still find [[https://pensive-wing-19c199.netlify.app/][here]]. This is a review of Machine Learning Yearning by Andrew Ng./
