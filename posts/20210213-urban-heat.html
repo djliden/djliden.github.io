@@ -63,13 +63,13 @@ for the JavaScript code in this tag.
 <div id="preamble" class="status">
 <hr style="border-top: 1px solid black;">
 <div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2> 
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
   <div>
-    <a href='/index.html' style='font-weight:bold; font-style:italic;'>Home</a> /
     <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
     <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
     <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
     <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
     <a href='/rss.xml'>
       <img src='/rss.png' style='height: 1em;'>
     </a>
@@ -84,15 +84,15 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org6f03bbc">Background</a></li>
-<li><a href="#org72f3f38">Getting the Data</a>
+<li><a href="#orgc40b59b">Background</a></li>
+<li><a href="#orgbc0107f">Getting the Data</a>
 <ul>
-<li><a href="#org76f4061">Unpacking and Visualizing the Raw Data</a></li>
+<li><a href="#orge7d570b">Unpacking and Visualizing the Raw Data</a></li>
 </ul>
 </li>
-<li><a href="#org79f5dea">Mapping Heat by Census Tract</a></li>
-<li><a href="#org5f55ebe">Final Maps</a></li>
-<li><a href="#orgad7af10">Resources</a></li>
+<li><a href="#org16c2507">Mapping Heat by Census Tract</a></li>
+<li><a href="#org242c6f5">Final Maps</a></li>
+<li><a href="#orge8ca605">Resources</a></li>
 </ul>
 </div>
 </nav>
@@ -103,9 +103,9 @@ for the JavaScript code in this tag.
 
 </div>
 
-<div id="outline-container-org6f03bbc" class="outline-2">
-<h2 id="org6f03bbc">Background</h2>
-<div class="outline-text-2" id="text-org6f03bbc">
+<div id="outline-container-orgc40b59b" class="outline-2">
+<h2 id="orgc40b59b">Background</h2>
+<div class="outline-text-2" id="text-orgc40b59b">
 <p>
 For the past several months, I have been working on an analysis on the effects
 of urban heat on vulnerable populations, particularly during a public health
@@ -162,9 +162,9 @@ polygon boundaries (census tracts).
 </div>
 </div>
 
-<div id="outline-container-org72f3f38" class="outline-2">
-<h2 id="org72f3f38">Getting the Data</h2>
-<div class="outline-text-2" id="text-org72f3f38">
+<div id="outline-container-orgbc0107f" class="outline-2">
+<h2 id="orgbc0107f">Getting the Data</h2>
+<div class="outline-text-2" id="text-orgbc0107f">
 <p>
 I obtained surface temperature satellite data from the NASA/USGS Landsat 8
 satellite. The data can be obtained through an API, though for this example, I
@@ -189,9 +189,9 @@ in the map is associated with a surface temperature value.
 </p>
 </div>
 
-<div id="outline-container-org76f4061" class="outline-3">
-<h3 id="org76f4061">Unpacking and Visualizing the Raw Data</h3>
-<div class="outline-text-3" id="text-org76f4061">
+<div id="outline-container-orge7d570b" class="outline-3">
+<h3 id="orge7d570b">Unpacking and Visualizing the Raw Data</h3>
+<div class="outline-text-3" id="text-orge7d570b">
 <p>
 This section requires the <code>raster</code> and <code>sf</code> packages. Below, we untar the map and
 extract the map of interest.
@@ -233,9 +233,9 @@ at the census tract level.
 </div>
 </div>
 
-<div id="outline-container-org79f5dea" class="outline-2">
-<h2 id="org79f5dea">Mapping Heat by Census Tract</h2>
-<div class="outline-text-2" id="text-org79f5dea">
+<div id="outline-container-org16c2507" class="outline-2">
+<h2 id="org16c2507">Mapping Heat by Census Tract</h2>
+<div class="outline-text-2" id="text-org16c2507">
 <p>
 First, we'll use the <code>tigris</code> package to download the census tract boundaries in
 Nevada and crop to the Las Vegas area.
@@ -320,9 +320,9 @@ dev.off()
 </div>
 </div>
 
-<div id="outline-container-org5f55ebe" class="outline-2">
-<h2 id="org5f55ebe">Final Maps</h2>
-<div class="outline-text-2" id="text-org5f55ebe">
+<div id="outline-container-org242c6f5" class="outline-2">
+<h2 id="org242c6f5">Final Maps</h2>
+<div class="outline-text-2" id="text-org242c6f5">
 <p>
 Lastly, we can apply some formatting to make it more interpretable. I used
 <code>ggplot2</code> for all of the visual tweaks (details not shown).
@@ -371,9 +371,9 @@ data above &#x2013; is an important first step to conducting these analyses.
 </div>
 </div>
 
-<div id="outline-container-orgad7af10" class="outline-2">
-<h2 id="orgad7af10">Resources</h2>
-<div class="outline-text-2" id="text-orgad7af10">
+<div id="outline-container-orge8ca605" class="outline-2">
+<h2 id="orge8ca605">Resources</h2>
+<div class="outline-text-2" id="text-orge8ca605">
 <ul class="org-ul">
 <li><a href="https://cran.r-project.org/web/views/Spatial.html">CRAN Task View: Analysis
 of Spatial Data</a>: A CRAN hub explaining the <code>R</code> ecosystem of spatial data
