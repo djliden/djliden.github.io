@@ -1,0 +1,248 @@
+#+title: PyTorch Review
+#+date:      <2024-03-31 Sun>
+#+filetags:   :ai:deeplearning:python:pytorch:
+#+identifier: 20240330T102821
+
+#+begin_preview
+This is a quick run through the appendix on PyTorch from Sebastian Raschka's [[https://www.manning.com/books/build-a-large-language-model-from-scratch][Build a Large Language Model (From Scratch)]] book, currently available via Manning's MEAP. I haven't spent an enormous amount of time with PyTorch in the last year or so, so it seemed worth the effort to work through it.
+#+end_preview
+
+* A.1 PyTorch
+There are three broad components to PyTorch:
+- A tensor library extending array-oriented programming from NumPy with additional features for accelerated computation on GPUs.
+- An automatic differentiation engine (autograd), which ehables automatic computation of gradients for tensor operations for backpropagation/model optimization.
+- A deep learning library, offering modular, flexible, and extensible building blocks for designing and training deep learning models.
+
+Let's make sure we have it installed correctly...
+
+#+begin_src python :session appA
+import torch
+
+torch.__version__
+#+end_src
+
+#+RESULTS:
+: 2.2.2
+
+Let's make sure we can use ~mps~ (on mac).
+
+#+begin_src python :session appA
+torch.backends.mps.is_available()
+#+end_src
+
+#+RESULTS:
+: True
+
+Great.
+* A.2 Understanding tensors
+
+Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors are similar to NumPy arrays but have have several additional features:
+- an automatic differentiation engine
+- gpu computation
+Still, it has a numpy-like API.
+** Creating tensors
+
+#+begin_src python :session appA :results output
+# 0d tensor (scalar)
+print(torch.tensor(1))
+
+# 1d tensor (vector)
+print(torch.tensor([1, 2, 3]))
+
+# 2d tensor
+print(torch.tensor([[1, 2], [3, 4]]))
+
+# 3d tensor
+print(torch.tensor([[[1, 2], [3,4]], [[5,6], [7,8]]]))
+#+end_src
+
+#+RESULTS:
+: tensor(1)
+: tensor([1, 2, 3])
+: tensor([[1, 2],
+:         [3, 4]])
+: tensor([[[1, 2],
+:          [3, 4]],
+: 
+:         [[5, 6],
+:          [7, 8]]])
+** Tensor data types
+These are important to pay attention to! So let's pay attention to them. The default (from above) is the 64-bit integer.
+
+#+begin_src python :session appA :results output
+tensor1d = torch.tensor([1,2,3])
+print(tensor1d.dtype)
+#+end_src
+
+#+RESULTS:
+: torch.int64
+
+For floats, PyTorch uses 32-bit precision by default.
+
+
+#+begin_src python :session appA :results output
+floatvec = torch.tensor([1., 2., 3.])
+print(floatvec.dtype)
+#+end_src
+
+#+RESULTS:
+: torch.float32
+
+Why this default?
+- GPU architectures are optimized for 32-bit computations
+- 32-bit precision is sufficient for most deep learning tasks but uses less memory and computational resources than 64-bit.
+
+it is easy to change ~dtype~ (and precision) with a tensor's ~.to~ method.
+
+#+begin_src python :session appA :results output
+print(torch.tensor([1,2,3]).to(torch.float32).dtype)
+#+end_src
+
+#+RESULTS:
+: torch.float32
+** Common tensor operations
+- brief survey of the most common tensor operations prior to getting into the computational graphs concept.
+
+
+#+begin_src python :session appA :results output
+tensor2d = torch.tensor([[1, 2, 3], [4, 5, 6]])
+#+end_src
+
+#+RESULTS:
+
+Reshape:
+
+#+begin_src python :session appA :results output
+print(tensor2d.reshape(3, 2))
+#+end_src
+
+#+RESULTS:
+: tensor([[1, 2],
+:         [3, 4],
+:         [5, 6]])
+
+It is more common to use ~view~ than ~reshape~.
+
+#+begin_src python :session appA :results output
+print(tensor2d.view(3, 2))
+#+end_src
+
+#+RESULTS:
+: tensor([[1, 2],
+:         [3, 4],
+:         [5, 6]])
+
+Transpose
+
+#+begin_src python :session appA :results output
+print(tensor2d.T)
+#+end_src
+
+#+RESULTS:
+: tensor([[1, 4],
+:         [2, 5],
+:         [3, 6]])
+
+
+Matrix multiplication is usually handled with ~matmul~.
+
+#+begin_src python :session appA :results output
+print(tensor2d.matmul(tensor2d.T))
+#+end_src
+
+#+RESULTS:
+: tensor([[14, 32],
+:         [32, 77]])
+
+#+begin_src python :session appA :results output
+print(tensor2d @ tensor2d.T)
+#+end_src
+
+#+RESULTS:
+: tensor([[14, 32],
+:         [32, 77]])
+* A.3 Models as Computational Graphs
+
+The previous section covered PyTorch's tensor library. This section gets into its automatic differentiation engine (autograd). Autograd provides functions for automatically computing gradients in dynamic computational graphs.
+
+So what's a computational graph? It lays out the sequence of calculations needed to compute the gradients for backprop. We'll go through an example showing the forward pass of a logstic regression classifier.
+
+#+begin_src python :session appA :results output
+import torch.nn.functional as F
+
+y = torch.tensor([1.0])
+x1 = torch.tensor([1.1])
+w1 = torch.tensor([2.2])
+b = torch.tensor([0.0])
+
+z = x1 * w1 + b
+a = torch.sigmoid(z)
+
+loss = F.binary_cross_entropy(a,y)
+#+end_src
+
+#+RESULTS:
+
+
+This results in a computational graph which PyTorch builds in the background.
+
+Input and weight -> (u = w_1 * x_1) -> +b -> (z = u + b) -> (a = \sigma(z)) -> loss = L(a,y) <- y
+* A.4 Automatic Differentiation
+PyTorch will automatically build such a graph if one of its terminal nodes has the ~requires_grad~ attribute set to True. This enables us to train neural nets via backpropagation. Working backward from the above:
+
+\begin{align*}
+\frac{\partial L}{\partial w_1} &= \frac{\partial u}{\partial w_1} \times \frac{\partial z}{\partial u} \times \frac{\partial a}{\partial z} \times \frac{\partial L}{\partial a} \\
+\frac{\partial L}{\partial b} &= \frac{\partial z}{\partial b} \times \frac{\partial a}{\partial z} \times \frac{\partial L}{\partial a}
+\end{align*}
+
+Basically--apply the chain rule right to left.
+
+Quick reminder of some definitions:
+- a partial derivative measures the rate at which a function changes w/r/t one of its variables 
+- a gradient is a vector of all the partial derivatives of a multivariate function
+
+So what exactly does this have to do with torch as an autograd engine? PyTorch tracks every operation performed on tensors and can, therefore, construct a computational graph in the background. Then it cal cann on the ~grad~ function to compute the gradient of the loss w/r/t the model parameter as follows:
+
+#+begin_src python :session appA :results output
+import torch.nn.functional as F
+from torch.autograd import grad
+
+y = torch.tensor([1.0])
+x1 = torch.tensor([1.1])
+w1 = torch.tensor([2.2], requires_grad=True)
+b = torch.tensor([0.0], requires_grad=True)
+
+z = x1 * w1 + b
+a = torch.sigmoid(z)
+
+loss = F.binary_cross_entropy(a, y)
+grad_L_w1 = grad(loss, w1, retain_graph=True) #A
+grad_L_b = grad(loss, b, retain_graph=True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :session appA :results output
+print(grad_L_w1)
+print(grad_L_b)
+#+end_src
+
+#+RESULTS:
+: (tensor([-0.0898]),)
+: (tensor([-0.0817]),)
+
+We seldom manually call the grad function. We usually call ~.backward~ on the loss, which computes the gradients of all the leaf nodes in the graph, which will be stored via the ~.grad~ attributes of the tensors.
+
+
+#+begin_src python :session appA :results output
+print(loss.backward())
+print(w1.grad)
+print(b.grad)
+#+end_src
+
+#+RESULTS:
+: None
+: tensor([-0.0898])
+: tensor([-0.0817])
+* A.5 Implementing multilayer neural networks
+Now we get to the third major component of Pytorch: its library for implementing deep neural networks.
