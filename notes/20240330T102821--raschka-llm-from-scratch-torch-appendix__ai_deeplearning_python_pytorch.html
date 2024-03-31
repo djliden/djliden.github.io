@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PyTorch Review</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content">
+<header>
+<h1 class="title">PyTorch Review</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org80a4b7a">A.1 PyTorch</a></li>
+<li><a href="#orgd19589c">A.2 Understanding tensors</a>
+<ul>
+<li><a href="#org1fe9bac">Creating tensors</a></li>
+<li><a href="#orgc2edd13">Tensor data types</a></li>
+<li><a href="#orgd9b480c">Common tensor operations</a></li>
+</ul>
+</li>
+<li><a href="#orga4485ee">A.3 Models as Computational Graphs</a></li>
+<li><a href="#org75a8ebe">A.4 Automatic Differentiation</a></li>
+<li><a href="#orgcee4b18">A.5 Implementing multilayer neural networks</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview">
+<p>
+This is a quick run through the appendix on PyTorch from Sebastian Raschka's <a href="https://www.manning.com/books/build-a-large-language-model-from-scratch">Build a Large Language Model (From Scratch)</a> book, currently available via Manning's MEAP. I haven't spent an enormous amount of time with PyTorch in the last year or so, so it seemed worth the effort to work through it.
+</p>
+
+</div>
+
+<div id="outline-container-org80a4b7a" class="outline-2">
+<h2 id="org80a4b7a">A.1 PyTorch</h2>
+<div class="outline-text-2" id="text-org80a4b7a">
+<p>
+There are three broad components to PyTorch:
+</p>
+<ul class="org-ul">
+<li>A tensor library extending array-oriented programming from NumPy with additional features for accelerated computation on GPUs.</li>
+<li>An automatic differentiation engine (autograd), which ehables automatic computation of gradients for tensor operations for backpropagation/model optimization.</li>
+<li>A deep learning library, offering modular, flexible, and extensible building blocks for designing and training deep learning models.</li>
+</ul>
+
+<p>
+Let's make sure we have it installed correctly&#x2026;
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">import</span> torch
+
+torch.__version__
+</pre>
+</div>
+
+<pre class="example">
+2.2.2
+</pre>
+
+
+<p>
+Let's make sure we can use <code>mps</code> (on mac).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">torch.backends.mps.is_available()
+</pre>
+</div>
+
+<pre class="example">
+True
+</pre>
+
+
+<p>
+Great.
+</p>
+</div>
+</div>
+<div id="outline-container-orgd19589c" class="outline-2">
+<h2 id="orgd19589c">A.2 Understanding tensors</h2>
+<div class="outline-text-2" id="text-orgd19589c">
+<p>
+Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors are similar to NumPy arrays but have have several additional features:
+</p>
+<ul class="org-ul">
+<li>an automatic differentiation engine</li>
+<li>gpu computation</li>
+</ul>
+<p>
+Still, it has a numpy-like API.
+</p>
+</div>
+<div id="outline-container-org1fe9bac" class="outline-3">
+<h3 id="org1fe9bac">Creating tensors</h3>
+<div class="outline-text-3" id="text-org1fe9bac">
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">0d tensor (scalar)</span>
+<span class="org-keyword">print</span>(torch.tensor(1))
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">1d tensor (vector)</span>
+<span class="org-keyword">print</span>(torch.tensor([1, 2, 3]))
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">2d tensor</span>
+<span class="org-keyword">print</span>(torch.tensor([[1, 2], [3, 4]]))
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">3d tensor</span>
+<span class="org-keyword">print</span>(torch.tensor([[[1, 2], [3,4]], [[5,6], [7,8]]]))
+</pre>
+</div>
+
+<pre class="example">
+tensor(1)
+tensor([1, 2, 3])
+tensor([[1, 2],
+        [3, 4]])
+tensor([[[1, 2],
+         [3, 4]],
+
+        [[5, 6],
+         [7, 8]]])
+</pre>
+</div>
+</div>
+<div id="outline-container-orgc2edd13" class="outline-3">
+<h3 id="orgc2edd13">Tensor data types</h3>
+<div class="outline-text-3" id="text-orgc2edd13">
+<p>
+These are important to pay attention to! So let's pay attention to them. The default (from above) is the 64-bit integer.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">tensor1d</span> = torch.tensor([1,2,3])
+<span class="org-keyword">print</span>(tensor1d.dtype)
+</pre>
+</div>
+
+<pre class="example">
+torch.int64
+</pre>
+
+
+<p>
+For floats, PyTorch uses 32-bit precision by default.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">floatvec</span> = torch.tensor([1., 2., 3.])
+<span class="org-keyword">print</span>(floatvec.dtype)
+</pre>
+</div>
+
+<pre class="example">
+torch.float32
+</pre>
+
+
+<p>
+Why this default?
+</p>
+<ul class="org-ul">
+<li>GPU architectures are optimized for 32-bit computations</li>
+<li>32-bit precision is sufficient for most deep learning tasks but uses less memory and computational resources than 64-bit.</li>
+</ul>
+
+<p>
+it is easy to change <code>dtype</code> (and precision) with a tensor's <code>.to</code> method.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(torch.tensor([1,2,3]).to(torch.float32).dtype)
+</pre>
+</div>
+
+<pre class="example">
+torch.float32
+</pre>
+</div>
+</div>
+<div id="outline-container-orgd9b480c" class="outline-3">
+<h3 id="orgd9b480c">Common tensor operations</h3>
+<div class="outline-text-3" id="text-orgd9b480c">
+<ul class="org-ul">
+<li>brief survey of the most common tensor operations prior to getting into the computational graphs concept.</li>
+</ul>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">tensor2d</span> = torch.tensor([[1, 2, 3], [4, 5, 6]])
+</pre>
+</div>
+
+<p>
+Reshape:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(tensor2d.reshape(3, 2))
+</pre>
+</div>
+
+<pre class="example">
+tensor([[1, 2],
+        [3, 4],
+        [5, 6]])
+</pre>
+
+
+<p>
+It is more common to use <code>view</code> than <code>reshape</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(tensor2d.view(3, 2))
+</pre>
+</div>
+
+<pre class="example">
+tensor([[1, 2],
+        [3, 4],
+        [5, 6]])
+</pre>
+
+
+<p>
+Transpose
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(tensor2d.T)
+</pre>
+</div>
+
+<pre class="example">
+tensor([[1, 4],
+        [2, 5],
+        [3, 6]])
+</pre>
+
+
+
+<p>
+Matrix multiplication is usually handled with <code>matmul</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(tensor2d.matmul(tensor2d.T))
+</pre>
+</div>
+
+<pre class="example">
+tensor([[14, 32],
+        [32, 77]])
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(tensor2d @ tensor2d.T)
+</pre>
+</div>
+
+<pre class="example">
+tensor([[14, 32],
+        [32, 77]])
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga4485ee" class="outline-2">
+<h2 id="orga4485ee">A.3 Models as Computational Graphs</h2>
+<div class="outline-text-2" id="text-orga4485ee">
+<p>
+The previous section covered PyTorch's tensor library. This section gets into its automatic differentiation engine (autograd). Autograd provides functions for automatically computing gradients in dynamic computational graphs.
+</p>
+
+<p>
+So what's a computational graph? It lays out the sequence of calculations needed to compute the gradients for backprop. We'll go through an example showing the forward pass of a logstic regression classifier.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">import</span> torch.nn.functional <span class="org-keyword">as</span> F
+
+<span class="org-variable-name">y</span> = torch.tensor([1.0])
+<span class="org-variable-name">x1</span> = torch.tensor([1.1])
+<span class="org-variable-name">w1</span> = torch.tensor([2.2])
+<span class="org-variable-name">b</span> = torch.tensor([0.0])
+
+<span class="org-variable-name">z</span> = x1 * w1 + b
+<span class="org-variable-name">a</span> = torch.sigmoid(z)
+
+<span class="org-variable-name">loss</span> = F.binary_cross_entropy(a,y)
+</pre>
+</div>
+
+<p>
+This results in a computational graph which PyTorch builds in the background.
+</p>
+
+<p>
+Input and weight -&gt; (u = w<sub>1</sub> * x<sub>1</sub>) -&gt; +b -&gt; (z = u + b) -&gt; (a = &sigma;(z)) -&gt; loss = L(a,y) &lt;- y
+</p>
+</div>
+</div>
+<div id="outline-container-org75a8ebe" class="outline-2">
+<h2 id="org75a8ebe">A.4 Automatic Differentiation</h2>
+<div class="outline-text-2" id="text-org75a8ebe">
+<p>
+PyTorch will automatically build such a graph if one of its terminal nodes has the <code>requires_grad</code> attribute set to True. This enables us to train neural nets via backpropagation. Working backward from the above:
+</p>
+
+\begin{align*}
+\frac{\partial L}{\partial w_1} &= \frac{\partial u}{\partial w_1} \times \frac{\partial z}{\partial u} \times \frac{\partial a}{\partial z} \times \frac{\partial L}{\partial a} \\
+\frac{\partial L}{\partial b} &= \frac{\partial z}{\partial b} \times \frac{\partial a}{\partial z} \times \frac{\partial L}{\partial a}
+\end{align*}
+
+<p>
+Basically&#x2013;apply the chain rule right to left.
+</p>
+
+<p>
+Quick reminder of some definitions:
+</p>
+<ul class="org-ul">
+<li>a partial derivative measures the rate at which a function changes w/r/t one of its variables</li>
+<li>a gradient is a vector of all the partial derivatives of a multivariate function</li>
+</ul>
+
+<p>
+So what exactly does this have to do with torch as an autograd engine? PyTorch tracks every operation performed on tensors and can, therefore, construct a computational graph in the background. Then it cal cann on the <code>grad</code> function to compute the gradient of the loss w/r/t the model parameter as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">import</span> torch.nn.functional <span class="org-keyword">as</span> F
+<span class="org-keyword">from</span> torch.autograd <span class="org-keyword">import</span> grad
+
+<span class="org-variable-name">y</span> = torch.tensor([1.0])
+<span class="org-variable-name">x1</span> = torch.tensor([1.1])
+<span class="org-variable-name">w1</span> = torch.tensor([2.2], requires_grad=<span class="org-constant">True</span>)
+<span class="org-variable-name">b</span> = torch.tensor([0.0], requires_grad=<span class="org-constant">True</span>)
+
+<span class="org-variable-name">z</span> = x1 * w1 + b
+<span class="org-variable-name">a</span> = torch.sigmoid(z)
+
+<span class="org-variable-name">loss</span> = F.binary_cross_entropy(a, y)
+<span class="org-variable-name">grad_L_w1</span> = grad(loss, w1, retain_graph=<span class="org-constant">True</span>) <span class="org-comment-delimiter">#</span><span class="org-comment">A</span>
+<span class="org-variable-name">grad_L_b</span> = grad(loss, b, retain_graph=<span class="org-constant">True</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(grad_L_w1)
+<span class="org-keyword">print</span>(grad_L_b)
+</pre>
+</div>
+
+<pre class="example">
+(tensor([-0.0898]),)
+(tensor([-0.0817]),)
+</pre>
+
+
+<p>
+We seldom manually call the grad function. We usually call <code>.backward</code> on the loss, which computes the gradients of all the leaf nodes in the graph, which will be stored via the <code>.grad</code> attributes of the tensors.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(loss.backward())
+<span class="org-keyword">print</span>(w1.grad)
+<span class="org-keyword">print</span>(b.grad)
+</pre>
+</div>
+
+<pre class="example">
+None
+tensor([-0.0898])
+tensor([-0.0817])
+</pre>
+</div>
+</div>
+<div id="outline-container-orgcee4b18" class="outline-2">
+<h2 id="orgcee4b18">A.5 Implementing multilayer neural networks</h2>
+<div class="outline-text-2" id="text-orgcee4b18">
+<p>
+Now we get to the third major component of Pytorch: its library for implementing deep neural networks.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-03-31 Sun 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
