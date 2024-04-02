@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MLX Quickstart</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content">
+<header>
+<h1 class="title">MLX Quickstart</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org45ece13">What is MLX?</a></li>
+<li><a href="#orge069b4f">Quickstart Guide</a>
+<ul>
+<li><a href="#org8f4f5a1">Basics</a></li>
+<li><a href="#h:897CC44C-7D56-4606-B154-EED7083479BE">Lazy Evaluation in More Detail</a>
+<ul>
+<li><a href="#org5295181">When to evaluate</a></li>
+</ul>
+</li>
+<li><a href="#org2c7048c">Unified Memory</a></li>
+<li><a href="#org57b22b3">Indexing arrays</a></li>
+<li><a href="#orgcfe7156">Saving and Loading</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<div class="preview">
+<p>
+These are my notes on the <a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">MLX quick start guide and usage notes</a>. It's a work in progress. Ultimately, I'm interested in learning what MLX will let me do with LLMs on my laptop. I might write something more substantial on that topic in the future. For now, you're probably better off consulting the docs yourself than looking at my notes on them.
+</p>
+
+</div>
+
+<div id="outline-container-org45ece13" class="outline-2">
+<h2 id="org45ece13">What is MLX?</h2>
+<div class="outline-text-2" id="text-org45ece13">
+<p>
+<a href="https://github.com/ml-explore/mlx">MLX</a> is an array framework from Apple ML Research. Its API follows NumPy. It has higher-level packages that follow PyTorch's API for building more complex models modularly. It features:
+</p>
+<ul class="org-ul">
+<li>composable function transformations</li>
+<li>lazy computation</li>
+<li>dynamic computational graph construction</li>
+<li><b>unified memory</b> model. Arrays live in shared memory, and operations on MLX arrays can be performed on CPU or GPU without the need to transfer data.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge069b4f" class="outline-2">
+<h2 id="orge069b4f"><a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">Quickstart Guide</a></h2>
+<div class="outline-text-2" id="text-orge069b4f">
+<p>
+First, install with <code>pip install mlx</code> or <code>conda install -c conda-forge mlx</code>.
+</p>
+
+<p>
+Next, we'll work through the basic features, as shown in the quickstart guide linked above.
+</p>
+</div>
+
+<div id="outline-container-org8f4f5a1" class="outline-3">
+<h3 id="org8f4f5a1">Basics</h3>
+<div class="outline-text-3" id="text-org8f4f5a1">
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">import</span> mlx.core <span class="org-keyword">as</span> mx
+
+<span class="org-variable-name">a</span> = mx.array([1,2,3,4])
+a.dtype
+</pre>
+</div>
+
+<pre class="example">
+mlx.core.int32
+</pre>
+
+
+<p>
+Operations are lazy.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">b</span> = mx.array([1.0, 2.0, 3.0, 4.0])
+<span class="org-variable-name">c</span> = a+b
+</pre>
+</div>
+
+<p>
+c is not computed until it is explicity called or until we use <code>eval</code>. See <a href="#h:897CC44C-7D56-4606-B154-EED7083479BE">Lazy Evaluation in More Detail</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">mx.<span class="org-builtin">eval</span>(c)
+c
+</pre>
+</div>
+
+<pre class="example">
+array([2, 4, 6, 8], dtype=float32)
+</pre>
+
+
+<p>
+MLX has <code>grad</code> like PyTorch.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">x</span> = mx.array(0.0)
+mx.sin(x)
+
+mx.grad(mx.sin)(x)
+</pre>
+</div>
+
+<pre class="example">
+array(1, dtype=float32)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org7726b02" class="outline-3">
+<h3 id="h:897CC44C-7D56-4606-B154-EED7083479BE">Lazy Evaluation in More Detail</h3>
+<div class="outline-text-3" id="text-h:897CC44C-7D56-4606-B154-EED7083479BE">
+<p>
+When you perform an operation:
+</p>
+<ul class="org-ul">
+<li>No computation happens</li>
+<li>A compute graph is recorded</li>
+<li>Computation happens once an <code>eval()</code> is performed.</li>
+</ul>
+
+<p>
+PyTorch uses eager evaluation. Tensorflow uses lazy evaluation. Jax uses lazy eval. Jax and TF have different approaches to when they evaluate. TF/Jax graphs are compiled while MLX graphs are built dynamically.
+</p>
+
+<p>
+One LLM-relevant use case: initializing model weights. You might initialize a model with <code>model = Model()</code>. The actual weight loading won't happen until you perform an <code>eval()</code>. Useful if you e.g. subsequently update the model with <code>float16</code> weights. You don't take the memory hit that you'd get with eager execution, loading the float32 weights.
+</p>
+
+<p>
+It enables this pattern:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">model</span> = Model() <span class="org-comment-delimiter"># </span><span class="org-comment">no memory used yet</span>
+model.load_weights(<span class="org-string">"weights_fp16.safetensors"</span>)
+</pre>
+</div>
+</div>
+<div id="outline-container-org5295181" class="outline-4">
+<h4 id="org5295181">When to evaluate</h4>
+<div class="outline-text-4" id="text-org5295181">
+<p>
+It's a tradeoff between:
+</p>
+<ul class="org-ul">
+<li>letting graphs get too large</li>
+<li>not batching enough to do useful work</li>
+</ul>
+
+<p>
+There's a lot of flexibility.
+</p>
+
+<blockquote>
+<p>
+Luckily, a wide range of compute graph sizes work pretty well with MLX: anything from a few tens of operations to many thousands of operations per evaluation should be okay.
+</p>
+</blockquote>
+
+<p>
+Example of a good pattern for a training loop:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">for</span> batch <span class="org-keyword">in</span> dataset:
+
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Nothing has been evaluated yet</span>
+    <span class="org-variable-name">loss</span>, <span class="org-variable-name">grad</span> = value_and_grad_fn(model, batch)
+
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Still nothing has been evaluated</span>
+    optimizer.update(model, grad)
+
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Evaluate the loss and the new parameters which will</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">run the full gradient computation and optimizer update</span>
+    mx.<span class="org-builtin">eval</span>(loss, model.parameters())
+</pre>
+</div>
+
+<p>
+Note: whenever you print an array or convert it to a numpy array, it is evaluated. Saving arrays will also evaluate them.
+</p>
+
+<p>
+Using arrays for control flow will trigger an eval.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">def</span> <span class="org-function-name">fun</span>(x):
+    <span class="org-variable-name">h</span>, <span class="org-variable-name">y</span> = first_layer(x)
+    <span class="org-keyword">if</span> y &gt; 0:  <span class="org-comment-delimiter"># </span><span class="org-comment">An evaluation is done here!</span>
+        <span class="org-variable-name">z</span>  = second_layer_a(h)
+    <span class="org-keyword">else</span>:
+        <span class="org-variable-name">z</span>  = second_layer_b(h)
+    <span class="org-keyword">return</span> z
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org2c7048c" class="outline-3">
+<h3 id="org2c7048c">Unified Memory</h3>
+<div class="outline-text-3" id="text-org2c7048c">
+<p>
+You do not need to specify the location of an MLX array in memory. CPU and GPU share memory.
+</p>
+
+<p>
+Instead of moving arrays to devices, you specify the device when you run an operation.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">a</span> = mx.random.normal((100,))
+<span class="org-variable-name">b</span> = mx.random.normal((100,))
+</pre>
+</div>
+
+<pre class="example">
+None
+</pre>
+
+
+
+<div class="org-src-container">
+<pre class="src src-python">mx.add(a, b, stream=mx.cpu)
+
+</pre>
+</div>
+
+<pre class="example">
+array([-0.999945, -0.255963, 1.04271, ..., 1.08311, -0.993303, -1.48334], dtype=float32)
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-python">mx.add(a, b, stream=mx.gpu)
+</pre>
+</div>
+
+<pre class="example">
+array([-0.999945, -0.255963, 1.04271, ..., 1.08311, -0.993303, -1.48334], dtype=float32)
+</pre>
+
+
+<p>
+The MLX scheduler will manage dependencies to avoid race conditions. In other words, this is fine.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">c</span> = mx.add(a, b, stream=mx.cpu)
+<span class="org-variable-name">d</span> = mx.add(a, c, stream=mx.gpu)
+</pre>
+</div>
+
+<pre class="example">
+None
+</pre>
+
+
+<p>
+This can be useful if we e.g. send compute-dense operatios to GPU, smaller overhead-bound operations to cpu like <a href="https://ml-explore.github.io/mlx/build/html/usage/unified_memory.html#a-simple-example">this example</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-org57b22b3" class="outline-3">
+<h3 id="org57b22b3">Indexing arrays</h3>
+<div class="outline-text-3" id="text-org57b22b3">
+<ul class="org-ul">
+<li>Is the same as NumPy in most cases</li>
+<li>EXCEPT:
+<ul class="org-ul">
+<li>It does not perform bounds checking. Indexing out of bounds is undefined behavior. Why? Exceptions can't propagate from the GPU.</li>
+<li>Boolean mask indexing is not supported (yet).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgcfe7156" class="outline-3">
+<h3 id="orgcfe7156">Saving and Loading</h3>
+<div class="outline-text-3" id="text-orgcfe7156">
+<p>
+Support for numpy, numpy archive, safetensors, gguf.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-04-01 Mon 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
