@@ -1,0 +1,171 @@
+
+#+title:      MLX Quickstart
+#+date:       <2024-04-01 Mon>
+
+#+begin_preview
+These are my notes on the [[https://ml-explore.github.io/mlx/build/html/usage/quick_start.html][MLX quick start guide and usage notes]]. It's a work in progress. Ultimately, I'm interested in learning what MLX will let me do with LLMs on my laptop. I might write something more substantial on that topic in the future. For now, you're probably better off consulting the docs yourself than looking at my notes on them.
+#+end_preview
+
+* What is MLX?
+[[https://github.com/ml-explore/mlx][MLX]] is an array framework from Apple ML Research. Its API follows NumPy. It has higher-level packages that follow PyTorch's API for building more complex models modularly. It features:
+- composable function transformations
+- lazy computation
+- dynamic computational graph construction
+- *unified memory* model. Arrays live in shared memory, and operations on MLX arrays can be performed on CPU or GPU without the need to transfer data.
+* [[https://ml-explore.github.io/mlx/build/html/usage/quick_start.html][Quickstart Guide]]
+
+First, install with ~pip install mlx~ or ~conda install -c conda-forge mlx~.
+
+Next, we'll work through the basic features, as shown in the quickstart guide linked above.
+
+** Basics
+
+#+begin_src python :session mlx
+import mlx.core as mx
+
+a = mx.array([1,2,3,4])
+a.dtype
+#+end_src
+
+#+RESULTS:
+: mlx.core.int32
+
+Operations are lazy.
+
+
+#+begin_src python :session mlx
+b = mx.array([1.0, 2.0, 3.0, 4.0])
+c = a+b
+#+end_src
+
+c is not computed until it is explicity called or until we use ~eval~. See [[#h:897CC44C-7D56-4606-B154-EED7083479BE][Lazy Evaluation in More Detail]].
+
+#+begin_src python :session mlx
+mx.eval(c)
+c
+#+end_src
+
+#+RESULTS:
+: array([2, 4, 6, 8], dtype=float32)
+
+MLX has ~grad~ like PyTorch.
+
+#+begin_src python :session mlx
+x = mx.array(0.0)
+mx.sin(x)
+
+mx.grad(mx.sin)(x)
+#+end_src
+
+#+RESULTS:
+: array(1, dtype=float32)
+
+** Lazy Evaluation in More Detail
+:PROPERTIES:
+:CUSTOM_ID: h:897CC44C-7D56-4606-B154-EED7083479BE
+:END:
+When you perform an operation:
+- No computation happens
+- A compute graph is recorded
+- Computation happens once an ~eval()~ is performed.
+
+PyTorch uses eager evaluation. Tensorflow uses lazy evaluation. Jax uses lazy eval. Jax and TF have different approaches to when they evaluate. TF/Jax graphs are compiled while MLX graphs are built dynamically.
+
+One LLM-relevant use case: initializing model weights. You might initialize a model with ~model = Model()~. The actual weight loading won't happen until you perform an ~eval()~. Useful if you e.g. subsequently update the model with ~float16~ weights. You don't take the memory hit that you'd get with eager execution, loading the float32 weights.
+
+It enables this pattern:
+
+#+begin_src python
+model = Model() # no memory used yet
+model.load_weights("weights_fp16.safetensors")
+#+end_src
+*** When to evaluate
+
+It's a tradeoff between:
+- letting graphs get too large
+- not batching enough to do useful work
+
+There's a lot of flexibility.
+
+#+begin_quote
+Luckily, a wide range of compute graph sizes work pretty well with MLX: anything from a few tens of operations to many thousands of operations per evaluation should be okay.
+#+end_quote
+
+Example of a good pattern for a training loop:
+
+#+begin_src python
+for batch in dataset:
+
+    # Nothing has been evaluated yet
+    loss, grad = value_and_grad_fn(model, batch)
+
+    # Still nothing has been evaluated
+    optimizer.update(model, grad)
+
+    # Evaluate the loss and the new parameters which will
+    # run the full gradient computation and optimizer update
+    mx.eval(loss, model.parameters())
+#+end_src
+
+Note: whenever you print an array or convert it to a numpy array, it is evaluated. Saving arrays will also evaluate them.
+
+Using arrays for control flow will trigger an eval.
+
+#+begin_src python
+def fun(x):
+    h, y = first_layer(x)
+    if y > 0:  # An evaluation is done here!
+        z  = second_layer_a(h)
+    else:
+        z  = second_layer_b(h)
+    return z
+#+end_src
+** Unified Memory
+You do not need to specify the location of an MLX array in memory. CPU and GPU share memory.
+
+Instead of moving arrays to devices, you specify the device when you run an operation.
+
+#+begin_src python :session mlx
+a = mx.random.normal((100,))
+b = mx.random.normal((100,))
+#+end_src
+
+#+RESULTS:
+: None
+
+
+#+begin_src python :session mlx
+mx.add(a, b, stream=mx.cpu)
+
+#+end_src
+
+#+RESULTS:
+: array([-0.999945, -0.255963, 1.04271, ..., 1.08311, -0.993303, -1.48334], dtype=float32)
+
+#+begin_src python :session mlx
+mx.add(a, b, stream=mx.gpu)
+#+end_src
+
+#+RESULTS:
+: array([-0.999945, -0.255963, 1.04271, ..., 1.08311, -0.993303, -1.48334], dtype=float32)
+
+The MLX scheduler will manage dependencies to avoid race conditions. In other words, this is fine.
+
+#+begin_src python :session mlx
+c = mx.add(a, b, stream=mx.cpu)
+d = mx.add(a, c, stream=mx.gpu)
+#+end_src
+
+#+RESULTS:
+: None
+
+This can be useful if we e.g. send compute-dense operatios to GPU, smaller overhead-bound operations to cpu like [[https://ml-explore.github.io/mlx/build/html/usage/unified_memory.html#a-simple-example][this example]].
+** Indexing arrays
+
+- Is the same as NumPy in most cases
+- EXCEPT:
+  - It does not perform bounds checking. Indexing out of bounds is undefined behavior. Why? Exceptions can't propagate from the GPU.
+  - Boolean mask indexing is not supported (yet).
+** Saving and Loading
+
+Support for numpy, numpy archive, safetensors, gguf.
