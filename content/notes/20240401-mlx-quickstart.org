@@ -169,3 +169,104 @@ This can be useful if we e.g. send compute-dense operatios to GPU, smaller overh
 ** Saving and Loading
 
 Support for numpy, numpy archive, safetensors, gguf.
+
+** Function transforms
+
+MLX uses /composable function transformations/ for autodiff, vectorization, graph optimization. Main idea: every transformation returns a function that can be further transformed. Here is an example.
+
+#+begin_src python :session mlx
+dfdx = mx.grad(mx.sin)
+dfdx(mx.array(mx.pi))
+
+#+end_src
+
+#+RESULTS:
+: array(-1, dtype=float32)
+
+The output of ~grad~ on ~sin~ is another function: the gradient of the sine function. To get the second derivative, just do ~mx.grad(mx.grad())~. You can compose any function transform in any order to any depth.
+*** Automatic Differentiation
+
+Autodiff works on functions, not on implicit graphs. /This is a key difference from PyTorch/. In PyTorch, autodiff works on implicit graphs.
+
+By default, the gradient is computed w/r/t the first argument. But we can specify the argument.
+#+begin_src python :session mlx
+def loss_fn(w, x, y):
+   return mx.mean(mx.square(w * x - y))
+
+w = mx.array(1.0)
+x = mx.array([0.5, -0.5])
+y = mx.array([1.5, -1.5])
+
+# Computes the gradient of loss_fn with respect to w:
+grad_fn = mx.grad(loss_fn)
+dloss_dw = grad_fn(w, x, y)
+# Prints array(-1, dtype=float32)
+dloss_dw
+#+end_src
+
+#+RESULTS:
+: array(-1, dtype=float32)
+
+#+begin_src python :session mlx
+# To get the gradient with respect to x we can do:
+grad_fn = mx.grad(loss_fn, argnums=1)
+dloss_dx = grad_fn(w, x, y)
+# Prints array([-1, 1], dtype=float32)
+dloss_dx
+#+end_src
+
+#+RESULTS:
+: array([-1, 1], dtype=float32)
+
+The ~value_and_grad~ function provides an efficient way to get the value and the gradient e.g. of the loss.
+
+
+#+begin_src python :session mlx :results output
+# Computes the gradient of loss_fn with respect to w:
+loss_and_grad_fn = mx.value_and_grad(loss_fn)
+loss, dloss_dw = loss_and_grad_fn(w, x, y)
+
+# Prints array(1, dtype=float32)
+print(loss)
+
+# Prints array(-1, dtype=float32)
+print(dloss_dw)
+#+end_src
+
+#+RESULTS:
+: array(1, dtype=float32)
+: array(-1, dtype=float32)
+
+You can use ~stop_gradient()~ to stop gradients from propagating through a part of the function.
+*** Automatic Vectorization
+
+~vmap()~ automatically vectorizes complex functions.
+
+#+begin_src python :session mlx
+# Vectorize over the second dimension of x and the
+# first dimension of y
+vmap_add = mx.vmap(lambda x, y: x + y, in_axes=(1, 0))
+#+end_src
+
+#+RESULTS:
+: None
+
+~in_axes~ specifies which dimensions of the input to vectorize over. ~out_axes~ specifies where they should be in the output.
+** Compilation
+MLX has a ~compile~ function for compiling computational graphs. What does compilation mean in this context? Compilation makes /smaller graphs/ by merging common work and fusing common operations.
+
+The first time you call a compiled function, MLX builds and optimizes the compute graph and generates and compiles the code. This can be slow, but the resulting compiled function is cached, so subsequent calls do not initiate a new compilation.
+
+What causes a function to be recompiled?
+- changing shape or number of dimensions
+- changing the type of any inputs
+- changing the number of inputs
+
+Don't compile functions that are created and destroyed frequently.
+
+Debugging can be tricky. When a compiled function is first called, it is traced with placeholder inputs, so it will crash if there's a print statement. For debugging purposes, disable compilation with ~disable_compile~ or setting the ~MLX_DISABLE_COMPILE~ flag.
+
+Compiled functions should be pure. They should not have side effects. Review this section for functions that update some saved state.
+** Streams
+
+All operations take an optional ~stream~ keyword specifying which Stream the operation should run on. This is for specifying the device to run on.
