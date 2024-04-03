@@ -1,0 +1,159 @@
+#+TITLE: Using the DBRX Model with Instructor
+#+DATE: <2024-04-03 Wed>
+
+#+begin_preview
+This note briefly demonstrates how to use the [[https://github.com/jxnl/instructor][Instructor]] library with the Databricks [[https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm][DBRX]] model via the Databricks Foundation Models API.
+#+end_preview
+
+* Instructor
+The instructor library provides structured output from LLMs. The user specifies a Pydantic model to define the structure of outputs.
+
+* Using it with DBRX/Databricks
+:PROPERTIES:
+:header-args:python: :session *instructor*
+:END:
+
+Instructor works with DBRX/with the databricks foundation model API. Here's how.
+** Set up the client
+
+We need to define the environment variables ~OPENAI_API_KEY~ and ~OPENAI_BASE_URL~. In this example, they are saved in a ~.env~ file. We'll start by loading them.
+
+#+begin_src python
+from dotenv import load_dotenv
+load_dotenv()
+#+end_src
+
+#+RESULTS:
+: True
+
+** Simple example
+
+Next, we'll run the example from the Instructor docs to make sure everything is working. In this example, we define a schema fro data about users: we expect name and age. We then prompt the model with a sentence about a user. The model will return the Pydantic object with the user's information.
+
+
+#+begin_src python :results output
+import instructor
+from pydantic import BaseModel
+from openai import OpenAI
+
+from rich import print
+
+# Define your desired output structure
+class UserInfo(BaseModel):
+    name: str
+    age: int
+
+
+# Patch the OpenAI client
+client = instructor.from_openai(
+    OpenAI(), mode=instructor.Mode.MD_JSON
+)
+
+model = "databricks-dbrx-instruct"
+
+# Extract structured data from natural language
+user_info = client.chat.completions.create(
+    model=model,
+    response_model=UserInfo,
+    messages=[
+        {"role": "system", "content": "."},
+        {"role": "user", "content": "John Doe is 30 years old."},
+        {
+            "role": "assistant",
+            "content": " ",
+        },  # need to include for compatibility reasons
+    ],
+)
+
+print(user_info)
+#+end_src
+
+#+RESULTS:
+: UserInfo(name='John Doe', age=30)
+
+There are a few things to pay attention to here.
+- we're using the new Instructor 1.0 client, so ~instructor.from_openai~ rather than the ~instructor.patch~ of the earlier version.
+- We need to specify ~mode=instructor.Mode.MD_JSON~ as DBRX is not currently compatible with the OpenAI tool use or JSON mode.
+- We need to insert an extra ~assistant~ message. The Databricks API does not permit back-to-back ~user~ messages, but Instructor's ~MD_JSON~ mode currently appends an extra user message with formatting instructions to the messages list. Thus, we need to insert an empty ~assistant~ message between them.
+** A slightly more involved example
+
+Let's look at an example of generating an arbitrary number of question/answer pairs from a text, e.g. for evaluating a RAG application.
+
+We will use the following text on emacs hooks:
+
+#+begin_src python
+text = """A hook is a variable where you can store a function or functions (see What Is a Function?) to be called on a particular occasion by an existing program. Emacs provides hooks for the sake of customization. Most often, hooks are set up in the init file (see The Init File), but Lisp programs can set them also. See Standard Hooks, for a list of some standard hook variables.
+
+Most of the hooks in Emacs are normal hooks. These variables contain lists of functions to be called with no arguments. By convention, whenever the hook name ends in ‘-hook’, that tells you it is normal. We try to make all hooks normal, as much as possible, so that you can use them in a uniform way.
+
+Every major mode command is supposed to run a normal hook called the mode hook as one of the last steps of initialization. This makes it easy for a user to customize the behavior of the mode, by overriding the buffer-local variable assignments already made by the mode. Most minor mode functions also run a mode hook at the end. But hooks are used in other contexts too. For example, the hook suspend-hook runs just before Emacs suspends itself (see Suspending Emacs).
+
+If the hook variable’s name does not end with ‘-hook’, that indicates it is probably an abnormal hook. These differ from normal hooks in two ways: they can be called with one or more arguments, and their return values can be used in some way. The hook’s documentation says how the functions are called and how their return values are used. Any functions added to an abnormal hook must follow the hook’s calling convention. By convention, abnormal hook names end in ‘-functions’.
+
+If the name of the variable ends in ‘-predicate’ or ‘-function’ (singular) then its value must be a function, not a list of functions. As with abnormal hooks, the expected arguments and meaning of the return value vary across such single function hooks. The details are explained in each variable’s docstring.
+
+Since hooks (both multi and single function) are variables, their values can be modified with setq or temporarily with let. However, it is often useful to add or remove a particular function from a hook while preserving any other functions it might have. For multi function hooks, the recommended way of doing this is with add-hook and remove-hook (see Setting Hooks). Most normal hook variables are initially void; add-hook knows how to deal with this. You can add hooks either globally or buffer-locally with add-hook. For hooks which hold only a single function, add-hook is not appropriate, but you can use add-function (see Advising Emacs Lisp Functions) to combine new functions with the hook. Note that some single function hooks may be nil which add-function cannot deal with, so you must check for that before calling add-function."""
+#+end_src
+
+#+RESULTS:
+: None
+
+Now we'll define a new schema for generating questions and answers.
+
+#+begin_src python
+from pydantic import BaseModel, Field
+
+class EvalQA(BaseModel):
+    """Extract questions and answers for a RAG evaluation system using the following rules."""
+    question: str = Field(..., description="Question related to the content in the passage. Do not refer directly to the passage. The question must be self-contained and answerable based on the information in the passage.")
+    answer: str = Field(..., description="Answer to the question based on the input text.")
+
+class EvalQAs(BaseModel):
+    evalqas: List[EvalQA]
+
+
+def generate_qa(text, client=client):
+    paragraph = text  # Assuming 'text' is the column with the content
+    response = client.chat.completions.create(
+        model=model,
+        response_model=EvalQAs,
+        messages=[
+            {"role": "user", "content": "Generate one to three pairs of questions and answers from the following text:\n\ntext: " + paragraph + "\n\nOnly generate multiple questions if needed to cover the range of facts in the text. Stop if you generate three questions. Do not ask questions about specific examples referenced in the source text."},
+            {"role": "assistant", "content": " "}
+        ]
+    )
+    # Extracting the 'evalqas' part from the response
+    return response
+#+end_src
+
+#+RESULTS:
+: None
+
+And how we'll test this on our example text.
+
+
+#+begin_src python :results output
+print(generate_qa(text))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+EvalQAs(
+    evalqas=[
+        EvalQA(
+            question='What is a hook in Emacs?',
+            answer='A hook in Emacs is a variable where you can store a function or functions to be called on a 
+particular occasion by an existing program.'
+        ),
+        EvalQA(
+            question='What is the convention for the name of a normal hook variable?',
+            answer='By convention, whenever the hook name ends in ‘-hook’, that tells you it is a normal hook.'
+        ),
+        EvalQA(
+            question='What is the purpose of the mode hook in Emacs?',
+            answer='Every major mode command is supposed to run a normal hook called the mode hook as one of the 
+last steps of initialization, making it easy for a user to customize the behavior of the mode.'
+        )
+    ]
+)
+#+end_example
