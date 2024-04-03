@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using the DBRX Model with Instructor</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content">
+<header>
+<h1 class="title">Using the DBRX Model with Instructor</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org5a766a7">Instructor</a></li>
+<li><a href="#org78d553c">Using it with DBRX/Databricks</a>
+<ul>
+<li><a href="#org3c0a45d">Set up the client</a></li>
+<li><a href="#org30fc47e">Simple example</a></li>
+<li><a href="#orgc7d22e0">A slightly more involved example</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<div class="preview">
+<p>
+This note briefly demonstrates how to use the <a href="https://github.com/jxnl/instructor">Instructor</a> library with the Databricks <a href="https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm">DBRX</a> model via the Databricks Foundation Models API.
+</p>
+
+</div>
+
+<div id="outline-container-org5a766a7" class="outline-2">
+<h2 id="org5a766a7">Instructor</h2>
+<div class="outline-text-2" id="text-org5a766a7">
+<p>
+The instructor library provides structured output from LLMs. The user specifies a Pydantic model to define the structure of outputs.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org78d553c" class="outline-2">
+<h2 id="org78d553c">Using it with DBRX/Databricks</h2>
+<div class="outline-text-2" id="text-org78d553c">
+<p>
+Instructor works with DBRX/with the databricks foundation model API. Here's how.
+</p>
+</div>
+<div id="outline-container-org3c0a45d" class="outline-3">
+<h3 id="org3c0a45d">Set up the client</h3>
+<div class="outline-text-3" id="text-org3c0a45d">
+<p>
+We need to define the environment variables <code>OPENAI_API_KEY</code> and <code>OPENAI_BASE_URL</code>. In this example, they are saved in a <code>.env</code> file. We'll start by loading them.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">from</span> dotenv <span class="org-keyword">import</span> load_dotenv
+load_dotenv()
+</pre>
+</div>
+
+<pre class="example">
+True
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org30fc47e" class="outline-3">
+<h3 id="org30fc47e">Simple example</h3>
+<div class="outline-text-3" id="text-org30fc47e">
+<p>
+Next, we'll run the example from the Instructor docs to make sure everything is working. In this example, we define a schema fro data about users: we expect name and age. We then prompt the model with a sentence about a user. The model will return the Pydantic object with the user's information.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">import</span> instructor
+<span class="org-keyword">from</span> pydantic <span class="org-keyword">import</span> BaseModel
+<span class="org-keyword">from</span> openai <span class="org-keyword">import</span> OpenAI
+
+<span class="org-keyword">from</span> rich <span class="org-keyword">import</span> <span class="org-keyword">print</span>
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Define your desired output structure</span>
+<span class="org-keyword">class</span> <span class="org-type">UserInfo</span>(BaseModel):
+    name: <span class="org-builtin">str</span>
+    age: <span class="org-builtin">int</span>
+
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Patch the OpenAI client</span>
+<span class="org-variable-name">client</span> = instructor.from_openai(
+    OpenAI(), mode=instructor.Mode.MD_JSON
+)
+
+<span class="org-variable-name">model</span> = <span class="org-string">"databricks-dbrx-instruct"</span>
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Extract structured data from natural language</span>
+<span class="org-variable-name">user_info</span> = client.chat.completions.create(
+    model=model,
+    response_model=UserInfo,
+    messages=[
+        {<span class="org-string">"role"</span>: <span class="org-string">"system"</span>, <span class="org-string">"content"</span>: <span class="org-string">"."</span>},
+        {<span class="org-string">"role"</span>: <span class="org-string">"user"</span>, <span class="org-string">"content"</span>: <span class="org-string">"John Doe is 30 years old."</span>},
+        {
+            <span class="org-string">"role"</span>: <span class="org-string">"assistant"</span>,
+            <span class="org-string">"content"</span>: <span class="org-string">" "</span>,
+        },  <span class="org-comment-delimiter"># </span><span class="org-comment">need to include for compatibility reasons</span>
+    ],
+)
+
+<span class="org-keyword">print</span>(user_info)
+</pre>
+</div>
+
+<pre class="example">
+UserInfo(name='John Doe', age=30)
+</pre>
+
+
+<p>
+There are a few things to pay attention to here.
+</p>
+<ul class="org-ul">
+<li>we're using the new Instructor 1.0 client, so <code>instructor.from_openai</code> rather than the <code>instructor.patch</code> of the earlier version.</li>
+<li>We need to specify <code>mode=instructor.Mode.MD_JSON</code> as DBRX is not currently compatible with the OpenAI tool use or JSON mode.</li>
+<li>We need to insert an extra <code>assistant</code> message. The Databricks API does not permit back-to-back <code>user</code> messages, but Instructor's <code>MD_JSON</code> mode currently appends an extra user message with formatting instructions to the messages list. Thus, we need to insert an empty <code>assistant</code> message between them.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc7d22e0" class="outline-3">
+<h3 id="orgc7d22e0">A slightly more involved example</h3>
+<div class="outline-text-3" id="text-orgc7d22e0">
+<p>
+Let's look at an example of generating an arbitrary number of question/answer pairs from a text, e.g. for evaluating a RAG application.
+</p>
+
+<p>
+We will use the following text on emacs hooks:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">text</span> = <span class="org-string">"""A hook is a variable where you can store a function or functions (see What Is a Function?) to be called on a particular occasion by an existing program. Emacs provides hooks for the sake of customization. Most often, hooks are set up in the init file (see The Init File), but Lisp programs can set them also. See Standard Hooks, for a list of some standard hook variables.</span>
+
+<span class="org-string">Most of the hooks in Emacs are normal hooks. These variables contain lists of functions to be called with no arguments. By convention, whenever the hook name ends in &#8216;-hook&#8217;, that tells you it is normal. We try to make all hooks normal, as much as possible, so that you can use them in a uniform way.</span>
+
+<span class="org-string">Every major mode command is supposed to run a normal hook called the mode hook as one of the last steps of initialization. This makes it easy for a user to customize the behavior of the mode, by overriding the buffer-local variable assignments already made by the mode. Most minor mode functions also run a mode hook at the end. But hooks are used in other contexts too. For example, the hook suspend-hook runs just before Emacs suspends itself (see Suspending Emacs).</span>
+
+<span class="org-string">If the hook variable&#8217;s name does not end with &#8216;-hook&#8217;, that indicates it is probably an abnormal hook. These differ from normal hooks in two ways: they can be called with one or more arguments, and their return values can be used in some way. The hook&#8217;s documentation says how the functions are called and how their return values are used. Any functions added to an abnormal hook must follow the hook&#8217;s calling convention. By convention, abnormal hook names end in &#8216;-functions&#8217;.</span>
+
+<span class="org-string">If the name of the variable ends in &#8216;-predicate&#8217; or &#8216;-function&#8217; (singular) then its value must be a function, not a list of functions. As with abnormal hooks, the expected arguments and meaning of the return value vary across such single function hooks. The details are explained in each variable&#8217;s docstring.</span>
+
+<span class="org-string">Since hooks (both multi and single function) are variables, their values can be modified with setq or temporarily with let. However, it is often useful to add or remove a particular function from a hook while preserving any other functions it might have. For multi function hooks, the recommended way of doing this is with add-hook and remove-hook (see Setting Hooks). Most normal hook variables are initially void; add-hook knows how to deal with this. You can add hooks either globally or buffer-locally with add-hook. For hooks which hold only a single function, add-hook is not appropriate, but you can use add-function (see Advising Emacs Lisp Functions) to combine new functions with the hook. Note that some single function hooks may be nil which add-function cannot deal with, so you must check for that before calling add-function."""</span>
+</pre>
+</div>
+
+<pre class="example">
+None
+</pre>
+
+
+<p>
+Now we'll define a new schema for generating questions and answers.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">from</span> pydantic <span class="org-keyword">import</span> BaseModel, Field
+
+<span class="org-keyword">class</span> <span class="org-type">EvalQA</span>(BaseModel):
+    <span class="org-doc">"""Extract questions and answers for a RAG evaluation system using the following rules."""</span>
+    question: <span class="org-builtin">str</span> = Field(..., description=<span class="org-string">"Question related to the content in the passage. Do not refer directly to the passage. The question must be self-contained and answerable based on the information in the passage."</span>)
+    answer: <span class="org-builtin">str</span> = Field(..., description=<span class="org-string">"Answer to the question based on the input text."</span>)
+
+<span class="org-keyword">class</span> <span class="org-type">EvalQAs</span>(BaseModel):
+    evalqas: List[EvalQA]
+
+
+<span class="org-keyword">def</span> <span class="org-function-name">generate_qa</span>(text, client=client):
+    <span class="org-variable-name">paragraph</span> = text  <span class="org-comment-delimiter"># </span><span class="org-comment">Assuming 'text' is the column with the content</span>
+    <span class="org-variable-name">response</span> = client.chat.completions.create(
+        model=model,
+        response_model=EvalQAs,
+        messages=[
+            {<span class="org-string">"role"</span>: <span class="org-string">"user"</span>, <span class="org-string">"content"</span>: <span class="org-string">"Generate one to three pairs of questions and answers from the following text:\n\ntext: "</span> + paragraph + <span class="org-string">"\n\nOnly generate multiple questions if needed to cover the range of facts in the text. Stop if you generate three questions. Do not ask questions about specific examples referenced in the source text."</span>},
+            {<span class="org-string">"role"</span>: <span class="org-string">"assistant"</span>, <span class="org-string">"content"</span>: <span class="org-string">" "</span>}
+        ]
+    )
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Extracting the 'evalqas' part from the response</span>
+    <span class="org-keyword">return</span> response
+</pre>
+</div>
+
+<pre class="example">
+None
+</pre>
+
+
+<p>
+And how we'll test this on our example text.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(generate_qa(text))
+</pre>
+</div>
+
+<pre class="example">
+EvalQAs(
+    evalqas=[
+        EvalQA(
+            question='What is a hook in Emacs?',
+            answer='A hook in Emacs is a variable where you can store a function or functions to be called on a 
+particular occasion by an existing program.'
+        ),
+        EvalQA(
+            question='What is the convention for the name of a normal hook variable?',
+            answer='By convention, whenever the hook name ends in ‘-hook’, that tells you it is a normal hook.'
+        ),
+        EvalQA(
+            question='What is the purpose of the mode hook in Emacs?',
+            answer='Every major mode command is supposed to run a normal hook called the mode hook as one of the 
+last steps of initialization, making it easy for a user to customize the behavior of the mode.'
+        )
+    ]
+)
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-04-03 Wed 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
