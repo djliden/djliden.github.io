@@ -84,18 +84,25 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgfb5f51a">DBRX and MLflow</a>
+<li><a href="#org46db611">DBRX and MLflow</a>
 <ul>
-<li><a href="#org183b174">Via the MLflow Deployments Server</a></li>
-<li><a href="#orgb40db5a">Using the OpenAI Model Flavor</a></li>
+<li><a href="#org300872d">Via the MLflow Deployments Server</a></li>
+<li><a href="#org48b5d7b">Using the OpenAI Model Flavor</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgfb5f51a" class="outline-2">
-<h2 id="orgfb5f51a">DBRX and MLflow</h2>
-<div class="outline-text-2" id="text-orgfb5f51a">
+<div id="outline-container-org46db611" class="outline-2">
+<h2 id="org46db611">DBRX and MLflow</h2>
+<div class="outline-text-2" id="text-org46db611">
+<div class="preview">
+<p>
+This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.
+</p>
+
+</div>
+
 <p>
 Here are two ways to use the DBRX model with MLflow. The following assumes that you have the following environment variables set:
 </p>
@@ -104,9 +111,9 @@ Here are two ways to use the DBRX model with MLflow. The following assumes that 
 <li><code>DATABRICKS_ENDPOINT</code>: your databricks workspace model serving endpoint. It will probably have the form <code>https://&lt;workspace_name&gt;.cloud.databricks.com/serving-endpoints</code>.</li>
 </ul>
 </div>
-<div id="outline-container-org183b174" class="outline-3">
-<h3 id="org183b174">Via the MLflow Deployments Server</h3>
-<div class="outline-text-3" id="text-org183b174">
+<div id="outline-container-org300872d" class="outline-3">
+<h3 id="org300872d">Via the MLflow Deployments Server</h3>
+<div class="outline-text-3" id="text-org300872d">
 <ol class="org-ol">
 <li>Configure the Deployments Server</li>
 </ol>
@@ -189,9 +196,9 @@ which will return
 </div>
 </div>
 
-<div id="outline-container-orgb40db5a" class="outline-3">
-<h3 id="orgb40db5a">Using the OpenAI Model Flavor</h3>
-<div class="outline-text-3" id="text-orgb40db5a">
+<div id="outline-container-org48b5d7b" class="outline-3">
+<h3 id="org48b5d7b">Using the OpenAI Model Flavor</h3>
+<div class="outline-text-3" id="text-org48b5d7b">
 <p>
 We can also log the model usign the OpenAI model flavor. We just need to be careful to set up the appropriate environment variables first.
 </p>
