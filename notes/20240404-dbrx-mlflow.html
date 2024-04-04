@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DBRX with MLflow</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content">
+<header>
+<h1 class="title">DBRX with MLflow</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgfb5f51a">DBRX and MLflow</a>
+<ul>
+<li><a href="#org183b174">Via the MLflow Deployments Server</a></li>
+<li><a href="#orgb40db5a">Using the OpenAI Model Flavor</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-orgfb5f51a" class="outline-2">
+<h2 id="orgfb5f51a">DBRX and MLflow</h2>
+<div class="outline-text-2" id="text-orgfb5f51a">
+<p>
+Here are two ways to use the DBRX model with MLflow. The following assumes that you have the following environment variables set:
+</p>
+<ul class="org-ul">
+<li><code>DATABRICKS_TOKEN</code>: a databricks PAT</li>
+<li><code>DATABRICKS_ENDPOINT</code>: your databricks workspace model serving endpoint. It will probably have the form <code>https://&lt;workspace_name&gt;.cloud.databricks.com/serving-endpoints</code>.</li>
+</ul>
+</div>
+<div id="outline-container-org183b174" class="outline-3">
+<h3 id="org183b174">Via the MLflow Deployments Server</h3>
+<div class="outline-text-3" id="text-org183b174">
+<ol class="org-ol">
+<li>Configure the Deployments Server</li>
+</ol>
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">yaml_content</span> = {
+    <span class="org-string">"endpoints"</span>: [
+        {
+            <span class="org-string">"name"</span>: <span class="org-string">"dbrx"</span>,
+            <span class="org-string">"endpoint_type"</span>: <span class="org-string">"llm/v1/chat"</span>,
+            <span class="org-string">"model"</span>: {
+                <span class="org-string">"provider"</span>: <span class="org-string">"openai"</span>,
+                <span class="org-string">"name"</span>: <span class="org-string">"databricks-dbrx-instruct"</span>,
+                <span class="org-string">"config"</span>: {
+                    <span class="org-string">"openai_api_key"</span>: os.getenv(<span class="org-string">"DATABRICKS_TOKEN"</span>),
+                    <span class="org-string">"openai_api_base"</span>: os.getenv(<span class="org-string">"DATABRICKS_ENDPOINT"</span>)
+                }
+            }
+        }
+    ]
+}
+
+<span class="org-keyword">with</span> <span class="org-builtin">open</span>(<span class="org-string">"deploy.yml"</span>, <span class="org-string">"w"</span>) <span class="org-keyword">as</span> <span class="org-builtin">file</span>:
+    yaml.dump(yaml_content, <span class="org-builtin">file</span>, default_flow_style=<span class="org-constant">False</span>)
+</pre>
+</div>
+
+<p>
+Then start the server with:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">mlflow deployments start-server --config-path deploy.yml
+</pre>
+</div>
+
+<p>
+And query the model with:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">from</span> mlflow.deployments <span class="org-keyword">import</span> get_deploy_client
+
+<span class="org-variable-name">client</span> = get_deploy_client(<span class="org-string">"http://127.0.0.1:5000"</span>)
+<span class="org-variable-name">name</span> = <span class="org-string">"dbrx"</span>
+<span class="org-variable-name">data</span> = <span class="org-builtin">dict</span>(
+     messages=[
+        {<span class="org-string">"role"</span>: <span class="org-string">"user"</span>, <span class="org-string">"content"</span>: <span class="org-string">"Hello, World."</span>},
+    ],
+    n=1,
+    max_tokens=50,
+    temperature=.5,
+)
+
+<span class="org-variable-name">response</span> = client.predict(endpoint=name, inputs=data)
+<span class="org-keyword">print</span>(response)
+</pre>
+</div>
+
+<p>
+which will return
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">{
+    <span class="org-string">'id'</span>: <span class="org-string">'19c82206-cae5-4d9c-a4f3-676e83281bb8'</span>,
+    <span class="org-string">'object'</span>: <span class="org-string">'chat.completion'</span>,
+    <span class="org-string">'created'</span>: 1712267435,
+    <span class="org-string">'model'</span>: <span class="org-string">'dbrx-instruct-032724'</span>,
+    <span class="org-string">'choices'</span>: [
+        {
+            <span class="org-string">'index'</span>: 0,
+            <span class="org-string">'message'</span>: {<span class="org-string">'role'</span>: <span class="org-string">'assistant'</span>, <span class="org-string">'content'</span>: <span class="org-string">'Hello, World! How can I assist you today?'</span>},
+            <span class="org-string">'finish_reason'</span>: <span class="org-string">'stop'</span>
+        }
+    ],
+    <span class="org-string">'usage'</span>: {<span class="org-string">'prompt_tokens'</span>: 228, <span class="org-string">'completion_tokens'</span>: 11, <span class="org-string">'total_tokens'</span>: 239}
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb40db5a" class="outline-3">
+<h3 id="orgb40db5a">Using the OpenAI Model Flavor</h3>
+<div class="outline-text-3" id="text-orgb40db5a">
+<p>
+We can also log the model usign the OpenAI model flavor. We just need to be careful to set up the appropriate environment variables first.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">log a model to MLflow using the OpenAI Model Flavor</span>
+
+<span class="org-keyword">import</span> os
+<span class="org-keyword">import</span> mlflow
+<span class="org-keyword">import</span> openai
+
+
+<span class="org-variable-name">os.environ</span>[<span class="org-string">"OPENAI_API_KEY"</span>] = os.getenv(<span class="org-string">"DATABRICKS_TOKEN"</span>)
+<span class="org-variable-name">os.environ</span>[<span class="org-string">"OPENAI_API_BASE"</span>] = os.getenv(<span class="org-string">"DATABRICKS_ENDPOINT"</span>)
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Log the OpenAI model to MLflow</span>
+<span class="org-keyword">with</span> mlflow.start_run():
+    <span class="org-variable-name">info</span> = mlflow.openai.log_model(
+        model=<span class="org-string">"databricks-dbrx-instruct"</span>,
+        task=openai.chat.completions,
+        artifact_path=<span class="org-string">"dbrx"</span>,
+        messages=[{<span class="org-string">"role"</span>: <span class="org-string">"system"</span>, <span class="org-string">"content"</span>: <span class="org-string">"You are a helpful assistant."</span>}],
+    )
+
+<span class="org-variable-name">dbrx_model</span> = mlflow.pyfunc.load_model(info.model_uri)
+
+<span class="org-keyword">print</span>(dbrx_model.predict(<span class="org-string">"Hello, world"</span>))
+</pre>
+</div>
+
+<p>
+Which returns:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">[
+    <span class="org-string">"Hello! How can I assist you today? I'm here to help answer any questions you might have or provide information</span>
+<span class="org-string">on a topic of your choosing. Let me know how I can make your day a little bit easier!"</span>
+]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-04-04 Thu 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
