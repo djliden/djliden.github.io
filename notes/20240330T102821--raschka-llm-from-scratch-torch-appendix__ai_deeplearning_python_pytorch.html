@@ -106,17 +106,17 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2b165ec">A.1 PyTorch</a></li>
-<li><a href="#org43ffd16">A.2 Understanding tensors</a>
+<li><a href="#orgb385ae9">A.1 PyTorch</a></li>
+<li><a href="#org2ac89cf">A.2 Understanding tensors</a>
 <ul>
-<li><a href="#org54aa5b9">Creating tensors</a></li>
-<li><a href="#orga54907d">Tensor data types</a></li>
-<li><a href="#orgab41ce9">Common tensor operations</a></li>
+<li><a href="#org23ebd9c">Creating tensors</a></li>
+<li><a href="#org7e5e0ed">Tensor data types</a></li>
+<li><a href="#org96029fc">Common tensor operations</a></li>
 </ul>
 </li>
-<li><a href="#orge93fb14">A.3 Models as Computational Graphs</a></li>
-<li><a href="#orgb5270c7">A.4 Automatic Differentiation</a></li>
-<li><a href="#org6e7c383">A.5 Implementing multilayer neural networks</a></li>
+<li><a href="#orgf0dae94">A.3 Models as Computational Graphs</a></li>
+<li><a href="#orga706e22">A.4 Automatic Differentiation</a></li>
+<li><a href="#org5a18ffc">A.5 Implementing multilayer neural networks</a></li>
 </ul>
 </div>
 </nav>
@@ -127,9 +127,9 @@ This is a quick run through the appendix on PyTorch from Sebastian Raschka's <a 
 
 </div>
 
-<div id="outline-container-org2b165ec" class="outline-2">
-<h2 id="org2b165ec">A.1 PyTorch</h2>
-<div class="outline-text-2" id="text-org2b165ec">
+<div id="outline-container-orgb385ae9" class="outline-2">
+<h2 id="orgb385ae9">A.1 PyTorch</h2>
+<div class="outline-text-2" id="text-orgb385ae9">
 <p>
 There are three broad components to PyTorch:
 </p>
@@ -174,9 +174,9 @@ Great.
 </p>
 </div>
 </div>
-<div id="outline-container-org43ffd16" class="outline-2">
-<h2 id="org43ffd16">A.2 Understanding tensors</h2>
-<div class="outline-text-2" id="text-org43ffd16">
+<div id="outline-container-org2ac89cf" class="outline-2">
+<h2 id="org2ac89cf">A.2 Understanding tensors</h2>
+<div class="outline-text-2" id="text-org2ac89cf">
 <p>
 Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors are similar to NumPy arrays but have have several additional features:
 </p>
@@ -188,9 +188,9 @@ Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors
 Still, it has a numpy-like API.
 </p>
 </div>
-<div id="outline-container-org54aa5b9" class="outline-3">
-<h3 id="org54aa5b9">Creating tensors</h3>
-<div class="outline-text-3" id="text-org54aa5b9">
+<div id="outline-container-org23ebd9c" class="outline-3">
+<h3 id="org23ebd9c">Creating tensors</h3>
+<div class="outline-text-3" id="text-org23ebd9c">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">0d tensor (scalar)</span>
 <span class="org-keyword">print</span>(torch.tensor(1))
@@ -219,9 +219,9 @@ tensor([[[1, 2],
 </pre>
 </div>
 </div>
-<div id="outline-container-orga54907d" class="outline-3">
-<h3 id="orga54907d">Tensor data types</h3>
-<div class="outline-text-3" id="text-orga54907d">
+<div id="outline-container-org7e5e0ed" class="outline-3">
+<h3 id="org7e5e0ed">Tensor data types</h3>
+<div class="outline-text-3" id="text-org7e5e0ed">
 <p>
 These are important to pay attention to! So let's pay attention to them. The default (from above) is the 64-bit integer.
 </p>
@@ -275,9 +275,9 @@ torch.float32
 </pre>
 </div>
 </div>
-<div id="outline-container-orgab41ce9" class="outline-3">
-<h3 id="orgab41ce9">Common tensor operations</h3>
-<div class="outline-text-3" id="text-orgab41ce9">
+<div id="outline-container-org96029fc" class="outline-3">
+<h3 id="org96029fc">Common tensor operations</h3>
+<div class="outline-text-3" id="text-org96029fc">
 <ul class="org-ul">
 <li>brief survey of the most common tensor operations prior to getting into the computational graphs concept.</li>
 </ul>
@@ -364,9 +364,9 @@ tensor([[14, 32],
 </div>
 </div>
 </div>
-<div id="outline-container-orge93fb14" class="outline-2">
-<h2 id="orge93fb14">A.3 Models as Computational Graphs</h2>
-<div class="outline-text-2" id="text-orge93fb14">
+<div id="outline-container-orgf0dae94" class="outline-2">
+<h2 id="orgf0dae94">A.3 Models as Computational Graphs</h2>
+<div class="outline-text-2" id="text-orgf0dae94">
 <p>
 The previous section covered PyTorch's tensor library. This section gets into its automatic differentiation engine (autograd). Autograd provides functions for automatically computing gradients in dynamic computational graphs.
 </p>
@@ -399,9 +399,9 @@ Input and weight -&gt; (u = w<sub>1</sub> * x<sub>1</sub>) -&gt; +b -&gt; (z = u
 </p>
 </div>
 </div>
-<div id="outline-container-orgb5270c7" class="outline-2">
-<h2 id="orgb5270c7">A.4 Automatic Differentiation</h2>
-<div class="outline-text-2" id="text-orgb5270c7">
+<div id="outline-container-orga706e22" class="outline-2">
+<h2 id="orga706e22">A.4 Automatic Differentiation</h2>
+<div class="outline-text-2" id="text-orga706e22">
 <p>
 PyTorch will automatically build such a graph if one of its terminal nodes has the <code>requires_grad</code> attribute set to True. This enables us to train neural nets via backpropagation. Working backward from the above:
 </p>
@@ -476,9 +476,9 @@ tensor([-0.0817])
 </pre>
 </div>
 </div>
-<div id="outline-container-org6e7c383" class="outline-2">
-<h2 id="org6e7c383">A.5 Implementing multilayer neural networks</h2>
-<div class="outline-text-2" id="text-org6e7c383">
+<div id="outline-container-org5a18ffc" class="outline-2">
+<h2 id="org5a18ffc">A.5 Implementing multilayer neural networks</h2>
+<div class="outline-text-2" id="text-org5a18ffc">
 <p>
 Now we get to the third major component of Pytorch: its library for implementing deep neural networks.
 </p>

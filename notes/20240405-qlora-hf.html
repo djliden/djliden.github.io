@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intro to QLoRA</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content">
+<header>
+<h1 class="title">Intro to QLoRA</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org1c23356">1. Intro to Quantization</a>
+<ul>
+<li><a href="#orgea049a4">Common data types used in ML</a></li>
+<li><a href="#orge97dbea">Different types in training and inference</a></li>
+<li><a href="#orgf04b5f1">The FP8 Format</a></li>
+</ul>
+</li>
+<li><a href="#orgd4e068e">QLoRA Paper Overview</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview">
+<p>
+I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA and quantization. Later, I will also make a note with some examples.
+</p>
+
+</div>
+
+<p>
+Link: <a href="https://huggingface.co/blog/4bit-transformers-bitsandbytes">Making LLMs even more accessible with bitsandbytes, 4-bit quantization and QLoRA</a>
+</p>
+
+<div id="outline-container-org1c23356" class="outline-2">
+<h2 id="org1c23356">1. Intro to Quantization</h2>
+<div class="outline-text-2" id="text-org1c23356">
+<p>
+The post recommends reading the intro to <a href="https://huggingface.co/blog/hf-bitsandbytes-integration">this post</a> first for some background on quantization. Key points:
+</p>
+<ul class="org-ul">
+<li>Models are getting bigger, making them harder and more expensive to run.</li>
+<li>Quantization is one way to make them smaller.</li>
+<li>int8 inference doesn't appear to significantly degrade model performance.</li>
+</ul>
+</div>
+<div id="outline-container-orgea049a4" class="outline-3">
+<h3 id="orgea049a4">Common data types used in ML</h3>
+<div class="outline-text-3" id="text-orgea049a4">
+<p>
+The size of a model is determined by the number of its parameters <i>and their precision</i>. Common types include:
+</p>
+<ul class="org-ul">
+<li>Float32 (FP32), which reserves 8 bits ffor the exponent, 23 bits for the mantissa, and 1 bit for the sign. Most hardware supports FP32 operations. This is called <i>full precision</i> (4 bytes)</li>
+<li>Float16 (fp16) reserves 5 bits for the exponent, 10 for the mantissa, 1 for the sign. Thus it can represent a far smaller range of numbers, resulting in a risk of overflowing or underflowing. The largest representable number in FP16 is 64k.</li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 1: </span>Example code generated and executed by GPT4/code interpreter</label><pre class="src src-python"><span class="org-keyword">import</span> numpy <span class="org-keyword">as</span> np
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Define two numbers within the FP16 range</span>
+<span class="org-variable-name">a</span> = np.float16(10000)
+<span class="org-variable-name">b</span> = np.float16(10000)
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Perform multiplication</span>
+<span class="org-variable-name">result</span> = a * b
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Check the result</span>
+result
+</pre>
+</div>
+
+<pre class="example">
+/tmp/ipykernel_12/2565578634.py:8: RuntimeWarning: overflow encountered in scalar multiply
+  result = a * b
+</pre>
+
+<ul class="org-ul">
+<li>The bfloat16 type was created to avoid these constraints. Bfloat16 reserves 8 bits for the exponent, 7 for the mantissa, and 1 for the sign. So we retain the range of FP32, but we lose 3 bits of precision w/r/t fp16. So there's no problem with big numbers, but we lose precision. fp16 and bf16 are both referred to as <i>half precision</i> (2 bytes).</li>
+<li>int8 is an 8-bit representation that can store 2<sup>8</sup> different values (between 0 and 255 for unsigned integers; between -128 and 127 for signed).</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge97dbea" class="outline-3">
+<h3 id="orge97dbea">Different types in training and inference</h3>
+<div class="outline-text-3" id="text-orge97dbea">
+<p>
+"Ideally" we should use FP32 for training and inference. But it is two times slower than half precision. So a mixed-precision approach is preferred. Weights are held in FP32 as a precise "main weights" reference. Computation in the forward/backward pass are done in fp16/bf16 to improve training speed. The fp16/bf16 gradients are used to update the fp32 weights.
+</p>
+
+<p>
+During inference, there's no real need for the full-precision weights.
+</p>
+
+<div class="question">
+<p>
+What happens when I load a model in bf16 and then train it? Is that still mixed precision? Or is bf16 the reference copy in that case?
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgf04b5f1" class="outline-3">
+<h3 id="orgf04b5f1">The FP8 Format</h3>
+<div class="outline-text-3" id="text-orgf04b5f1">
+<p>
+The FP8 format has two formats: E4M3 and E5M2 (where E=exponent, M=mantissa). E4M3 (higher precision, smaller range) is best suited for the forward pass, while E5M2 (lower precision, higher range) is better suited for the backward pass.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd4e068e" class="outline-2">
+<h2 id="orgd4e068e">QLoRA Paper Overview</h2>
+<div class="outline-text-2" id="text-orgd4e068e">
+<p>
+QLoRA reduces the memory usage of LLM fine-tuning without appreciable loss of performance compared to half precision fine-tuning.
+</p>
+
+<p>
+The model to be fine-tuned is loaded in 4-bit precision and then the weights are frozen. A small number of trainable parameters are added in the form of <i>low-rank adapters</i>. The LoRA adapters are the only parameters updated during training.
+</p>
+
+<p>
+QLoRA typically stores the base model weights in 4-bit NormalFloat, and uses bf16 for computation. Weights are dequantized from the storage type to perform the forward and backward passes gradients are only computed for the LoRA parameters, which use bf16. Weights are decompressed on an as-needed basis so memory usage stays low.
+</p>
+
+<p>
+Key summary (from the original paper): "QLoRA backpropagates gradients through a frozen, 4-bit quantized pretrained language model into Low Rank Adapters~(LoRA)."
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-04-05 Fri 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
