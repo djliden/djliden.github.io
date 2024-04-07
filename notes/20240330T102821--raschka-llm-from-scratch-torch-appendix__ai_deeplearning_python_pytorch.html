@@ -106,17 +106,17 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb385ae9">A.1 PyTorch</a></li>
-<li><a href="#org2ac89cf">A.2 Understanding tensors</a>
+<li><a href="#org1e8fb7a">A.1 PyTorch</a></li>
+<li><a href="#org9462555">A.2 Understanding tensors</a>
 <ul>
-<li><a href="#org23ebd9c">Creating tensors</a></li>
-<li><a href="#org7e5e0ed">Tensor data types</a></li>
-<li><a href="#org96029fc">Common tensor operations</a></li>
+<li><a href="#orga3995f7">Creating tensors</a></li>
+<li><a href="#org3836a23">Tensor data types</a></li>
+<li><a href="#orga2b798f">Common tensor operations</a></li>
 </ul>
 </li>
-<li><a href="#orgf0dae94">A.3 Models as Computational Graphs</a></li>
-<li><a href="#orga706e22">A.4 Automatic Differentiation</a></li>
-<li><a href="#org5a18ffc">A.5 Implementing multilayer neural networks</a></li>
+<li><a href="#orgc6aa2eb">A.3 Models as Computational Graphs</a></li>
+<li><a href="#org1ba1130">A.4 Automatic Differentiation</a></li>
+<li><a href="#orgbddd905">A.5 Implementing multilayer neural networks</a></li>
 </ul>
 </div>
 </nav>
@@ -127,9 +127,9 @@ This is a quick run through the appendix on PyTorch from Sebastian Raschka's <a 
 
 </div>
 
-<div id="outline-container-orgb385ae9" class="outline-2">
-<h2 id="orgb385ae9">A.1 PyTorch</h2>
-<div class="outline-text-2" id="text-orgb385ae9">
+<div id="outline-container-org1e8fb7a" class="outline-2">
+<h2 id="org1e8fb7a">A.1 PyTorch</h2>
+<div class="outline-text-2" id="text-org1e8fb7a">
 <p>
 There are three broad components to PyTorch:
 </p>
@@ -174,9 +174,9 @@ Great.
 </p>
 </div>
 </div>
-<div id="outline-container-org2ac89cf" class="outline-2">
-<h2 id="org2ac89cf">A.2 Understanding tensors</h2>
-<div class="outline-text-2" id="text-org2ac89cf">
+<div id="outline-container-org9462555" class="outline-2">
+<h2 id="org9462555">A.2 Understanding tensors</h2>
+<div class="outline-text-2" id="text-org9462555">
 <p>
 Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors are similar to NumPy arrays but have have several additional features:
 </p>
@@ -188,9 +188,9 @@ Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors
 Still, it has a numpy-like API.
 </p>
 </div>
-<div id="outline-container-org23ebd9c" class="outline-3">
-<h3 id="org23ebd9c">Creating tensors</h3>
-<div class="outline-text-3" id="text-org23ebd9c">
+<div id="outline-container-orga3995f7" class="outline-3">
+<h3 id="orga3995f7">Creating tensors</h3>
+<div class="outline-text-3" id="text-orga3995f7">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">0d tensor (scalar)</span>
 <span class="org-keyword">print</span>(torch.tensor(1))
@@ -219,9 +219,9 @@ tensor([[[1, 2],
 </pre>
 </div>
 </div>
-<div id="outline-container-org7e5e0ed" class="outline-3">
-<h3 id="org7e5e0ed">Tensor data types</h3>
-<div class="outline-text-3" id="text-org7e5e0ed">
+<div id="outline-container-org3836a23" class="outline-3">
+<h3 id="org3836a23">Tensor data types</h3>
+<div class="outline-text-3" id="text-org3836a23">
 <p>
 These are important to pay attention to! So let's pay attention to them. The default (from above) is the 64-bit integer.
 </p>
@@ -275,9 +275,9 @@ torch.float32
 </pre>
 </div>
 </div>
-<div id="outline-container-org96029fc" class="outline-3">
-<h3 id="org96029fc">Common tensor operations</h3>
-<div class="outline-text-3" id="text-org96029fc">
+<div id="outline-container-orga2b798f" class="outline-3">
+<h3 id="orga2b798f">Common tensor operations</h3>
+<div class="outline-text-3" id="text-orga2b798f">
 <ul class="org-ul">
 <li>brief survey of the most common tensor operations prior to getting into the computational graphs concept.</li>
 </ul>
@@ -364,9 +364,9 @@ tensor([[14, 32],
 </div>
 </div>
 </div>
-<div id="outline-container-orgf0dae94" class="outline-2">
-<h2 id="orgf0dae94">A.3 Models as Computational Graphs</h2>
-<div class="outline-text-2" id="text-orgf0dae94">
+<div id="outline-container-orgc6aa2eb" class="outline-2">
+<h2 id="orgc6aa2eb">A.3 Models as Computational Graphs</h2>
+<div class="outline-text-2" id="text-orgc6aa2eb">
 <p>
 The previous section covered PyTorch's tensor library. This section gets into its automatic differentiation engine (autograd). Autograd provides functions for automatically computing gradients in dynamic computational graphs.
 </p>
@@ -399,9 +399,9 @@ Input and weight -&gt; (u = w<sub>1</sub> * x<sub>1</sub>) -&gt; +b -&gt; (z = u
 </p>
 </div>
 </div>
-<div id="outline-container-orga706e22" class="outline-2">
-<h2 id="orga706e22">A.4 Automatic Differentiation</h2>
-<div class="outline-text-2" id="text-orga706e22">
+<div id="outline-container-org1ba1130" class="outline-2">
+<h2 id="org1ba1130">A.4 Automatic Differentiation</h2>
+<div class="outline-text-2" id="text-org1ba1130">
 <p>
 PyTorch will automatically build such a graph if one of its terminal nodes has the <code>requires_grad</code> attribute set to True. This enables us to train neural nets via backpropagation. Working backward from the above:
 </p>
@@ -476,12 +476,183 @@ tensor([-0.0817])
 </pre>
 </div>
 </div>
-<div id="outline-container-org5a18ffc" class="outline-2">
-<h2 id="org5a18ffc">A.5 Implementing multilayer neural networks</h2>
-<div class="outline-text-2" id="text-org5a18ffc">
+<div id="outline-container-orgbddd905" class="outline-2">
+<h2 id="orgbddd905">A.5 Implementing multilayer neural networks</h2>
+<div class="outline-text-2" id="text-orgbddd905">
 <p>
 Now we get to the third major component of Pytorch: its library for implementing deep neural networks.
 </p>
+
+<p>
+We will focus on a fully-connected MLP. To implement an NN in PyTorch, we:
+</p>
+<ul class="org-ul">
+<li>subclass the <code>torch.nn.Module</code> class to define a custom architecture</li>
+<li>define layers within the <code>__init__</code> constructor of the module subclass, specifying how they interact in the forward method.</li>
+<li>defined the forward method, which describes how data passes through the network and relates as a computational graph.</li>
+</ul>
+
+<p>
+We generally do not need to implement the <code>backward</code> method ourselves.
+</p>
+
+<p>
+Here is code illustrating a basic NN with two hidden layers.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">class</span> <span class="org-type">NeuralNetwork</span>(torch.nn.Module):
+    <span class="org-keyword">def</span> <span class="org-function-name">__init__</span>(<span class="org-keyword">self</span>, num_inputs, num_outputs):
+        <span class="org-builtin">super</span>().__init__()
+
+        <span class="org-keyword">self</span>.layers = torch.nn.Sequential(
+            <span class="org-comment-delimiter"># </span><span class="org-comment">1st hidden layer</span>
+            torch.nn.Linear(num_inputs, 30),
+            torch.nn.ReLU(),
+            <span class="org-comment-delimiter"># </span><span class="org-comment">2nd hidden layer</span>
+            torch.nn.Linear(30, 20),
+            torch.nn.ReLU(),
+            <span class="org-comment-delimiter"># </span><span class="org-comment">output layer</span>
+            torch.nn.Linear(20, num_outputs),
+        )
+
+    <span class="org-keyword">def</span> <span class="org-function-name">forward</span>(<span class="org-keyword">self</span>, x):
+        <span class="org-variable-name">logits</span> = <span class="org-keyword">self</span>.layers(x)
+        <span class="org-keyword">return</span> logits
+</pre>
+</div>
+
+<p>
+We can instantiate this with 50 inputs and 3 outputs.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">model</span> = NeuralNetwork(50, 3)
+<span class="org-keyword">print</span>(model)
+</pre>
+</div>
+
+<pre class="example">
+NeuralNetwork(
+  (layers): Sequential(
+    (0): Linear(in_features=50, out_features=30, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=30, out_features=20, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=20, out_features=3, bias=True)
+  )
+)
+</pre>
+
+
+<p>
+We can count the total number of trainable parameters as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">num_params</span> = <span class="org-builtin">sum</span>(p.numel() <span class="org-keyword">for</span> p <span class="org-keyword">in</span> model.parameters() <span class="org-keyword">if</span> p.requires_grad)
+<span class="org-keyword">print</span>(<span class="org-string">"Total number of trainable model parameters:"</span>, num_params)
+</pre>
+</div>
+
+<pre class="example">
+Total number of trainable model parameters: 2213
+</pre>
+
+
+<p>
+A parameter is <i>trainable</i> if its <code>requires_grad</code> attribute is <code>True</code>. We can investigate specific layers. Let's look at the first linear layer.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(model.layers[0].weight)
+</pre>
+</div>
+
+<pre class="example">
+Parameter containing:
+tensor([[-0.0844,  0.0863,  0.1168,  ...,  0.0203, -0.0814, -0.0504],
+        [ 0.0288,  0.0004, -0.1411,  ..., -0.0322, -0.1085,  0.0682],
+        [-0.1075, -0.0173, -0.0476,  ..., -0.0684, -0.0522, -0.1316],
+        ...,
+        [ 0.1129, -0.0639, -0.0662,  ...,  0.1284, -0.0707,  0.1090],
+        [ 0.0790, -0.1206, -0.1156,  ...,  0.1393, -0.0233,  0.1035],
+        [-0.0078, -0.0789,  0.0931,  ...,  0.0220, -0.0572,  0.1112]],
+       requires_grad=True)
+</pre>
+
+
+<p>
+This is truncated, so let's look at the shape instead to make sure it matches with our expectations.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">from</span> rich <span class="org-keyword">import</span> <span class="org-keyword">print</span>
+
+<span class="org-keyword">print</span>(model.layers[0].weight.shape)
+</pre>
+</div>
+
+<pre class="example">
+torch.Size([30, 50])
+</pre>
+
+
+<p>
+We can call on the model like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">X</span> = torch.rand((1,50))
+<span class="org-variable-name">out</span> = model(X)
+<span class="org-keyword">print</span>(out)
+</pre>
+</div>
+
+<pre class="example">
+tensor([[ 0.0623, -0.0063, -0.1485]], grad_fn=&lt;AddmmBackward0&gt;)
+</pre>
+
+
+<p>
+We generated a single random example (50 dimensions) and passed it to the model. This was the <i>forward pass</i>. The forward pass simply means calculating the output tensors from the input tensors.
+</p>
+
+<p>
+As we can see from the <code>grad_fn</code>, this forward pass computes a computational graph for backprop. This can be wasteful and unnecessary if we're just interested in inference. We use the <code>torch.no_grad</code> context manager to get around this.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">with</span> torch.no_grad():
+    <span class="org-variable-name">out</span> = model(X)
+<span class="org-keyword">print</span>(out)
+</pre>
+</div>
+
+<pre class="example">
+tensor([[ 0.0623, -0.0063, -0.1485]])
+</pre>
+
+
+<p>
+And this approach just computes the output tensors.
+</p>
+
+<p>
+Usually in PyTorch we don't pass the final layer to a nonlinear activation function, because the loss function usually combines softmax with negativel og-likelihood loss in a single class. We have to call softmax explicitly if we want class-membership probabilities.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">with</span> torch.no_grad():
+    <span class="org-variable-name">out</span> = torch.softmax(model(X), dim=1)
+<span class="org-keyword">print</span>(out)
+</pre>
+</div>
+
+<pre class="example">
+tensor([[0.3645, 0.3403, 0.2952]])
+</pre>
 </div>
 </div>
 </div>
