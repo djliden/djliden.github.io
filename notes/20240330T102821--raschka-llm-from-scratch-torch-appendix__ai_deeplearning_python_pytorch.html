@@ -106,17 +106,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org1e8fb7a">A.1 PyTorch</a></li>
-<li><a href="#org9462555">A.2 Understanding tensors</a>
+<li><a href="#org60a222d">A.1 PyTorch</a></li>
+<li><a href="#org2c6310c">A.2 Understanding tensors</a>
 <ul>
-<li><a href="#orga3995f7">Creating tensors</a></li>
-<li><a href="#org3836a23">Tensor data types</a></li>
-<li><a href="#orga2b798f">Common tensor operations</a></li>
+<li><a href="#org4fa11db">Creating tensors</a></li>
+<li><a href="#org7e94ba8">Tensor data types</a></li>
+<li><a href="#org885ed33">Common tensor operations</a></li>
 </ul>
 </li>
-<li><a href="#orgc6aa2eb">A.3 Models as Computational Graphs</a></li>
-<li><a href="#org1ba1130">A.4 Automatic Differentiation</a></li>
-<li><a href="#orgbddd905">A.5 Implementing multilayer neural networks</a></li>
+<li><a href="#orgd1aab9a">A.3 Models as Computational Graphs</a></li>
+<li><a href="#orge4db986">A.4 Automatic Differentiation</a></li>
+<li><a href="#orgb2f8f12">A.5 Implementing multilayer neural networks</a></li>
+<li><a href="#org5ff72ee">A.6 Setting up efficient data loaders</a></li>
 </ul>
 </div>
 </nav>
@@ -127,9 +128,9 @@ This is a quick run through the appendix on PyTorch from Sebastian Raschka's <a 
 
 </div>
 
-<div id="outline-container-org1e8fb7a" class="outline-2">
-<h2 id="org1e8fb7a">A.1 PyTorch</h2>
-<div class="outline-text-2" id="text-org1e8fb7a">
+<div id="outline-container-org60a222d" class="outline-2">
+<h2 id="org60a222d">A.1 PyTorch</h2>
+<div class="outline-text-2" id="text-org60a222d">
 <p>
 There are three broad components to PyTorch:
 </p>
@@ -174,9 +175,9 @@ Great.
 </p>
 </div>
 </div>
-<div id="outline-container-org9462555" class="outline-2">
-<h2 id="org9462555">A.2 Understanding tensors</h2>
-<div class="outline-text-2" id="text-org9462555">
+<div id="outline-container-org2c6310c" class="outline-2">
+<h2 id="org2c6310c">A.2 Understanding tensors</h2>
+<div class="outline-text-2" id="text-org2c6310c">
 <p>
 Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors are similar to NumPy arrays but have have several additional features:
 </p>
@@ -188,9 +189,9 @@ Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors
 Still, it has a numpy-like API.
 </p>
 </div>
-<div id="outline-container-orga3995f7" class="outline-3">
-<h3 id="orga3995f7">Creating tensors</h3>
-<div class="outline-text-3" id="text-orga3995f7">
+<div id="outline-container-org4fa11db" class="outline-3">
+<h3 id="org4fa11db">Creating tensors</h3>
+<div class="outline-text-3" id="text-org4fa11db">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">0d tensor (scalar)</span>
 <span class="org-keyword">print</span>(torch.tensor(1))
@@ -219,9 +220,9 @@ tensor([[[1, 2],
 </pre>
 </div>
 </div>
-<div id="outline-container-org3836a23" class="outline-3">
-<h3 id="org3836a23">Tensor data types</h3>
-<div class="outline-text-3" id="text-org3836a23">
+<div id="outline-container-org7e94ba8" class="outline-3">
+<h3 id="org7e94ba8">Tensor data types</h3>
+<div class="outline-text-3" id="text-org7e94ba8">
 <p>
 These are important to pay attention to! So let's pay attention to them. The default (from above) is the 64-bit integer.
 </p>
@@ -275,9 +276,9 @@ torch.float32
 </pre>
 </div>
 </div>
-<div id="outline-container-orga2b798f" class="outline-3">
-<h3 id="orga2b798f">Common tensor operations</h3>
-<div class="outline-text-3" id="text-orga2b798f">
+<div id="outline-container-org885ed33" class="outline-3">
+<h3 id="org885ed33">Common tensor operations</h3>
+<div class="outline-text-3" id="text-org885ed33">
 <ul class="org-ul">
 <li>brief survey of the most common tensor operations prior to getting into the computational graphs concept.</li>
 </ul>
@@ -364,9 +365,9 @@ tensor([[14, 32],
 </div>
 </div>
 </div>
-<div id="outline-container-orgc6aa2eb" class="outline-2">
-<h2 id="orgc6aa2eb">A.3 Models as Computational Graphs</h2>
-<div class="outline-text-2" id="text-orgc6aa2eb">
+<div id="outline-container-orgd1aab9a" class="outline-2">
+<h2 id="orgd1aab9a">A.3 Models as Computational Graphs</h2>
+<div class="outline-text-2" id="text-orgd1aab9a">
 <p>
 The previous section covered PyTorch's tensor library. This section gets into its automatic differentiation engine (autograd). Autograd provides functions for automatically computing gradients in dynamic computational graphs.
 </p>
@@ -399,9 +400,9 @@ Input and weight -&gt; (u = w<sub>1</sub> * x<sub>1</sub>) -&gt; +b -&gt; (z = u
 </p>
 </div>
 </div>
-<div id="outline-container-org1ba1130" class="outline-2">
-<h2 id="org1ba1130">A.4 Automatic Differentiation</h2>
-<div class="outline-text-2" id="text-org1ba1130">
+<div id="outline-container-orge4db986" class="outline-2">
+<h2 id="orge4db986">A.4 Automatic Differentiation</h2>
+<div class="outline-text-2" id="text-orge4db986">
 <p>
 PyTorch will automatically build such a graph if one of its terminal nodes has the <code>requires_grad</code> attribute set to True. This enables us to train neural nets via backpropagation. Working backward from the above:
 </p>
@@ -476,9 +477,9 @@ tensor([-0.0817])
 </pre>
 </div>
 </div>
-<div id="outline-container-orgbddd905" class="outline-2">
-<h2 id="orgbddd905">A.5 Implementing multilayer neural networks</h2>
-<div class="outline-text-2" id="text-orgbddd905">
+<div id="outline-container-orgb2f8f12" class="outline-2">
+<h2 id="orgb2f8f12">A.5 Implementing multilayer neural networks</h2>
+<div class="outline-text-2" id="text-orgb2f8f12">
 <p>
 Now we get to the third major component of Pytorch: its library for implementing deep neural networks.
 </p>
@@ -653,6 +654,134 @@ Usually in PyTorch we don't pass the final layer to a nonlinear activation funct
 <pre class="example">
 tensor([[0.3645, 0.3403, 0.2952]])
 </pre>
+</div>
+</div>
+
+<div id="outline-container-org5ff72ee" class="outline-2">
+<h2 id="org5ff72ee">A.6 Setting up efficient data loaders</h2>
+<div class="outline-text-2" id="text-org5ff72ee">
+<p>
+A <code>DataSet</code> is a class that defines how individual records are loaded. A <code>DataLoader</code> class handles dataset shuffling and assembling data records into batches.
+</p>
+
+<p>
+This example shows a dataset of five training examples with two features each, along with a tensor of class labels. We also have a test dataset of two entries.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">X_train</span> = torch.tensor(
+    [[-1.2, 3.1], [-0.9, 2.9], [-0.5, 2.6], [2.3, -1.1], [2.7, -1.5]]
+)
+<span class="org-variable-name">y_train</span> = torch.tensor([0, 0, 0, 1, 1])
+<span class="org-variable-name">X_test</span> = torch.tensor(
+    [
+        [-0.8, 2.8],
+        [2.6, -1.6],
+    ]
+)
+<span class="org-variable-name">y_test</span> = torch.tensor([0, 1])
+</pre>
+</div>
+
+<p>
+Let's first make these into a <code>DataSet</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">from</span> torch.utils.data <span class="org-keyword">import</span> Dataset
+
+<span class="org-keyword">class</span> <span class="org-type">ToyDataset</span>(Dataset):
+    <span class="org-keyword">def</span> <span class="org-function-name">__init__</span>(<span class="org-keyword">self</span>, X, y):
+        <span class="org-keyword">self</span>.features = X
+        <span class="org-keyword">self</span>.labels = y
+
+    <span class="org-keyword">def</span> <span class="org-function-name">__getitem__</span>(<span class="org-keyword">self</span>, index):
+        <span class="org-variable-name">one_x</span> = <span class="org-keyword">self</span>.features[index]
+        <span class="org-variable-name">one_y</span> = <span class="org-keyword">self</span>.labels[index]
+        <span class="org-keyword">return</span> one_x, one_y
+
+    <span class="org-keyword">def</span> <span class="org-function-name">__len__</span>(<span class="org-keyword">self</span>):
+        <span class="org-keyword">return</span> <span class="org-keyword">self</span>.labels.shape[0]
+
+<span class="org-variable-name">train_ds</span> = ToyDataset(X_train, y_train)
+<span class="org-variable-name">test_ds</span> = ToyDataset(X_test, y_test)
+</pre>
+</div>
+
+
+<p>
+Note the three main components of the above Dataset definition:
+</p>
+<ol class="org-ol">
+<li><code>__init__</code>, to set up attributes we can access in the other methods. This might be file paths, file objects, database connectors, etc. Here we just use X and y, which we point toward the correct tensor objects in memory.</li>
+<li><code>__getitem__</code> is for defining instructions for retrieving exactly one record via <code>index</code>.</li>
+<li><p>
+<code>__len__</code> is for retrieving the length of the dataset.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(<span class="org-builtin">len</span>(train_ds))
+</pre>
+</div>
+
+<pre class="example">
+5
+</pre></li>
+</ol>
+
+<p>
+Now we can use the <code>DataLoader</code> class to define how to sample from the Dataset we defined.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">from</span> torch.utils.data <span class="org-keyword">import</span> DataLoader
+
+torch.manual_seed(123)
+
+<span class="org-variable-name">train_loader</span> = DataLoader(
+    dataset=train_ds,
+    batch_size=2,
+    shuffle=<span class="org-constant">True</span>,
+    num_workers=0
+    )
+
+<span class="org-variable-name">test_loader</span> = DataLoader(
+    dataset=test_ds,
+    batch_size=2,
+    shuffle=<span class="org-constant">False</span>,
+    num_workers=0
+    )
+</pre>
+</div>
+
+<p>
+Now we can iterate over the <code>train_loader</code> as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">for</span> idx, (x, y) <span class="org-keyword">in</span> <span class="org-builtin">enumerate</span>(train_loader):
+    <span class="org-keyword">print</span>(f<span class="org-string">"Batch {idx+1}:"</span>, x, y)
+</pre>
+</div>
+
+<pre class="example">
+Batch 1: tensor([[ 2.3000, -1.1000],
+        [-0.9000,  2.9000]]) tensor([1, 0])
+
+Batch 2: tensor([[-1.2000,  3.1000],
+        [-0.5000,  2.6000]]) tensor([0, 0])
+
+Batch 3: tensor([[ 2.7000, -1.5000]]) tensor([1])
+</pre>
+
+
+<p>
+Note that we can set <code>drop_last=True</code> to drop the last uneven batch, as significantly uneven batch sizes can harm convergence.
+</p>
+
+<p>
+The <code>num_workers</code> argument relates to parallelizing data loading/processing. 0 indicates that it will all be done in the main process, not in separate worker processes. This can slow things down a lot.
+</p>
 </div>
 </div>
 </div>
