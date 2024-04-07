@@ -373,3 +373,103 @@ print(out)
 
 #+RESULTS:
 : tensor([[0.3645, 0.3403, 0.2952]])
+
+* A.6 Setting up efficient data loaders
+A ~DataSet~ is a class that defines how individual records are loaded. A ~DataLoader~ class handles dataset shuffling and assembling data records into batches.
+
+This example shows a dataset of five training examples with two features each, along with a tensor of class labels. We also have a test dataset of two entries.
+
+#+begin_src python :session appA :results output
+X_train = torch.tensor(
+    [[-1.2, 3.1], [-0.9, 2.9], [-0.5, 2.6], [2.3, -1.1], [2.7, -1.5]]
+)
+y_train = torch.tensor([0, 0, 0, 1, 1])
+X_test = torch.tensor(
+    [
+        [-0.8, 2.8],
+        [2.6, -1.6],
+    ]
+)
+y_test = torch.tensor([0, 1])
+#+end_src
+
+#+RESULTS:
+
+Let's first make these into a ~DataSet~.
+
+#+begin_src python :session appA :results output
+from torch.utils.data import Dataset
+
+class ToyDataset(Dataset):
+    def __init__(self, X, y):
+        self.features = X
+        self.labels = y
+
+    def __getitem__(self, index):
+        one_x = self.features[index]
+        one_y = self.labels[index]
+        return one_x, one_y
+
+    def __len__(self):
+        return self.labels.shape[0]
+
+train_ds = ToyDataset(X_train, y_train)
+test_ds = ToyDataset(X_test, y_test)
+#+end_src
+
+
+Note the three main components of the above Dataset definition:
+1. ~__init__~, to set up attributes we can access in the other methods. This might be file paths, file objects, database connectors, etc. Here we just use X and y, which we point toward the correct tensor objects in memory.
+2. ~__getitem__~ is for defining instructions for retrieving exactly one record via ~index~.
+3. ~__len__~ is for retrieving the length of the dataset.
+
+   #+begin_src python :session appA :results output
+print(len(train_ds))
+   #+end_src
+
+   #+RESULTS:
+   : 5
+   
+Now we can use the ~DataLoader~ class to define how to sample from the Dataset we defined.
+
+#+begin_src python :session appA :results output
+from torch.utils.data import DataLoader
+
+torch.manual_seed(123)
+
+train_loader = DataLoader(
+    dataset=train_ds,
+    batch_size=2,
+    shuffle=True,
+    num_workers=0
+    )
+
+test_loader = DataLoader(
+    dataset=test_ds,
+    batch_size=2,
+    shuffle=False,
+    num_workers=0
+    )
+#+end_src
+
+#+RESULTS:
+
+Now we can iterate over the ~train_loader~ as follows:
+
+#+begin_src python :session appA :results output
+for idx, (x, y) in enumerate(train_loader):
+    print(f"Batch {idx+1}:", x, y)
+#+end_src
+
+#+RESULTS:
+: Batch 1: tensor([[ 2.3000, -1.1000],
+:         [-0.9000,  2.9000]]) tensor([1, 0])
+: 
+: Batch 2: tensor([[-1.2000,  3.1000],
+:         [-0.5000,  2.6000]]) tensor([0, 0])
+: 
+: Batch 3: tensor([[ 2.7000, -1.5000]]) tensor([1])
+
+Note that we can set ~drop_last=True~ to drop the last uneven batch, as significantly uneven batch sizes can harm convergence.
+
+The ~num_workers~ argument relates to parallelizing data loading/processing. 0 indicates that it will all be done in the main process, not in separate worker processes. This can slow things down a lot.
