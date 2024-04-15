@@ -473,3 +473,130 @@ for idx, (x, y) in enumerate(train_loader):
 Note that we can set ~drop_last=True~ to drop the last uneven batch, as significantly uneven batch sizes can harm convergence.
 
 The ~num_workers~ argument relates to parallelizing data loading/processing. 0 indicates that it will all be done in the main process, not in separate worker processes. This can slow things down a lot.
+
+* A.7 A typical training loop
+:PROPERTIES:
+:header-args:python: :session appA
+:END:
+
+In this section, we combine many of the techniques from above to show a complete training loop.
+
+#+begin_src python :results output
+import torch
+import torch.nn.functional as F
+ 
+ 
+torch.manual_seed(123)
+model = NeuralNetwork(num_inputs=2, num_outputs=2)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.5)
+ 
+num_epochs = 3
+ 
+for epoch in range(num_epochs): 
+    
+    model.train()
+    for batch_idx, (features, labels) in enumerate(train_loader):
+ 
+        logits = model(features)
+        
+        loss = F.cross_entropy(logits, labels)
+        
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+    
+        ### LOGGING
+        print(f"Epoch: {epoch+1:03d}/{num_epochs:03d}"
+              f" | Batch {batch_idx:03d}/{len(train_loader):03d}"
+              f" | Train Loss: {loss:.2f}")
+ 
+    model.eval()
+    # Optional model evaluation
+    #+end_src
+
+#+RESULTS:
+: Epoch: 001/003 | Batch 000/003 | Train Loss: 0.75
+: Epoch: 001/003 | Batch 001/003 | Train Loss: 0.65
+: Epoch: 001/003 | Batch 002/003 | Train Loss: 0.42
+: Epoch: 002/003 | Batch 000/003 | Train Loss: 0.05
+: Epoch: 002/003 | Batch 001/003 | Train Loss: 0.13
+: Epoch: 002/003 | Batch 002/003 | Train Loss: 0.00
+: Epoch: 003/003 | Batch 000/003 | Train Loss: 0.01
+: Epoch: 003/003 | Batch 001/003 | Train Loss: 0.00
+: Epoch: 003/003 | Batch 002/003 | Train Loss: 0.02
+
+
+Note the use of ~model.train~ and ~model.eval~. These set the model into training and evaluation mode, respectively. Some components behave differently during training or inference, such as ddropout or batch normalization. We don't have these or anything like them, so this is redundant in our code, but still good practice.
+
+We pass the logits directly to ~cross_entropy~ to compute the loss and call ~loss.backward()~ to compute gradients. ~optimizer.step~ uses the gradients to update the model parameters.
+
+It is important that we include an ~optimizer.zero_grad~ call in each update to reset the gradients and ensure they do not accumulate.
+
+Now we can make predictions with the model.
+
+#+begin_src python :results output
+model.eval()
+with torch.no_grad():
+    outputs = model(X_train)
+print(outputs)
+#+end_src
+
+#+RESULTS:
+: tensor([[ 2.9320, -4.2563],
+:         [ 2.6045, -3.8389],
+:         [ 2.1484, -3.2514],
+:         [-2.1461,  2.1496],
+:         [-2.5004,  2.5210]])
+
+If we want the class membership, we can obtain it with:
+
+#+begin_src python :results output
+torch.set_printoptions(sci_mode=False)
+probas = torch.softmax(outputs, dim=1)
+print(probas)
+#+end_src
+
+#+RESULTS:
+: tensor([[    0.9992,     0.0008],
+:         [    0.9984,     0.0016],
+:         [    0.9955,     0.0045],
+:         [    0.0134,     0.9866],
+:         [    0.0066,     0.9934]])
+
+There are two classes, so the above represents the probabilities of belonging to class 1 or class 2. The first three have high probability of class 1; the last two of class 2.
+
+We can convery into class labels as follows:
+
+#+begin_src python :results output
+predictions = torch.argmax(probas, dim=1)
+print(predictions)
+#+end_src
+
+#+RESULTS:
+: tensor([0, 0, 0, 1, 1])
+
+We don't need to compute softmax probabilities to accomplish this.
+
+#+begin_src python :results output
+print(torch.argmax(outputs, dim=1))
+#+end_src
+
+#+RESULTS:
+: tensor([0, 0, 0, 1, 1])
+
+Is it correct?
+
+#+begin_src python
+predictions == y_train
+#+end_src
+
+#+RESULTS:
+: tensor([True, True, True, True, True])
+
+and to get the proportion correct:
+#+begin_src python
+torch.sum(predictions == y_train) / len(y_train)
+#+end_src
+
+#+RESULTS:
+: tensor(1.)
