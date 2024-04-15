@@ -84,14 +84,14 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org494af14">1. Intro to Quantization</a>
+<li><a href="#org331d241">1. Intro to Quantization</a>
 <ul>
-<li><a href="#orgc4ba6c1">Common data types used in ML</a></li>
-<li><a href="#orged7403e">Different types in training and inference</a></li>
-<li><a href="#org3833256">The FP8 Format</a></li>
+<li><a href="#orgf789459">Common data types used in ML</a></li>
+<li><a href="#org24a057f">Different types in training and inference</a></li>
+<li><a href="#orga326332">The FP8 Format</a></li>
 </ul>
 </li>
-<li><a href="#org0905bfb">QLoRA Paper Overview</a></li>
+<li><a href="#org40c4192">QLoRA Paper Overview</a></li>
 </ul>
 </div>
 </nav>
@@ -106,9 +106,9 @@ I have a basic understanding of what QLoRA is, but given its popularity and appa
 Link: <a href="https://huggingface.co/blog/4bit-transformers-bitsandbytes">Making LLMs even more accessible with bitsandbytes, 4-bit quantization and QLoRA</a>
 </p>
 
-<div id="outline-container-org494af14" class="outline-2">
-<h2 id="org494af14">1. Intro to Quantization</h2>
-<div class="outline-text-2" id="text-org494af14">
+<div id="outline-container-org331d241" class="outline-2">
+<h2 id="org331d241">1. Intro to Quantization</h2>
+<div class="outline-text-2" id="text-org331d241">
 <p>
 The post recommends reading the intro to <a href="https://huggingface.co/blog/hf-bitsandbytes-integration">this post</a> first for some background on quantization. Key points:
 </p>
@@ -118,9 +118,9 @@ The post recommends reading the intro to <a href="https://huggingface.co/blog/hf
 <li>int8 inference doesn't appear to significantly degrade model performance.</li>
 </ul>
 </div>
-<div id="outline-container-orgc4ba6c1" class="outline-3">
-<h3 id="orgc4ba6c1">Common data types used in ML</h3>
-<div class="outline-text-3" id="text-orgc4ba6c1">
+<div id="outline-container-orgf789459" class="outline-3">
+<h3 id="orgf789459">Common data types used in ML</h3>
+<div class="outline-text-3" id="text-orgf789459">
 <p>
 The size of a model is determined by the number of its parameters <i>and their precision</i>. Common types include:
 </p>
@@ -155,9 +155,9 @@ result
 </ul>
 </div>
 </div>
-<div id="outline-container-orged7403e" class="outline-3">
-<h3 id="orged7403e">Different types in training and inference</h3>
-<div class="outline-text-3" id="text-orged7403e">
+<div id="outline-container-org24a057f" class="outline-3">
+<h3 id="org24a057f">Different types in training and inference</h3>
+<div class="outline-text-3" id="text-org24a057f">
 <p>
 "Ideally" we should use FP32 for training and inference. But it is two times slower than half precision. So a mixed-precision approach is preferred. Weights are held in FP32 as a precise "main weights" reference. Computation in the forward/backward pass are done in fp16/bf16 to improve training speed. The fp16/bf16 gradients are used to update the fp32 weights.
 </p>
@@ -174,18 +174,18 @@ What happens when I load a model in bf16 and then train it? Is that still mixed 
 </div>
 </div>
 </div>
-<div id="outline-container-org3833256" class="outline-3">
-<h3 id="org3833256">The FP8 Format</h3>
-<div class="outline-text-3" id="text-org3833256">
+<div id="outline-container-orga326332" class="outline-3">
+<h3 id="orga326332">The FP8 Format</h3>
+<div class="outline-text-3" id="text-orga326332">
 <p>
 The FP8 format has two formats: E4M3 and E5M2 (where E=exponent, M=mantissa). E4M3 (higher precision, smaller range) is best suited for the forward pass, while E5M2 (lower precision, higher range) is better suited for the backward pass.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org0905bfb" class="outline-2">
-<h2 id="org0905bfb">QLoRA Paper Overview</h2>
-<div class="outline-text-2" id="text-org0905bfb">
+<div id="outline-container-org40c4192" class="outline-2">
+<h2 id="org40c4192">QLoRA Paper Overview</h2>
+<div class="outline-text-2" id="text-org40c4192">
 <p>
 QLoRA reduces the memory usage of LLM fine-tuning without appreciable loss of performance compared to half precision fine-tuning.
 </p>

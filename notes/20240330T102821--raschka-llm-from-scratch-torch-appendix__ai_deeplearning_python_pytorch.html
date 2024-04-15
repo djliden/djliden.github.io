@@ -106,18 +106,19 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org60a222d">A.1 PyTorch</a></li>
-<li><a href="#org2c6310c">A.2 Understanding tensors</a>
+<li><a href="#org00be3aa">A.1 PyTorch</a></li>
+<li><a href="#org3e6ec97">A.2 Understanding tensors</a>
 <ul>
-<li><a href="#org4fa11db">Creating tensors</a></li>
-<li><a href="#org7e94ba8">Tensor data types</a></li>
-<li><a href="#org885ed33">Common tensor operations</a></li>
+<li><a href="#org23e84e7">Creating tensors</a></li>
+<li><a href="#orgebf0ab4">Tensor data types</a></li>
+<li><a href="#orgb855cba">Common tensor operations</a></li>
 </ul>
 </li>
-<li><a href="#orgd1aab9a">A.3 Models as Computational Graphs</a></li>
-<li><a href="#orge4db986">A.4 Automatic Differentiation</a></li>
-<li><a href="#orgb2f8f12">A.5 Implementing multilayer neural networks</a></li>
-<li><a href="#org5ff72ee">A.6 Setting up efficient data loaders</a></li>
+<li><a href="#org3b2183f">A.3 Models as Computational Graphs</a></li>
+<li><a href="#org03668a9">A.4 Automatic Differentiation</a></li>
+<li><a href="#org7076cd7">A.5 Implementing multilayer neural networks</a></li>
+<li><a href="#orga89f559">A.6 Setting up efficient data loaders</a></li>
+<li><a href="#orgbbda44f">A.7 A typical training loop</a></li>
 </ul>
 </div>
 </nav>
@@ -128,9 +129,9 @@ This is a quick run through the appendix on PyTorch from Sebastian Raschka's <a 
 
 </div>
 
-<div id="outline-container-org60a222d" class="outline-2">
-<h2 id="org60a222d">A.1 PyTorch</h2>
-<div class="outline-text-2" id="text-org60a222d">
+<div id="outline-container-org00be3aa" class="outline-2">
+<h2 id="org00be3aa">A.1 PyTorch</h2>
+<div class="outline-text-2" id="text-org00be3aa">
 <p>
 There are three broad components to PyTorch:
 </p>
@@ -175,9 +176,9 @@ Great.
 </p>
 </div>
 </div>
-<div id="outline-container-org2c6310c" class="outline-2">
-<h2 id="org2c6310c">A.2 Understanding tensors</h2>
-<div class="outline-text-2" id="text-org2c6310c">
+<div id="outline-container-org3e6ec97" class="outline-2">
+<h2 id="org3e6ec97">A.2 Understanding tensors</h2>
+<div class="outline-text-2" id="text-org3e6ec97">
 <p>
 Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors are similar to NumPy arrays but have have several additional features:
 </p>
@@ -189,9 +190,9 @@ Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors
 Still, it has a numpy-like API.
 </p>
 </div>
-<div id="outline-container-org4fa11db" class="outline-3">
-<h3 id="org4fa11db">Creating tensors</h3>
-<div class="outline-text-3" id="text-org4fa11db">
+<div id="outline-container-org23e84e7" class="outline-3">
+<h3 id="org23e84e7">Creating tensors</h3>
+<div class="outline-text-3" id="text-org23e84e7">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">0d tensor (scalar)</span>
 <span class="org-keyword">print</span>(torch.tensor(1))
@@ -220,9 +221,9 @@ tensor([[[1, 2],
 </pre>
 </div>
 </div>
-<div id="outline-container-org7e94ba8" class="outline-3">
-<h3 id="org7e94ba8">Tensor data types</h3>
-<div class="outline-text-3" id="text-org7e94ba8">
+<div id="outline-container-orgebf0ab4" class="outline-3">
+<h3 id="orgebf0ab4">Tensor data types</h3>
+<div class="outline-text-3" id="text-orgebf0ab4">
 <p>
 These are important to pay attention to! So let's pay attention to them. The default (from above) is the 64-bit integer.
 </p>
@@ -276,9 +277,9 @@ torch.float32
 </pre>
 </div>
 </div>
-<div id="outline-container-org885ed33" class="outline-3">
-<h3 id="org885ed33">Common tensor operations</h3>
-<div class="outline-text-3" id="text-org885ed33">
+<div id="outline-container-orgb855cba" class="outline-3">
+<h3 id="orgb855cba">Common tensor operations</h3>
+<div class="outline-text-3" id="text-orgb855cba">
 <ul class="org-ul">
 <li>brief survey of the most common tensor operations prior to getting into the computational graphs concept.</li>
 </ul>
@@ -365,9 +366,9 @@ tensor([[14, 32],
 </div>
 </div>
 </div>
-<div id="outline-container-orgd1aab9a" class="outline-2">
-<h2 id="orgd1aab9a">A.3 Models as Computational Graphs</h2>
-<div class="outline-text-2" id="text-orgd1aab9a">
+<div id="outline-container-org3b2183f" class="outline-2">
+<h2 id="org3b2183f">A.3 Models as Computational Graphs</h2>
+<div class="outline-text-2" id="text-org3b2183f">
 <p>
 The previous section covered PyTorch's tensor library. This section gets into its automatic differentiation engine (autograd). Autograd provides functions for automatically computing gradients in dynamic computational graphs.
 </p>
@@ -400,9 +401,9 @@ Input and weight -&gt; (u = w<sub>1</sub> * x<sub>1</sub>) -&gt; +b -&gt; (z = u
 </p>
 </div>
 </div>
-<div id="outline-container-orge4db986" class="outline-2">
-<h2 id="orge4db986">A.4 Automatic Differentiation</h2>
-<div class="outline-text-2" id="text-orge4db986">
+<div id="outline-container-org03668a9" class="outline-2">
+<h2 id="org03668a9">A.4 Automatic Differentiation</h2>
+<div class="outline-text-2" id="text-org03668a9">
 <p>
 PyTorch will automatically build such a graph if one of its terminal nodes has the <code>requires_grad</code> attribute set to True. This enables us to train neural nets via backpropagation. Working backward from the above:
 </p>
@@ -477,9 +478,9 @@ tensor([-0.0817])
 </pre>
 </div>
 </div>
-<div id="outline-container-orgb2f8f12" class="outline-2">
-<h2 id="orgb2f8f12">A.5 Implementing multilayer neural networks</h2>
-<div class="outline-text-2" id="text-orgb2f8f12">
+<div id="outline-container-org7076cd7" class="outline-2">
+<h2 id="org7076cd7">A.5 Implementing multilayer neural networks</h2>
+<div class="outline-text-2" id="text-org7076cd7">
 <p>
 Now we get to the third major component of Pytorch: its library for implementing deep neural networks.
 </p>
@@ -657,9 +658,9 @@ tensor([[0.3645, 0.3403, 0.2952]])
 </div>
 </div>
 
-<div id="outline-container-org5ff72ee" class="outline-2">
-<h2 id="org5ff72ee">A.6 Setting up efficient data loaders</h2>
-<div class="outline-text-2" id="text-org5ff72ee">
+<div id="outline-container-orga89f559" class="outline-2">
+<h2 id="orga89f559">A.6 Setting up efficient data loaders</h2>
+<div class="outline-text-2" id="text-orga89f559">
 <p>
 A <code>DataSet</code> is a class that defines how individual records are loaded. A <code>DataLoader</code> class handles dataset shuffling and assembling data records into batches.
 </p>
@@ -782,6 +783,175 @@ Note that we can set <code>drop_last=True</code> to drop the last uneven batch, 
 <p>
 The <code>num_workers</code> argument relates to parallelizing data loading/processing. 0 indicates that it will all be done in the main process, not in separate worker processes. This can slow things down a lot.
 </p>
+</div>
+</div>
+
+<div id="outline-container-orgbbda44f" class="outline-2">
+<h2 id="orgbbda44f">A.7 A typical training loop</h2>
+<div class="outline-text-2" id="text-orgbbda44f">
+<p>
+In this section, we combine many of the techniques from above to show a complete training loop.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">import</span> torch
+<span class="org-keyword">import</span> torch.nn.functional <span class="org-keyword">as</span> F
+ 
+ 
+torch.manual_seed(123)
+<span class="org-variable-name">model</span> = NeuralNetwork(num_inputs=2, num_outputs=2)
+<span class="org-variable-name">optimizer</span> = torch.optim.SGD(model.parameters(), lr=0.5)
+ 
+<span class="org-variable-name">num_epochs</span> = 3
+ 
+<span class="org-keyword">for</span> epoch <span class="org-keyword">in</span> <span class="org-builtin">range</span>(num_epochs): 
+    
+    model.train()
+    <span class="org-keyword">for</span> batch_idx, (features, labels) <span class="org-keyword">in</span> <span class="org-builtin">enumerate</span>(train_loader):
+ 
+        <span class="org-variable-name">logits</span> = model(features)
+        
+        <span class="org-variable-name">loss</span> = F.cross_entropy(logits, labels)
+        
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+    
+        <span class="org-comment-delimiter">### </span><span class="org-comment">LOGGING</span>
+        <span class="org-keyword">print</span>(f<span class="org-string">"Epoch: {epoch+1:03d}/{num_epochs:03d}"</span>
+              f<span class="org-string">" | Batch {batch_idx:03d}/{len(train_loader):03d}"</span>
+              f<span class="org-string">" | Train Loss: {loss:.2f}"</span>)
+ 
+    model.<span class="org-builtin">eval</span>()
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Optional model evaluation</span>
+</pre>
+</div>
+
+<pre class="example">
+Epoch: 001/003 | Batch 000/003 | Train Loss: 0.75
+Epoch: 001/003 | Batch 001/003 | Train Loss: 0.65
+Epoch: 001/003 | Batch 002/003 | Train Loss: 0.42
+Epoch: 002/003 | Batch 000/003 | Train Loss: 0.05
+Epoch: 002/003 | Batch 001/003 | Train Loss: 0.13
+Epoch: 002/003 | Batch 002/003 | Train Loss: 0.00
+Epoch: 003/003 | Batch 000/003 | Train Loss: 0.01
+Epoch: 003/003 | Batch 001/003 | Train Loss: 0.00
+Epoch: 003/003 | Batch 002/003 | Train Loss: 0.02
+</pre>
+
+
+
+<p>
+Note the use of <code>model.train</code> and <code>model.eval</code>. These set the model into training and evaluation mode, respectively. Some components behave differently during training or inference, such as ddropout or batch normalization. We don't have these or anything like them, so this is redundant in our code, but still good practice.
+</p>
+
+<p>
+We pass the logits directly to <code>cross_entropy</code> to compute the loss and call <code>loss.backward()</code> to compute gradients. <code>optimizer.step</code> uses the gradients to update the model parameters.
+</p>
+
+<p>
+It is important that we include an <code>optimizer.zero_grad</code> call in each update to reset the gradients and ensure they do not accumulate.
+</p>
+
+<p>
+Now we can make predictions with the model.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">model.<span class="org-builtin">eval</span>()
+<span class="org-keyword">with</span> torch.no_grad():
+    <span class="org-variable-name">outputs</span> = model(X_train)
+<span class="org-keyword">print</span>(outputs)
+</pre>
+</div>
+
+<pre class="example">
+tensor([[ 2.9320, -4.2563],
+        [ 2.6045, -3.8389],
+        [ 2.1484, -3.2514],
+        [-2.1461,  2.1496],
+        [-2.5004,  2.5210]])
+</pre>
+
+
+<p>
+If we want the class membership, we can obtain it with:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">torch.set_printoptions(sci_mode=<span class="org-constant">False</span>)
+<span class="org-variable-name">probas</span> = torch.softmax(outputs, dim=1)
+<span class="org-keyword">print</span>(probas)
+</pre>
+</div>
+
+<pre class="example">
+tensor([[    0.9992,     0.0008],
+        [    0.9984,     0.0016],
+        [    0.9955,     0.0045],
+        [    0.0134,     0.9866],
+        [    0.0066,     0.9934]])
+</pre>
+
+
+<p>
+There are two classes, so the above represents the probabilities of belonging to class 1 or class 2. The first three have high probability of class 1; the last two of class 2.
+</p>
+
+<p>
+We can convery into class labels as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">predictions</span> = torch.argmax(probas, dim=1)
+<span class="org-keyword">print</span>(predictions)
+</pre>
+</div>
+
+<pre class="example">
+tensor([0, 0, 0, 1, 1])
+</pre>
+
+
+<p>
+We don't need to compute softmax probabilities to accomplish this.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">print</span>(torch.argmax(outputs, dim=1))
+</pre>
+</div>
+
+<pre class="example">
+tensor([0, 0, 0, 1, 1])
+</pre>
+
+
+<p>
+Is it correct?
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">predictions == y_train
+</pre>
+</div>
+
+<pre class="example">
+tensor([True, True, True, True, True])
+</pre>
+
+
+<p>
+and to get the proportion correct:
+</p>
+<div class="org-src-container">
+<pre class="src src-python">torch.<span class="org-builtin">sum</span>(predictions == y_train) / <span class="org-builtin">len</span>(y_train)
+</pre>
+</div>
+
+<pre class="example">
+tensor(1.)
+</pre>
 </div>
 </div>
 </div>
