@@ -600,3 +600,184 @@ torch.sum(predictions == y_train) / len(y_train)
 
 #+RESULTS:
 : tensor(1.)
+
+
+* A.8 Saving and Loading Models
+:PROPERTIES:
+:header-args:python: :session appA
+:END:
+
+We can save a model as follows:
+
+#+begin_src python
+torch.save(model.state_dict(), "model.pth")
+#+end_src
+
+~.pt~ and ~.pth~ are the most common extensions, by convention, but we can use whatever we want.
+
+We restore a model with:
+
+#+begin_src python
+model = NeuralNetwork(2,2)
+model.load_state_dict(torch.load("model.pth"))
+#+end_src
+
+It is necessary to have an instance of the model in memory in order to load the model weights.
+* A.9 Optimizing training performance with GPUs
+:PROPERTIES:
+:header-args:python: :session appA
+:END:
+
+** Computations on GPUs
+- Modifying training runs to use GPU in PyTorch is easy
+- In PyTorch, a ~device~ is where computations occur and data resides. A pytorch tensor lives on a device and its operations are executed on that device.
+
+Because I am running this locally, I am going to try to follow these examples with mps.
+
+#+begin_src python :results output
+print("MPS is available." if torch.backends.mps.is_available() else "MPS is not available.")
+#+end_src
+
+#+RESULTS:
+: MPS is available.
+
+By default, operations are done on CPU.
+
+#+begin_src python
+tensor_1 = torch.tensor([1., 2., 3.])
+tensor_2 = torch.tensor([4., 5., 6.])
+tensor_1 + tensor_2
+#+end_src
+
+#+RESULTS:
+: tensor([5., 7., 9.])
+
+Now we can transfer the tensors to GPU and perform the addition there.
+
+#+begin_src python
+tensor_1 = tensor_1.to("mps")
+tensor_2 = tensor_2.to("mps")
+tensor_1 + tensor_2
+#+end_src
+
+#+RESULTS:
+: tensor([5., 7., 9.], device='mps:0')
+
+All tensors have to be on the same device or the computation will fail.
+
+
+#+begin_src python :results output
+tensor_1 = tensor_1.to("mps")
+tensor_2 = tensor_2.to("cpu")
+tensor_1 + tensor_2
+#+end_src
+
+#+RESULTS:
+: Traceback (most recent call last):
+:   File "<string>", line 17, in __PYTHON_EL_eval
+:   File "<string>", line 3, in <module>
+:   File "/var/folders/vq/mfrl6bsd37jglvmz0vyxf3000000gn/T/babel-YaG8HR/python-l9RkUi", line 3, in <module>
+:     tensor_1 + tensor_2
+:     ~~~~~~~~~^~~~~~~~~~
+: RuntimeError: Expected all tensors to be on the same device, but found at least two devices, mps:0 and cpu!
+** Single-GPU Training
+
+All we need to do to train on a single GPU is:
+- set ~device = torch.device("cuda")~
+- set ~model = model.to(device)~
+- set ~features, labels = features.to(device), labels.to(device)~
+
+This is usually considered the best practice:
+
+#+begin_src python
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#+end_src
+** Multi-GPU Training
+
+This section introduces the idea of /distributed training/.
+
+The most basic approach uses PyTorch's ~DistributedDataParallel~ strategy. DDP splits inputs across available devices and processes the subsets simultaneously. How does this work?
+- PyTorch launches a separate process on each GPU
+- Each process keeps a copy of the model
+- The copies are synchronized during training. The computed gradients are averaged and synchronized during training to update the model copies.
+
+DDP offers enhanced training speed.
+
+#+begin_notice
+DDP does not function properly in interactive environments like Jupyter notebooks. DDP code must be run as a script, not within a notebook interface.
+#+end_notice
+
+
+First we load the utilities:
+
+#+begin_src python
+import torch.multiprocessing as mp
+from torch.utils.data.distributed import DistributedSampler
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.distributed import init_process_group, destroy_process_group
+#+end_src
+
+
+- ~multiprocessing~ includes various functions for spawning multiple processes and applying functions in parallel.
+- ~DistributedSampler~ is for dividing the training data among processes.
+- The init/destroy process group functions are for starting and ending the distributed training modules.
+
+
+Here is an example script for distributed training.
+
+#+begin_src python
+def ddp_setup(rank, world_size):
+    os.environ["MASTER_ADDR"] = "localhost"
+    os.environ["MASTER_PORT"] = "12345"
+    init_process_group(
+        backend="nccl",
+        rank=rank,
+        world_size=world_size
+    )
+    torch.cuda.set_device(rank)
+def prepare_dataset():
+    ...
+    train_loader = DataLoader(
+        dataset=train_ds,
+        batch_size=2,
+        shuffle=False,
+        pin_memory=True,
+        drop_last=True,
+        # this ensures each GPU receives different data subsample
+        sampler=DistributedSampler(train_ds) 
+    )    
+    return train_loader, test_loader
+def main(rank, world_size, num_epochs):      
+    ddp_setup(rank, world_size)
+    train_loader, test_loader = prepare_dataset()
+    model = NeuralNetwork(num_inputs=2, num_outputs=2)
+    model.to(rank)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.5)
+    # Wrap the model in DDP to enable gradient synchronization
+    model = DDP(model, device_ids=[rank])
+    for epoch in range(num_epochs):
+    for features, labels in train_loader:
+            features, labels = features.to(rank), labels.to(rank) 
+            ...
+            print(f"[GPU{rank}] Epoch: {epoch+1:03d}/{num_epochs:03d}"
+                  f" | Batchsize {labels.shape[0]:03d}"
+                  f" | Train/Val Loss: {loss:.2f}")
+    model.eval()
+    train_acc = compute_accuracy(model, train_loader, device=rank)
+    print(f"[GPU{rank}] Training accuracy", train_acc)
+    test_acc = compute_accuracy(model, test_loader, device=rank)
+    print(f"[GPU{rank}] Test accuracy", test_acc)
+    # exit distributed training, free up resources
+    destroy_process_group()                   
+
+if __name__ == "__main__":
+    print("Number of GPUs available:", torch.cuda.device_count())
+    torch.manual_seed(123)
+    num_epochs = 3
+    world_size = torch.cuda.device_count()
+    mp.spawn(main, args=(world_size, num_epochs), nprocs=world_size)
+#+end_src
+
+If you only want to use some GPUs, set the ~CUDA_VISIBLE_DEVICES~ environment variable.
+
+: CUDA_VISIBLE_DIVICES=0,2 python training_script.py
