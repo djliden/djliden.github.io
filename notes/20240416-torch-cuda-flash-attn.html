@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Notes and Drafts</title>
+<title>Troubleshooting Flash Attention Installation</title>
 <meta name="generator" content="Org mode">
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
@@ -79,61 +79,102 @@ for the JavaScript code in this tag.
 </div>
 <div id="content">
 <header>
-<h1 class="title">Notes and Drafts</h1>
-</header><p>
-This page includes miscellaneous notes and drafts. It provides a place for me to record things that I learn and to share work-in-progress posts. Assume everything here is half-baked, a work in progress, provisional.
-</p>
-
-<div id="outline-container-org2d23fdc" class="outline-2">
-<h2 id="org2d23fdc"><a href="notes/20240416-torch-cuda-flash-attn.html">(2024-04-16) Troubleshooting Flash Attention Installation</a></h2>
-<div class="outline-text-2" id="text-org2d23fdc">
+<h1 class="title">Troubleshooting Flash Attention Installation</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orge482874">The Problem</a></li>
+<li><a href="#org238acc2">Solution</a></li>
+<li><a href="#org24e440f">What didn't work</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview">
 <p>
 I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platform I tend to be working on (Databricks). This note is a quick summary.
 </p>
+
 </div>
-</div>
-<div id="outline-container-org336a11e" class="outline-2">
-<h2 id="org336a11e"><a href="notes/20240405-qlora-hf.html">(2024-04-05) Intro to QLoRA</a></h2>
-<div class="outline-text-2" id="text-org336a11e">
+<div id="outline-container-orge482874" class="outline-2">
+<h2 id="orge482874">The Problem</h2>
+<div class="outline-text-2" id="text-orge482874">
 <p>
-I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA and quantization. Later, I will also make a note with some examples.
+I kept getting an "undefined symbol" error like <a href="https://github.com/Dao-AILab/flash-attention/issues/667">this</a> when trying to load a model with flash attention (or even just when importing the flash attention library).
 </p>
 </div>
 </div>
-<div id="outline-container-org95a1510" class="outline-2">
-<h2 id="org95a1510"><a href="notes/20240404-dbrx-mlflow.html">(2024-04-04) DBRX with MLflow</a></h2>
-<div class="outline-text-2" id="text-org95a1510">
+
+<div id="outline-container-org238acc2" class="outline-2">
+<h2 id="org238acc2">Solution</h2>
+<div class="outline-text-2" id="text-org238acc2">
 <p>
-This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.
+The following approach worked.
 </p>
-</div>
-</div>
-<div id="outline-container-org950e7e2" class="outline-2">
-<h2 id="org950e7e2"><a href="notes/20240403-dbrx-instructor.html">(2024-04-03) Using the DBRX Model with Instructor</a></h2>
-<div class="outline-text-2" id="text-org950e7e2">
+
+<ol class="org-ol">
+<li>Verify CUDA version; install the right version of Torch.</li>
+<li>Clone the flash-attention library and install (don't just pip install)</li>
+</ol>
+
 <p>
-This note briefly demonstrates how to use the <a href="https://github.com/jxnl/instructor">Instructor</a> library with the Databricks <a href="https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm">DBRX</a> model via the Databricks Foundation Models API.
+So in the case of my most recent project:
 </p>
+
+<div class="org-src-container">
+<pre class="src src-python">%pip install --upgrade torch
+</pre>
 </div>
-</div>
-<div id="outline-container-orgd49594c" class="outline-2">
-<h2 id="orgd49594c"><a href="notes/20240401-mlx-quickstart.html">(2024-04-01) MLX Quickstart</a></h2>
-<div class="outline-text-2" id="text-orgd49594c">
+
 <p>
-These are my notes on the <a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">MLX quick start guide and usage notes</a>. It's a work in progress. Ultimately, I'm interested in learning what MLX will let me do with LLMs on my laptop. I might write something more substantial on that topic in the future. For now, you're probably better off consulting the docs yourself than looking at my notes on them.
+was fine because it's compiled for cuda 12.
 </p>
-</div>
-</div>
-<div id="outline-container-org19ee645" class="outline-2">
-<h2 id="org19ee645"><a href="notes/20240330-raschka-torch-notes.html">(2024-03-31) PyTorch Review</a></h2>
-<div class="outline-text-2" id="text-org19ee645">
+
 <p>
-This is a quick run through the appendix on PyTorch from Sebastian Raschka's <a href="https://www.manning.com/books/build-a-large-language-model-from-scratch">Build a Large Language Model (From Scratch)</a> book, currently available via Manning's MEAP. I haven't spent an enormous amount of time with PyTorch in the last year or so, so it seemed worth the effort to work through it.
+To install <code>flash-attention</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">%sh
+git clone https://github.com/Dao-AILab/flash-attention.git
+cd flash-attention
+pip install . --no-build-isolation
+</pre>
+</div>
+
+<p>
+We can then make sure everything works (without needing to take extra time to load a model, for example) like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">import</span> torch
+<span class="org-keyword">print</span>(torch.__version__)
+<span class="org-keyword">print</span>(torch.version.cuda)
+
+<span class="org-keyword">import</span> flash_attn
+<span class="org-keyword">print</span>(flash_attn.__version__)
+</pre>
+</div>
+
+<pre class="example">
+2.2.2+cu121
+12.1
+2.5.7
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org24e440f" class="outline-2">
+<h2 id="org24e440f">What didn't work</h2>
+<div class="outline-text-2" id="text-org24e440f">
+<p>
+I wasn't able to get any variety of <code>pip install flash-attn</code> working. This was regardless of the no build isolation flag; specific versions; etc.
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
+<p class="date">Date: 2024-04-16 Tue 00:00</p>
 <p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
 </div>
 </body>
