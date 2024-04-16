@@ -84,12 +84,12 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org7bd9d74">Instructor</a></li>
-<li><a href="#org863643d">Using it with DBRX/Databricks</a>
+<li><a href="#orgda6934d">Instructor</a></li>
+<li><a href="#org8b9f4cc">Using it with DBRX/Databricks</a>
 <ul>
-<li><a href="#orge3141ff">Set up the client</a></li>
-<li><a href="#org44a3d29">Simple example</a></li>
-<li><a href="#orgd670113">A slightly more involved example</a></li>
+<li><a href="#org6b938bd">Set up the client</a></li>
+<li><a href="#org2600494">Simple example</a></li>
+<li><a href="#org76bb5ab">A slightly more involved example</a></li>
 </ul>
 </li>
 </ul>
@@ -102,25 +102,25 @@ This note briefly demonstrates how to use the <a href="https://github.com/jxnl/i
 
 </div>
 
-<div id="outline-container-org7bd9d74" class="outline-2">
-<h2 id="org7bd9d74">Instructor</h2>
-<div class="outline-text-2" id="text-org7bd9d74">
+<div id="outline-container-orgda6934d" class="outline-2">
+<h2 id="orgda6934d">Instructor</h2>
+<div class="outline-text-2" id="text-orgda6934d">
 <p>
 The instructor library provides structured output from LLMs. The user specifies a Pydantic model to define the structure of outputs.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org863643d" class="outline-2">
-<h2 id="org863643d">Using it with DBRX/Databricks</h2>
-<div class="outline-text-2" id="text-org863643d">
+<div id="outline-container-org8b9f4cc" class="outline-2">
+<h2 id="org8b9f4cc">Using it with DBRX/Databricks</h2>
+<div class="outline-text-2" id="text-org8b9f4cc">
 <p>
 Instructor works with DBRX/with the databricks foundation model API. Here's how.
 </p>
 </div>
-<div id="outline-container-orge3141ff" class="outline-3">
-<h3 id="orge3141ff">Set up the client</h3>
-<div class="outline-text-3" id="text-orge3141ff">
+<div id="outline-container-org6b938bd" class="outline-3">
+<h3 id="org6b938bd">Set up the client</h3>
+<div class="outline-text-3" id="text-org6b938bd">
 <p>
 We need to define the environment variables <code>OPENAI_API_KEY</code> and <code>OPENAI_BASE_URL</code>. In this example, they are saved in a <code>.env</code> file. We'll start by loading them.
 </p>
@@ -137,9 +137,9 @@ True
 </div>
 </div>
 
-<div id="outline-container-org44a3d29" class="outline-3">
-<h3 id="org44a3d29">Simple example</h3>
-<div class="outline-text-3" id="text-org44a3d29">
+<div id="outline-container-org2600494" class="outline-3">
+<h3 id="org2600494">Simple example</h3>
+<div class="outline-text-3" id="text-org2600494">
 <p>
 Next, we'll run the example from the Instructor docs to make sure everything is working. In this example, we define a schema fro data about users: we expect name and age. We then prompt the model with a sentence about a user. The model will return the Pydantic object with the user's information.
 </p>
@@ -198,9 +198,9 @@ There are a few things to pay attention to here.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd670113" class="outline-3">
-<h3 id="orgd670113">A slightly more involved example</h3>
-<div class="outline-text-3" id="text-orgd670113">
+<div id="outline-container-org76bb5ab" class="outline-3">
+<h3 id="org76bb5ab">A slightly more involved example</h3>
+<div class="outline-text-3" id="text-org76bb5ab">
 <p>
 Let's look at an example of generating an arbitrary number of question/answer pairs from a text, e.g. for evaluating a RAG application.
 </p>
