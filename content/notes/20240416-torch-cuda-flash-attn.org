@@ -1,0 +1,53 @@
+#+title: Troubleshooting Flash Attention Installation
+#+date:      <2024-04-16 Tue>
+
+#+begin_preview
+I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platform I tend to be working on (Databricks). This note is a quick summary.
+#+end_preview
+* The Problem
+
+I kept getting an "undefined symbol" error like [[https://github.com/Dao-AILab/flash-attention/issues/667][this]] when trying to load a model with flash attention (or even just when importing the flash attention library).
+
+* Solution
+
+The following approach worked.
+
+1. Verify CUDA version; install the right version of Torch.
+2. Clone the flash-attention library and install (don't just pip install)
+
+So in the case of my most recent project:
+
+#+begin_src python
+%pip install --upgrade torch
+#+end_src
+
+was fine because it's compiled for cuda 12.
+
+To install ~flash-attention~:
+
+#+begin_src python
+%sh
+git clone https://github.com/Dao-AILab/flash-attention.git
+cd flash-attention
+pip install . --no-build-isolation
+#+end_src
+
+We can then make sure everything works (without needing to take extra time to load a model, for example) like this:
+
+#+begin_src python
+import torch
+print(torch.__version__)
+print(torch.version.cuda)
+
+import flash_attn
+print(flash_attn.__version__)
+#+end_src
+
+#+RESULTS:
+: 2.2.2+cu121
+: 12.1
+: 2.5.7
+
+* What didn't work
+
+I wasn't able to get any variety of ~pip install flash-attn~ working. This was regardless of the no build isolation flag; specific versions; etc.
