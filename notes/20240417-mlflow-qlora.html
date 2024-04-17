@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logging and Loading a QLoRA Model with MLflow</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content">
+<header>
+<h1 class="title">Logging and Loading a QLoRA Model with MLflow</h1>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgf3ec3a6">Install Dependencies</a></li>
+<li><a href="#org8f12009">Set up assets/cache directories</a></li>
+<li><a href="#orga9a9811">Skip Data Processing</a></li>
+<li><a href="#orge440f79">Load the model, tokenizer, etc.</a>
+<ul>
+<li><a href="#orge824da2">Tokenizer</a></li>
+<li><a href="#orgc797154">LoRA config</a></li>
+<li><a href="#org7cd6287">Model</a></li>
+<li><a href="#org20823bd">Set up the peft model</a></li>
+</ul>
+</li>
+<li><a href="#org8e5b352">Skip Training</a></li>
+<li><a href="#org38799c9">Log to MLflow</a></li>
+<li><a href="#orgdf931f0">Load the MLflow model</a></li>
+<li><a href="#org1ee4fe5">Summary</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview">
+<p>
+This is a minimal example of how to log an MLflow qlora model. It does not show any actual model training or data processing, just the basic process of saving the model.
+</p>
+
+</div>
+
+<div id="outline-container-orgf3ec3a6" class="outline-2">
+<h2 id="orgf3ec3a6">Install Dependencies</h2>
+<div class="outline-text-2" id="text-orgf3ec3a6">
+<div class="org-src-container">
+<pre class="src src-python">%pip install --upgrade torch
+%pip install --upgrade transformers accelerate peft bitsandbytes mlflow pynvml packaging ninja
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-python">%sh
+cd /databricks/driver/
+git clone https://github.com/Dao-AILab/flash-attention.git
+cd flash-attention
+pip install . --no-build-isolation
+</pre>
+</div>
+
+<p>
+(See <a href="20240416-torch-cuda-flash-attn.html">this earlier note</a> for more information on installing flash attention)
+</p>
+</div>
+</div>
+<div id="outline-container-org8f12009" class="outline-2">
+<h2 id="org8f12009">Set up assets/cache directories</h2>
+<div class="outline-text-2" id="text-org8f12009">
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">Some Environment Setup</span>
+<span class="org-variable-name">ASSETS_DIR</span> = <span class="org-string">"&lt;assets_dir&gt;"</span>
+<span class="org-variable-name">OUTPUT_DIR</span> = ASSETS_DIR + <span class="org-string">"/results/mistral_qlora_min/"</span> <span class="org-comment-delimiter"># </span><span class="org-comment">the path to the output directory; where model checkpoints will be saved</span>
+<span class="org-variable-name">LOG_DIR</span> = ASSETS_DIR + <span class="org-string">"/logs/mistral_qlora_min/"</span> <span class="org-comment-delimiter"># </span><span class="org-comment">the path to the log directory; where logs will be saved</span>
+<span class="org-variable-name">CACHE_DIR</span> = ASSETS_DIR + <span class="org-string">"/cache/mistral_qlora_min/"</span> <span class="org-comment-delimiter"># </span><span class="org-comment">the path to the cache directory; where cache files will be saved</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga9a9811" class="outline-2">
+<h2 id="orga9a9811">Skip Data Processing</h2>
+<div class="outline-text-2" id="text-orga9a9811">
+<p>
+We are not preparing or using any training data in this example. We are skipping the training part.
+</p>
+</div>
+</div>
+<div id="outline-container-orge440f79" class="outline-2">
+<h2 id="orge440f79">Load the model, tokenizer, etc.</h2>
+<div class="outline-text-2" id="text-orge440f79">
+</div>
+<div id="outline-container-orge824da2" class="outline-3">
+<h3 id="orge824da2">Tokenizer</h3>
+<div class="outline-text-3" id="text-orge824da2">
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">from</span> transformers <span class="org-keyword">import</span> AutoTokenizer
+<span class="org-variable-name">tokenizer</span> = AutoTokenizer.from_pretrained(<span class="org-string">"mistralai/Mistral-7B-v0.1"</span>)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc797154" class="outline-3">
+<h3 id="orgc797154">LoRA config</h3>
+<div class="outline-text-3" id="text-orgc797154">
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">from</span> peft <span class="org-keyword">import</span> LoraConfig, TaskType
+
+<span class="org-variable-name">lora_config</span> = LoraConfig(
+    r=64,
+    target_modules=<span class="org-string">"all-linear"</span>,
+    task_type=TaskType.CAUSAL_LM,
+    lora_alpha=32,
+    lora_dropout=0.05
+)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7cd6287" class="outline-3">
+<h3 id="org7cd6287">Model</h3>
+<div class="outline-text-3" id="text-org7cd6287">
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">from</span> transformers <span class="org-keyword">import</span> AutoModelForCausalLM, BitsAndBytesConfig
+<span class="org-keyword">import</span> torch
+
+<span class="org-variable-name">bnb_config</span> = BitsAndBytesConfig(
+    load_in_4bit=<span class="org-constant">True</span>,
+    <span class="org-comment-delimiter">#</span><span class="org-comment">bnb_4bit_use_double_quant=True,</span>
+    bnb_4bit_compute_dtype=torch.bfloat16,
+)
+
+<span class="org-variable-name">model</span> = AutoModelForCausalLM.from_pretrained(
+    <span class="org-string">"mistralai/Mistral-7B-v0.1"</span>,
+    trust_remote_code=<span class="org-constant">True</span>,
+    cache_dir=CACHE_DIR,
+    device_map=<span class="org-string">"auto"</span>,
+    quantization_config=bnb_config)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org20823bd" class="outline-3">
+<h3 id="org20823bd">Set up the peft model</h3>
+<div class="outline-text-3" id="text-org20823bd">
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">from</span> peft <span class="org-keyword">import</span> get_peft_model
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">this results in the peft model type</span>
+<span class="org-variable-name">Model</span> = get_peft_model(model, lora_config)
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">this does not</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">model.add_adapter(lora_config)</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">what is the difference?</span>
+</pre>
+</div>
+
+<p>
+<code>Model = get_peft_model(model, lora_config)</code> and <code>model.add_adapter(lora_config)</code> yield different results. The former changes the type of the model to <code>PeftModelForCausalLM</code>; the latter does not.
+</p>
+
+<pre class="example">
+PeftModelForCausalLM(
+  (base_model): LoraModel(
+    (model): MistralForCausalLM(
+      (model): MistralModel(
+        (embed_tokens): Embedding(32000, 4096)
+        (layers): ModuleList(
+          (0-31): 32 x MistralDecoderLayer(
+            (self_attn): MistralSdpaAttention(
+              (q_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=4096, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=4096, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (k_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=1024, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=1024, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (v_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=1024, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=1024, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (o_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=4096, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=4096, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (rotary_emb): MistralRotaryEmbedding()
+            )
+            (mlp): MistralMLP(
+              (gate_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=14336, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=14336, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (up_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=14336, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=14336, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (down_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=14336, out_features=4096, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=14336, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=4096, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (act_fn): SiLU()
+            )
+            (input_layernorm): MistralRMSNorm()
+            (post_attention_layernorm): MistralRMSNorm()
+          )
+        )
+        (norm): MistralRMSNorm()
+      )
+      (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+    )
+  )
+)
+</pre>
+
+<p>
+Though the <code>add_adapter</code> approach does, in fact, add the adapter, it just doesn't change the type. It is not clear to me what the significance of this is in terms of training, inference, MLflow handling, etc.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org8e5b352" class="outline-2">
+<h2 id="org8e5b352">Skip Training</h2>
+<div class="outline-text-2" id="text-org8e5b352">
+<p>
+Again, we are not actually training the model.
+</p>
+</div>
+</div>
+<div id="outline-container-org38799c9" class="outline-2">
+<h2 id="org38799c9">Log to MLflow</h2>
+<div class="outline-text-2" id="text-org38799c9">
+<p>
+(Not all of this is necessary)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">prompt_template</span> = <span class="org-string">"""&lt;|im_start|&gt;system</span>
+<span class="org-string">You are a helpful assistant and an expert at making coffee.&lt;|im_end|&gt;</span>
+<span class="org-string">&lt;|im_start|&gt;user</span>
+<span class="org-string">{prompt}&lt;|im_end|&gt;</span>
+<span class="org-string">&lt;|im_start|&gt;assistant</span>
+
+<span class="org-string">"""</span>
+
+<span class="org-keyword">from</span> mlflow.models <span class="org-keyword">import</span> infer_signature
+
+<span class="org-variable-name">prompt_template</span> = <span class="org-string">"""&lt;|im_start|&gt;system</span>
+<span class="org-string">You are a helpful assistant and an expert at making coffee.&lt;|im_end|&gt;</span>
+<span class="org-string">&lt;|im_start|&gt;user</span>
+<span class="org-string">{prompt}&lt;|im_end|&gt;</span>
+<span class="org-string">&lt;|im_start|&gt;assistant</span>
+
+<span class="org-string">"""</span>
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Define the sample input/output</span>
+<span class="org-variable-name">sample_input</span> = <span class="org-string">"What is two plus two?"</span>
+<span class="org-variable-name">sample_output</span> = prompt_template.<span class="org-builtin">format</span>(prompt=sample_input) + <span class="org-string">"four&lt;|im_end|&gt;\n&lt;|endoftext|&gt;"</span>
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Define the sample parameters</span>
+<span class="org-variable-name">sample_params</span> = {
+    <span class="org-string">"max_new_tokens"</span>: 512,
+    <span class="org-string">"repetition_penalty"</span>: 1.1,
+}
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">MLflow infers schema from the provided sample input/output/params</span>
+<span class="org-variable-name">signature</span> = infer_signature(
+    model_input=sample_input,
+    model_output=sample_output,
+    params=sample_params,
+)
+
+<span class="org-keyword">print</span>(signature)
+</pre>
+</div>
+
+<p>
+#+RESULTS
+</p>
+<pre class="example">
+inputs: 
+  [string (required)]
+outputs: 
+  [string (required)]
+params: 
+  ['max_new_tokens': long (default: 512), 'repetition_penalty': double (default: 1.1)]
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">import</span> mlflow
+
+<span class="org-keyword">with</span> mlflow.start_run():
+    mlflow.log_params(lora_config.to_dict())
+    mlflow.transformers.log_model(
+        transformers_model={<span class="org-string">"model"</span>: model, <span class="org-string">"tokenizer"</span>: tokenizer},
+        signature=signature,
+        artifact_path=<span class="org-string">"model"</span>,  <span class="org-comment-delimiter"># </span><span class="org-comment">This is a relative path to save model files within MLflow run</span>
+        extra_pip_requirements = [<span class="org-string">"bitsandbytes"</span>, <span class="org-string">"peft"</span>],
+    )
+</pre>
+</div>
+
+<p>
+Note the message printed at this step:
+</p>
+
+<blockquote>
+<p>
+INFO mlflow.transformers: Overriding save<sub>pretrained</sub> to False for PEFT models, following the Transformers behavior. The PEFT adaptor and config will be saved, but the base model weights will not and reference to the HuggingFace Hub repository will be logged instead.
+</p>
+</blockquote>
+
+<p>
+This is 
+</p>
+</div>
+</div>
+<div id="outline-container-orgdf931f0" class="outline-2">
+<h2 id="orgdf931f0">Load the MLflow model</h2>
+<div class="outline-text-2" id="text-orgdf931f0">
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">import</span> mlflow
+
+<span class="org-variable-name">run_id</span> = <span class="org-string">"&lt;model_id&gt;"</span>
+<span class="org-variable-name">mlflow_model</span> = mlflow.pyfunc.load_model(f<span class="org-string">'runs:/{run_id}/model'</span>)
+</pre>
+</div>
+
+<p>
+This will load the model. We can then use its predict method.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">mlflow_model.predict(<span class="org-string">"Classify the following as postive, negative, or neutral: 'I had a rotten day!'"</span>)
+</pre>
+</div>
+
+<p>
+Which returns:
+</p>
+
+<pre class="example">
+"Classify the following as postive, negative, or neutral: 'I had a rotten day!'\n* 10.24 Classify the following as postive, negative, or neutral: 'I'm so happy to see you!'\n* 10.25 Classify the following as postive, negative, or neutral: 'I'm so sorry I was late.'\n* 10.26 Classify the following as postive, negative, or neutral: 'I'm so glad you came.'\n* 10.27 Classify the following as postive, negative, or neutral: 'I'm so sorry I didn't call.'\n* 10.28 Classify the following as postive, negative, or neutral: 'I'm so glad you called.'\n* [...]
+</pre>
+
+<p>
+because we did not actually fine-tune the model to follow any of our instructions.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1ee4fe5" class="outline-2">
+<h2 id="org1ee4fe5">Summary</h2>
+<div class="outline-text-2" id="text-org1ee4fe5">
+<p>
+This note showed the basics of how to log and load a peft model with MLflow.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-04-17 Wed 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+</div>
+</body>
+</html>
