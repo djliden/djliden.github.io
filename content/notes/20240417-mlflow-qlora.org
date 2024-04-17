@@ -1,0 +1,313 @@
+#+title: Logging and Loading a QLoRA Model with MLflow
+#+date:      <2024-04-17 Wed>
+
+#+begin_preview
+This is a minimal example of how to log an MLflow qlora model. It does not show any actual model training or data processing, just the basic process of saving the model.
+#+end_preview
+
+* Install Dependencies
+
+#+begin_src python
+%pip install --upgrade torch
+%pip install --upgrade transformers accelerate peft bitsandbytes mlflow pynvml packaging ninja
+#+end_src
+
+#+begin_src python
+%sh
+cd /databricks/driver/
+git clone https://github.com/Dao-AILab/flash-attention.git
+cd flash-attention
+pip install . --no-build-isolation
+#+end_src
+
+(See [[file:20240416-torch-cuda-flash-attn.org::+title: Troubleshooting Flash Attention Installation][the previous note]] for more information on installing flash attention)
+* Set up assets/cache directories
+
+#+begin_src python
+# Some Environment Setup
+ASSETS_DIR = "<assets_dir>"
+OUTPUT_DIR = ASSETS_DIR + "/results/mistral_qlora_min/" # the path to the output directory; where model checkpoints will be saved
+LOG_DIR = ASSETS_DIR + "/logs/mistral_qlora_min/" # the path to the log directory; where logs will be saved
+CACHE_DIR = ASSETS_DIR + "/cache/mistral_qlora_min/" # the path to the cache directory; where cache files will be saved
+#+end_src
+* Skip Data Processing
+
+We are not preparing or using any training data in this example. We are skipping the training part.
+* Load the model, tokenizer, etc.
+** Tokenizer
+
+#+begin_src python
+from transformers import AutoTokenizer
+tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-v0.1")
+#+end_src
+** LoRA config
+
+#+begin_src python
+from peft import LoraConfig, TaskType
+
+lora_config = LoraConfig(
+    r=64,
+    target_modules="all-linear",
+    task_type=TaskType.CAUSAL_LM,
+    lora_alpha=32,
+    lora_dropout=0.05
+)
+#+end_src
+** Model
+#+begin_src python
+from transformers import AutoModelForCausalLM, BitsAndBytesConfig
+import torch
+
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    #bnb_4bit_use_double_quant=True,
+    bnb_4bit_compute_dtype=torch.bfloat16,
+)
+
+model = AutoModelForCausalLM.from_pretrained(
+    "mistralai/Mistral-7B-v0.1",
+    trust_remote_code=True,
+    cache_dir=CACHE_DIR,
+    device_map="auto",
+    quantization_config=bnb_config)
+#+end_src
+** Set up the peft model
+
+#+begin_src python
+from peft import get_peft_model
+
+# this results in the peft model type
+Model = get_peft_model(model, lora_config)
+
+# this does not
+# model.add_adapter(lora_config)
+# what is the difference?
+#+end_src
+
+~Model = get_peft_model(model, lora_config)~ and ~model.add_adapter(lora_config)~ yield different results. The former changes the type of the model to ~PeftModelForCausalLM~; the latter does not.
+
+#+begin_src
+PeftModelForCausalLM(
+  (base_model): LoraModel(
+    (model): MistralForCausalLM(
+      (model): MistralModel(
+        (embed_tokens): Embedding(32000, 4096)
+        (layers): ModuleList(
+          (0-31): 32 x MistralDecoderLayer(
+            (self_attn): MistralSdpaAttention(
+              (q_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=4096, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=4096, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (k_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=1024, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=1024, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (v_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=1024, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=1024, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (o_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=4096, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=4096, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (rotary_emb): MistralRotaryEmbedding()
+            )
+            (mlp): MistralMLP(
+              (gate_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=14336, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=14336, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (up_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=4096, out_features=14336, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=4096, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=14336, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (down_proj): lora.Linear4bit(
+                (base_layer): Linear4bit(in_features=14336, out_features=4096, bias=False)
+                (lora_dropout): ModuleDict(
+                  (default): Dropout(p=0.05, inplace=False)
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=14336, out_features=64, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=64, out_features=4096, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (act_fn): SiLU()
+            )
+            (input_layernorm): MistralRMSNorm()
+            (post_attention_layernorm): MistralRMSNorm()
+          )
+        )
+        (norm): MistralRMSNorm()
+      )
+      (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+    )
+  )
+)
+#+end_src
+
+Though the ~add_adapter~ approach does, in fact, add the adapter, it just doesn't change the type. It is not clear to me what the significance of this is in terms of training, inference, MLflow handling, etc.
+* Skip Training
+
+Again, we are not actually training the model.
+* Log to MLflow
+
+(Not all of this is necessary)
+
+#+begin_src python
+prompt_template = """<|im_start|>system
+You are a helpful assistant and an expert at making coffee.<|im_end|>
+<|im_start|>user
+{prompt}<|im_end|>
+<|im_start|>assistant
+
+"""
+
+from mlflow.models import infer_signature
+
+prompt_template = """<|im_start|>system
+You are a helpful assistant and an expert at making coffee.<|im_end|>
+<|im_start|>user
+{prompt}<|im_end|>
+<|im_start|>assistant
+
+"""
+
+# Define the sample input/output
+sample_input = "What is two plus two?"
+sample_output = prompt_template.format(prompt=sample_input) + "four<|im_end|>\n<|endoftext|>"
+
+# Define the sample parameters
+sample_params = {
+    "max_new_tokens": 512,
+    "repetition_penalty": 1.1,
+}
+
+# MLflow infers schema from the provided sample input/output/params
+signature = infer_signature(
+    model_input=sample_input,
+    model_output=sample_output,
+    params=sample_params,
+)
+
+print(signature)
+#+end_src
+
+#+RESULTS
+: inputs: 
+:   [string (required)]
+: outputs: 
+:   [string (required)]
+: params: 
+:   ['max_new_tokens': long (default: 512), 'repetition_penalty': double (default: 1.1)]
+
+#+begin_src python
+import mlflow
+
+with mlflow.start_run():
+    mlflow.log_params(lora_config.to_dict())
+    mlflow.transformers.log_model(
+        transformers_model={"model": model, "tokenizer": tokenizer},
+        signature=signature,
+        artifact_path="model",  # This is a relative path to save model files within MLflow run
+        extra_pip_requirements = ["bitsandbytes", "peft"],
+    )
+#+end_src
+
+Note the message printed at this step:
+
+#+begin_quote
+INFO mlflow.transformers: Overriding save_pretrained to False for PEFT models, following the Transformers behavior. The PEFT adaptor and config will be saved, but the base model weights will not and reference to the HuggingFace Hub repository will be logged instead.
+#+end_quote
+
+This is 
+* Load the MLflow model
+
+#+begin_src python
+import mlflow
+
+run_id = "<model_id>"
+mlflow_model = mlflow.pyfunc.load_model(f'runs:/{run_id}/model')
+#+end_src
+
+This will load the model. We can then use its predict method.
+
+#+begin_src python
+mlflow_model.predict("Classify the following as postive, negative, or neutral: 'I had a rotten day!'")
+#+end_src
+
+Which returns:
+
+#+begin_src
+"Classify the following as postive, negative, or neutral: 'I had a rotten day!'\n* 10.24 Classify the following as postive, negative, or neutral: 'I'm so happy to see you!'\n* 10.25 Classify the following as postive, negative, or neutral: 'I'm so sorry I was late.'\n* 10.26 Classify the following as postive, negative, or neutral: 'I'm so glad you came.'\n* 10.27 Classify the following as postive, negative, or neutral: 'I'm so sorry I didn't call.'\n* 10.28 Classify the following as postive, negative, or neutral: 'I'm so glad you called.'\n* [...]
+#+end_src
+
+because we did not actually fine-tune the model to follow any of our instructions.
+
+* Summary
+
+This note showed the basics of how to log and load a peft model with MLflow.
