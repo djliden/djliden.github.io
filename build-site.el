@@ -1,9 +1,9 @@
 ;;; packages
 ;;;; Initialize the package system
 (require 'package)
+(setq package-user-dir (expand-file-name "./.packages"))
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")
-                         ("elpa-fallback" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/gnu/")))
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 (package-refresh-contents)
 
