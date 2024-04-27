@@ -9,8 +9,26 @@
 * [[file:archive.org][(2023-07-12) Posts Archive]]
 (No preview)
 * notes
-** [[file:notes/test_note.org][(2024-03-30) This is a test note]]
-Does this work?
+** [[file:notes/20240418-instructor-async.org][(2024-04-18) Asynchronous Instructor]]
+In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts.
+
+I used the Anthropic Haiku model.
+
+Using the instructor library with the asynchronous Anthropic client makes it much faster to make a large number of calls to the Anthropic API fairly quickly. 
+** [[file:notes/20240417-mlflow-qlora.org][(2024-04-17) Logging and Loading a QLoRA Model with MLflow]]
+This is a minimal example of how to log an MLflow qlora model. It does not show any actual model training or data processing, just the basic process of saving the model.
+** [[file:notes/20240416-torch-cuda-flash-attn.org][(2024-04-16) Troubleshooting Flash Attention Installation]]
+I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platform I tend to be working on (Databricks). This note is a quick summary.
+** [[file:notes/20240405-qlora-hf.org][(2024-04-05) Intro to QLoRA]]
+I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA and quantization. Later, I will also make a note with some examples.
+** [[file:notes/20240404-dbrx-mlflow.org][(2024-04-04) DBRX with MLflow]]
+This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.
+** [[file:notes/20240403-dbrx-instructor.org][(2024-04-03) Using the DBRX Model with Instructor]]
+This note briefly demonstrates how to use the [[https://github.com/jxnl/instructor][Instructor]] library with the Databricks [[https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm][DBRX]] model via the Databricks Foundation Models API.
+** [[file:notes/20240401-mlx-quickstart.org][(2024-04-01) MLX Quickstart]]
+These are my notes on the [[https://ml-explore.github.io/mlx/build/html/usage/quick_start.html][MLX quick start guide and usage notes]]. It's a work in progress. Ultimately, I'm interested in learning what MLX will let me do with LLMs on my laptop. I might write something more substantial on that topic in the future. For now, you're probably better off consulting the docs yourself than looking at my notes on them.
+** [[file:notes/20240330-raschka-torch-notes.org][(2024-03-31) PyTorch Review]]
+This is a quick run through the appendix on PyTorch from Sebastian Raschka's [[https://www.manning.com/books/build-a-large-language-model-from-scratch][Build a Large Language Model (From Scratch)]] book, currently available via Manning's MEAP. I haven't spent an enormous amount of time with PyTorch in the last year or so, so it seemed worth the effort to work through it.
 * posts
 ** [[file:posts/20240329-h2o-rag-data.org][(2024-03-29) Retrieving Data for the H2o RAG Benchmark]]
 I was looking for a good dataset to use for comparing different models in a RAG application when I found [[https://www.reddit.com/r/LocalLLaMA/comments/1bpo5uo/rag_benchmark_of_databricksdbrx/][this post]] on Reddit. It compares a bunch of models on a collection of questions over a set of documents provided by [[https://h2o.ai][H2O.ai]].

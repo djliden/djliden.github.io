@@ -5,9 +5,9 @@
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
+(setq package-check-signature nil)
 (package-initialize)
 (package-refresh-contents)
-(setq package-check-signature nil)
 (package-install 'gnu-elpa-keyring-update)
 (setq package-check-signature "allow-unsigned")
 
