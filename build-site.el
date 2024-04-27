@@ -6,11 +6,11 @@
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (setq package-check-signature nil)
+(package-initialize)
+(package-refresh-contents)
 (package-install 'gnu-elpa-keyring-update)
 (setq package-check-signature "allow-unsigned")
 
-(package-initialize)
-(package-refresh-contents)
 
 ;; Check and install dependencies
 (dolist (package '(htmlize julia-mode ess ox-rss webfeeder esxml))
