@@ -4,13 +4,8 @@
 (setq package-user-dir (expand-file-name "./.packages"))
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
-
-(setq package-check-signature nil)
 (package-initialize)
 (package-refresh-contents)
-(package-install 'gnu-elpa-keyring-update)
-(setq package-check-signature "allow-unsigned")
-
 
 ;; Check and install dependencies
 (dolist (package '(htmlize julia-mode ess ox-rss webfeeder esxml))
