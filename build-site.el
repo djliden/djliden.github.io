@@ -4,10 +4,6 @@
 (setq package-user-dir (expand-file-name "./.packages"))
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
-
-;; Possible fix to elpa failure issue
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-
 (package-initialize)
 (package-refresh-contents)
 
