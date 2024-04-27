@@ -14,8 +14,19 @@ jobs:
       - name: Install Emacs
         run: sudo apt install emacs-nox --yes
 
-      - name: update gpg key
-        run: gpg2 --homedir ~/.emacs.d/elpa/gnupg --receive-keys 066DAFCB81E42C40
+      - name: Setup GPG for Emacs
+      run: |
+          # Install GPG and Dirmngr
+          sudo apt-get update
+          sudo apt-get install -y gnupg2 dirmngr
+
+          # Setup GPG environment
+          mkdir -p ~/.emacs.d/elpa/gnupg
+          chmod 700 ~/.emacs.d/elpa/gnupg
+          gpg --homedir ~/.emacs.d/elpa/gnupg --list-keys
+
+          # Import GPG Key
+          gpg2 --homedir ~/.emacs.d/elpa/gnupg --receive-keys 066DAFCB81E42C40
 
       - name: Build the site
         run: ./build.sh
