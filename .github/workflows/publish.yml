@@ -20,7 +20,7 @@ jobs:
           wget https://ftp.gnu.org/pub/gnu/emacs/emacs-29.3.tar.xz
           tar xvf emacs-29.3.tar.xz
           cd emacs-29.3
-          ./configure --without-x --with-modules
+          ./configure --without-x --with-modules --with-gnutls=ifavailable
           make -j$(nproc)
           sudo make install
 
