@@ -14,6 +14,9 @@
 (setq package-check-signature "allow-unsigned")
 
 
+(package-initialize)
+(package-refresh-contents)
+
 ;; Check and install dependencies
 (dolist (package '(htmlize julia-mode ess ox-rss webfeeder esxml))
   (unless (package-installed-p package)
