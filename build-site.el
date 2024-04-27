@@ -9,6 +9,8 @@
 (package-initialize)
 (package-refresh-contents)
 (package-install 'gnu-elpa-keyring-update)
+(require 'gnu-elpa-keyring-update)
+(gnu-elpa-keyring-update)
 (setq package-check-signature "allow-unsigned")
 
 
