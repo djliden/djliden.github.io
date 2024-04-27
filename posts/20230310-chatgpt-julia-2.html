@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using the ChatGPT API with Julia Part 2: Defining a Chat Struct</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,21 +31,21 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Using the ChatGPT API with Julia Part 2: Defining a Chat Struct</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org6abe232">Defining the Struct</a></li>
-<li><a href="#org6ec1630">Defining the function</a></li>
-<li><a href="#org463ccbe">Giving it a Try</a></li>
-<li><a href="#orga0857e6">What's next?</a></li>
+<li><a href="#orgd2a1f28">Defining the Struct</a></li>
+<li><a href="#org44310cc">Defining the function</a></li>
+<li><a href="#orge08be29">Giving it a Try</a></li>
+<li><a href="#org9bca0cc">What's next?</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview">
+<div class="preview" id="org8c179da">
 <p>
 One of the things that makes working with the ChatGPT API a little different
 from working with, e.g., the <code>davinci-text-003</code> model api is the need to maintain
@@ -106,9 +60,9 @@ For the basics of working with the ChatGPT API, check out <a href="20230303-chat
 
 </div>
 
-<div id="outline-container-org6abe232" class="outline-2">
-<h2 id="org6abe232">Defining the Struct</h2>
-<div class="outline-text-2" id="text-org6abe232">
+<div id="outline-container-orgd2a1f28" class="outline-2">
+<h2 id="orgd2a1f28">Defining the Struct</h2>
+<div class="outline-text-2" id="text-orgd2a1f28">
 <p>
 A <code>struct</code>, also referred to as a <a href="https://docs.julialang.org/en/v1/manual/types/#Composite-Types">composite type</a>, is "a collection of named
 fields, an instance of which can be treated as a single value." By default,
@@ -201,9 +155,9 @@ able to act on it. For that, we'll define a function.
 </div>
 </div>
 
-<div id="outline-container-org6ec1630" class="outline-2">
-<h2 id="org6ec1630">Defining the function</h2>
-<div class="outline-text-2" id="text-org6ec1630">
+<div id="outline-container-org44310cc" class="outline-2">
+<h2 id="org44310cc">Defining the function</h2>
+<div class="outline-text-2" id="text-org44310cc">
 <p>
 The purpose of this function is to:
 </p>
@@ -294,9 +248,9 @@ list. The <code>chat</code> function follows both of these conventions.
 </p>
 </div>
 </div>
-<div id="outline-container-org463ccbe" class="outline-2">
-<h2 id="org463ccbe">Giving it a Try</h2>
-<div class="outline-text-2" id="text-org463ccbe">
+<div id="outline-container-orge08be29" class="outline-2">
+<h2 id="orge08be29">Giving it a Try</h2>
+<div class="outline-text-2" id="text-orge08be29">
 <p>
 So, does it work? Let's try it out.
 </p>
@@ -332,9 +286,9 @@ the message history in the second API request.
 </p>
 </div>
 </div>
-<div id="outline-container-orga0857e6" class="outline-2">
-<h2 id="orga0857e6">What's next?</h2>
-<div class="outline-text-2" id="text-orga0857e6">
+<div id="outline-container-org9bca0cc" class="outline-2">
+<h2 id="org9bca0cc">What's next?</h2>
+<div class="outline-text-2" id="text-org9bca0cc">
 <p>
 There are a few additional avenues I want to explore, in no particular order:
 </p>
@@ -354,7 +308,7 @@ interesting project.</li>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2023-03-10 Fri 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

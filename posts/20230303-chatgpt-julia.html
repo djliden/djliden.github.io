@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using the ChatGPT API with Julia Part 1: the HTTP.jl Library</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,26 +31,26 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Using the ChatGPT API with Julia Part 1: the HTTP.jl Library</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgcb82ed9">Introduction</a></li>
-<li><a href="#orgf36c12c">curl Example</a></li>
-<li><a href="#org56076ed">Julia example</a></li>
-<li><a href="#orgf5aefec">A little more detail about sending messages</a></li>
-<li><a href="#org5330799">Next Up&#x2026;</a></li>
+<li><a href="#org6f2bc3b">Introduction</a></li>
+<li><a href="#orgd5dbe76">curl Example</a></li>
+<li><a href="#org4d02a6a">Julia example</a></li>
+<li><a href="#orgf874930">A little more detail about sending messages</a></li>
+<li><a href="#orgc304639">Next Up&#x2026;</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orgcb82ed9" class="outline-2">
-<h2 id="orgcb82ed9">Introduction</h2>
-<div class="outline-text-2" id="text-orgcb82ed9">
-<div class="preview">
+<div id="outline-container-org6f2bc3b" class="outline-2">
+<h2 id="org6f2bc3b">Introduction</h2>
+<div class="outline-text-2" id="text-org6f2bc3b">
+<div class="preview" id="org9a0933e">
 <p>
 This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
 with the OpenAI ChatGPT API, which was made public a few days ago. This post
@@ -108,9 +62,9 @@ histories and engage more interactively with the API.
 </div>
 </div>
 </div>
-<div id="outline-container-orgf36c12c" class="outline-2">
-<h2 id="orgf36c12c">curl Example</h2>
-<div class="outline-text-2" id="text-orgf36c12c">
+<div id="outline-container-orgd5dbe76" class="outline-2">
+<h2 id="orgd5dbe76">curl Example</h2>
+<div class="outline-text-2" id="text-orgd5dbe76">
 <p>
 <a href="https://platform.openai.com/docs/api-reference/chat/create">Here</a> is the API documentation on OpenAI's website. An example request with <code>curl</code>
 looks like this:
@@ -129,9 +83,9 @@ looks like this:
 </div>
 </div>
 
-<div id="outline-container-org56076ed" class="outline-2">
-<h2 id="org56076ed">Julia example</h2>
-<div class="outline-text-2" id="text-org56076ed">
+<div id="outline-container-org4d02a6a" class="outline-2">
+<h2 id="org4d02a6a">Julia example</h2>
+<div class="outline-text-2" id="text-org4d02a6a">
 <p>
 And here's how we can re-create this with the Julia HTTP library:
 </p>
@@ -189,9 +143,9 @@ chat_response[1][<span class="org-string">"message"</span>][<span class="org-str
 </pre>
 </div>
 </div>
-<div id="outline-container-orgf5aefec" class="outline-2">
-<h2 id="orgf5aefec">A little more detail about sending messages</h2>
-<div class="outline-text-2" id="text-orgf5aefec">
+<div id="outline-container-orgf874930" class="outline-2">
+<h2 id="orgf874930">A little more detail about sending messages</h2>
+<div class="outline-text-2" id="text-orgf874930">
 <p>
 One of the things that makes ChatGPT useful is its ability to "remember" past
 parts of a conversation. We can send whole conversations to the API using the
@@ -231,7 +185,7 @@ print(result[<span class="org-string">"choices"</span>][1][<span class="org-stri
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="orgf1c9f33">
 
 ```julia
 using HTTP
@@ -321,7 +275,7 @@ print(result[<span class="org-string">"choices"</span>][1][<span class="org-stri
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org0cab3ca">
 Sure, here's a simpler example:
 
 ```julia
@@ -337,9 +291,9 @@ In this example, we are sending a POST request with form data rather than JSON d
 </pre>
 </div>
 </div>
-<div id="outline-container-org5330799" class="outline-2">
-<h2 id="org5330799">Next Up&#x2026;</h2>
-<div class="outline-text-2" id="text-org5330799">
+<div id="outline-container-orgc304639" class="outline-2">
+<h2 id="orgc304639">Next Up&#x2026;</h2>
+<div class="outline-text-2" id="text-orgc304639">
 <p>
 This post showed basic usage of the ChatGPT API with Julia. In the next post,
 I'll show how to make this more modular and useful. We'll create a <code>Struct</code> for
@@ -352,7 +306,7 @@ perhaps as a Julia REPL mode, but at least as a command line utility.
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2023-03-04 Sat 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

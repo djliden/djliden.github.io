@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Troubleshooting Flash Attention Installation</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,37 +31,37 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Troubleshooting Flash Attention Installation</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org55bc458">The Problem</a></li>
-<li><a href="#org739f212">Solution</a></li>
-<li><a href="#org58013a8">What didn't work</a></li>
+<li><a href="#org2496675">The Problem</a></li>
+<li><a href="#org1b6ecaf">Solution</a></li>
+<li><a href="#orgab6b99c">What didn't work</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview">
+<div class="preview" id="org55f2bfc">
 <p>
 I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platform I tend to be working on (Databricks). This note is a quick summary.
 </p>
 
 </div>
-<div id="outline-container-org55bc458" class="outline-2">
-<h2 id="org55bc458">The Problem</h2>
-<div class="outline-text-2" id="text-org55bc458">
+<div id="outline-container-org2496675" class="outline-2">
+<h2 id="org2496675">The Problem</h2>
+<div class="outline-text-2" id="text-org2496675">
 <p>
 I kept getting an "undefined symbol" error like <a href="https://github.com/Dao-AILab/flash-attention/issues/667">this</a> when trying to load a model with flash attention (or even just when importing the flash attention library).
 </p>
 </div>
 </div>
 
-<div id="outline-container-org739f212" class="outline-2">
-<h2 id="org739f212">Solution</h2>
-<div class="outline-text-2" id="text-org739f212">
+<div id="outline-container-org1b6ecaf" class="outline-2">
+<h2 id="org1b6ecaf">Solution</h2>
+<div class="outline-text-2" id="text-org1b6ecaf">
 <p>
 The following approach worked.
 </p>
@@ -122,7 +76,7 @@ So in the case of my most recent project:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python">%pip install --upgrade torch
+<pre class="src src-python"><span class="org-operator">%</span>pip install <span class="org-operator">--</span>upgrade torch
 </pre>
 </div>
 
@@ -135,10 +89,10 @@ To install <code>flash-attention</code>:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python">%sh
-git clone https://github.com/Dao-AILab/flash-attention.git
-cd flash-attention
-pip install . --no-build-isolation
+<pre class="src src-python"><span class="org-operator">%</span>sh
+git clone https:<span class="org-operator">//</span>github.com<span class="org-operator">/</span>Dao<span class="org-operator">-</span>AILab<span class="org-operator">/</span>flash<span class="org-operator">-</span>attention.git
+cd flash<span class="org-operator">-</span>attention
+pip install . <span class="org-operator">--</span>no<span class="org-operator">-</span>build<span class="org-operator">-</span>isolation
 </pre>
 </div>
 
@@ -148,11 +102,11 @@ We can then make sure everything works (without needing to take extra time to lo
 
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> torch
-<span class="org-keyword">print</span>(torch.__version__)
-<span class="org-keyword">print</span>(torch.version.cuda)
+<span class="org-builtin">print</span>(torch.__version__)
+<span class="org-builtin">print</span>(torch.version.cuda)
 
 <span class="org-keyword">import</span> flash_attn
-<span class="org-keyword">print</span>(flash_attn.__version__)
+<span class="org-builtin">print</span>(flash_attn.__version__)
 </pre>
 </div>
 
@@ -164,9 +118,9 @@ We can then make sure everything works (without needing to take extra time to lo
 </div>
 </div>
 
-<div id="outline-container-org58013a8" class="outline-2">
-<h2 id="org58013a8">What didn't work</h2>
-<div class="outline-text-2" id="text-org58013a8">
+<div id="outline-container-orgab6b99c" class="outline-2">
+<h2 id="orgab6b99c">What didn't work</h2>
+<div class="outline-text-2" id="text-orgab6b99c">
 <p>
 I wasn't able to get any variety of <code>pip install flash-attn</code> working. This was regardless of the no build isolation flag; specific versions; etc.
 </p>
@@ -175,7 +129,7 @@ I wasn't able to get any variety of <code>pip install flash-attn</code> working.
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2024-04-16 Tue 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

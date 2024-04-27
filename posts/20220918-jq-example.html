@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Processing a JSON API Response with jq</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,31 +31,31 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Processing a JSON API Response with jq</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge1f7d25">Introduction</a></li>
-<li><a href="#org894b891">Download the Data</a></li>
-<li><a href="#org4a3e7f1">Processing the Data with <code>jq</code></a>
+<li><a href="#orgb367085">Introduction</a></li>
+<li><a href="#org3ffa8e8">Download the Data</a></li>
+<li><a href="#orgcbbf3fa">Processing the Data with <code>jq</code></a>
 <ul>
-<li><a href="#orgc4ca615"><code>jq</code> with no further arguments</a></li>
-<li><a href="#org7797227">Constructing a Header Row</a></li>
-<li><a href="#orgce061aa">Extracting Data Values</a></li>
-<li><a href="#orga9e176c">Converting the Results to CSV</a></li>
+<li><a href="#orga35b8b1"><code>jq</code> with no further arguments</a></li>
+<li><a href="#org668dd10">Constructing a Header Row</a></li>
+<li><a href="#org42534c1">Extracting Data Values</a></li>
+<li><a href="#orge0e3c34">Converting the Results to CSV</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orge1f7d25" class="outline-2">
-<h2 id="orge1f7d25">Introduction</h2>
-<div class="outline-text-2" id="text-orge1f7d25">
-<div class="preview">
+<div id="outline-container-orgb367085" class="outline-2">
+<h2 id="orgb367085">Introduction</h2>
+<div class="outline-text-2" id="text-orgb367085">
+<div class="preview" id="org4b75f80">
 <p>
 There are countless ways of processing JSON data and converting it to different
 formats. Historically, I've used Python and loaded the data into a Pandas
@@ -141,9 +95,9 @@ To follow along, begin by <a href="https://stedolan.github.io/jq/download/">inst
 </div>
 </div>
 
-<div id="outline-container-org894b891" class="outline-2">
-<h2 id="org894b891">Download the Data</h2>
-<div class="outline-text-2" id="text-org894b891">
+<div id="outline-container-org3ffa8e8" class="outline-2">
+<h2 id="org3ffa8e8">Download the Data</h2>
+<div class="outline-text-2" id="text-org3ffa8e8">
 <p>
 As noted above, we use <code>curl</code> to make a <code>POST</code> request agains the BLS API. We're
 downloading Consumer Price Index data since the start of 2022. We're downloading
@@ -158,7 +112,7 @@ unadjusted data.
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org67ae5d3">
 | status":"REQUEST_SUCCEEDED","responseTime":171,"message":[],"Results               |
 | series                                                                            |
 | seriesID":"CUUR0000SA0","data":[{"year":"2022","period":"M08","periodName":"August", "latest":"true","value":"296.171","footnotes":[{}]},{"year":"2022","period":"M07","periodName":"July","value":"296.276","footnotes":[{}]},{"year":"2022","period":"M06","periodName":"June","value":"296.311","footnotes":[{}]},{"year":"2022","period":"M05","periodName":"May","value":"292.296","footnotes":[{}]},{"year":"2022","period":"M04","periodName":"April","value":"289.109","footnotes":[{}]},{"year":"2022","period":"M03","periodName":"March","value":"287.504","footnotes":[{}]},{"year":"2022","period":"M02","periodName":"February","value":"283.716","footnotes":[{}]},{"year":"2022","period":"M01","periodName":"January","value":"281.148","footnotes |
@@ -171,9 +125,9 @@ This is technically readable, but not very nice.
 </p>
 </div>
 </div>
-<div id="outline-container-org4a3e7f1" class="outline-2">
-<h2 id="org4a3e7f1">Processing the Data with <code>jq</code></h2>
-<div class="outline-text-2" id="text-org4a3e7f1">
+<div id="outline-container-orgcbbf3fa" class="outline-2">
+<h2 id="orgcbbf3fa">Processing the Data with <code>jq</code></h2>
+<div class="outline-text-2" id="text-orgcbbf3fa">
 <p>
 For most use cases, the data aren't particularly usable in this format. They're
 hard to read; they include metadata about the API response; and the hierarchical
@@ -182,9 +136,9 @@ proceed step by step to show how we can use <code>jq</code> to extract specific 
 API results.
 </p>
 </div>
-<div id="outline-container-orgc4ca615" class="outline-3">
-<h3 id="orgc4ca615"><code>jq</code> with no further arguments</h3>
-<div class="outline-text-3" id="text-orgc4ca615">
+<div id="outline-container-orga35b8b1" class="outline-3">
+<h3 id="orga35b8b1"><code>jq</code> with no further arguments</h3>
+<div class="outline-text-3" id="text-orga35b8b1">
 <p>
 What happens if we pass the results of the API call to <code>jq</code> with no further arguments?
 </p>
@@ -195,7 +149,7 @@ What happens if we pass the results of the API call to <code>jq</code> with no f
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org0804767">
 {
   "status": "REQUEST_SUCCEEDED",
   "responseTime": 169,
@@ -375,9 +329,9 @@ the <code>data</code> values as rows in our resulting table.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org7797227" class="outline-3">
-<h3 id="org7797227">Constructing a Header Row</h3>
-<div class="outline-text-3" id="text-org7797227">
+<div id="outline-container-org668dd10" class="outline-3">
+<h3 id="org668dd10">Constructing a Header Row</h3>
+<div class="outline-text-3" id="text-org668dd10">
 <p>
 We want our resulting table to have a header row. The process of making this row
 provides a lot of insight into how <code>jq</code> works.
@@ -455,9 +409,9 @@ section, we'll see how to extract data from multiple sections.
 </p>
 </div>
 </div>
-<div id="outline-container-orgce061aa" class="outline-3">
-<h3 id="orgce061aa">Extracting Data Values</h3>
-<div class="outline-text-3" id="text-orgce061aa">
+<div id="outline-container-org42534c1" class="outline-3">
+<h3 id="org42534c1">Extracting Data Values</h3>
+<div class="outline-text-3" id="text-org42534c1">
 <p>
 Based on the header rows, we need to extract, for each data entry, the series
 ID, footnotes, period, period name, year, value, and whether it's the latest
@@ -470,7 +424,7 @@ headers, though, for two key reasons:
 level than the other values we need.</li>
 </ul>
 
-<pre class="example">
+<pre class="example" id="orge55952b">
 "series": [
     {
         "seriesID": "CUUR0000SA0",
@@ -502,7 +456,7 @@ Here's how we might start to approach this.
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org581e043">
 [
   "CUUR0000SA0",
   "2022",
@@ -576,7 +530,7 @@ converted directly to the CSV format. So we have a little more work to do.
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org3e62702">
 [
   "CUUR0000SA0",
   "2022",
@@ -632,9 +586,9 @@ without issue.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orga9e176c" class="outline-3">
-<h3 id="orga9e176c">Converting the Results to CSV</h3>
-<div class="outline-text-3" id="text-orga9e176c">
+<div id="outline-container-orge0e3c34" class="outline-3">
+<h3 id="orge0e3c34">Converting the Results to CSV</h3>
+<div class="outline-text-3" id="text-orge0e3c34">
 <p>
 Lastly, we convert the transformed results to a CSV using the <code>@csv</code> formatter.
 </p>
@@ -649,7 +603,7 @@ Lastly, we convert the transformed results to a CSV using the <code>@csv</code> 
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org8e8808a">
 "seriesID","year","period","periodName","latest","value","footnotes"
 "CUUR0000SA0","2022","M08","August","true","296.171",""
 "CUUR0000SA0","2022","M07","July","296.276",""
@@ -687,7 +641,7 @@ structure.
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2022-09-18 Sun 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

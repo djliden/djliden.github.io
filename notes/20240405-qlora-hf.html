@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Intro to QLoRA</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,25 +31,25 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Intro to QLoRA</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9c726c5">1. Intro to Quantization</a>
+<li><a href="#org013c4bd">1. Intro to Quantization</a>
 <ul>
-<li><a href="#orgbb0027c">Common data types used in ML</a></li>
-<li><a href="#org79c31cc">Different types in training and inference</a></li>
-<li><a href="#org7e1ba63">The FP8 Format</a></li>
+<li><a href="#orge30f6e1">Common data types used in ML</a></li>
+<li><a href="#org9a43c97">Different types in training and inference</a></li>
+<li><a href="#orga93e05b">The FP8 Format</a></li>
 </ul>
 </li>
-<li><a href="#orgb7fcf19">QLoRA Paper Overview</a></li>
+<li><a href="#org040bc36">QLoRA Paper Overview</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview">
+<div class="preview" id="org62f31f2">
 <p>
 I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA and quantization. Later, I will also make a note with some examples.
 </p>
@@ -106,9 +60,9 @@ I have a basic understanding of what QLoRA is, but given its popularity and appa
 Link: <a href="https://huggingface.co/blog/4bit-transformers-bitsandbytes">Making LLMs even more accessible with bitsandbytes, 4-bit quantization and QLoRA</a>
 </p>
 
-<div id="outline-container-org9c726c5" class="outline-2">
-<h2 id="org9c726c5">1. Intro to Quantization</h2>
-<div class="outline-text-2" id="text-org9c726c5">
+<div id="outline-container-org013c4bd" class="outline-2">
+<h2 id="org013c4bd">1. Intro to Quantization</h2>
+<div class="outline-text-2" id="text-org013c4bd">
 <p>
 The post recommends reading the intro to <a href="https://huggingface.co/blog/hf-bitsandbytes-integration">this post</a> first for some background on quantization. Key points:
 </p>
@@ -118,9 +72,9 @@ The post recommends reading the intro to <a href="https://huggingface.co/blog/hf
 <li>int8 inference doesn't appear to significantly degrade model performance.</li>
 </ul>
 </div>
-<div id="outline-container-orgbb0027c" class="outline-3">
-<h3 id="orgbb0027c">Common data types used in ML</h3>
-<div class="outline-text-3" id="text-orgbb0027c">
+<div id="outline-container-orge30f6e1" class="outline-3">
+<h3 id="orge30f6e1">Common data types used in ML</h3>
+<div class="outline-text-3" id="text-orge30f6e1">
 <p>
 The size of a model is determined by the number of its parameters <i>and their precision</i>. Common types include:
 </p>
@@ -133,11 +87,11 @@ The size of a model is determined by the number of its parameters <i>and their p
 <label class="org-src-name"><span class="listing-number">Listing 1: </span>Example code generated and executed by GPT4/code interpreter</label><pre class="src src-python"><span class="org-keyword">import</span> numpy <span class="org-keyword">as</span> np
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">Define two numbers within the FP16 range</span>
-<span class="org-variable-name">a</span> = np.float16(10000)
-<span class="org-variable-name">b</span> = np.float16(10000)
+<span class="org-variable-name">a</span> <span class="org-operator">=</span> np.float16(10000)
+<span class="org-variable-name">b</span> <span class="org-operator">=</span> np.float16(10000)
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">Perform multiplication</span>
-<span class="org-variable-name">result</span> = a * b
+<span class="org-variable-name">result</span> <span class="org-operator">=</span> a <span class="org-operator">*</span> b
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">Check the result</span>
 result
@@ -155,9 +109,9 @@ result
 </ul>
 </div>
 </div>
-<div id="outline-container-org79c31cc" class="outline-3">
-<h3 id="org79c31cc">Different types in training and inference</h3>
-<div class="outline-text-3" id="text-org79c31cc">
+<div id="outline-container-org9a43c97" class="outline-3">
+<h3 id="org9a43c97">Different types in training and inference</h3>
+<div class="outline-text-3" id="text-org9a43c97">
 <p>
 "Ideally" we should use FP32 for training and inference. But it is two times slower than half precision. So a mixed-precision approach is preferred. Weights are held in FP32 as a precise "main weights" reference. Computation in the forward/backward pass are done in fp16/bf16 to improve training speed. The fp16/bf16 gradients are used to update the fp32 weights.
 </p>
@@ -166,7 +120,7 @@ result
 During inference, there's no real need for the full-precision weights.
 </p>
 
-<div class="question">
+<div class="question" id="org86dec3b">
 <p>
 What happens when I load a model in bf16 and then train it? Is that still mixed precision? Or is bf16 the reference copy in that case?
 </p>
@@ -174,18 +128,18 @@ What happens when I load a model in bf16 and then train it? Is that still mixed 
 </div>
 </div>
 </div>
-<div id="outline-container-org7e1ba63" class="outline-3">
-<h3 id="org7e1ba63">The FP8 Format</h3>
-<div class="outline-text-3" id="text-org7e1ba63">
+<div id="outline-container-orga93e05b" class="outline-3">
+<h3 id="orga93e05b">The FP8 Format</h3>
+<div class="outline-text-3" id="text-orga93e05b">
 <p>
 The FP8 format has two formats: E4M3 and E5M2 (where E=exponent, M=mantissa). E4M3 (higher precision, smaller range) is best suited for the forward pass, while E5M2 (lower precision, higher range) is better suited for the backward pass.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgb7fcf19" class="outline-2">
-<h2 id="orgb7fcf19">QLoRA Paper Overview</h2>
-<div class="outline-text-2" id="text-orgb7fcf19">
+<div id="outline-container-org040bc36" class="outline-2">
+<h2 id="org040bc36">QLoRA Paper Overview</h2>
+<div class="outline-text-2" id="text-org040bc36">
 <p>
 QLoRA reduces the memory usage of LLM fine-tuning without appreciable loss of performance compared to half precision fine-tuning.
 </p>
@@ -206,7 +160,7 @@ Key summary (from the original paper): "QLoRA backpropagates gradients through a
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2024-04-05 Fri 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MLX Quickstart</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,48 +31,48 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">MLX Quickstart</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgcbd634d">What is MLX?</a></li>
-<li><a href="#org7c3304c">Quickstart Guide</a>
+<li><a href="#orgd73447b">What is MLX?</a></li>
+<li><a href="#org5ee90ff">Quickstart Guide</a>
 <ul>
-<li><a href="#orga5ce5e6">Basics</a></li>
+<li><a href="#orged10756">Basics</a></li>
 <li><a href="#h:897CC44C-7D56-4606-B154-EED7083479BE">Lazy Evaluation in More Detail</a>
 <ul>
-<li><a href="#orgf9fbe89">When to evaluate</a></li>
+<li><a href="#org635669a">When to evaluate</a></li>
 </ul>
 </li>
-<li><a href="#org4536344">Unified Memory</a></li>
-<li><a href="#org6ab3b5d">Indexing arrays</a></li>
-<li><a href="#org5db7409">Saving and Loading</a></li>
-<li><a href="#org1f09c76">Function transforms</a>
+<li><a href="#org599ff93">Unified Memory</a></li>
+<li><a href="#orgc1f66d9">Indexing arrays</a></li>
+<li><a href="#org1839abf">Saving and Loading</a></li>
+<li><a href="#org32f61cf">Function transforms</a>
 <ul>
-<li><a href="#orge9f7f03">Automatic Differentiation</a></li>
-<li><a href="#org8f68171">Automatic Vectorization</a></li>
+<li><a href="#org3790c31">Automatic Differentiation</a></li>
+<li><a href="#org282acf7">Automatic Vectorization</a></li>
 </ul>
 </li>
-<li><a href="#orgd4ac1a4">Compilation</a></li>
-<li><a href="#orgfbd1635">Streams</a></li>
+<li><a href="#orgc2169c4">Compilation</a></li>
+<li><a href="#org025da52">Streams</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview">
+<div class="preview" id="org76fc79f">
 <p>
 These are my notes on the <a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">MLX quick start guide and usage notes</a>. It's a work in progress. Ultimately, I'm interested in learning what MLX will let me do with LLMs on my laptop. I might write something more substantial on that topic in the future. For now, you're probably better off consulting the docs yourself than looking at my notes on them.
 </p>
 
 </div>
 
-<div id="outline-container-orgcbd634d" class="outline-2">
-<h2 id="orgcbd634d">What is MLX?</h2>
-<div class="outline-text-2" id="text-orgcbd634d">
+<div id="outline-container-orgd73447b" class="outline-2">
+<h2 id="orgd73447b">What is MLX?</h2>
+<div class="outline-text-2" id="text-orgd73447b">
 <p>
 <a href="https://github.com/ml-explore/mlx">MLX</a> is an array framework from Apple ML Research. Its API follows NumPy. It has higher-level packages that follow PyTorch's API for building more complex models modularly. It features:
 </p>
@@ -130,9 +84,9 @@ These are my notes on the <a href="https://ml-explore.github.io/mlx/build/html/u
 </ul>
 </div>
 </div>
-<div id="outline-container-org7c3304c" class="outline-2">
-<h2 id="org7c3304c"><a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">Quickstart Guide</a></h2>
-<div class="outline-text-2" id="text-org7c3304c">
+<div id="outline-container-org5ee90ff" class="outline-2">
+<h2 id="org5ee90ff"><a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">Quickstart Guide</a></h2>
+<div class="outline-text-2" id="text-org5ee90ff">
 <p>
 First, install with <code>pip install mlx</code> or <code>conda install -c conda-forge mlx</code>.
 </p>
@@ -142,13 +96,13 @@ Next, we'll work through the basic features, as shown in the quickstart guide li
 </p>
 </div>
 
-<div id="outline-container-orga5ce5e6" class="outline-3">
-<h3 id="orga5ce5e6">Basics</h3>
-<div class="outline-text-3" id="text-orga5ce5e6">
+<div id="outline-container-orged10756" class="outline-3">
+<h3 id="orged10756">Basics</h3>
+<div class="outline-text-3" id="text-orged10756">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> mlx.core <span class="org-keyword">as</span> mx
 
-<span class="org-variable-name">a</span> = mx.array([1,2,3,4])
+<span class="org-variable-name">a</span> <span class="org-operator">=</span> mx.array([1,2,3,4])
 a.dtype
 </pre>
 </div>
@@ -164,8 +118,8 @@ Operations are lazy.
 
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">b</span> = mx.array([1.0, 2.0, 3.0, 4.0])
-<span class="org-variable-name">c</span> = a+b
+<pre class="src src-python"><span class="org-variable-name">b</span> <span class="org-operator">=</span> mx.array([1.0, 2.0, 3.0, 4.0])
+<span class="org-variable-name">c</span> <span class="org-operator">=</span> a<span class="org-operator">+</span>b
 </pre>
 </div>
 
@@ -189,7 +143,7 @@ MLX has <code>grad</code> like PyTorch.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">x</span> = mx.array(0.0)
+<pre class="src src-python"><span class="org-variable-name">x</span> <span class="org-operator">=</span> mx.array(0.0)
 mx.sin(x)
 
 mx.grad(mx.sin)(x)
@@ -202,7 +156,7 @@ array(1, dtype=float32)
 </div>
 </div>
 
-<div id="outline-container-org40bfeae" class="outline-3">
+<div id="outline-container-h:897CC44C-7D56-4606-B154-EED7083479BE" class="outline-3">
 <h3 id="h:897CC44C-7D56-4606-B154-EED7083479BE">Lazy Evaluation in More Detail</h3>
 <div class="outline-text-3" id="text-h:897CC44C-7D56-4606-B154-EED7083479BE">
 <p>
@@ -227,14 +181,14 @@ It enables this pattern:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">model</span> = Model() <span class="org-comment-delimiter"># </span><span class="org-comment">no memory used yet</span>
+<pre class="src src-python"><span class="org-variable-name">model</span> <span class="org-operator">=</span> Model() <span class="org-comment-delimiter"># </span><span class="org-comment">no memory used yet</span>
 model.load_weights(<span class="org-string">"weights_fp16.safetensors"</span>)
 </pre>
 </div>
 </div>
-<div id="outline-container-orgf9fbe89" class="outline-4">
-<h4 id="orgf9fbe89">When to evaluate</h4>
-<div class="outline-text-4" id="text-orgf9fbe89">
+<div id="outline-container-org635669a" class="outline-4">
+<h4 id="org635669a">When to evaluate</h4>
+<div class="outline-text-4" id="text-org635669a">
 <p>
 It's a tradeoff between:
 </p>
@@ -261,7 +215,7 @@ Example of a good pattern for a training loop:
 <pre class="src src-python"><span class="org-keyword">for</span> batch <span class="org-keyword">in</span> dataset:
 
     <span class="org-comment-delimiter"># </span><span class="org-comment">Nothing has been evaluated yet</span>
-    <span class="org-variable-name">loss</span>, <span class="org-variable-name">grad</span> = value_and_grad_fn(model, batch)
+    <span class="org-variable-name">loss</span>, <span class="org-variable-name">grad</span> <span class="org-operator">=</span> value_and_grad_fn(model, batch)
 
     <span class="org-comment-delimiter"># </span><span class="org-comment">Still nothing has been evaluated</span>
     optimizer.update(model, grad)
@@ -282,20 +236,20 @@ Using arrays for control flow will trigger an eval.
 
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">def</span> <span class="org-function-name">fun</span>(x):
-    <span class="org-variable-name">h</span>, <span class="org-variable-name">y</span> = first_layer(x)
-    <span class="org-keyword">if</span> y &gt; 0:  <span class="org-comment-delimiter"># </span><span class="org-comment">An evaluation is done here!</span>
-        <span class="org-variable-name">z</span>  = second_layer_a(h)
+    <span class="org-variable-name">h</span>, <span class="org-variable-name">y</span> <span class="org-operator">=</span> first_layer(x)
+    <span class="org-keyword">if</span> y <span class="org-operator">&gt;</span> 0:  <span class="org-comment-delimiter"># </span><span class="org-comment">An evaluation is done here!</span>
+        <span class="org-variable-name">z</span>  <span class="org-operator">=</span> second_layer_a(h)
     <span class="org-keyword">else</span>:
-        <span class="org-variable-name">z</span>  = second_layer_b(h)
+        <span class="org-variable-name">z</span>  <span class="org-operator">=</span> second_layer_b(h)
     <span class="org-keyword">return</span> z
 </pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-org4536344" class="outline-3">
-<h3 id="org4536344">Unified Memory</h3>
-<div class="outline-text-3" id="text-org4536344">
+<div id="outline-container-org599ff93" class="outline-3">
+<h3 id="org599ff93">Unified Memory</h3>
+<div class="outline-text-3" id="text-org599ff93">
 <p>
 You do not need to specify the location of an MLX array in memory. CPU and GPU share memory.
 </p>
@@ -305,8 +259,8 @@ Instead of moving arrays to devices, you specify the device when you run an oper
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">a</span> = mx.random.normal((100,))
-<span class="org-variable-name">b</span> = mx.random.normal((100,))
+<pre class="src src-python"><span class="org-variable-name">a</span> <span class="org-operator">=</span> mx.random.normal((100,))
+<span class="org-variable-name">b</span> <span class="org-operator">=</span> mx.random.normal((100,))
 </pre>
 </div>
 
@@ -317,7 +271,7 @@ None
 
 
 <div class="org-src-container">
-<pre class="src src-python">mx.add(a, b, stream=mx.cpu)
+<pre class="src src-python">mx.add(a, b, stream<span class="org-operator">=</span>mx.cpu)
 
 </pre>
 </div>
@@ -328,7 +282,7 @@ array([-0.999945, -0.255963, 1.04271, ..., 1.08311, -0.993303, -1.48334], dtype=
 
 
 <div class="org-src-container">
-<pre class="src src-python">mx.add(a, b, stream=mx.gpu)
+<pre class="src src-python">mx.add(a, b, stream<span class="org-operator">=</span>mx.gpu)
 </pre>
 </div>
 
@@ -342,8 +296,8 @@ The MLX scheduler will manage dependencies to avoid race conditions. In other wo
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">c</span> = mx.add(a, b, stream=mx.cpu)
-<span class="org-variable-name">d</span> = mx.add(a, c, stream=mx.gpu)
+<pre class="src src-python"><span class="org-variable-name">c</span> <span class="org-operator">=</span> mx.add(a, b, stream<span class="org-operator">=</span>mx.cpu)
+<span class="org-variable-name">d</span> <span class="org-operator">=</span> mx.add(a, c, stream<span class="org-operator">=</span>mx.gpu)
 </pre>
 </div>
 
@@ -357,9 +311,9 @@ This can be useful if we e.g. send compute-dense operatios to GPU, smaller overh
 </p>
 </div>
 </div>
-<div id="outline-container-org6ab3b5d" class="outline-3">
-<h3 id="org6ab3b5d">Indexing arrays</h3>
-<div class="outline-text-3" id="text-org6ab3b5d">
+<div id="outline-container-orgc1f66d9" class="outline-3">
+<h3 id="orgc1f66d9">Indexing arrays</h3>
+<div class="outline-text-3" id="text-orgc1f66d9">
 <ul class="org-ul">
 <li>Is the same as NumPy in most cases</li>
 <li>EXCEPT:
@@ -370,24 +324,24 @@ This can be useful if we e.g. send compute-dense operatios to GPU, smaller overh
 </ul>
 </div>
 </div>
-<div id="outline-container-org5db7409" class="outline-3">
-<h3 id="org5db7409">Saving and Loading</h3>
-<div class="outline-text-3" id="text-org5db7409">
+<div id="outline-container-org1839abf" class="outline-3">
+<h3 id="org1839abf">Saving and Loading</h3>
+<div class="outline-text-3" id="text-org1839abf">
 <p>
 Support for numpy, numpy archive, safetensors, gguf.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org1f09c76" class="outline-3">
-<h3 id="org1f09c76">Function transforms</h3>
-<div class="outline-text-3" id="text-org1f09c76">
+<div id="outline-container-org32f61cf" class="outline-3">
+<h3 id="org32f61cf">Function transforms</h3>
+<div class="outline-text-3" id="text-org32f61cf">
 <p>
 MLX uses <i>composable function transformations</i> for autodiff, vectorization, graph optimization. Main idea: every transformation returns a function that can be further transformed. Here is an example.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">dfdx</span> = mx.grad(mx.sin)
+<pre class="src src-python"><span class="org-variable-name">dfdx</span> <span class="org-operator">=</span> mx.grad(mx.sin)
 dfdx(mx.array(mx.pi))
 
 </pre>
@@ -402,9 +356,9 @@ array(-1, dtype=float32)
 The output of <code>grad</code> on <code>sin</code> is another function: the gradient of the sine function. To get the second derivative, just do <code>mx.grad(mx.grad())</code>. You can compose any function transform in any order to any depth.
 </p>
 </div>
-<div id="outline-container-orge9f7f03" class="outline-4">
-<h4 id="orge9f7f03">Automatic Differentiation</h4>
-<div class="outline-text-4" id="text-orge9f7f03">
+<div id="outline-container-org3790c31" class="outline-4">
+<h4 id="org3790c31">Automatic Differentiation</h4>
+<div class="outline-text-4" id="text-org3790c31">
 <p>
 Autodiff works on functions, not on implicit graphs. <i>This is a key difference from PyTorch</i>. In PyTorch, autodiff works on implicit graphs.
 </p>
@@ -414,15 +368,15 @@ By default, the gradient is computed w/r/t the first argument. But we can specif
 </p>
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">def</span> <span class="org-function-name">loss_fn</span>(w, x, y):
-   <span class="org-keyword">return</span> mx.mean(mx.square(w * x - y))
+   <span class="org-keyword">return</span> mx.mean(mx.square(w <span class="org-operator">*</span> x <span class="org-operator">-</span> y))
 
-<span class="org-variable-name">w</span> = mx.array(1.0)
-<span class="org-variable-name">x</span> = mx.array([0.5, -0.5])
-<span class="org-variable-name">y</span> = mx.array([1.5, -1.5])
+<span class="org-variable-name">w</span> <span class="org-operator">=</span> mx.array(1.0)
+<span class="org-variable-name">x</span> <span class="org-operator">=</span> mx.array([0.5, <span class="org-operator">-</span>0.5])
+<span class="org-variable-name">y</span> <span class="org-operator">=</span> mx.array([1.5, <span class="org-operator">-</span>1.5])
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">Computes the gradient of loss_fn with respect to w:</span>
-<span class="org-variable-name">grad_fn</span> = mx.grad(loss_fn)
-<span class="org-variable-name">dloss_dw</span> = grad_fn(w, x, y)
+<span class="org-variable-name">grad_fn</span> <span class="org-operator">=</span> mx.grad(loss_fn)
+<span class="org-variable-name">dloss_dw</span> <span class="org-operator">=</span> grad_fn(w, x, y)
 <span class="org-comment-delimiter"># </span><span class="org-comment">Prints array(-1, dtype=float32)</span>
 dloss_dw
 </pre>
@@ -435,8 +389,8 @@ array(-1, dtype=float32)
 
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">To get the gradient with respect to x we can do:</span>
-<span class="org-variable-name">grad_fn</span> = mx.grad(loss_fn, argnums=1)
-<span class="org-variable-name">dloss_dx</span> = grad_fn(w, x, y)
+<span class="org-variable-name">grad_fn</span> <span class="org-operator">=</span> mx.grad(loss_fn, argnums<span class="org-operator">=</span>1)
+<span class="org-variable-name">dloss_dx</span> <span class="org-operator">=</span> grad_fn(w, x, y)
 <span class="org-comment-delimiter"># </span><span class="org-comment">Prints array([-1, 1], dtype=float32)</span>
 dloss_dx
 </pre>
@@ -454,14 +408,14 @@ The <code>value_and_grad</code> function provides an efficient way to get the va
 
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">Computes the gradient of loss_fn with respect to w:</span>
-<span class="org-variable-name">loss_and_grad_fn</span> = mx.value_and_grad(loss_fn)
-<span class="org-variable-name">loss</span>, <span class="org-variable-name">dloss_dw</span> = loss_and_grad_fn(w, x, y)
+<span class="org-variable-name">loss_and_grad_fn</span> <span class="org-operator">=</span> mx.value_and_grad(loss_fn)
+<span class="org-variable-name">loss</span>, <span class="org-variable-name">dloss_dw</span> <span class="org-operator">=</span> loss_and_grad_fn(w, x, y)
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">Prints array(1, dtype=float32)</span>
-<span class="org-keyword">print</span>(loss)
+<span class="org-builtin">print</span>(loss)
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">Prints array(-1, dtype=float32)</span>
-<span class="org-keyword">print</span>(dloss_dw)
+<span class="org-builtin">print</span>(dloss_dw)
 </pre>
 </div>
 
@@ -476,9 +430,9 @@ You can use <code>stop_gradient()</code> to stop gradients from propagating thro
 </p>
 </div>
 </div>
-<div id="outline-container-org8f68171" class="outline-4">
-<h4 id="org8f68171">Automatic Vectorization</h4>
-<div class="outline-text-4" id="text-org8f68171">
+<div id="outline-container-org282acf7" class="outline-4">
+<h4 id="org282acf7">Automatic Vectorization</h4>
+<div class="outline-text-4" id="text-org282acf7">
 <p>
 <code>vmap()</code> automatically vectorizes complex functions.
 </p>
@@ -486,7 +440,7 @@ You can use <code>stop_gradient()</code> to stop gradients from propagating thro
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">Vectorize over the second dimension of x and the</span>
 <span class="org-comment-delimiter"># </span><span class="org-comment">first dimension of y</span>
-<span class="org-variable-name">vmap_add</span> = mx.vmap(<span class="org-keyword">lambda</span> x, y: x + y, in_axes=(1, 0))
+<span class="org-variable-name">vmap_add</span> <span class="org-operator">=</span> mx.vmap(<span class="org-keyword">lambda</span> x, y: x <span class="org-operator">+</span> y, in_axes<span class="org-operator">=</span>(1, 0))
 </pre>
 </div>
 
@@ -501,9 +455,9 @@ None
 </div>
 </div>
 </div>
-<div id="outline-container-orgd4ac1a4" class="outline-3">
-<h3 id="orgd4ac1a4">Compilation</h3>
-<div class="outline-text-3" id="text-orgd4ac1a4">
+<div id="outline-container-orgc2169c4" class="outline-3">
+<h3 id="orgc2169c4">Compilation</h3>
+<div class="outline-text-3" id="text-orgc2169c4">
 <p>
 MLX has a <code>compile</code> function for compiling computational graphs. What does compilation mean in this context? Compilation makes <i>smaller graphs</i> by merging common work and fusing common operations.
 </p>
@@ -534,9 +488,9 @@ Compiled functions should be pure. They should not have side effects. Review thi
 </p>
 </div>
 </div>
-<div id="outline-container-orgfbd1635" class="outline-3">
-<h3 id="orgfbd1635">Streams</h3>
-<div class="outline-text-3" id="text-orgfbd1635">
+<div id="outline-container-org025da52" class="outline-3">
+<h3 id="org025da52">Streams</h3>
+<div class="outline-text-3" id="text-org025da52">
 <p>
 All operations take an optional <code>stream</code> keyword specifying which Stream the operation should run on. This is for specifying the device to run on.
 </p>
@@ -546,7 +500,7 @@ All operations take an optional <code>stream</code> keyword specifying which Str
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2024-04-01 Mon 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

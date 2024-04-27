@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Org Babel Source Blocks for R</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,38 +31,38 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Org Babel Source Blocks for R</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4332895">Background</a></li>
-<li><a href="#orga9823fd">R Source Headers</a>
+<li><a href="#orga09e0ab">Background</a></li>
+<li><a href="#orgac88edf">R Source Headers</a>
 <ul>
-<li><a href="#org0eb5d1b">Code</a>
+<li><a href="#org37c3ad9">Code</a>
 <ul>
-<li><a href="#orgd61a06a">Displaying Tabular Output</a></li>
+<li><a href="#org894e4f8">Displaying Tabular Output</a></li>
 </ul>
 </li>
-<li><a href="#org1c1b679">Figures</a>
+<li><a href="#org8f5cd34">Figures</a>
 <ul>
-<li><a href="#org241c029">Base R</a></li>
-<li><a href="#org927837b">Ggplot and Lattice</a></li>
+<li><a href="#org6dd6102">Base R</a></li>
+<li><a href="#org4adc992">Ggplot and Lattice</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org7d4ebad">An Alternative: Emacs-Jupyter</a></li>
+<li><a href="#org7a7d380">An Alternative: Emacs-Jupyter</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org4332895" class="outline-2">
-<h2 id="org4332895">Background</h2>
-<div class="outline-text-2" id="text-org4332895">
-<div class="preview">
+<div id="outline-container-orga09e0ab" class="outline-2">
+<h2 id="orga09e0ab">Background</h2>
+<div class="outline-text-2" id="text-orga09e0ab">
+<div class="preview" id="orgbf323a5">
 <p>
 <a href="https://orgmode.org/worg/org-contrib/babel/intro.html">Org Babel</a> is one of the best tools available for <a href="https://www-cs-faculty.stanford.edu/~knuth/lp.html">literate programming</a>. As a data scientist, I use it
 as a plain-text alternative to Jupyter notebooks. Org-mode files are much easier to track with
@@ -125,7 +79,7 @@ science tasks in R.
 I will specifically talk about using org-babel in interactive (session-based) evaluation, much like
 how you would use a Jupyter notebook. Each org-babel source block is executed in the same
 environment, so data objects persist between source blocks. Some specific org-babel behaviors will
-depend on the specifics of your org-babel configuration; you can see mine below<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
+depend on the specifics of your org-babel configuration; you can see mine below<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>.
 </p>
 
 <p>
@@ -133,16 +87,16 @@ depend on the specifics of your org-babel configuration; you can see mine below<
 </p>
 </div>
 </div>
-<div id="outline-container-orga9823fd" class="outline-2">
-<h2 id="orga9823fd">R Source Headers</h2>
-<div class="outline-text-2" id="text-orga9823fd">
+<div id="outline-container-orgac88edf" class="outline-2">
+<h2 id="orgac88edf">R Source Headers</h2>
+<div class="outline-text-2" id="text-orgac88edf">
 <p>
 I tend to use two different header configurations, one for code output and one for figures.
 </p>
 </div>
-<div id="outline-container-org0eb5d1b" class="outline-3">
-<h3 id="org0eb5d1b">Code</h3>
-<div class="outline-text-3" id="text-org0eb5d1b">
+<div id="outline-container-org37c3ad9" class="outline-3">
+<h3 id="org37c3ad9">Code</h3>
+<div class="outline-text-3" id="text-org37c3ad9">
 <div class="org-src-container">
 <pre class="src src-org"><span class="org-org-block-begin-line">#+begin_src R :session mysession</span>
 <span class="org-org-block"><span class="org-comment-delimiter"># </span></span><span class="org-org-block"><span class="org-comment">Code goes here</span></span>
@@ -156,7 +110,7 @@ I tend to use two different header configurations, one for code output and one f
 </div>
 
 <p>
-This (given my org-babel config)<sup><a id="fnr.1.100" class="footref" href="#fn.1">1</a></sup> will appear as follows once exported:
+This (given my org-babel config)<sup><a id="fnr.1.100" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> will appear as follows once exported:
 </p>
 
 <div class="org-src-container">
@@ -173,9 +127,9 @@ add_1(99)
 100
 </pre>
 </div>
-<div id="outline-container-orgd61a06a" class="outline-4">
-<h4 id="orgd61a06a">Displaying Tabular Output</h4>
-<div class="outline-text-4" id="text-orgd61a06a">
+<div id="outline-container-org894e4f8" class="outline-4">
+<h4 id="org894e4f8">Displaying Tabular Output</h4>
+<div class="outline-text-4" id="text-org894e4f8">
 <p>
 When not dealing with plotting outputs, there are two main header options for result formatting that I tend
 to use: <code>:results output</code> and <code>:results value</code> (the default). You can find details on these two modes
@@ -190,8 +144,8 @@ readable exports, though.
 </p>
 </div>
 <ul class="org-ul">
-<li><a id="org9f71b57"></a>Value<br>
-<div class="outline-text-5" id="text-org9f71b57">
+<li><a id="org1066c13"></a>Value<br>
+<div class="outline-text-5" id="text-org1066c13">
 <p>
 (With <code>:results value</code> header arg).
 </p>
@@ -335,8 +289,8 @@ correctly.
 </div>
 </li>
 
-<li><a id="org1ad4e44"></a>Output<br>
-<div class="outline-text-5" id="text-org1ad4e44">
+<li><a id="orgc1ed259"></a>Output<br>
+<div class="outline-text-5" id="text-orgc1ed259">
 <p>
 (With <code>:results output</code> header arg).
 </p>
@@ -360,9 +314,9 @@ Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
 </div>
 </div>
 
-<div id="outline-container-org1c1b679" class="outline-3">
-<h3 id="org1c1b679">Figures</h3>
-<div class="outline-text-3" id="text-org1c1b679">
+<div id="outline-container-org8f5cd34" class="outline-3">
+<h3 id="org8f5cd34">Figures</h3>
+<div class="outline-text-3" id="text-org8f5cd34">
 <p>
 I don't find the display and exporting of figures particularly intuitive and finding help tends to
 be challening because of differences depending on the plotting system and because of changes over
@@ -370,9 +324,9 @@ time. <i>This approach works as of December 2021</i>. Further details on exporti
 found <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org7fbd9c2">here</a>.
 </p>
 </div>
-<div id="outline-container-org241c029" class="outline-4">
-<h4 id="org241c029">Base R</h4>
-<div class="outline-text-4" id="text-org241c029">
+<div id="outline-container-org6dd6102" class="outline-4">
+<h4 id="org6dd6102">Base R</h4>
+<div class="outline-text-4" id="text-org6dd6102">
 <p>
 Using Base R graphics, the following header argument will produce a link to a file which can then be
 previewed in your org-mode buffer and exported.
@@ -393,14 +347,14 @@ grid()
 </div>
 
 
-<figure>
+<figure id="orgba02b70">
 <img src="./figures/20211209-R-babel/fig1.png" alt="fig1.png">
 
 </figure>
 </div>
 <ul class="org-ul">
-<li><a id="org613e94c"></a>Setting Graphical Parameters with Header Arguments<br>
-<div class="outline-text-5" id="text-org613e94c">
+<li><a id="org69cda75"></a>Setting Graphical Parameters with Header Arguments<br>
+<div class="outline-text-5" id="text-org69cda75">
 <p>
 We can also set some graphical parameters such as figure height and width through the header
 arguments. For example, to set the with, height, and resolution, we add <code>:width 6 :height 3 :units in
@@ -414,7 +368,7 @@ grid()
 </div>
 
 
-<figure>
+<figure id="orgd6794c0">
 <img src="./figures/20211209-R-babel/fig2.png" alt="fig2.png">
 
 </figure>
@@ -423,9 +377,9 @@ grid()
 </ul>
 </div>
 
-<div id="outline-container-org927837b" class="outline-4">
-<h4 id="org927837b">Ggplot and Lattice</h4>
-<div class="outline-text-4" id="text-org927837b">
+<div id="outline-container-org4adc992" class="outline-4">
+<h4 id="org4adc992">Ggplot and Lattice</h4>
+<div class="outline-text-4" id="text-org4adc992">
 <p>
 Can we just use this approach for everything? From <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org075fa45">the documentation</a>,
 </p>
@@ -453,7 +407,7 @@ ggplot(data=mtcars, mapping=aes(x=hp, y=mpg)) + geom_point()
 </div>
 
 
-<figure>
+<figure id="orgfac494b">
 <img src="./figures/20211209-R-babel/fig3.png" alt="fig3.png">
 
 </figure>
@@ -462,9 +416,9 @@ ggplot(data=mtcars, mapping=aes(x=hp, y=mpg)) + geom_point()
 </div>
 </div>
 
-<div id="outline-container-org7d4ebad" class="outline-2">
-<h2 id="org7d4ebad">An Alternative: Emacs-Jupyter</h2>
-<div class="outline-text-2" id="text-org7d4ebad">
+<div id="outline-container-org7a7d380" class="outline-2">
+<h2 id="org7a7d380">An Alternative: Emacs-Jupyter</h2>
+<div class="outline-text-2" id="text-org7a7d380">
 <p>
 The excellent <a href="https://github.com/nnicandro/emacs-jupyter">emacs-jupyter</a> package is a solid alternative to the approaches described above. To use
 it for R, install the <code>emacs-jupyter</code> package (e.g. with <code>(use-package jupyter)</code>. In R, install <code>IRkernel</code>
@@ -527,7 +481,7 @@ documentation.</li>
 <h2 class="footnotes">Footnotes: </h2>
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Some of the above will be affected by the specifics of my org-babel config. Here it is:
 </p>
 
@@ -586,7 +540,7 @@ challenges in code intentation than it was worth.</li>
 </div></div>
 <div id="postamble" class="status">
 <p class="date">Date: 2021-12-11 Sat 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

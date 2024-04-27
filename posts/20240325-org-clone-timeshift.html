@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Making headings for recurring tasks in org mode</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,29 +31,29 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Making headings for recurring tasks in org mode</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgeeef672">How it works</a></li>
-<li><a href="#orgc678b65">Limitations</a></li>
-<li><a href="#orgc8f5d6b">Further reading</a></li>
+<li><a href="#org015db14">How it works</a></li>
+<li><a href="#orgdee71a0">Limitations</a></li>
+<li><a href="#orge741d9a">Further reading</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview">
+<div class="preview" id="orgb479841">
 <p>
 This short post shows how to use the <code>org-clone-subtree-with-time-shift</code> command to make org headings for recurring tasks. I was recently trying to add a five-week class to my org agenda and I didn't want to manually create each heading and add or modify the timestamp. This approach made it very easy.
 </p>
 
 </div>
 
-<div id="outline-container-orgeeef672" class="outline-2">
-<h2 id="orgeeef672">How it works</h2>
-<div class="outline-text-2" id="text-orgeeef672">
+<div id="outline-container-org015db14" class="outline-2">
+<h2 id="org015db14">How it works</h2>
+<div class="outline-text-2" id="text-org015db14">
 <p>
 Suppose I have an org mode heading representing a scheduled event, like a class:
 </p>
@@ -134,18 +88,18 @@ When we invoke this function with the cursor on the first heading, we will be pr
 </div>
 </div>
 
-<div id="outline-container-orgc678b65" class="outline-2">
-<h2 id="orgc678b65">Limitations</h2>
-<div class="outline-text-2" id="text-orgc678b65">
+<div id="outline-container-orgdee71a0" class="outline-2">
+<h2 id="orgdee71a0">Limitations</h2>
+<div class="outline-text-2" id="text-orgdee71a0">
 <p>
 In some cases, you may want to change the names of the headers somewhat (such as by adding a counter; class 1, class 2, etc.). There are many different approaches to handle this programmatically, but it's beyond the scope of this short post. In this case, it takes just a few seconds to add a class number to each heading manually.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc8f5d6b" class="outline-2">
-<h2 id="orgc8f5d6b">Further reading</h2>
-<div class="outline-text-2" id="text-orgc8f5d6b">
+<div id="outline-container-orge741d9a" class="outline-2">
+<h2 id="orge741d9a">Further reading</h2>
+<div class="outline-text-2" id="text-orge741d9a">
 <p>
 Most helpfully, here is the documenation from <code>C-h f org-clone-subtree-with-time-shift</code>:
 </p>
@@ -229,7 +183,7 @@ For more, you can also consult:
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2024-03-25 Mon 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

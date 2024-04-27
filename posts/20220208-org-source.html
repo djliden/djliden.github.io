@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Org Mode Headlines in Org Source Blocks</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,17 +31,17 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Org Mode Headlines in Org Source Blocks</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org659cdfa">The Problem</a></li>
-<li><a href="#org28ac829">This Headline Is in an Org Source Block</a></li>
-<li><a href="#org9387a57">Prepend Headlines in Source Blocks with Commas</a></li>
-<li><a href="#orge895ebb">An Easier Way</a></li>
+<li><a href="#org5dd0992">The Problem</a></li>
+<li><a href="#orga1aaa1d">This Headline Is in an Org Source Block</a></li>
+<li><a href="#orgbed7b52">Prepend Headlines in Source Blocks with Commas</a></li>
+<li><a href="#org8d383fc">An Easier Way</a></li>
 </ul>
 </div>
 </nav>
@@ -96,10 +50,10 @@ for the JavaScript code in this tag.
 low-contrast. I will update this soon.</i>
 </p>
 
-<div id="outline-container-org659cdfa" class="outline-2">
-<h2 id="org659cdfa">The Problem</h2>
-<div class="outline-text-2" id="text-org659cdfa">
-<div class="PREVIEW">
+<div id="outline-container-org5dd0992" class="outline-2">
+<h2 id="org5dd0992">The Problem</h2>
+<div class="outline-text-2" id="text-org5dd0992">
+<div class="PREVIEW" id="org168ecb6">
 <p>
 When writing about org mode, one often wants to show what particular org
 headline look like in terms of formatting, properties, tags, options,
@@ -122,9 +76,9 @@ a comma before the headline.
 </p>
 </div>
 </div>
-<div id="outline-container-org28ac829" class="outline-2">
-<h2 id="org28ac829">This Headline Is in an Org Source Block</h2>
-<div class="outline-text-2" id="text-org28ac829">
+<div id="outline-container-orga1aaa1d" class="outline-2">
+<h2 id="orga1aaa1d">This Headline Is in an Org Source Block</h2>
+<div class="outline-text-2" id="text-orga1aaa1d">
 <p>
 And it is still parsed and exported as a headline, not as an example.
 #+end<sub>src</sub>
@@ -135,9 +89,9 @@ Clearly, this isn't what we want.
 </p>
 </div>
 </div>
-<div id="outline-container-org9387a57" class="outline-2">
-<h2 id="org9387a57">Prepend Headlines in Source Blocks with Commas</h2>
-<div class="outline-text-2" id="text-org9387a57">
+<div id="outline-container-orgbed7b52" class="outline-2">
+<h2 id="orgbed7b52">Prepend Headlines in Source Blocks with Commas</h2>
+<div class="outline-text-2" id="text-orgbed7b52">
 <p>
 This issue is easily resolved: just insert a comma before the headline in the
 source block (e.g. <code>,* Headline</code>). This results in the following:
@@ -193,9 +147,9 @@ This headline is also prepended with a comma!
 </div>
 </div>
 </div>
-<div id="outline-container-orge895ebb" class="outline-2">
-<h2 id="orge895ebb">An Easier Way</h2>
-<div class="outline-text-2" id="text-orge895ebb">
+<div id="outline-container-org8d383fc" class="outline-2">
+<h2 id="org8d383fc">An Easier Way</h2>
+<div class="outline-text-2" id="text-org8d383fc">
 <p>
 We can use the <code>org-edit-special</code> command (<code>C-c '</code>) within an org source block to
 open a separate editing environment (in this case, another org buffer). We can
@@ -235,7 +189,7 @@ Which generates:
 <div class="org-src-container">
 <pre class="src src-org"><span class="org-org-level-1">* Headline 1                                                    </span><span class="org-org-level-1"><span class="org-org-tag">:example_tag:</span></span>
 This is an org headline with a tag.
-<span class="org-org-level-2">** </span><span class="org-org-todo">TODO</span><span class="org-org-level-2"> Second Headline</span>
+<span class="org-org-level-2">** </span><span class="org-org-level-2"><span class="org-org-todo">TODO</span></span><span class="org-org-level-2"> Second Headline</span>
 <span class="org-org-special-keyword">SCHEDULED:</span> <span class="org-org-date">&lt;2022-02-15 Tue&gt;</span>
 <span class="org-org-drawer">:PROPERTIES:</span>
 <span class="org-org-special-keyword">:CUSTOM_ID:</span> <span class="org-org-property-value">headline_1</span>
@@ -243,9 +197,9 @@ This is an org headline with a tag.
 <span class="org-org-level-2">** Babel</span>
 
 <span class="org-org-block-begin-line">#+begin_src jupyter-python :session datasci</span>
-import numpy as np
+<span class="org-org-block">import numpy as np</span>
 
-np.array(range(1,10))
+<span class="org-org-block">np.array(range(1,10))</span>
 <span class="org-org-block-end-line">#+end_src</span>
 
 <span class="org-org-meta-line">#+RESULTS:</span>
@@ -269,7 +223,7 @@ source blocks should be much easier.
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2022-02-08 Tue 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

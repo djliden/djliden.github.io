@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Retrieving Data for the H2o RAG Benchmark</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,10 +31,10 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Retrieving Data for the H2o RAG Benchmark</h1>
-</header><div class="preview">
+</header><div class="preview" id="org6cf2a6e">
 <p>
 I was looking for a good dataset to use for comparing different models in a RAG application when I found <a href="https://www.reddit.com/r/LocalLLaMA/comments/1bpo5uo/rag_benchmark_of_databricksdbrx/">this post</a> on Reddit. It compares a bunch of models on a collection of questions over a set of documents provided by <a href="https://h2o.ai">H2O.ai</a>.
 </p>
@@ -108,97 +62,97 @@ Next, perhaps in a notebook, instantiate each of the documents.
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> datasets <span class="org-keyword">import</span> CachedFile
 
-<span class="org-variable-name">femsa</span> = CachedFile(
+<span class="org-variable-name">femsa</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"Femsa"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Coca-Cola-FEMSA-Results-1Q23-vf-2.pdf"</span>,
 )
-<span class="org-variable-name">wells_fargo</span> = CachedFile(
+<span class="org-variable-name">wells_fargo</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"WellsFargo"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/wellsfargo-2022-annual-report.pdf"</span>,
 )
-<span class="org-variable-name">citi_report</span> = CachedFile(
+<span class="org-variable-name">citi_report</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"CitiAnnual"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/citi-2022-annual-report.pdf"</span>,
 )
-<span class="org-variable-name">kaiser</span> = CachedFile(
+<span class="org-variable-name">kaiser</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"Kaiser"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/kp-annual-report-en-2019.pdf"</span>,
 )
-<span class="org-variable-name">cba</span> = CachedFile(
+<span class="org-variable-name">cba</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"CBA-Spreads"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/2023-Annual-Report-Spreads.pdf"</span>,
 )
-<span class="org-variable-name">cba_fullpage</span> = CachedFile(
+<span class="org-variable-name">cba_fullpage</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"CBA-Annual"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/CBA.2023.Annual.Report.pdf"</span>,
 )
-<span class="org-variable-name">cba_wheel</span> = CachedFile(
+<span class="org-variable-name">cba_wheel</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"CBA-Wheel"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/CBA-1H23-Results-Presentation_wheel.pdf"</span>,
 )
-<span class="org-variable-name">nyl_all</span> = CachedFile(
+<span class="org-variable-name">nyl_all</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"NYL_All"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/2022-nyl-investment-report.pdf"</span>,
 )
-<span class="org-variable-name">bradesco</span> = CachedFile(
+<span class="org-variable-name">bradesco</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"Bradesco"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/bradesco-2022-integrated-report.pdf"</span>,
 )
-<span class="org-variable-name">tabasco</span> = CachedFile(
+<span class="org-variable-name">tabasco</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"Tabasco"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Tabasco_Ingredients_Products_Guide.pdf"</span>,
 )
-<span class="org-variable-name">citi_report_pg6</span> = CachedFile(
+<span class="org-variable-name">citi_report_pg6</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"Citi6"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/citi-2022-annual-report-page6.pdf"</span>,
 )
-<span class="org-variable-name">citi_report_pg1_2</span> = CachedFile(
+<span class="org-variable-name">citi_report_pg1_2</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"Citi1_2"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/citi-2022-annual-report-pages1-2.pdf"</span>,
 )
-<span class="org-variable-name">nyl_report_pg5_15</span> = CachedFile(
+<span class="org-variable-name">nyl_report_pg5_15</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"NYL5_15"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/2022-nyl-investment-report-pages-5-and-15.pdf"</span>,
 )
-<span class="org-variable-name">aluminum_int</span> = CachedFile(
+<span class="org-variable-name">aluminum_int</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"AluminumInt"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Aluminum.Intelligence.Report.November.2022.pdf"</span>,
 )
-<span class="org-variable-name">albumentations_markdown</span> = CachedFile(
+<span class="org-variable-name">albumentations_markdown</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"AlbumentationsREADME"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/albumentations-README.md"</span>,
 )
-<span class="org-variable-name">best_buy</span> = CachedFile(
+<span class="org-variable-name">best_buy</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"BestBuy"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Best-Buy-Investor-Event-March-2022.pdf"</span>,
 )
 
-<span class="org-variable-name">example_rst</span> = CachedFile(
+<span class="org-variable-name">example_rst</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"ExampleRST"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/example-rst2.rst"</span>,
 )
 
-<span class="org-variable-name">audio_label_genie</span> = CachedFile(
+<span class="org-variable-name">audio_label_genie</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"AudioLabelGenie"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/label-genie-intro-youtube.mp3"</span>,
 )
 
-<span class="org-variable-name">fast_food</span> = CachedFile(
+<span class="org-variable-name">fast_food</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"FastFood"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/fastfood.jpg"</span>,
 )
 
-<span class="org-variable-name">sanepar_pg4</span> = CachedFile(
+<span class="org-variable-name">sanepar_pg4</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"Sanepar_4"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Demonstracoes-Financeiras-Anuaanepar-2022-12-31-gmdgFjGq-page4.pdf"</span>,
 )
 
-<span class="org-variable-name">dell_scanned_pr</span> = CachedFile(
+<span class="org-variable-name">dell_scanned_pr</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"dell_scanned_pr"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/Q2 FY24 Financial Results Press Release.pdf"</span>,
 )
 
-<span class="org-variable-name">jpeg_xr_image</span> = CachedFile(
+<span class="org-variable-name">jpeg_xr_image</span> <span class="org-operator">=</span> CachedFile(
     <span class="org-string">"JPEG-XR"</span>,
     <span class="org-string">"https://enterprise-h2ogpt-public-data.s3.amazonaws.com/gilgamesh_tablet_1.jxr"</span>,
 )
@@ -211,7 +165,7 @@ Next, use the <code>get()</code> method from each <code>CachedFile</code> instan
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">instances</span> = [
+<pre class="src src-python"><span class="org-variable-name">instances</span> <span class="org-operator">=</span> [
     femsa,
     wells_fargo,
     citi_report,
@@ -238,11 +192,11 @@ Next, use the <code>get()</code> method from each <code>CachedFile</code> instan
 
 <span class="org-keyword">for</span> instance <span class="org-keyword">in</span> instances:
     <span class="org-keyword">try</span>:
-        <span class="org-variable-name">result</span> = instance.get()
-        <span class="org-keyword">print</span>(<span class="org-string">"---"</span>)
+        <span class="org-variable-name">result</span> <span class="org-operator">=</span> instance.get()
+        <span class="org-builtin">print</span>(<span class="org-string">"---"</span>)
     <span class="org-keyword">except</span> <span class="org-type">Exception</span> <span class="org-keyword">as</span> e:
-        <span class="org-keyword">print</span>(f<span class="org-string">"Error occurred for instance {instance}: {str(e)}"</span>)
-        <span class="org-keyword">print</span>(<span class="org-string">"---"</span>)
+        <span class="org-builtin">print</span>(f<span class="org-string">"Error occurred for instance </span>{instance}<span class="org-string">: </span>{<span class="org-builtin">str</span>(e)}<span class="org-string">"</span>)
+        <span class="org-builtin">print</span>(<span class="org-string">"---"</span>)
 </pre>
 </div>
 
@@ -252,7 +206,7 @@ Run the notebook cells to fetch the files. They will be stored in the <code>/dat
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2024-03-29 Fri 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

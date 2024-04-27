@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Figures and Captions Don't Appear as Expected with Default Export Options</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,20 +31,20 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Figures and Captions Don't Appear as Expected with Default Export Options</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org770e603">The Problem</a></li>
-<li><a href="#org3e63fad">Changes to the Site Config</a></li>
-<li><a href="#org6cc47b1">The Results</a></li>
+<li><a href="#orge991ce8">The Problem</a></li>
+<li><a href="#org5ea2af3">Changes to the Site Config</a></li>
+<li><a href="#org6af3bda">The Results</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview">
+<div class="preview" id="org1e0e4b0">
 <p>
 I noticed that some of the formatting on this site was a little off and some of
 the org-mode components weren't being translated to HTML in quite the way I
@@ -108,9 +62,9 @@ While that brief introduction should capture the necessary changes, we can get
 into more specifics.
 </p>
 
-<div id="outline-container-org770e603" class="outline-2">
-<h2 id="org770e603">The Problem</h2>
-<div class="outline-text-2" id="text-org770e603">
+<div id="outline-container-orge991ce8" class="outline-2">
+<h2 id="orge991ce8">The Problem</h2>
+<div class="outline-text-2" id="text-orge991ce8">
 <p>
 If we use the default settings, figures aren't wrapped in <code>&lt;figure&gt;</code> blocks and
 captions aren't wrapped in <code>&lt;figcaption&gt;</code> blocks, so none of the formatting we
@@ -138,9 +92,9 @@ The image and caption appear left-aligned on the page. Here's the html:
 </div>
 </div>
 
-<div id="outline-container-org3e63fad" class="outline-2">
-<h2 id="org3e63fad">Changes to the Site Config</h2>
-<div class="outline-text-2" id="text-org3e63fad">
+<div id="outline-container-org5ea2af3" class="outline-2">
+<h2 id="org5ea2af3">Changes to the Site Config</h2>
+<div class="outline-text-2" id="text-org5ea2af3">
 <p>
 To address this, we need to change the <code>org-html-doctype</code> and <code>org-html-html5-fancy</code>
 variables. We can do this in the export configuration's
@@ -189,15 +143,15 @@ key changes.
 </div>
 </div>
 </div>
-<div id="outline-container-org6cc47b1" class="outline-2">
-<h2 id="org6cc47b1">The Results</h2>
-<div class="outline-text-2" id="text-org6cc47b1">
+<div id="outline-container-org6af3bda" class="outline-2">
+<h2 id="org6af3bda">The Results</h2>
+<div class="outline-text-2" id="text-org6af3bda">
 <p>
 With these changes, our images and captions are now centered:
 </p>
 
 
-<figure>
+<figure id="org334dcb9">
 <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px">
 
 <figcaption><span class="figure-number">Figure 1: </span>This caption is now centered and wrapped in a <code>&lt;figcaption&gt;</code> tag!</figcaption>
@@ -247,7 +201,7 @@ Setting the config to use <code>html5</code> gives us access to these elements.
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2022-07-24 Sun 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

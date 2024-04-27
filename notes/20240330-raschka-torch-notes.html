@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PyTorch Review</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,74 +12,38 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
 </script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        displayAlign: "center",
-        displayIndent: "0em",
 
-        "HTML-CSS": { scale: 100,
-                        linebreaks: { automatic: "false" },
-                        webFont: "TeX"
-                       },
-        SVG: {scale: 100,
-              linebreaks: { automatic: "false" },
-              font: "TeX"},
-        NativeMML: {scale: 100},
-        TeX: { equationNumbers: {autoNumber: "AMS"},
-               MultLineWidth: "85%",
-               TagSide: "right",
-               TagIndent: ".8em"
-             }
-});
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -99,47 +63,47 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">PyTorch Review</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org73ce150">A.1 PyTorch</a></li>
-<li><a href="#orgf375f21">A.2 Understanding tensors</a>
+<li><a href="#orgebb734f">A.1 PyTorch</a></li>
+<li><a href="#org2eb76af">A.2 Understanding tensors</a>
 <ul>
-<li><a href="#org4723808">Creating tensors</a></li>
-<li><a href="#orge06b3fe">Tensor data types</a></li>
-<li><a href="#orgac54d61">Common tensor operations</a></li>
+<li><a href="#org4442bf9">Creating tensors</a></li>
+<li><a href="#org4c4b910">Tensor data types</a></li>
+<li><a href="#orge65464b">Common tensor operations</a></li>
 </ul>
 </li>
-<li><a href="#org11138f9">A.3 Models as Computational Graphs</a></li>
-<li><a href="#org548a9bc">A.4 Automatic Differentiation</a></li>
-<li><a href="#org423c7fa">A.5 Implementing multilayer neural networks</a></li>
-<li><a href="#org8dc71f8">A.6 Setting up efficient data loaders</a></li>
-<li><a href="#orgd09e3c4">A.7 A typical training loop</a></li>
-<li><a href="#org2d2f6a1">A.8 Saving and Loading Models</a></li>
-<li><a href="#org102d782">A.9 Optimizing training performance with GPUs</a>
+<li><a href="#orgb28f95b">A.3 Models as Computational Graphs</a></li>
+<li><a href="#orgbd6ffab">A.4 Automatic Differentiation</a></li>
+<li><a href="#orgb4a3cf6">A.5 Implementing multilayer neural networks</a></li>
+<li><a href="#org7f879de">A.6 Setting up efficient data loaders</a></li>
+<li><a href="#orgfec6eb5">A.7 A typical training loop</a></li>
+<li><a href="#orge15072e">A.8 Saving and Loading Models</a></li>
+<li><a href="#orgcaff871">A.9 Optimizing training performance with GPUs</a>
 <ul>
-<li><a href="#org985db01">Computations on GPUs</a></li>
-<li><a href="#org79bd24e">Single-GPU Training</a></li>
-<li><a href="#org1ef0bdf">Multi-GPU Training</a></li>
+<li><a href="#orga5e3477">Computations on GPUs</a></li>
+<li><a href="#orge2bf54d">Single-GPU Training</a></li>
+<li><a href="#org5321038">Multi-GPU Training</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview">
+<div class="preview" id="org542a76f">
 <p>
 This is a quick run through the appendix on PyTorch from Sebastian Raschka's <a href="https://www.manning.com/books/build-a-large-language-model-from-scratch">Build a Large Language Model (From Scratch)</a> book, currently available via Manning's MEAP. I haven't spent an enormous amount of time with PyTorch in the last year or so, so it seemed worth the effort to work through it.
 </p>
 
 </div>
 
-<div id="outline-container-org73ce150" class="outline-2">
-<h2 id="org73ce150">A.1 PyTorch</h2>
-<div class="outline-text-2" id="text-org73ce150">
+<div id="outline-container-orgebb734f" class="outline-2">
+<h2 id="orgebb734f">A.1 PyTorch</h2>
+<div class="outline-text-2" id="text-orgebb734f">
 <p>
 There are three broad components to PyTorch:
 </p>
@@ -184,9 +148,9 @@ Great.
 </p>
 </div>
 </div>
-<div id="outline-container-orgf375f21" class="outline-2">
-<h2 id="orgf375f21">A.2 Understanding tensors</h2>
-<div class="outline-text-2" id="text-orgf375f21">
+<div id="outline-container-org2eb76af" class="outline-2">
+<h2 id="org2eb76af">A.2 Understanding tensors</h2>
+<div class="outline-text-2" id="text-org2eb76af">
 <p>
 Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors are similar to NumPy arrays but have have several additional features:
 </p>
@@ -198,21 +162,21 @@ Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors
 Still, it has a numpy-like API.
 </p>
 </div>
-<div id="outline-container-org4723808" class="outline-3">
-<h3 id="org4723808">Creating tensors</h3>
-<div class="outline-text-3" id="text-org4723808">
+<div id="outline-container-org4442bf9" class="outline-3">
+<h3 id="org4442bf9">Creating tensors</h3>
+<div class="outline-text-3" id="text-org4442bf9">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">0d tensor (scalar)</span>
-<span class="org-keyword">print</span>(torch.tensor(1))
+<span class="org-builtin">print</span>(torch.tensor(1))
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">1d tensor (vector)</span>
-<span class="org-keyword">print</span>(torch.tensor([1, 2, 3]))
+<span class="org-builtin">print</span>(torch.tensor([1, 2, 3]))
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">2d tensor</span>
-<span class="org-keyword">print</span>(torch.tensor([[1, 2], [3, 4]]))
+<span class="org-builtin">print</span>(torch.tensor([[1, 2], [3, 4]]))
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">3d tensor</span>
-<span class="org-keyword">print</span>(torch.tensor([[[1, 2], [3,4]], [[5,6], [7,8]]]))
+<span class="org-builtin">print</span>(torch.tensor([[[1, 2], [3,4]], [[5,6], [7,8]]]))
 </pre>
 </div>
 
@@ -229,16 +193,16 @@ tensor([[[1, 2],
 </pre>
 </div>
 </div>
-<div id="outline-container-orge06b3fe" class="outline-3">
-<h3 id="orge06b3fe">Tensor data types</h3>
-<div class="outline-text-3" id="text-orge06b3fe">
+<div id="outline-container-org4c4b910" class="outline-3">
+<h3 id="org4c4b910">Tensor data types</h3>
+<div class="outline-text-3" id="text-org4c4b910">
 <p>
 These are important to pay attention to! So let's pay attention to them. The default (from above) is the 64-bit integer.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">tensor1d</span> = torch.tensor([1,2,3])
-<span class="org-keyword">print</span>(tensor1d.dtype)
+<pre class="src src-python"><span class="org-variable-name">tensor1d</span> <span class="org-operator">=</span> torch.tensor([1,2,3])
+<span class="org-builtin">print</span>(tensor1d.dtype)
 </pre>
 </div>
 
@@ -253,8 +217,8 @@ For floats, PyTorch uses 32-bit precision by default.
 
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">floatvec</span> = torch.tensor([1., 2., 3.])
-<span class="org-keyword">print</span>(floatvec.dtype)
+<pre class="src src-python"><span class="org-variable-name">floatvec</span> <span class="org-operator">=</span> torch.tensor([1., 2., 3.])
+<span class="org-builtin">print</span>(floatvec.dtype)
 </pre>
 </div>
 
@@ -276,7 +240,7 @@ it is easy to change <code>dtype</code> (and precision) with a tensor's <code>.t
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(torch.tensor([1,2,3]).to(torch.float32).dtype)
+<pre class="src src-python"><span class="org-builtin">print</span>(torch.tensor([1,2,3]).to(torch.float32).dtype)
 </pre>
 </div>
 
@@ -285,16 +249,16 @@ torch.float32
 </pre>
 </div>
 </div>
-<div id="outline-container-orgac54d61" class="outline-3">
-<h3 id="orgac54d61">Common tensor operations</h3>
-<div class="outline-text-3" id="text-orgac54d61">
+<div id="outline-container-orge65464b" class="outline-3">
+<h3 id="orge65464b">Common tensor operations</h3>
+<div class="outline-text-3" id="text-orge65464b">
 <ul class="org-ul">
 <li>brief survey of the most common tensor operations prior to getting into the computational graphs concept.</li>
 </ul>
 
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">tensor2d</span> = torch.tensor([[1, 2, 3], [4, 5, 6]])
+<pre class="src src-python"><span class="org-variable-name">tensor2d</span> <span class="org-operator">=</span> torch.tensor([[1, 2, 3], [4, 5, 6]])
 </pre>
 </div>
 
@@ -303,7 +267,7 @@ Reshape:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(tensor2d.reshape(3, 2))
+<pre class="src src-python"><span class="org-builtin">print</span>(tensor2d.reshape(3, 2))
 </pre>
 </div>
 
@@ -319,7 +283,7 @@ It is more common to use <code>view</code> than <code>reshape</code>.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(tensor2d.view(3, 2))
+<pre class="src src-python"><span class="org-builtin">print</span>(tensor2d.view(3, 2))
 </pre>
 </div>
 
@@ -335,7 +299,7 @@ Transpose
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(tensor2d.T)
+<pre class="src src-python"><span class="org-builtin">print</span>(tensor2d.T)
 </pre>
 </div>
 
@@ -352,7 +316,7 @@ Matrix multiplication is usually handled with <code>matmul</code>.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(tensor2d.matmul(tensor2d.T))
+<pre class="src src-python"><span class="org-builtin">print</span>(tensor2d.matmul(tensor2d.T))
 </pre>
 </div>
 
@@ -363,7 +327,7 @@ tensor([[14, 32],
 
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(tensor2d @ tensor2d.T)
+<pre class="src src-python"><span class="org-builtin">print</span>(tensor2d @ tensor2d.T)
 </pre>
 </div>
 
@@ -374,9 +338,9 @@ tensor([[14, 32],
 </div>
 </div>
 </div>
-<div id="outline-container-org11138f9" class="outline-2">
-<h2 id="org11138f9">A.3 Models as Computational Graphs</h2>
-<div class="outline-text-2" id="text-org11138f9">
+<div id="outline-container-orgb28f95b" class="outline-2">
+<h2 id="orgb28f95b">A.3 Models as Computational Graphs</h2>
+<div class="outline-text-2" id="text-orgb28f95b">
 <p>
 The previous section covered PyTorch's tensor library. This section gets into its automatic differentiation engine (autograd). Autograd provides functions for automatically computing gradients in dynamic computational graphs.
 </p>
@@ -388,15 +352,15 @@ So what's a computational graph? It lays out the sequence of calculations needed
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> torch.nn.functional <span class="org-keyword">as</span> F
 
-<span class="org-variable-name">y</span> = torch.tensor([1.0])
-<span class="org-variable-name">x1</span> = torch.tensor([1.1])
-<span class="org-variable-name">w1</span> = torch.tensor([2.2])
-<span class="org-variable-name">b</span> = torch.tensor([0.0])
+<span class="org-variable-name">y</span> <span class="org-operator">=</span> torch.tensor([1.0])
+<span class="org-variable-name">x1</span> <span class="org-operator">=</span> torch.tensor([1.1])
+<span class="org-variable-name">w1</span> <span class="org-operator">=</span> torch.tensor([2.2])
+<span class="org-variable-name">b</span> <span class="org-operator">=</span> torch.tensor([0.0])
 
-<span class="org-variable-name">z</span> = x1 * w1 + b
-<span class="org-variable-name">a</span> = torch.sigmoid(z)
+<span class="org-variable-name">z</span> <span class="org-operator">=</span> x1 <span class="org-operator">*</span> w1 <span class="org-operator">+</span> b
+<span class="org-variable-name">a</span> <span class="org-operator">=</span> torch.sigmoid(z)
 
-<span class="org-variable-name">loss</span> = F.binary_cross_entropy(a,y)
+<span class="org-variable-name">loss</span> <span class="org-operator">=</span> F.binary_cross_entropy(a,y)
 </pre>
 </div>
 
@@ -409,9 +373,9 @@ Input and weight -&gt; (u = w<sub>1</sub> * x<sub>1</sub>) -&gt; +b -&gt; (z = u
 </p>
 </div>
 </div>
-<div id="outline-container-org548a9bc" class="outline-2">
-<h2 id="org548a9bc">A.4 Automatic Differentiation</h2>
-<div class="outline-text-2" id="text-org548a9bc">
+<div id="outline-container-orgbd6ffab" class="outline-2">
+<h2 id="orgbd6ffab">A.4 Automatic Differentiation</h2>
+<div class="outline-text-2" id="text-orgbd6ffab">
 <p>
 PyTorch will automatically build such a graph if one of its terminal nodes has the <code>requires_grad</code> attribute set to True. This enables us to train neural nets via backpropagation. Working backward from the above:
 </p>
@@ -441,23 +405,23 @@ So what exactly does this have to do with torch as an autograd engine? PyTorch t
 <pre class="src src-python"><span class="org-keyword">import</span> torch.nn.functional <span class="org-keyword">as</span> F
 <span class="org-keyword">from</span> torch.autograd <span class="org-keyword">import</span> grad
 
-<span class="org-variable-name">y</span> = torch.tensor([1.0])
-<span class="org-variable-name">x1</span> = torch.tensor([1.1])
-<span class="org-variable-name">w1</span> = torch.tensor([2.2], requires_grad=<span class="org-constant">True</span>)
-<span class="org-variable-name">b</span> = torch.tensor([0.0], requires_grad=<span class="org-constant">True</span>)
+<span class="org-variable-name">y</span> <span class="org-operator">=</span> torch.tensor([1.0])
+<span class="org-variable-name">x1</span> <span class="org-operator">=</span> torch.tensor([1.1])
+<span class="org-variable-name">w1</span> <span class="org-operator">=</span> torch.tensor([2.2], requires_grad<span class="org-operator">=</span><span class="org-constant">True</span>)
+<span class="org-variable-name">b</span> <span class="org-operator">=</span> torch.tensor([0.0], requires_grad<span class="org-operator">=</span><span class="org-constant">True</span>)
 
-<span class="org-variable-name">z</span> = x1 * w1 + b
-<span class="org-variable-name">a</span> = torch.sigmoid(z)
+<span class="org-variable-name">z</span> <span class="org-operator">=</span> x1 <span class="org-operator">*</span> w1 <span class="org-operator">+</span> b
+<span class="org-variable-name">a</span> <span class="org-operator">=</span> torch.sigmoid(z)
 
-<span class="org-variable-name">loss</span> = F.binary_cross_entropy(a, y)
-<span class="org-variable-name">grad_L_w1</span> = grad(loss, w1, retain_graph=<span class="org-constant">True</span>) <span class="org-comment-delimiter">#</span><span class="org-comment">A</span>
-<span class="org-variable-name">grad_L_b</span> = grad(loss, b, retain_graph=<span class="org-constant">True</span>)
+<span class="org-variable-name">loss</span> <span class="org-operator">=</span> F.binary_cross_entropy(a, y)
+<span class="org-variable-name">grad_L_w1</span> <span class="org-operator">=</span> grad(loss, w1, retain_graph<span class="org-operator">=</span><span class="org-constant">True</span>) <span class="org-comment-delimiter">#</span><span class="org-comment">A</span>
+<span class="org-variable-name">grad_L_b</span> <span class="org-operator">=</span> grad(loss, b, retain_graph<span class="org-operator">=</span><span class="org-constant">True</span>)
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(grad_L_w1)
-<span class="org-keyword">print</span>(grad_L_b)
+<pre class="src src-python"><span class="org-builtin">print</span>(grad_L_w1)
+<span class="org-builtin">print</span>(grad_L_b)
 </pre>
 </div>
 
@@ -473,9 +437,9 @@ We seldom manually call the grad function. We usually call <code>.backward</code
 
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(loss.backward())
-<span class="org-keyword">print</span>(w1.grad)
-<span class="org-keyword">print</span>(b.grad)
+<pre class="src src-python"><span class="org-builtin">print</span>(loss.backward())
+<span class="org-builtin">print</span>(w1.grad)
+<span class="org-builtin">print</span>(b.grad)
 </pre>
 </div>
 
@@ -486,9 +450,9 @@ tensor([-0.0817])
 </pre>
 </div>
 </div>
-<div id="outline-container-org423c7fa" class="outline-2">
-<h2 id="org423c7fa">A.5 Implementing multilayer neural networks</h2>
-<div class="outline-text-2" id="text-org423c7fa">
+<div id="outline-container-orgb4a3cf6" class="outline-2">
+<h2 id="orgb4a3cf6">A.5 Implementing multilayer neural networks</h2>
+<div class="outline-text-2" id="text-orgb4a3cf6">
 <p>
 Now we get to the third major component of Pytorch: its library for implementing deep neural networks.
 </p>
@@ -516,7 +480,7 @@ Here is code illustrating a basic NN with two hidden layers.
     <span class="org-keyword">def</span> <span class="org-function-name">__init__</span>(<span class="org-keyword">self</span>, num_inputs, num_outputs):
         <span class="org-builtin">super</span>().__init__()
 
-        <span class="org-keyword">self</span>.layers = torch.nn.Sequential(
+        <span class="org-keyword">self</span>.<span class="org-variable-name">layers</span> <span class="org-operator">=</span> torch.nn.Sequential(
             <span class="org-comment-delimiter"># </span><span class="org-comment">1st hidden layer</span>
             torch.nn.Linear(num_inputs, 30),
             torch.nn.ReLU(),
@@ -528,7 +492,7 @@ Here is code illustrating a basic NN with two hidden layers.
         )
 
     <span class="org-keyword">def</span> <span class="org-function-name">forward</span>(<span class="org-keyword">self</span>, x):
-        <span class="org-variable-name">logits</span> = <span class="org-keyword">self</span>.layers(x)
+        <span class="org-variable-name">logits</span> <span class="org-operator">=</span> <span class="org-keyword">self</span>.layers(x)
         <span class="org-keyword">return</span> logits
 </pre>
 </div>
@@ -538,8 +502,8 @@ We can instantiate this with 50 inputs and 3 outputs.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">model</span> = NeuralNetwork(50, 3)
-<span class="org-keyword">print</span>(model)
+<pre class="src src-python"><span class="org-variable-name">model</span> <span class="org-operator">=</span> NeuralNetwork(50, 3)
+<span class="org-builtin">print</span>(model)
 </pre>
 </div>
 
@@ -561,8 +525,8 @@ We can count the total number of trainable parameters as follows:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">num_params</span> = <span class="org-builtin">sum</span>(p.numel() <span class="org-keyword">for</span> p <span class="org-keyword">in</span> model.parameters() <span class="org-keyword">if</span> p.requires_grad)
-<span class="org-keyword">print</span>(<span class="org-string">"Total number of trainable model parameters:"</span>, num_params)
+<pre class="src src-python"><span class="org-variable-name">num_params</span> <span class="org-operator">=</span> <span class="org-builtin">sum</span>(p.numel() <span class="org-keyword">for</span> p <span class="org-keyword">in</span> model.parameters() <span class="org-keyword">if</span> p.requires_grad)
+<span class="org-builtin">print</span>(<span class="org-string">"Total number of trainable model parameters:"</span>, num_params)
 </pre>
 </div>
 
@@ -576,7 +540,7 @@ A parameter is <i>trainable</i> if its <code>requires_grad</code> attribute is <
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(model.layers[0].weight)
+<pre class="src src-python"><span class="org-builtin">print</span>(model.layers[0].weight)
 </pre>
 </div>
 
@@ -598,9 +562,9 @@ This is truncated, so let's look at the shape instead to make sure it matches wi
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">from</span> rich <span class="org-keyword">import</span> <span class="org-keyword">print</span>
+<pre class="src src-python"><span class="org-keyword">from</span> rich <span class="org-keyword">import</span> <span class="org-builtin">print</span>
 
-<span class="org-keyword">print</span>(model.layers[0].weight.shape)
+<span class="org-builtin">print</span>(model.layers[0].weight.shape)
 </pre>
 </div>
 
@@ -614,9 +578,9 @@ We can call on the model like this:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">X</span> = torch.rand((1,50))
-<span class="org-variable-name">out</span> = model(X)
-<span class="org-keyword">print</span>(out)
+<pre class="src src-python"><span class="org-variable-name">X</span> <span class="org-operator">=</span> torch.rand((1,50))
+<span class="org-variable-name">out</span> <span class="org-operator">=</span> model(X)
+<span class="org-builtin">print</span>(out)
 </pre>
 </div>
 
@@ -635,8 +599,8 @@ As we can see from the <code>grad_fn</code>, this forward pass computes a comput
 
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">with</span> torch.no_grad():
-    <span class="org-variable-name">out</span> = model(X)
-<span class="org-keyword">print</span>(out)
+    <span class="org-variable-name">out</span> <span class="org-operator">=</span> model(X)
+<span class="org-builtin">print</span>(out)
 </pre>
 </div>
 
@@ -655,8 +619,8 @@ Usually in PyTorch we don't pass the final layer to a nonlinear activation funct
 
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">with</span> torch.no_grad():
-    <span class="org-variable-name">out</span> = torch.softmax(model(X), dim=1)
-<span class="org-keyword">print</span>(out)
+    <span class="org-variable-name">out</span> <span class="org-operator">=</span> torch.softmax(model(X), dim<span class="org-operator">=</span>1)
+<span class="org-builtin">print</span>(out)
 </pre>
 </div>
 
@@ -666,9 +630,9 @@ tensor([[0.3645, 0.3403, 0.2952]])
 </div>
 </div>
 
-<div id="outline-container-org8dc71f8" class="outline-2">
-<h2 id="org8dc71f8">A.6 Setting up efficient data loaders</h2>
-<div class="outline-text-2" id="text-org8dc71f8">
+<div id="outline-container-org7f879de" class="outline-2">
+<h2 id="org7f879de">A.6 Setting up efficient data loaders</h2>
+<div class="outline-text-2" id="text-org7f879de">
 <p>
 A <code>DataSet</code> is a class that defines how individual records are loaded. A <code>DataLoader</code> class handles dataset shuffling and assembling data records into batches.
 </p>
@@ -678,17 +642,17 @@ This example shows a dataset of five training examples with two features each, a
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">X_train</span> = torch.tensor(
-    [[-1.2, 3.1], [-0.9, 2.9], [-0.5, 2.6], [2.3, -1.1], [2.7, -1.5]]
+<pre class="src src-python"><span class="org-variable-name">X_train</span> <span class="org-operator">=</span> torch.tensor(
+    [[<span class="org-operator">-</span>1.2, 3.1], [<span class="org-operator">-</span>0.9, 2.9], [<span class="org-operator">-</span>0.5, 2.6], [2.3, <span class="org-operator">-</span>1.1], [2.7, <span class="org-operator">-</span>1.5]]
 )
-<span class="org-variable-name">y_train</span> = torch.tensor([0, 0, 0, 1, 1])
-<span class="org-variable-name">X_test</span> = torch.tensor(
+<span class="org-variable-name">y_train</span> <span class="org-operator">=</span> torch.tensor([0, 0, 0, 1, 1])
+<span class="org-variable-name">X_test</span> <span class="org-operator">=</span> torch.tensor(
     [
-        [-0.8, 2.8],
-        [2.6, -1.6],
+        [<span class="org-operator">-</span>0.8, 2.8],
+        [2.6, <span class="org-operator">-</span>1.6],
     ]
 )
-<span class="org-variable-name">y_test</span> = torch.tensor([0, 1])
+<span class="org-variable-name">y_test</span> <span class="org-operator">=</span> torch.tensor([0, 1])
 </pre>
 </div>
 
@@ -701,19 +665,19 @@ Let's first make these into a <code>DataSet</code>.
 
 <span class="org-keyword">class</span> <span class="org-type">ToyDataset</span>(Dataset):
     <span class="org-keyword">def</span> <span class="org-function-name">__init__</span>(<span class="org-keyword">self</span>, X, y):
-        <span class="org-keyword">self</span>.features = X
-        <span class="org-keyword">self</span>.labels = y
+        <span class="org-keyword">self</span>.<span class="org-variable-name">features</span> <span class="org-operator">=</span> X
+        <span class="org-keyword">self</span>.<span class="org-variable-name">labels</span> <span class="org-operator">=</span> y
 
     <span class="org-keyword">def</span> <span class="org-function-name">__getitem__</span>(<span class="org-keyword">self</span>, index):
-        <span class="org-variable-name">one_x</span> = <span class="org-keyword">self</span>.features[index]
-        <span class="org-variable-name">one_y</span> = <span class="org-keyword">self</span>.labels[index]
+        <span class="org-variable-name">one_x</span> <span class="org-operator">=</span> <span class="org-keyword">self</span>.features[index]
+        <span class="org-variable-name">one_y</span> <span class="org-operator">=</span> <span class="org-keyword">self</span>.labels[index]
         <span class="org-keyword">return</span> one_x, one_y
 
     <span class="org-keyword">def</span> <span class="org-function-name">__len__</span>(<span class="org-keyword">self</span>):
         <span class="org-keyword">return</span> <span class="org-keyword">self</span>.labels.shape[0]
 
-<span class="org-variable-name">train_ds</span> = ToyDataset(X_train, y_train)
-<span class="org-variable-name">test_ds</span> = ToyDataset(X_test, y_test)
+<span class="org-variable-name">train_ds</span> <span class="org-operator">=</span> ToyDataset(X_train, y_train)
+<span class="org-variable-name">test_ds</span> <span class="org-operator">=</span> ToyDataset(X_test, y_test)
 </pre>
 </div>
 
@@ -729,7 +693,7 @@ Note the three main components of the above Dataset definition:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(<span class="org-builtin">len</span>(train_ds))
+<pre class="src src-python"><span class="org-builtin">print</span>(<span class="org-builtin">len</span>(train_ds))
 </pre>
 </div>
 
@@ -747,18 +711,18 @@ Now we can use the <code>DataLoader</code> class to define how to sample from th
 
 torch.manual_seed(123)
 
-<span class="org-variable-name">train_loader</span> = DataLoader(
-    dataset=train_ds,
-    batch_size=2,
-    shuffle=<span class="org-constant">True</span>,
-    num_workers=0
+<span class="org-variable-name">train_loader</span> <span class="org-operator">=</span> DataLoader(
+    dataset<span class="org-operator">=</span>train_ds,
+    batch_size<span class="org-operator">=</span>2,
+    shuffle<span class="org-operator">=</span><span class="org-constant">True</span>,
+    num_workers<span class="org-operator">=</span>0
     )
 
-<span class="org-variable-name">test_loader</span> = DataLoader(
-    dataset=test_ds,
-    batch_size=2,
-    shuffle=<span class="org-constant">False</span>,
-    num_workers=0
+<span class="org-variable-name">test_loader</span> <span class="org-operator">=</span> DataLoader(
+    dataset<span class="org-operator">=</span>test_ds,
+    batch_size<span class="org-operator">=</span>2,
+    shuffle<span class="org-operator">=</span><span class="org-constant">False</span>,
+    num_workers<span class="org-operator">=</span>0
     )
 </pre>
 </div>
@@ -769,7 +733,7 @@ Now we can iterate over the <code>train_loader</code> as follows:
 
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">for</span> idx, (x, y) <span class="org-keyword">in</span> <span class="org-builtin">enumerate</span>(train_loader):
-    <span class="org-keyword">print</span>(f<span class="org-string">"Batch {idx+1}:"</span>, x, y)
+    <span class="org-builtin">print</span>(f<span class="org-string">"Batch </span>{idx<span class="org-operator">+</span>1}<span class="org-string">:"</span>, x, y)
 </pre>
 </div>
 
@@ -794,9 +758,9 @@ The <code>num_workers</code> argument relates to parallelizing data loading/proc
 </div>
 </div>
 
-<div id="outline-container-orgd09e3c4" class="outline-2">
-<h2 id="orgd09e3c4">A.7 A typical training loop</h2>
-<div class="outline-text-2" id="text-orgd09e3c4">
+<div id="outline-container-orgfec6eb5" class="outline-2">
+<h2 id="orgfec6eb5">A.7 A typical training loop</h2>
+<div class="outline-text-2" id="text-orgfec6eb5">
 <p>
 In this section, we combine many of the techniques from above to show a complete training loop.
 </p>
@@ -807,28 +771,28 @@ In this section, we combine many of the techniques from above to show a complete
  
  
 torch.manual_seed(123)
-<span class="org-variable-name">model</span> = NeuralNetwork(num_inputs=2, num_outputs=2)
-<span class="org-variable-name">optimizer</span> = torch.optim.SGD(model.parameters(), lr=0.5)
+<span class="org-variable-name">model</span> <span class="org-operator">=</span> NeuralNetwork(num_inputs<span class="org-operator">=</span>2, num_outputs<span class="org-operator">=</span>2)
+<span class="org-variable-name">optimizer</span> <span class="org-operator">=</span> torch.optim.SGD(model.parameters(), lr<span class="org-operator">=</span>0.5)
  
-<span class="org-variable-name">num_epochs</span> = 3
+<span class="org-variable-name">num_epochs</span> <span class="org-operator">=</span> 3
  
 <span class="org-keyword">for</span> epoch <span class="org-keyword">in</span> <span class="org-builtin">range</span>(num_epochs): 
     
     model.train()
     <span class="org-keyword">for</span> batch_idx, (features, labels) <span class="org-keyword">in</span> <span class="org-builtin">enumerate</span>(train_loader):
  
-        <span class="org-variable-name">logits</span> = model(features)
+        <span class="org-variable-name">logits</span> <span class="org-operator">=</span> model(features)
         
-        <span class="org-variable-name">loss</span> = F.cross_entropy(logits, labels)
+        <span class="org-variable-name">loss</span> <span class="org-operator">=</span> F.cross_entropy(logits, labels)
         
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
     
         <span class="org-comment-delimiter">### </span><span class="org-comment">LOGGING</span>
-        <span class="org-keyword">print</span>(f<span class="org-string">"Epoch: {epoch+1:03d}/{num_epochs:03d}"</span>
-              f<span class="org-string">" | Batch {batch_idx:03d}/{len(train_loader):03d}"</span>
-              f<span class="org-string">" | Train Loss: {loss:.2f}"</span>)
+        <span class="org-builtin">print</span>(f<span class="org-string">"Epoch: </span>{epoch<span class="org-operator">+</span>1:03d}<span class="org-string">/</span>{num_epochs:03d}<span class="org-string">"</span>
+              f<span class="org-string">" | Batch </span>{batch_idx:03d}<span class="org-string">/</span>{<span class="org-builtin">len</span>(train_loader):03d}<span class="org-string">"</span>
+              f<span class="org-string">" | Train Loss: </span>{loss:.2f}<span class="org-string">"</span>)
  
     model.<span class="org-builtin">eval</span>()
     <span class="org-comment-delimiter"># </span><span class="org-comment">Optional model evaluation</span>
@@ -868,8 +832,8 @@ Now we can make predictions with the model.
 <div class="org-src-container">
 <pre class="src src-python">model.<span class="org-builtin">eval</span>()
 <span class="org-keyword">with</span> torch.no_grad():
-    <span class="org-variable-name">outputs</span> = model(X_train)
-<span class="org-keyword">print</span>(outputs)
+    <span class="org-variable-name">outputs</span> <span class="org-operator">=</span> model(X_train)
+<span class="org-builtin">print</span>(outputs)
 </pre>
 </div>
 
@@ -887,9 +851,9 @@ If we want the class membership, we can obtain it with:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python">torch.set_printoptions(sci_mode=<span class="org-constant">False</span>)
-<span class="org-variable-name">probas</span> = torch.softmax(outputs, dim=1)
-<span class="org-keyword">print</span>(probas)
+<pre class="src src-python">torch.set_printoptions(sci_mode<span class="org-operator">=</span><span class="org-constant">False</span>)
+<span class="org-variable-name">probas</span> <span class="org-operator">=</span> torch.softmax(outputs, dim<span class="org-operator">=</span>1)
+<span class="org-builtin">print</span>(probas)
 </pre>
 </div>
 
@@ -911,8 +875,8 @@ We can convery into class labels as follows:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">predictions</span> = torch.argmax(probas, dim=1)
-<span class="org-keyword">print</span>(predictions)
+<pre class="src src-python"><span class="org-variable-name">predictions</span> <span class="org-operator">=</span> torch.argmax(probas, dim<span class="org-operator">=</span>1)
+<span class="org-builtin">print</span>(predictions)
 </pre>
 </div>
 
@@ -926,7 +890,7 @@ We don't need to compute softmax probabilities to accomplish this.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(torch.argmax(outputs, dim=1))
+<pre class="src src-python"><span class="org-builtin">print</span>(torch.argmax(outputs, dim<span class="org-operator">=</span>1))
 </pre>
 </div>
 
@@ -940,7 +904,7 @@ Is it correct?
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python">predictions == y_train
+<pre class="src src-python">predictions <span class="org-operator">==</span> y_train
 </pre>
 </div>
 
@@ -953,7 +917,7 @@ tensor([True, True, True, True, True])
 and to get the proportion correct:
 </p>
 <div class="org-src-container">
-<pre class="src src-python">torch.<span class="org-builtin">sum</span>(predictions == y_train) / <span class="org-builtin">len</span>(y_train)
+<pre class="src src-python">torch.<span class="org-builtin">sum</span>(predictions <span class="org-operator">==</span> y_train) <span class="org-operator">/</span> <span class="org-builtin">len</span>(y_train)
 </pre>
 </div>
 
@@ -964,9 +928,9 @@ tensor(1.)
 </div>
 
 
-<div id="outline-container-org2d2f6a1" class="outline-2">
-<h2 id="org2d2f6a1">A.8 Saving and Loading Models</h2>
-<div class="outline-text-2" id="text-org2d2f6a1">
+<div id="outline-container-orge15072e" class="outline-2">
+<h2 id="orge15072e">A.8 Saving and Loading Models</h2>
+<div class="outline-text-2" id="text-orge15072e">
 <p>
 We can save a model as follows:
 </p>
@@ -985,7 +949,7 @@ We restore a model with:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">model</span> = NeuralNetwork(2,2)
+<pre class="src src-python"><span class="org-variable-name">model</span> <span class="org-operator">=</span> NeuralNetwork(2,2)
 model.load_state_dict(torch.load(<span class="org-string">"model.pth"</span>))
 </pre>
 </div>
@@ -995,14 +959,14 @@ It is necessary to have an instance of the model in memory in order to load the 
 </p>
 </div>
 </div>
-<div id="outline-container-org102d782" class="outline-2">
-<h2 id="org102d782">A.9 Optimizing training performance with GPUs</h2>
-<div class="outline-text-2" id="text-org102d782">
+<div id="outline-container-orgcaff871" class="outline-2">
+<h2 id="orgcaff871">A.9 Optimizing training performance with GPUs</h2>
+<div class="outline-text-2" id="text-orgcaff871">
 </div>
 
-<div id="outline-container-org985db01" class="outline-3">
-<h3 id="org985db01">Computations on GPUs</h3>
-<div class="outline-text-3" id="text-org985db01">
+<div id="outline-container-orga5e3477" class="outline-3">
+<h3 id="orga5e3477">Computations on GPUs</h3>
+<div class="outline-text-3" id="text-orga5e3477">
 <ul class="org-ul">
 <li>Modifying training runs to use GPU in PyTorch is easy</li>
 <li>In PyTorch, a <code>device</code> is where computations occur and data resides. A pytorch tensor lives on a device and its operations are executed on that device.</li>
@@ -1013,7 +977,7 @@ Because I am running this locally, I am going to try to follow these examples wi
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">print</span>(<span class="org-string">"MPS is available."</span> <span class="org-keyword">if</span> torch.backends.mps.is_available() <span class="org-keyword">else</span> <span class="org-string">"MPS is not available."</span>)
+<pre class="src src-python"><span class="org-builtin">print</span>(<span class="org-string">"MPS is available."</span> <span class="org-keyword">if</span> torch.backends.mps.is_available() <span class="org-keyword">else</span> <span class="org-string">"MPS is not available."</span>)
 </pre>
 </div>
 
@@ -1027,9 +991,9 @@ By default, operations are done on CPU.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">tensor_1</span> = torch.tensor([1., 2., 3.])
-<span class="org-variable-name">tensor_2</span> = torch.tensor([4., 5., 6.])
-tensor_1 + tensor_2
+<pre class="src src-python"><span class="org-variable-name">tensor_1</span> <span class="org-operator">=</span> torch.tensor([1., 2., 3.])
+<span class="org-variable-name">tensor_2</span> <span class="org-operator">=</span> torch.tensor([4., 5., 6.])
+tensor_1 <span class="org-operator">+</span> tensor_2
 </pre>
 </div>
 
@@ -1043,9 +1007,9 @@ Now we can transfer the tensors to GPU and perform the addition there.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">tensor_1</span> = tensor_1.to(<span class="org-string">"mps"</span>)
-<span class="org-variable-name">tensor_2</span> = tensor_2.to(<span class="org-string">"mps"</span>)
-tensor_1 + tensor_2
+<pre class="src src-python"><span class="org-variable-name">tensor_1</span> <span class="org-operator">=</span> tensor_1.to(<span class="org-string">"mps"</span>)
+<span class="org-variable-name">tensor_2</span> <span class="org-operator">=</span> tensor_2.to(<span class="org-string">"mps"</span>)
+tensor_1 <span class="org-operator">+</span> tensor_2
 </pre>
 </div>
 
@@ -1060,9 +1024,9 @@ All tensors have to be on the same device or the computation will fail.
 
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">tensor_1</span> = tensor_1.to(<span class="org-string">"mps"</span>)
-<span class="org-variable-name">tensor_2</span> = tensor_2.to(<span class="org-string">"cpu"</span>)
-tensor_1 + tensor_2
+<pre class="src src-python"><span class="org-variable-name">tensor_1</span> <span class="org-operator">=</span> tensor_1.to(<span class="org-string">"mps"</span>)
+<span class="org-variable-name">tensor_2</span> <span class="org-operator">=</span> tensor_2.to(<span class="org-string">"cpu"</span>)
+tensor_1 <span class="org-operator">+</span> tensor_2
 </pre>
 </div>
 
@@ -1077,9 +1041,9 @@ RuntimeError: Expected all tensors to be on the same device, but found at least 
 </pre>
 </div>
 </div>
-<div id="outline-container-org79bd24e" class="outline-3">
-<h3 id="org79bd24e">Single-GPU Training</h3>
-<div class="outline-text-3" id="text-org79bd24e">
+<div id="outline-container-orge2bf54d" class="outline-3">
+<h3 id="orge2bf54d">Single-GPU Training</h3>
+<div class="outline-text-3" id="text-orge2bf54d">
 <p>
 All we need to do to train on a single GPU is:
 </p>
@@ -1094,14 +1058,14 @@ This is usually considered the best practice:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">device</span> = torch.device(<span class="org-string">"cuda"</span> <span class="org-keyword">if</span> torch.cuda.is_available() <span class="org-keyword">else</span> <span class="org-string">"cpu"</span>)
+<pre class="src src-python"><span class="org-variable-name">device</span> <span class="org-operator">=</span> torch.device(<span class="org-string">"cuda"</span> <span class="org-keyword">if</span> torch.cuda.is_available() <span class="org-keyword">else</span> <span class="org-string">"cpu"</span>)
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org1ef0bdf" class="outline-3">
-<h3 id="org1ef0bdf">Multi-GPU Training</h3>
-<div class="outline-text-3" id="text-org1ef0bdf">
+<div id="outline-container-org5321038" class="outline-3">
+<h3 id="org5321038">Multi-GPU Training</h3>
+<div class="outline-text-3" id="text-org5321038">
 <p>
 This section introduces the idea of <i>distributed training</i>.
 </p>
@@ -1119,7 +1083,7 @@ The most basic approach uses PyTorch's <code>DistributedDataParallel</code> stra
 DDP offers enhanced training speed.
 </p>
 
-<div class="notice">
+<div class="notice" id="org4aec856">
 <p>
 DDP does not function properly in interactive environments like Jupyter notebooks. DDP code must be run as a script, not within a notebook interface.
 </p>
@@ -1153,55 +1117,55 @@ Here is an example script for distributed training.
 
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">def</span> <span class="org-function-name">ddp_setup</span>(rank, world_size):
-    <span class="org-variable-name">os.environ</span>[<span class="org-string">"MASTER_ADDR"</span>] = <span class="org-string">"localhost"</span>
-    <span class="org-variable-name">os.environ</span>[<span class="org-string">"MASTER_PORT"</span>] = <span class="org-string">"12345"</span>
+    os.<span class="org-variable-name">environ</span>[<span class="org-string">"MASTER_ADDR"</span>] <span class="org-operator">=</span> <span class="org-string">"localhost"</span>
+    os.<span class="org-variable-name">environ</span>[<span class="org-string">"MASTER_PORT"</span>] <span class="org-operator">=</span> <span class="org-string">"12345"</span>
     init_process_group(
-        backend=<span class="org-string">"nccl"</span>,
-        rank=rank,
-        world_size=world_size
+        backend<span class="org-operator">=</span><span class="org-string">"nccl"</span>,
+        rank<span class="org-operator">=</span>rank,
+        world_size<span class="org-operator">=</span>world_size
     )
     torch.cuda.set_device(rank)
 <span class="org-keyword">def</span> <span class="org-function-name">prepare_dataset</span>():
     ...
-    <span class="org-variable-name">train_loader</span> = DataLoader(
-        dataset=train_ds,
-        batch_size=2,
-        shuffle=<span class="org-constant">False</span>,
-        pin_memory=<span class="org-constant">True</span>,
-        drop_last=<span class="org-constant">True</span>,
+    <span class="org-variable-name">train_loader</span> <span class="org-operator">=</span> DataLoader(
+        dataset<span class="org-operator">=</span>train_ds,
+        batch_size<span class="org-operator">=</span>2,
+        shuffle<span class="org-operator">=</span><span class="org-constant">False</span>,
+        pin_memory<span class="org-operator">=</span><span class="org-constant">True</span>,
+        drop_last<span class="org-operator">=</span><span class="org-constant">True</span>,
         <span class="org-comment-delimiter"># </span><span class="org-comment">this ensures each GPU receives different data subsample</span>
-        sampler=DistributedSampler(train_ds) 
+        sampler<span class="org-operator">=</span>DistributedSampler(train_ds) 
     )    
     <span class="org-keyword">return</span> train_loader, test_loader
 <span class="org-keyword">def</span> <span class="org-function-name">main</span>(rank, world_size, num_epochs):      
     ddp_setup(rank, world_size)
-    <span class="org-variable-name">train_loader</span>, <span class="org-variable-name">test_loader</span> = prepare_dataset()
-    <span class="org-variable-name">model</span> = NeuralNetwork(num_inputs=2, num_outputs=2)
+    <span class="org-variable-name">train_loader</span>, <span class="org-variable-name">test_loader</span> <span class="org-operator">=</span> prepare_dataset()
+    <span class="org-variable-name">model</span> <span class="org-operator">=</span> NeuralNetwork(num_inputs<span class="org-operator">=</span>2, num_outputs<span class="org-operator">=</span>2)
     model.to(rank)
-    <span class="org-variable-name">optimizer</span> = torch.optim.SGD(model.parameters(), lr=0.5)
+    <span class="org-variable-name">optimizer</span> <span class="org-operator">=</span> torch.optim.SGD(model.parameters(), lr<span class="org-operator">=</span>0.5)
     <span class="org-comment-delimiter"># </span><span class="org-comment">Wrap the model in DDP to enable gradient synchronization</span>
-    <span class="org-variable-name">model</span> = DDP(model, device_ids=[rank])
+    <span class="org-variable-name">model</span> <span class="org-operator">=</span> DDP(model, device_ids<span class="org-operator">=</span>[rank])
     <span class="org-keyword">for</span> epoch <span class="org-keyword">in</span> <span class="org-builtin">range</span>(num_epochs):
     <span class="org-keyword">for</span> features, labels <span class="org-keyword">in</span> train_loader:
-            <span class="org-variable-name">features</span>, <span class="org-variable-name">labels</span> = features.to(rank), labels.to(rank) 
+            <span class="org-variable-name">features</span>, <span class="org-variable-name">labels</span> <span class="org-operator">=</span> features.to(rank), labels.to(rank) 
             ...
-            <span class="org-keyword">print</span>(f<span class="org-string">"[GPU{rank}] Epoch: {epoch+1:03d}/{num_epochs:03d}"</span>
-                  f<span class="org-string">" | Batchsize {labels.shape[0]:03d}"</span>
-                  f<span class="org-string">" | Train/Val Loss: {loss:.2f}"</span>)
+            <span class="org-builtin">print</span>(f<span class="org-string">"[GPU</span>{rank}<span class="org-string">] Epoch: </span>{epoch<span class="org-operator">+</span>1:03d}<span class="org-string">/</span>{num_epochs:03d}<span class="org-string">"</span>
+                  f<span class="org-string">" | Batchsize </span>{labels.shape[0]:03d}<span class="org-string">"</span>
+                  f<span class="org-string">" | Train/Val Loss: </span>{loss:.2f}<span class="org-string">"</span>)
     model.<span class="org-builtin">eval</span>()
-    <span class="org-variable-name">train_acc</span> = compute_accuracy(model, train_loader, device=rank)
-    <span class="org-keyword">print</span>(f<span class="org-string">"[GPU{rank}] Training accuracy"</span>, train_acc)
-    <span class="org-variable-name">test_acc</span> = compute_accuracy(model, test_loader, device=rank)
-    <span class="org-keyword">print</span>(f<span class="org-string">"[GPU{rank}] Test accuracy"</span>, test_acc)
+    <span class="org-variable-name">train_acc</span> <span class="org-operator">=</span> compute_accuracy(model, train_loader, device<span class="org-operator">=</span>rank)
+    <span class="org-builtin">print</span>(f<span class="org-string">"[GPU</span>{rank}<span class="org-string">] Training accuracy"</span>, train_acc)
+    <span class="org-variable-name">test_acc</span> <span class="org-operator">=</span> compute_accuracy(model, test_loader, device<span class="org-operator">=</span>rank)
+    <span class="org-builtin">print</span>(f<span class="org-string">"[GPU</span>{rank}<span class="org-string">] Test accuracy"</span>, test_acc)
     <span class="org-comment-delimiter"># </span><span class="org-comment">exit distributed training, free up resources</span>
     destroy_process_group()                   
 
-<span class="org-keyword">if</span> <span class="org-builtin">__name__</span> == <span class="org-string">"__main__"</span>:
-    <span class="org-keyword">print</span>(<span class="org-string">"Number of GPUs available:"</span>, torch.cuda.device_count())
+<span class="org-keyword">if</span> <span class="org-builtin">__name__</span> <span class="org-operator">==</span> <span class="org-string">"__main__"</span>:
+    <span class="org-builtin">print</span>(<span class="org-string">"Number of GPUs available:"</span>, torch.cuda.device_count())
     torch.manual_seed(123)
-    <span class="org-variable-name">num_epochs</span> = 3
-    <span class="org-variable-name">world_size</span> = torch.cuda.device_count()
-    mp.spawn(main, args=(world_size, num_epochs), nprocs=world_size)
+    <span class="org-variable-name">num_epochs</span> <span class="org-operator">=</span> 3
+    <span class="org-variable-name">world_size</span> <span class="org-operator">=</span> torch.cuda.device_count()
+    mp.spawn(main, args<span class="org-operator">=</span>(world_size, num_epochs), nprocs<span class="org-operator">=</span>world_size)
 </pre>
 </div>
 
@@ -1218,7 +1182,7 @@ CUDA_VISIBLE_DIVICES=0,2 python training_script.py
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2024-03-31 Sun 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

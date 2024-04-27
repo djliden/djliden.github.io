@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Logging and Loading a QLoRA Model with MLflow</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,53 +31,53 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Logging and Loading a QLoRA Model with MLflow</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org1f578cc">Install Dependencies</a></li>
-<li><a href="#org61c8855">Set up assets/cache directories</a></li>
-<li><a href="#org0cf2bd1">Skip Data Processing</a></li>
-<li><a href="#org6b92415">Load the model, tokenizer, etc.</a>
+<li><a href="#org2af26ea">Install Dependencies</a></li>
+<li><a href="#orgabe94ba">Set up assets/cache directories</a></li>
+<li><a href="#org5c12828">Skip Data Processing</a></li>
+<li><a href="#org1b39f77">Load the model, tokenizer, etc.</a>
 <ul>
-<li><a href="#org0cdda01">Tokenizer</a></li>
-<li><a href="#org25dea87">LoRA config</a></li>
-<li><a href="#orgf03ba39">Model</a></li>
-<li><a href="#orgd23fee9">Set up the peft model</a></li>
+<li><a href="#orge468595">Tokenizer</a></li>
+<li><a href="#orgeb92a9d">LoRA config</a></li>
+<li><a href="#org15f4db4">Model</a></li>
+<li><a href="#orgced1ee2">Set up the peft model</a></li>
 </ul>
 </li>
-<li><a href="#orgf29bef3">Skip Training</a></li>
-<li><a href="#org445c8aa">Log to MLflow</a></li>
-<li><a href="#org4cf8458">Load the MLflow model</a></li>
-<li><a href="#org4f888af">Summary</a></li>
+<li><a href="#orgf9e9efe">Skip Training</a></li>
+<li><a href="#orgb346354">Log to MLflow</a></li>
+<li><a href="#orge50b36e">Load the MLflow model</a></li>
+<li><a href="#org37a4c46">Summary</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview">
+<div class="preview" id="org5203b25">
 <p>
 This is a minimal example of how to log an MLflow qlora model. It does not show any actual model training or data processing, just the basic process of saving the model.
 </p>
 
 </div>
 
-<div id="outline-container-org1f578cc" class="outline-2">
-<h2 id="org1f578cc">Install Dependencies</h2>
-<div class="outline-text-2" id="text-org1f578cc">
+<div id="outline-container-org2af26ea" class="outline-2">
+<h2 id="org2af26ea">Install Dependencies</h2>
+<div class="outline-text-2" id="text-org2af26ea">
 <div class="org-src-container">
-<pre class="src src-python">%pip install --upgrade torch
-%pip install --upgrade transformers accelerate peft bitsandbytes mlflow pynvml packaging ninja
+<pre class="src src-python"><span class="org-operator">%</span>pip install <span class="org-operator">--</span>upgrade torch
+<span class="org-operator">%</span>pip install <span class="org-operator">--</span>upgrade transformers accelerate peft bitsandbytes mlflow pynvml packaging ninja
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-python">%sh
-cd /databricks/driver/
-git clone https://github.com/Dao-AILab/flash-attention.git
-cd flash-attention
-pip install . --no-build-isolation
+<pre class="src src-python"><span class="org-operator">%</span>sh
+cd <span class="org-operator">/</span>databricks<span class="org-operator">/</span>driver<span class="org-operator">/</span>
+git clone https:<span class="org-operator">//</span>github.com<span class="org-operator">/</span>Dao<span class="org-operator">-</span>AILab<span class="org-operator">/</span>flash<span class="org-operator">-</span>attention.git
+cd flash<span class="org-operator">-</span>attention
+pip install . <span class="org-operator">--</span>no<span class="org-operator">-</span>build<span class="org-operator">-</span>isolation
 </pre>
 </div>
 
@@ -132,89 +86,89 @@ pip install . --no-build-isolation
 </p>
 </div>
 </div>
-<div id="outline-container-org61c8855" class="outline-2">
-<h2 id="org61c8855">Set up assets/cache directories</h2>
-<div class="outline-text-2" id="text-org61c8855">
+<div id="outline-container-orgabe94ba" class="outline-2">
+<h2 id="orgabe94ba">Set up assets/cache directories</h2>
+<div class="outline-text-2" id="text-orgabe94ba">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">Some Environment Setup</span>
-<span class="org-variable-name">ASSETS_DIR</span> = <span class="org-string">"&lt;assets_dir&gt;"</span>
-<span class="org-variable-name">OUTPUT_DIR</span> = ASSETS_DIR + <span class="org-string">"/results/mistral_qlora_min/"</span> <span class="org-comment-delimiter"># </span><span class="org-comment">the path to the output directory; where model checkpoints will be saved</span>
-<span class="org-variable-name">LOG_DIR</span> = ASSETS_DIR + <span class="org-string">"/logs/mistral_qlora_min/"</span> <span class="org-comment-delimiter"># </span><span class="org-comment">the path to the log directory; where logs will be saved</span>
-<span class="org-variable-name">CACHE_DIR</span> = ASSETS_DIR + <span class="org-string">"/cache/mistral_qlora_min/"</span> <span class="org-comment-delimiter"># </span><span class="org-comment">the path to the cache directory; where cache files will be saved</span>
+<span class="org-variable-name">ASSETS_DIR</span> <span class="org-operator">=</span> <span class="org-string">"&lt;assets_dir&gt;"</span>
+<span class="org-variable-name">OUTPUT_DIR</span> <span class="org-operator">=</span> ASSETS_DIR <span class="org-operator">+</span> <span class="org-string">"/results/mistral_qlora_min/"</span> <span class="org-comment-delimiter"># </span><span class="org-comment">the path to the output directory; where model checkpoints will be saved</span>
+<span class="org-variable-name">LOG_DIR</span> <span class="org-operator">=</span> ASSETS_DIR <span class="org-operator">+</span> <span class="org-string">"/logs/mistral_qlora_min/"</span> <span class="org-comment-delimiter"># </span><span class="org-comment">the path to the log directory; where logs will be saved</span>
+<span class="org-variable-name">CACHE_DIR</span> <span class="org-operator">=</span> ASSETS_DIR <span class="org-operator">+</span> <span class="org-string">"/cache/mistral_qlora_min/"</span> <span class="org-comment-delimiter"># </span><span class="org-comment">the path to the cache directory; where cache files will be saved</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org0cf2bd1" class="outline-2">
-<h2 id="org0cf2bd1">Skip Data Processing</h2>
-<div class="outline-text-2" id="text-org0cf2bd1">
+<div id="outline-container-org5c12828" class="outline-2">
+<h2 id="org5c12828">Skip Data Processing</h2>
+<div class="outline-text-2" id="text-org5c12828">
 <p>
 We are not preparing or using any training data in this example. We are skipping the training part.
 </p>
 </div>
 </div>
-<div id="outline-container-org6b92415" class="outline-2">
-<h2 id="org6b92415">Load the model, tokenizer, etc.</h2>
-<div class="outline-text-2" id="text-org6b92415">
+<div id="outline-container-org1b39f77" class="outline-2">
+<h2 id="org1b39f77">Load the model, tokenizer, etc.</h2>
+<div class="outline-text-2" id="text-org1b39f77">
 </div>
-<div id="outline-container-org0cdda01" class="outline-3">
-<h3 id="org0cdda01">Tokenizer</h3>
-<div class="outline-text-3" id="text-org0cdda01">
+<div id="outline-container-orge468595" class="outline-3">
+<h3 id="orge468595">Tokenizer</h3>
+<div class="outline-text-3" id="text-orge468595">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> transformers <span class="org-keyword">import</span> AutoTokenizer
-<span class="org-variable-name">tokenizer</span> = AutoTokenizer.from_pretrained(<span class="org-string">"mistralai/Mistral-7B-v0.1"</span>)
+<span class="org-variable-name">tokenizer</span> <span class="org-operator">=</span> AutoTokenizer.from_pretrained(<span class="org-string">"mistralai/Mistral-7B-v0.1"</span>)
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org25dea87" class="outline-3">
-<h3 id="org25dea87">LoRA config</h3>
-<div class="outline-text-3" id="text-org25dea87">
+<div id="outline-container-orgeb92a9d" class="outline-3">
+<h3 id="orgeb92a9d">LoRA config</h3>
+<div class="outline-text-3" id="text-orgeb92a9d">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> peft <span class="org-keyword">import</span> LoraConfig, TaskType
 
-<span class="org-variable-name">lora_config</span> = LoraConfig(
-    r=64,
-    target_modules=<span class="org-string">"all-linear"</span>,
-    task_type=TaskType.CAUSAL_LM,
-    lora_alpha=32,
-    lora_dropout=0.05
+<span class="org-variable-name">lora_config</span> <span class="org-operator">=</span> LoraConfig(
+    r<span class="org-operator">=</span>64,
+    target_modules<span class="org-operator">=</span><span class="org-string">"all-linear"</span>,
+    task_type<span class="org-operator">=</span>TaskType.CAUSAL_LM,
+    lora_alpha<span class="org-operator">=</span>32,
+    lora_dropout<span class="org-operator">=</span>0.05
 )
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgf03ba39" class="outline-3">
-<h3 id="orgf03ba39">Model</h3>
-<div class="outline-text-3" id="text-orgf03ba39">
+<div id="outline-container-org15f4db4" class="outline-3">
+<h3 id="org15f4db4">Model</h3>
+<div class="outline-text-3" id="text-org15f4db4">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> transformers <span class="org-keyword">import</span> AutoModelForCausalLM, BitsAndBytesConfig
 <span class="org-keyword">import</span> torch
 
-<span class="org-variable-name">bnb_config</span> = BitsAndBytesConfig(
-    load_in_4bit=<span class="org-constant">True</span>,
+<span class="org-variable-name">bnb_config</span> <span class="org-operator">=</span> BitsAndBytesConfig(
+    load_in_4bit<span class="org-operator">=</span><span class="org-constant">True</span>,
     <span class="org-comment-delimiter">#</span><span class="org-comment">bnb_4bit_use_double_quant=True,</span>
-    bnb_4bit_compute_dtype=torch.bfloat16,
+    bnb_4bit_compute_dtype<span class="org-operator">=</span>torch.bfloat16,
 )
 
-<span class="org-variable-name">model</span> = AutoModelForCausalLM.from_pretrained(
+<span class="org-variable-name">model</span> <span class="org-operator">=</span> AutoModelForCausalLM.from_pretrained(
     <span class="org-string">"mistralai/Mistral-7B-v0.1"</span>,
-    trust_remote_code=<span class="org-constant">True</span>,
-    cache_dir=CACHE_DIR,
-    device_map=<span class="org-string">"auto"</span>,
-    quantization_config=bnb_config)
+    trust_remote_code<span class="org-operator">=</span><span class="org-constant">True</span>,
+    cache_dir<span class="org-operator">=</span>CACHE_DIR,
+    device_map<span class="org-operator">=</span><span class="org-string">"auto"</span>,
+    quantization_config<span class="org-operator">=</span>bnb_config)
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgd23fee9" class="outline-3">
-<h3 id="orgd23fee9">Set up the peft model</h3>
-<div class="outline-text-3" id="text-orgd23fee9">
+<div id="outline-container-orgced1ee2" class="outline-3">
+<h3 id="orgced1ee2">Set up the peft model</h3>
+<div class="outline-text-3" id="text-orgced1ee2">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> peft <span class="org-keyword">import</span> get_peft_model
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">this results in the peft model type</span>
-<span class="org-variable-name">Model</span> = get_peft_model(model, lora_config)
+<span class="org-variable-name">Model</span> <span class="org-operator">=</span> get_peft_model(model, lora_config)
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">this does not</span>
 <span class="org-comment-delimiter"># </span><span class="org-comment">model.add_adapter(lora_config)</span>
@@ -356,23 +310,23 @@ Though the <code>add_adapter</code> approach does, in fact, add the adapter, it 
 </div>
 </div>
 </div>
-<div id="outline-container-orgf29bef3" class="outline-2">
-<h2 id="orgf29bef3">Skip Training</h2>
-<div class="outline-text-2" id="text-orgf29bef3">
+<div id="outline-container-orgf9e9efe" class="outline-2">
+<h2 id="orgf9e9efe">Skip Training</h2>
+<div class="outline-text-2" id="text-orgf9e9efe">
 <p>
 Again, we are not actually training the model.
 </p>
 </div>
 </div>
-<div id="outline-container-org445c8aa" class="outline-2">
-<h2 id="org445c8aa">Log to MLflow</h2>
-<div class="outline-text-2" id="text-org445c8aa">
+<div id="outline-container-orgb346354" class="outline-2">
+<h2 id="orgb346354">Log to MLflow</h2>
+<div class="outline-text-2" id="text-orgb346354">
 <p>
 (Not all of this is necessary)
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">prompt_template</span> = <span class="org-string">"""&lt;|im_start|&gt;system</span>
+<pre class="src src-python"><span class="org-variable-name">prompt_template</span> <span class="org-operator">=</span> <span class="org-string">"""&lt;|im_start|&gt;system</span>
 <span class="org-string">You are a helpful assistant and an expert at making coffee.&lt;|im_end|&gt;</span>
 <span class="org-string">&lt;|im_start|&gt;user</span>
 <span class="org-string">{prompt}&lt;|im_end|&gt;</span>
@@ -382,7 +336,7 @@ Again, we are not actually training the model.
 
 <span class="org-keyword">from</span> mlflow.models <span class="org-keyword">import</span> infer_signature
 
-<span class="org-variable-name">prompt_template</span> = <span class="org-string">"""&lt;|im_start|&gt;system</span>
+<span class="org-variable-name">prompt_template</span> <span class="org-operator">=</span> <span class="org-string">"""&lt;|im_start|&gt;system</span>
 <span class="org-string">You are a helpful assistant and an expert at making coffee.&lt;|im_end|&gt;</span>
 <span class="org-string">&lt;|im_start|&gt;user</span>
 <span class="org-string">{prompt}&lt;|im_end|&gt;</span>
@@ -391,23 +345,23 @@ Again, we are not actually training the model.
 <span class="org-string">"""</span>
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">Define the sample input/output</span>
-<span class="org-variable-name">sample_input</span> = <span class="org-string">"What is two plus two?"</span>
-<span class="org-variable-name">sample_output</span> = prompt_template.<span class="org-builtin">format</span>(prompt=sample_input) + <span class="org-string">"four&lt;|im_end|&gt;\n&lt;|endoftext|&gt;"</span>
+<span class="org-variable-name">sample_input</span> <span class="org-operator">=</span> <span class="org-string">"What is two plus two?"</span>
+<span class="org-variable-name">sample_output</span> <span class="org-operator">=</span> prompt_template.<span class="org-builtin">format</span>(prompt<span class="org-operator">=</span>sample_input) <span class="org-operator">+</span> <span class="org-string">"four&lt;|im_end|&gt;</span><span class="org-constant">\n</span><span class="org-string">&lt;|endoftext|&gt;"</span>
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">Define the sample parameters</span>
-<span class="org-variable-name">sample_params</span> = {
+<span class="org-variable-name">sample_params</span> <span class="org-operator">=</span> {
     <span class="org-string">"max_new_tokens"</span>: 512,
     <span class="org-string">"repetition_penalty"</span>: 1.1,
 }
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">MLflow infers schema from the provided sample input/output/params</span>
-<span class="org-variable-name">signature</span> = infer_signature(
-    model_input=sample_input,
-    model_output=sample_output,
-    params=sample_params,
+<span class="org-variable-name">signature</span> <span class="org-operator">=</span> infer_signature(
+    model_input<span class="org-operator">=</span>sample_input,
+    model_output<span class="org-operator">=</span>sample_output,
+    params<span class="org-operator">=</span>sample_params,
 )
 
-<span class="org-keyword">print</span>(signature)
+<span class="org-builtin">print</span>(signature)
 </pre>
 </div>
 
@@ -430,10 +384,10 @@ params:
 <span class="org-keyword">with</span> mlflow.start_run():
     mlflow.log_params(lora_config.to_dict())
     mlflow.transformers.log_model(
-        transformers_model={<span class="org-string">"model"</span>: model, <span class="org-string">"tokenizer"</span>: tokenizer},
-        signature=signature,
-        artifact_path=<span class="org-string">"model"</span>,  <span class="org-comment-delimiter"># </span><span class="org-comment">This is a relative path to save model files within MLflow run</span>
-        extra_pip_requirements = [<span class="org-string">"bitsandbytes"</span>, <span class="org-string">"peft"</span>],
+        transformers_model<span class="org-operator">=</span>{<span class="org-string">"model"</span>: model, <span class="org-string">"tokenizer"</span>: tokenizer},
+        signature<span class="org-operator">=</span>signature,
+        artifact_path<span class="org-operator">=</span><span class="org-string">"model"</span>,  <span class="org-comment-delimiter"># </span><span class="org-comment">This is a relative path to save model files within MLflow run</span>
+        extra_pip_requirements <span class="org-operator">=</span> [<span class="org-string">"bitsandbytes"</span>, <span class="org-string">"peft"</span>],
     )
 </pre>
 </div>
@@ -453,14 +407,14 @@ This is
 </p>
 </div>
 </div>
-<div id="outline-container-org4cf8458" class="outline-2">
-<h2 id="org4cf8458">Load the MLflow model</h2>
-<div class="outline-text-2" id="text-org4cf8458">
+<div id="outline-container-orge50b36e" class="outline-2">
+<h2 id="orge50b36e">Load the MLflow model</h2>
+<div class="outline-text-2" id="text-orge50b36e">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> mlflow
 
-<span class="org-variable-name">run_id</span> = <span class="org-string">"&lt;model_id&gt;"</span>
-<span class="org-variable-name">mlflow_model</span> = mlflow.pyfunc.load_model(f<span class="org-string">'runs:/{run_id}/model'</span>)
+<span class="org-variable-name">run_id</span> <span class="org-operator">=</span> <span class="org-string">"&lt;model_id&gt;"</span>
+<span class="org-variable-name">mlflow_model</span> <span class="org-operator">=</span> mlflow.pyfunc.load_model(f<span class="org-string">'runs:/</span>{run_id}<span class="org-string">/model'</span>)
 </pre>
 </div>
 
@@ -487,9 +441,9 @@ because we did not actually fine-tune the model to follow any of our instruction
 </div>
 </div>
 
-<div id="outline-container-org4f888af" class="outline-2">
-<h2 id="org4f888af">Summary</h2>
-<div class="outline-text-2" id="text-org4f888af">
+<div id="outline-container-org37a4c46" class="outline-2">
+<h2 id="org37a4c46">Summary</h2>
+<div class="outline-text-2" id="text-org37a4c46">
 <p>
 This note showed the basics of how to log and load a peft model with MLflow.
 </p>
@@ -498,7 +452,7 @@ This note showed the basics of how to log and load a peft model with MLflow.
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2024-04-17 Wed 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Introduction to Emacs Hooks</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,30 +31,30 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Introduction to Emacs Hooks</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0b33e72">Emacs Hooks</a></li>
-<li><a href="#org0685338">What do hooks do?</a></li>
-<li><a href="#org2a2fe22">How do hooks work?</a>
+<li><a href="#org6246055">Emacs Hooks</a></li>
+<li><a href="#org91942f4">What do hooks do?</a></li>
+<li><a href="#orgc136d98">How do hooks work?</a>
 <ul>
-<li><a href="#orgd87608a">Hooks Example</a></li>
+<li><a href="#orgfdb34e1">Hooks Example</a></li>
 </ul>
 </li>
-<li><a href="#org3944d7c">Mode Hooks</a></li>
-<li><a href="#orgc1f87c0">Appendix: Hooks in use-package</a></li>
-<li><a href="#org61dd6b1">Further Reading</a></li>
+<li><a href="#orgcf46e03">Mode Hooks</a></li>
+<li><a href="#org31af475">Appendix: Hooks in use-package</a></li>
+<li><a href="#org133a58a">Further Reading</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org0b33e72" class="outline-2">
-<h2 id="org0b33e72">Emacs Hooks</h2>
-<div class="outline-text-2" id="text-org0b33e72">
-<div class="preview">
+<div id="outline-container-org6246055" class="outline-2">
+<h2 id="org6246055">Emacs Hooks</h2>
+<div class="outline-text-2" id="text-org6246055">
+<div class="preview" id="orgabf1651">
 <p>
 Today I was customizing the appearance of org files displayed with <a href="https://github.com/takaxp/org-tree-slide">org-tree-slide</a>. In particular, I wanted to increase the font size and start <a href="https://github.com/rnkn/olivetti">Olivetti mode</a> whenever I started <code>org-tree-slide-mode</code> and return everything to normal when I was done. This, I quickly discovered, required the use of <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">hooks</a>. Hooks are not especially complicated, but they are useful and worth taking a few minutes to understand. This post will cover the basics of working with hooks in emacs.
 </p>
@@ -108,9 +62,9 @@ Today I was customizing the appearance of org files displayed with <a href="http
 </div>
 </div>
 </div>
-<div id="outline-container-org0685338" class="outline-2">
-<h2 id="org0685338">What do hooks do?</h2>
-<div class="outline-text-2" id="text-org0685338">
+<div id="outline-container-org91942f4" class="outline-2">
+<h2 id="org91942f4">What do hooks do?</h2>
+<div class="outline-text-2" id="text-org91942f4">
 <p>
 A <i>hook</i> is a list of functions that are run on specifically-defined occasions, triggered by calls to a <code>run-hooks</code> or <code>run-mode-hooks</code> function.
 </p>
@@ -126,7 +80,7 @@ For a specific example, <code>org-tree-slide-mode</code> defines the hooks <code
 
 <div class="org-center">
 
-<figure>
+<figure id="org927fabb">
 <img src="./figures/20231217-emacs-hooks/hooks_screen_capture.gif" alt="hooks_screen_capture.gif">
 
 <figcaption><span class="figure-number">Figure 1: </span>Invoking <code>org-tree-slide-mode</code> runs <code>org-tree-slide-play-hook</code>, a list of functions meant to run when a slide show is started in <code>org-tree-slide-mode</code>. In this case, the hook makes the text larger and centered in the buffer.</figcaption>
@@ -134,9 +88,9 @@ For a specific example, <code>org-tree-slide-mode</code> defines the hooks <code
 </div>
 </div>
 </div>
-<div id="outline-container-org2a2fe22" class="outline-2">
-<h2 id="org2a2fe22">How do hooks work?</h2>
-<div class="outline-text-2" id="text-org2a2fe22">
+<div id="outline-container-orgc136d98" class="outline-2">
+<h2 id="orgc136d98">How do hooks work?</h2>
+<div class="outline-text-2" id="text-orgc136d98">
 <p>
 First, a quick glossary of terms:
 </p>
@@ -150,9 +104,9 @@ First, a quick glossary of terms:
 Hooks are run when specific functions call them. Such functions are often called at specific points in the initialization or use of emacs modes, but they are not limited to those circumstances. Here is a minimal example.
 </p>
 </div>
-<div id="outline-container-orgd87608a" class="outline-3">
-<h3 id="orgd87608a">Hooks Example</h3>
-<div class="outline-text-3" id="text-orgd87608a">
+<div id="outline-container-orgfdb34e1" class="outline-3">
+<h3 id="orgfdb34e1">Hooks Example</h3>
+<div class="outline-text-3" id="text-orgfdb34e1">
 <p>
 First, we'll define the hook variable. This is the same as defining any other variable.
 </p>
@@ -223,7 +177,7 @@ There's nothing especially unique about any of these components. We assign the v
 
 <div class="org-center">
 
-<figure>
+<figure id="org21a7d19">
 <img src="./figures/20231217-emacs-hooks/hooks-diagram-2.png" alt="hooks-diagram-2.png">
 
 <figcaption><span class="figure-number">Figure 2: </span>Diagram of the basic process of working with normal hooks</figcaption>
@@ -233,9 +187,9 @@ There's nothing especially unique about any of these components. We assign the v
 </div>
 </div>
 
-<div id="outline-container-org3944d7c" class="outline-2">
-<h2 id="org3944d7c">Mode Hooks</h2>
-<div class="outline-text-2" id="text-org3944d7c">
+<div id="outline-container-orgcf46e03" class="outline-2">
+<h2 id="orgcf46e03">Mode Hooks</h2>
+<div class="outline-text-2" id="text-orgcf46e03">
 <p>
 Hooks are most commonly encountered in the context of modes. Modes generally define hooks to which users can add functions that will be called at the end of the mode's initialization. For example, I wanted to display line numbers whenever I was in a buffer with code, so I have the following line in my config:
 </p>
@@ -275,15 +229,15 @@ and, indeed, when I open an e.g. Python buffer, line numbers appear as desired.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc1f87c0" class="outline-2">
-<h2 id="orgc1f87c0">Appendix: Hooks in use-package</h2>
-<div class="outline-text-2" id="text-orgc1f87c0">
+<div id="outline-container-org31af475" class="outline-2">
+<h2 id="org31af475">Appendix: Hooks in use-package</h2>
+<div class="outline-text-2" id="text-org31af475">
 <p>
 I use <code>use-package</code> for managing my emacs packages. <code>use-package</code> declarations allow users to pass a <code>:hooks</code> option in the package declaration in order to add functions to hooks. Hooks can be configured in <code>use-package</code> by defining a cons cell as follows.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(use-package package-name
+<pre class="src src-emacs-lisp">(<span class="org-keyword">use-package</span> package-name
   <span class="org-builtin">:hook</span>
   ('mode-name . 'function-to-add-to-hook)
   )
@@ -295,9 +249,9 @@ Note that we do <i>not</i> refer to <code>mode-name-hook</code> in the hook conf
 </p>
 </div>
 </div>
-<div id="outline-container-org61dd6b1" class="outline-2">
-<h2 id="org61dd6b1">Further Reading</h2>
-<div class="outline-text-2" id="text-org61dd6b1">
+<div id="outline-container-org133a58a" class="outline-2">
+<h2 id="org133a58a">Further Reading</h2>
+<div class="outline-text-2" id="text-org133a58a">
 <ul class="org-ul">
 <li><a href="https://gitlab.com/dliden/coffeemacs">My Emacs config</a>. This has not, admittedly, been structured for broad consumption, but with a little searching you can find how I've configured some hooks. In particular, <a href="https://gitlab.com/dliden/coffeemacs/-/blob/master/orgconfig.el?ref_type=heads#L219">here</a> is my <code>org-tree-slide</code> configuration, which I mentioned at the beginning.</li>
 <li><a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">Emacs Docs</a>, which go into some more detail on abnormal hooks among other topics.</li>
@@ -307,7 +261,7 @@ Note that we do <i>not</i> refer to <code>mode-name-hook</code> in the hook conf
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2023-12-17 Sun 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

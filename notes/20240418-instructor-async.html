@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Asynchronous Instructor</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,27 +31,27 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Asynchronous Instructor</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org336e22c">Asynchronous usage pattern for Instructor</a>
+<li><a href="#orgfa8b04e">Asynchronous usage pattern for Instructor</a>
 <ul>
-<li><a href="#orgc1c6e6a">Setup</a></li>
-<li><a href="#org2231843">Iterate throught the objects</a></li>
+<li><a href="#org76af296">Setup</a></li>
+<li><a href="#org32dbe3e">Iterate throught the objects</a></li>
 </ul>
 </li>
-<li><a href="#orgf161cd8">Related Notes</a></li>
+<li><a href="#org8fa2a6e">Related Notes</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org336e22c" class="outline-2">
-<h2 id="org336e22c">Asynchronous usage pattern for Instructor</h2>
-<div class="outline-text-2" id="text-org336e22c">
-<div class="preview">
+<div id="outline-container-orgfa8b04e" class="outline-2">
+<h2 id="orgfa8b04e">Asynchronous usage pattern for Instructor</h2>
+<div class="outline-text-2" id="text-orgfa8b04e">
+<div class="preview" id="org18ab6f3">
 <p>
 In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts.
 </p>
@@ -116,9 +70,9 @@ Using the instructor library with the asynchronous Anthropic client makes it muc
 </p>
 </div>
 
-<div id="outline-container-orgc1c6e6a" class="outline-3">
-<h3 id="orgc1c6e6a">Setup</h3>
-<div class="outline-text-3" id="text-orgc1c6e6a">
+<div id="outline-container-org76af296" class="outline-3">
+<h3 id="org76af296">Setup</h3>
+<div class="outline-text-3" id="text-org76af296">
 <p>
 First, we set up the Anthropic async client with Instructor. We also set up the Pydantic schema we'll be using for structured extraction.
 </p>
@@ -135,28 +89,28 @@ First, we set up the Anthropic async client with Instructor. We also set up the 
 load_dotenv()
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">set up the async client</span>
-<span class="org-variable-name">aclient</span> = instructor.from_anthropic(AsyncAnthropic())
+<span class="org-variable-name">aclient</span> <span class="org-operator">=</span> instructor.from_anthropic(AsyncAnthropic())
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">set up pydantic schema</span>
 <span class="org-keyword">class</span> <span class="org-type">Topics</span>(BaseModel):
-    candidates: <span class="org-builtin">list</span> = Field(
-        description=(
+    <span class="org-variable-name">candidates</span>: <span class="org-builtin">list</span> <span class="org-operator">=</span> Field(
+        description<span class="org-operator">=</span>(
             <span class="org-string">"List of topics that might be considered among the main topics of the talk."</span>
             <span class="org-string">" Should include (1) high level categories like 'data science' or 'ai'; (2)"</span>
             <span class="org-string">" key technologies/tools like 'spark' or 'LLMs', and (3) subtopics like"</span>
             <span class="org-string">" 'structured streaaming' or 'retrieval-augmented generation'"</span>
         )
     )
-    topics: <span class="org-builtin">list</span> = Field(
-        description=<span class="org-string">"List of the top main topics of the talk, from the list of candidates. Select at least one but no more than three main topics."</span>
+    <span class="org-variable-name">topics</span>: <span class="org-builtin">list</span> <span class="org-operator">=</span> Field(
+        description<span class="org-operator">=</span><span class="org-string">"List of the top main topics of the talk, from the list of candidates. Select at least one but no more than three main topics."</span>
     )
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org2231843" class="outline-3">
-<h3 id="org2231843">Iterate throught the objects</h3>
-<div class="outline-text-3" id="text-org2231843">
+<div id="outline-container-org32dbe3e" class="outline-3">
+<h3 id="org32dbe3e">Iterate throught the objects</h3>
+<div class="outline-text-3" id="text-org32dbe3e">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> asyncio
 <span class="org-keyword">import</span> time
@@ -165,66 +119,66 @@ load_dotenv()
 <span class="org-keyword">from</span> tqdm <span class="org-keyword">import</span> tqdm
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">Create a semaphore with a limit of 10 concurrent tasks</span>
-<span class="org-variable-name">sem</span> = asyncio.Semaphore(10)
+<span class="org-variable-name">sem</span> <span class="org-operator">=</span> asyncio.Semaphore(10)
 
-topics_list: <span class="org-variable-name">List</span>[<span class="org-builtin">str</span>] = []
-<span class="org-variable-name">new_event_data</span> = event_data.copy()
+<span class="org-variable-name">topics_list</span>: List[<span class="org-builtin">str</span>] <span class="org-operator">=</span> []
+<span class="org-variable-name">new_event_data</span> <span class="org-operator">=</span> event_data.copy()
 
-<span class="org-keyword">async def</span> <span class="org-function-name">process_event</span>(event: <span class="org-builtin">dict</span>, sem: asyncio.Semaphore, progress_bar: tqdm) -&gt; <span class="org-constant">None</span>:
-    <span class="org-variable-name">retries</span> = 3
-    <span class="org-variable-name">delay</span> = 1  <span class="org-comment-delimiter"># </span><span class="org-comment">Initial delay in seconds</span>
+<span class="org-keyword">async def</span> <span class="org-function-name">process_event</span>(event: <span class="org-builtin">dict</span>, sem: asyncio.Semaphore, progress_bar: tqdm) <span class="org-operator">-&gt;</span> <span class="org-constant">None</span>:
+    <span class="org-variable-name">retries</span> <span class="org-operator">=</span> 3
+    <span class="org-variable-name">delay</span> <span class="org-operator">=</span> 1  <span class="org-comment-delimiter"># </span><span class="org-comment">Initial delay in seconds</span>
 
-    <span class="org-keyword">while</span> retries &gt; 0:
+    <span class="org-keyword">while</span> retries <span class="org-operator">&gt;</span> 0:
         <span class="org-keyword">try</span>:
             <span class="org-comment-delimiter"># </span><span class="org-comment">Acquire the semaphore to limit concurrency</span>
             <span class="org-keyword">async with</span> sem:
                 <span class="org-comment-delimiter"># </span><span class="org-comment">Make an asynchronous API call to create a message</span>
-                <span class="org-variable-name">resp</span> = <span class="org-keyword">await</span> aclient.messages.create(
-                    model=<span class="org-string">"claude-3-haiku-20240307"</span>,
-                    max_tokens=1024,
-                    messages=[
+                <span class="org-variable-name">resp</span> <span class="org-operator">=</span> <span class="org-keyword">await</span> aclient.messages.create(
+                    model<span class="org-operator">=</span><span class="org-string">"claude-3-haiku-20240307"</span>,
+                    max_tokens<span class="org-operator">=</span>1024,
+                    messages<span class="org-operator">=</span>[
                         {
                             <span class="org-string">"role"</span>: <span class="org-string">"user"</span>,
                             <span class="org-string">"content"</span>: event[<span class="org-string">'abstract'</span>],
                         }
                     ],
-                    response_model=Topics,
+                    response_model<span class="org-operator">=</span>Topics,
                 )
 
                 <span class="org-comment-delimiter"># </span><span class="org-comment">Store the topics in the event dictionary</span>
-                <span class="org-variable-name">event</span>[<span class="org-string">'topics'</span>] = resp.topics
+                <span class="org-variable-name">event</span>[<span class="org-string">'topics'</span>] <span class="org-operator">=</span> resp.topics
                 topics_list.extend(resp.topics)
                 progress_bar.update(1)
                 <span class="org-keyword">return</span>
         <span class="org-keyword">except</span> <span class="org-type">Exception</span> <span class="org-keyword">as</span> e:
             <span class="org-keyword">if</span> <span class="org-builtin">isinstance</span>(e, anthropic._exceptions.RateLimitError):
                 <span class="org-comment-delimiter"># </span><span class="org-comment">Handle rate limit error</span>
-                <span class="org-variable-name">retries</span> -= 1
-                <span class="org-keyword">if</span> retries &gt; 0:
-                    <span class="org-keyword">print</span>(f<span class="org-string">"Rate limit reached, retrying in {delay} seconds..."</span>)
+                <span class="org-variable-name">retries</span> <span class="org-operator">-=</span> 1
+                <span class="org-keyword">if</span> retries <span class="org-operator">&gt;</span> 0:
+                    <span class="org-builtin">print</span>(f<span class="org-string">"Rate limit reached, retrying in </span>{delay}<span class="org-string"> seconds..."</span>)
                     <span class="org-keyword">await</span> asyncio.sleep(delay)
-                    <span class="org-variable-name">delay</span> *= 2  <span class="org-comment-delimiter"># </span><span class="org-comment">Exponential backoff</span>
+                    <span class="org-variable-name">delay</span> <span class="org-operator">*=</span> 2  <span class="org-comment-delimiter"># </span><span class="org-comment">Exponential backoff</span>
                 <span class="org-keyword">else</span>:
-                    <span class="org-keyword">print</span>(<span class="org-string">"Maximum retries reached, skipping event."</span>)
+                    <span class="org-builtin">print</span>(<span class="org-string">"Maximum retries reached, skipping event."</span>)
             <span class="org-keyword">else</span>:
                 <span class="org-comment-delimiter"># </span><span class="org-comment">Handle other errors</span>
-                <span class="org-keyword">print</span>(f<span class="org-string">"Error processing event: {e}"</span>)
-                <span class="org-variable-name">retries</span> -= 1
-                <span class="org-keyword">if</span> retries &gt; 0:
+                <span class="org-builtin">print</span>(f<span class="org-string">"Error processing event: </span>{e}<span class="org-string">"</span>)
+                <span class="org-variable-name">retries</span> <span class="org-operator">-=</span> 1
+                <span class="org-keyword">if</span> retries <span class="org-operator">&gt;</span> 0:
                     <span class="org-keyword">await</span> asyncio.sleep(delay)
-                    <span class="org-variable-name">delay</span> *= 2
+                    <span class="org-variable-name">delay</span> <span class="org-operator">*=</span> 2
                 <span class="org-keyword">else</span>:
-                    <span class="org-keyword">print</span>(<span class="org-string">"Maximum retries reached, skipping event."</span>)
+                    <span class="org-builtin">print</span>(<span class="org-string">"Maximum retries reached, skipping event."</span>)
 
-<span class="org-keyword">async def</span> <span class="org-function-name">run_in_notebook</span>() -&gt; <span class="org-constant">None</span>:
-    <span class="org-variable-name">tasks</span> = []
-    <span class="org-keyword">with</span> tqdm(total=<span class="org-builtin">len</span>(new_event_data), unit=<span class="org-string">"event"</span>) <span class="org-keyword">as</span> progress_bar:
+<span class="org-keyword">async def</span> <span class="org-function-name">run_in_notebook</span>() <span class="org-operator">-&gt;</span> <span class="org-constant">None</span>:
+    <span class="org-variable-name">tasks</span> <span class="org-operator">=</span> []
+    <span class="org-keyword">with</span> tqdm(total<span class="org-operator">=</span><span class="org-builtin">len</span>(new_event_data), unit<span class="org-operator">=</span><span class="org-string">"event"</span>) <span class="org-keyword">as</span> progress_bar:
         <span class="org-keyword">for</span> event <span class="org-keyword">in</span> new_event_data:
             <span class="org-comment-delimiter"># </span><span class="org-comment">Create a task for each event and add it to the tasks list</span>
             tasks.append(process_event(event, sem, progress_bar))
 
         <span class="org-comment-delimiter"># </span><span class="org-comment">Wait for all tasks to complete concurrently</span>
-        <span class="org-keyword">await</span> asyncio.gather(*tasks)
+        <span class="org-keyword">await</span> asyncio.gather(<span class="org-operator">*</span>tasks)
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">Enable asyncio support in Jupyter Notebook</span>
 <span class="org-keyword">import</span> nest_asyncio
@@ -247,9 +201,9 @@ In this code, we:
 </div>
 </div>
 </div>
-<div id="outline-container-orgf161cd8" class="outline-2">
-<h2 id="orgf161cd8">Related Notes</h2>
-<div class="outline-text-2" id="text-orgf161cd8">
+<div id="outline-container-org8fa2a6e" class="outline-2">
+<h2 id="org8fa2a6e">Related Notes</h2>
+<div class="outline-text-2" id="text-org8fa2a6e">
 <ul class="org-ul">
 <li><a href="20240403-dbrx-instructor.html">Use Instructor with DBRX</a></li>
 </ul>
@@ -258,7 +212,7 @@ In this code, we:
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2024-04-18 Thu 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>

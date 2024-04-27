@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Basic Plotting in Julia</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,52 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,27 +31,27 @@ for the JavaScript code in this tag.
 </div>
 <hr style="border-top: 1px solid black;">
 </div>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Basic Plotting in Julia</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3bbd5c4">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</a></li>
-<li><a href="#org34d1349">Making some Plots</a>
+<li><a href="#org81e480b">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</a></li>
+<li><a href="#org71fb92a">Making some Plots</a>
 <ul>
-<li><a href="#orga3af49b">Building Plots Incrementally</a></li>
+<li><a href="#org4875ef9">Building Plots Incrementally</a></li>
 </ul>
 </li>
-<li><a href="#orge5cd2eb">Plotting Real Data</a></li>
-<li><a href="#orgb604289">Modifying Plot Visual Components</a></li>
-<li><a href="#orgceac062">Different Plot Styles</a></li>
-<li><a href="#org6e80547">Conculsion</a></li>
+<li><a href="#org4caedba">Plotting Real Data</a></li>
+<li><a href="#org810f92b">Modifying Plot Visual Components</a></li>
+<li><a href="#org85f2c34">Different Plot Styles</a></li>
+<li><a href="#org233037d">Conculsion</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview">
+<div class="preview" id="org81f8770">
 <p>
 In this short post, I show one of the many ways of using Julia within emacs
 org mode, and will describe some of the basic plotting functionality in Julia.
@@ -105,9 +59,9 @@ org mode, and will describe some of the basic plotting functionality in Julia.
 
 </div>
 
-<div id="outline-container-org3bbd5c4" class="outline-2">
-<h2 id="org3bbd5c4">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</h2>
-<div class="outline-text-2" id="text-org3bbd5c4">
+<div id="outline-container-org81e480b" class="outline-2">
+<h2 id="org81e480b">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</h2>
+<div class="outline-text-2" id="text-org81e480b">
 <p>
 While <a href="https://github.com/gcv/julia-snail">julia-snail</a> is my favorite Julia development environment, it's support for
 org-mode is, at present, quite limited. For example, it seems to ignore the
@@ -119,9 +73,9 @@ how to use emacs-jupyter with org-mode.
 </div>
 </div>
 
-<div id="outline-container-org34d1349" class="outline-2">
-<h2 id="org34d1349">Making some Plots</h2>
-<div class="outline-text-2" id="text-org34d1349">
+<div id="outline-container-org71fb92a" class="outline-2">
+<h2 id="org71fb92a">Making some Plots</h2>
+<div class="outline-text-2" id="text-org71fb92a">
 <p>
 Let's make some plots. We'll use the <a href="https://docs.juliaplots.org/latest/tutorial/">Plots.jl</a> package and explore a few
 different plotting styles. First, we load the packages we'll be using. I tend to
@@ -137,9 +91,9 @@ using StatsPlots
 </div>
 </div>
 
-<div id="outline-container-orga3af49b" class="outline-3">
-<h3 id="orga3af49b">Building Plots Incrementally</h3>
-<div class="outline-text-3" id="text-orga3af49b">
+<div id="outline-container-org4875ef9" class="outline-3">
+<h3 id="org4875ef9">Building Plots Incrementally</h3>
+<div class="outline-text-3" id="text-org4875ef9">
 <p>
 With these packages loaded, we'll start simply and plot a standard normal
 distribution.
@@ -151,9 +105,8 @@ distribution.
 </div>
 
 
-<figure>
-<object type="image/svg+xml" data="figures/20220719-julia-plots/fig1.svg" class="org-svg">
-Sorry, your browser does not support SVG.</object>
+<figure id="org6228445">
+<img src="figures/20220719-julia-plots/fig1.svg" alt="fig1.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 1: </span>A basic plot</figcaption>
 </figure>
@@ -171,9 +124,8 @@ plot!(leg=false) # Remove the Legend
 </div>
 
 
-<figure>
-<object type="image/svg+xml" data="figures/20220719-julia-plots/fig2.svg" class="org-svg">
-Sorry, your browser does not support SVG.</object>
+<figure id="orgce360eb">
+<img src="figures/20220719-julia-plots/fig2.svg" alt="fig2.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 2: </span>Removing the legend and adding labels</figcaption>
 </figure>
@@ -193,9 +145,8 @@ font(18, "Computer Modern"))
 </div>
 
 
-<figure>
-<object type="image/svg+xml" data="figures/20220719-julia-plots/fig3.svg" class="org-svg">
-Sorry, your browser does not support SVG.</object>
+<figure id="org856f40b">
+<img src="figures/20220719-julia-plots/fig3.svg" alt="fig3.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 3: </span>Changing some Fonts</figcaption>
 </figure>
@@ -204,9 +155,9 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="outline-container-orge5cd2eb" class="outline-2">
-<h2 id="orge5cd2eb">Plotting Real Data</h2>
-<div class="outline-text-2" id="text-orge5cd2eb">
+<div id="outline-container-org4caedba" class="outline-2">
+<h2 id="org4caedba">Plotting Real Data</h2>
+<div class="outline-text-2" id="text-org4caedba">
 <p>
 That's enough of that. Usually we're plotting real data, not standard standard
 distributions. Let's get some. First we'll pull from the <code>RDatasets</code> package,
@@ -240,18 +191,17 @@ title!("Horsepower by MPG and N Cylinders")
 </div>
 
 
-<figure>
-<object type="image/svg+xml" data="figures/20220719-julia-plots/fig4.svg" class="org-svg">
-Sorry, your browser does not support SVG.</object>
+<figure id="orgffee895">
+<img src="figures/20220719-julia-plots/fig4.svg" alt="fig4.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 4: </span>plotting data with Plots.jl</figcaption>
 </figure>
 </div>
 </div>
 
-<div id="outline-container-orgb604289" class="outline-2">
-<h2 id="orgb604289">Modifying Plot Visual Components</h2>
-<div class="outline-text-2" id="text-orgb604289">
+<div id="outline-container-org810f92b" class="outline-2">
+<h2 id="org810f92b">Modifying Plot Visual Components</h2>
+<div class="outline-text-2" id="text-org810f92b">
 <p>
 It's not always straightforward to figure out how to modify visual components of
 a plot. Most of the relevant information lies in the <a href="https://docs.juliaplots.org/latest/attributes/">Attributes</a> section of the
@@ -259,9 +209,9 @@ Plots.jl documentation (and its subsections).
 </p>
 </div>
 </div>
-<div id="outline-container-orgceac062" class="outline-2">
-<h2 id="orgceac062">Different Plot Styles</h2>
-<div class="outline-text-2" id="text-orgceac062">
+<div id="outline-container-org85f2c34" class="outline-2">
+<h2 id="org85f2c34">Different Plot Styles</h2>
+<div class="outline-text-2" id="text-org85f2c34">
 <p>
 One of the benefits of the Plots.jl package is its support for many different
 <a href="https://docs.juliaplots.org/latest/backends/">plotting backends</a>. The default is GR which, according to the documentation, is
@@ -295,7 +245,7 @@ We then specify that we'd like to use this backend with the <code>unicodeplots()
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org70ee07a">
                         HP vs MPG                   
        +----------------------------------------+   
 343.49 |        ⚬                               | y1
@@ -324,7 +274,7 @@ update if and when I figure that out. It should look like this:
 </p>
 
 
-<figure>
+<figure id="orge290c7b">
 <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="600px">
 
 <figcaption><span class="figure-number">Figure 5: </span>screenshot of unicodeplot from vterm</figcaption>
@@ -333,9 +283,9 @@ update if and when I figure that out. It should look like this:
 </div>
 
 
-<div id="outline-container-org6e80547" class="outline-2">
-<h2 id="org6e80547">Conculsion</h2>
-<div class="outline-text-2" id="text-org6e80547">
+<div id="outline-container-org233037d" class="outline-2">
+<h2 id="org233037d">Conculsion</h2>
+<div class="outline-text-2" id="text-org233037d">
 <p>
 There's a lot more to get into with plotting in Julia and with using Julia in
 emacs. This post serves as a small jumping-off point—just enough to get started,
@@ -347,7 +297,7 @@ pursuing. I'll write more on this topic as I learn more!
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2022-07-19 Tue 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>
