@@ -7,11 +7,11 @@
 <generator>Emacs webfeeder.el</generator>
 <link>https://danliden.com</link>
 <atom:link href="https://danliden.com/rss.xml" rel="self" type="application/rss+xml"/>
-<lastBuildDate>Mon, 06 May 2024 01:11:06 +0000</lastBuildDate>
+<lastBuildDate>Mon, 06 May 2024 13:51:32 +0000</lastBuildDate>
 <item>
   <title>Persistent Elements in Daily Journals with Org Agenda</title>
   <description><![CDATA[<div id="content" class="content">
- <div class="preview" id="orgb99381e">
+ <div class="preview" id="org329fe57">
  <p>
 I use denote's  <a href="https://protesilaos.com/emacs/denote#h:4a6d92dd-19eb-4fcc-a7b5-05ce04da3a92">journaling features</a> to keep a daily project log, where I record whatever I'm working on, stray bits of knowledge, some TODOs, fleeting thoughts, etc.
 </p>
@@ -26,9 +26,9 @@ This post shows a quick solution to this issue using  <a href="https://orgmode.o
 
 </div>
 
- <div id="outline-container-org16ac9a5" class="outline-2">
- <h2 id="org16ac9a5">A different way of thinking about the org agenda</h2>
- <div class="outline-text-2" id="text-org16ac9a5">
+ <div id="outline-container-orga3dcc6c" class="outline-2">
+ <h2 id="orga3dcc6c">A different way of thinking about the org agenda</h2>
+ <div class="outline-text-2" id="text-orga3dcc6c">
  <p>
 I've mostly thought of the org agenda as, well, an agenda. It's for managing todos, dates, deadlines. It's a very versatile tool for that purpose, and can pull those elements out of a bunch of different org files. This is great.
 </p>
@@ -54,63 +54,72 @@ With the org agenda, I can remedy this as follows:
  <li>Build a custom org agenda view that searches only the journal files and displays only those tagged headers.</li>
 </ul></div>
 </div>
- <div id="outline-container-org5f7308c" class="outline-2">
- <h2 id="org5f7308c">org-agenda-custom-commands</h2>
- <div class="outline-text-2" id="text-org5f7308c">
+ <div id="outline-container-orga9a87dd" class="outline-2">
+ <h2 id="orga9a87dd">org-agenda-custom-commands</h2>
+ <div class="outline-text-2" id="text-orga9a87dd">
  <p>
 I did this with  <a href="https://orgmode.org/worg/org-tutorials/org-custom-agenda-commands.html">org-agenda-custom-commands</a>. It looks like this in my config:
 </p>
 
  <div class="org-src-container">
- <pre class="src src-emacs-lisp">( <span class="org-keyword">setq</span> org-agenda-custom-commands
-      '(( <span class="org-string">"j"</span>  <span class="org-string">"Journals"</span>
-         ((tags
-            <span class="org-string">"persist"</span>
-           ((org-agenda-files
-             (file-expand-wildcards  <span class="org-string">"~/org/denotes/journal/*.org"</span>))
-            (org-agenda-prefix-format  <span class="org-string">"%-2c:::"</span>)))))))
+ <pre class="src src-emacs-lisp">( <span class="org-keyword">setq</span> '(( <span class="org-string">"j"</span>  <span class="org-string">"Journals"</span> ((tags  <span class="org-string">"persist"</span>)
+                         (todo))
+         ((org-agenda-files
+           (file-expand-wildcards  <span class="org-string">"~/org/denotes/journal/*.org"</span>))
+          (org-agenda-prefix-format  <span class="org-string">"%-2c:::"</span>)))))
 </pre>
 </div>
 
  <p>
-This creates a custom view called "journals" that I can select with the "j" command from the agenda menu (from  <code><C-c a></code>). Any headline tagged with "persist" will appear in that agenda view.
+This creates a custom view called "journals" that I can select with the "j" command from the agenda menu (from  <code><C-c a></code>). Any headline tagged with "persist" will appear in that agenda view. It was also updated to include all TODO entries in the journals, ensuring that I properly resolve or migrate them.
 </p>
 </div>
 </div>
- <div id="outline-container-org17ca2cd" class="outline-2">
- <h2 id="org17ca2cd">Next Steps</h2>
- <div class="outline-text-2" id="text-org17ca2cd">
+ <div id="outline-container-org8530813" class="outline-2">
+ <h2 id="org8530813">Next Steps</h2>
+ <div class="outline-text-2" id="text-org8530813">
  <p>
 This is a very simple agenda view. There are a few improvements I intend to make in the near future (I will update this post accordingly).
 </p>
 </div>
- <div id="outline-container-orgfc896f7" class="outline-3">
- <h3 id="orgfc896f7"> <span class="todo TODO">TODO</span> Add TODO entries</h3>
- <div class="outline-text-3" id="text-orgfc896f7">
+ <div id="outline-container-org32cc9db" class="outline-3">
+ <h3 id="org32cc9db"> <span class="done DONE">DONE</span> Add TODO entries</h3>
+ <div class="outline-text-3" id="text-org32cc9db">
  <p>
 I want to add TODO entries to the custom view. Any outstanding TODOs from the daily journals should either be closed out or migrated somewhere more permanent.
 </p>
 </div>
+ <div id="outline-container-org1a4af70" class="outline-4">
+ <h4 id="org1a4af70">UPDATE  <span class="timestamp-wrapper"> <span class="timestamp"><2024-05-06 Mon></span></span></h4>
+ <div class="outline-text-4" id="text-org1a4af70">
+ <p>
+This required only very minor changes:
+</p>
+ <ol class="org-ol"> <li>add a  <code>(todo)</code> block to the  <code>org-agenda-custom-commands</code> specification</li>
+ <li>make the configuration specifying e.g. the directory and formatting apply to the whole block rather than to individual sections.</li>
+</ol></div>
 </div>
- <div id="outline-container-org5dd42eb" class="outline-3">
- <h3 id="org5dd42eb"> <span class="todo TODO">TODO</span> Limit the number of files searched</h3>
- <div class="outline-text-3" id="text-org5dd42eb">
+</div>
+
+ <div id="outline-container-orgfaf070e" class="outline-3">
+ <h3 id="orgfaf070e"> <span class="todo TODO">TODO</span> Limit the number of files searched</h3>
+ <div class="outline-text-3" id="text-orgfaf070e">
  <p>
 I am not yet entirely sure how to do this one. Org agenda is notorious for slowing down when dealing with a lot of files. The number of daily journal entries will increase in an obvious way. There are some ways to  <a href="https://orgmode.org/manual/Filtering_002flimiting-agenda-items.html">filter and limit</a> the results but I'm not sure if they will prevent the agenda from reading more files than it needs to. Something to investigate.
 </p>
 </div>
 </div>
- <div id="outline-container-org5d5255e" class="outline-3">
- <h3 id="org5d5255e"> <span class="todo TODO">TODO</span> Add and organize tags</h3>
- <div class="outline-text-3" id="text-org5d5255e">
+ <div id="outline-container-orge2a7983" class="outline-3">
+ <h3 id="orge2a7983"> <span class="todo TODO">TODO</span> Add and organize tags</h3>
+ <div class="outline-text-3" id="text-orge2a7983">
  <p>
 I don't just want a catch-all tag. I'd like to have specific tags for e.g. reading lists, project ideas, recommendations, work notes to follow up on, etc.
 </p>
 </div>
 </div>
- <div id="outline-container-orgb3c9f38" class="outline-3">
- <h3 id="orgb3c9f38"> <span class="todo TODO">TODO</span> Other</h3>
- <div class="outline-text-3" id="text-orgb3c9f38">
+ <div id="outline-container-orgd031321" class="outline-3">
+ <h3 id="orgd031321"> <span class="todo TODO">TODO</span> Other</h3>
+ <div class="outline-text-3" id="text-orgd031321">
  <p>
 column view settings, nice date display for each entry, etc.
 </p>
@@ -125,7 +134,7 @@ column view settings, nice date display for each entry, etc.
 <item>
   <title>Retrieving Data for the H2o RAG Benchmark</title>
   <description><![CDATA[<div id="content" class="content">
- <div class="preview" id="org1b6ab27">
+ <div class="preview" id="orgcd631a4">
  <p>
 I was looking for a good dataset to use for comparing different models in a RAG application when I found  <a href="https://www.reddit.com/r/LocalLLaMA/comments/1bpo5uo/rag_benchmark_of_databricksdbrx/">this post</a> on Reddit. It compares a bunch of models on a collection of questions over a set of documents provided by  <a href="https://h2o.ai">H2O.ai</a>.
 </p>
@@ -302,16 +311,16 @@ Run the notebook cells to fetch the files. They will be stored in the  <code>/da
 <item>
   <title>Making headings for recurring tasks in org mode</title>
   <description><![CDATA[<div id="content" class="content">
- <div class="preview" id="org3009a52">
+ <div class="preview" id="org1404ee1">
  <p>
 This short post shows how to use the  <code>org-clone-subtree-with-time-shift</code> command to make org headings for recurring tasks. I was recently trying to add a five-week class to my org agenda and I didn't want to manually create each heading and add or modify the timestamp. This approach made it very easy.
 </p>
 
 </div>
 
- <div id="outline-container-org96c5cbe" class="outline-2">
- <h2 id="org96c5cbe">How it works</h2>
- <div class="outline-text-2" id="text-org96c5cbe">
+ <div id="outline-container-org39ca59d" class="outline-2">
+ <h2 id="org39ca59d">How it works</h2>
+ <div class="outline-text-2" id="text-org39ca59d">
  <p>
 Suppose I have an org mode heading representing a scheduled event, like a class:
 </p>
@@ -346,18 +355,18 @@ When we invoke this function with the cursor on the first heading, we will be pr
 </div>
 </div>
 
- <div id="outline-container-org6048d74" class="outline-2">
- <h2 id="org6048d74">Limitations</h2>
- <div class="outline-text-2" id="text-org6048d74">
+ <div id="outline-container-org86e1c51" class="outline-2">
+ <h2 id="org86e1c51">Limitations</h2>
+ <div class="outline-text-2" id="text-org86e1c51">
  <p>
 In some cases, you may want to change the names of the headers somewhat (such as by adding a counter; class 1, class 2, etc.). There are many different approaches to handle this programmatically, but it's beyond the scope of this short post. In this case, it takes just a few seconds to add a class number to each heading manually.
 </p>
 </div>
 </div>
 
- <div id="outline-container-org067960a" class="outline-2">
- <h2 id="org067960a">Further reading</h2>
- <div class="outline-text-2" id="text-org067960a">
+ <div id="outline-container-org9bbfdc1" class="outline-2">
+ <h2 id="org9bbfdc1">Further reading</h2>
+ <div class="outline-text-2" id="text-org9bbfdc1">
  <p>
 Most helpfully, here is the documenation from  <code>C-h f org-clone-subtree-with-time-shift</code>:
 </p>
@@ -442,10 +451,10 @@ For more, you can also consult:
 <item>
   <title>Introduction to Emacs Hooks</title>
   <description><![CDATA[<div id="content" class="content">
- <div id="outline-container-org1dd6605" class="outline-2">
- <h2 id="org1dd6605">Emacs Hooks</h2>
- <div class="outline-text-2" id="text-org1dd6605">
- <div class="preview" id="org155c613">
+ <div id="outline-container-orga144f2c" class="outline-2">
+ <h2 id="orga144f2c">Emacs Hooks</h2>
+ <div class="outline-text-2" id="text-orga144f2c">
+ <div class="preview" id="org735945c">
  <p>
 Today I was customizing the appearance of org files displayed with  <a href="https://github.com/takaxp/org-tree-slide">org-tree-slide</a>. In particular, I wanted to increase the font size and start  <a href="https://github.com/rnkn/olivetti">Olivetti mode</a> whenever I started  <code>org-tree-slide-mode</code> and return everything to normal when I was done. This, I quickly discovered, required the use of  <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">hooks</a>. Hooks are not especially complicated, but they are useful and worth taking a few minutes to understand. This post will cover the basics of working with hooks in emacs.
 </p>
@@ -453,9 +462,9 @@ Today I was customizing the appearance of org files displayed with  <a href="htt
 </div>
 </div>
 </div>
- <div id="outline-container-orgeec03d9" class="outline-2">
- <h2 id="orgeec03d9">What do hooks do?</h2>
- <div class="outline-text-2" id="text-orgeec03d9">
+ <div id="outline-container-orgb99b4d2" class="outline-2">
+ <h2 id="orgb99b4d2">What do hooks do?</h2>
+ <div class="outline-text-2" id="text-orgb99b4d2">
  <p>
 A  <i>hook</i> is a list of functions that are run on specifically-defined occasions, triggered by calls to a  <code>run-hooks</code> or  <code>run-mode-hooks</code> function.
 </p>
@@ -471,12 +480,12 @@ For a specific example,  <code>org-tree-slide-mode</code> defines the hooks  <co
 
  <div class="org-center">
 
- <figure id="org3b1d5ac"> <img src="./figures/20231217-emacs-hooks/hooks_screen_capture.gif" alt="hooks_screen_capture.gif"></img> <figcaption> <span class="figure-number">Figure 1: </span>Invoking  <code>org-tree-slide-mode</code> runs  <code>org-tree-slide-play-hook</code>, a list of functions meant to run when a slide show is started in  <code>org-tree-slide-mode</code>. In this case, the hook makes the text larger and centered in the buffer.</figcaption></figure></div>
+ <figure id="org3b119a8"> <img src="./figures/20231217-emacs-hooks/hooks_screen_capture.gif" alt="hooks_screen_capture.gif"></img> <figcaption> <span class="figure-number">Figure 1: </span>Invoking  <code>org-tree-slide-mode</code> runs  <code>org-tree-slide-play-hook</code>, a list of functions meant to run when a slide show is started in  <code>org-tree-slide-mode</code>. In this case, the hook makes the text larger and centered in the buffer.</figcaption></figure></div>
 </div>
 </div>
- <div id="outline-container-org7669b7a" class="outline-2">
- <h2 id="org7669b7a">How do hooks work?</h2>
- <div class="outline-text-2" id="text-org7669b7a">
+ <div id="outline-container-org90179cc" class="outline-2">
+ <h2 id="org90179cc">How do hooks work?</h2>
+ <div class="outline-text-2" id="text-org90179cc">
  <p>
 First, a quick glossary of terms:
 </p>
@@ -487,9 +496,9 @@ First, a quick glossary of terms:
 Hooks are run when specific functions call them. Such functions are often called at specific points in the initialization or use of emacs modes, but they are not limited to those circumstances. Here is a minimal example.
 </p>
 </div>
- <div id="outline-container-org189964e" class="outline-3">
- <h3 id="org189964e">Hooks Example</h3>
- <div class="outline-text-3" id="text-org189964e">
+ <div id="outline-container-orgc98c827" class="outline-3">
+ <h3 id="orgc98c827">Hooks Example</h3>
+ <div class="outline-text-3" id="text-orgc98c827">
  <p>
 First, we'll define the hook variable. This is the same as defining any other variable.
 </p>
@@ -557,14 +566,14 @@ There's nothing especially unique about any of these components. We assign the v
 
  <div class="org-center">
 
- <figure id="org2543d41"> <img src="./figures/20231217-emacs-hooks/hooks-diagram-2.png" alt="hooks-diagram-2.png"></img> <figcaption> <span class="figure-number">Figure 2: </span>Diagram of the basic process of working with normal hooks</figcaption></figure></div>
+ <figure id="org13d2b92"> <img src="./figures/20231217-emacs-hooks/hooks-diagram-2.png" alt="hooks-diagram-2.png"></img> <figcaption> <span class="figure-number">Figure 2: </span>Diagram of the basic process of working with normal hooks</figcaption></figure></div>
 </div>
 </div>
 </div>
 
- <div id="outline-container-org9a408d6" class="outline-2">
- <h2 id="org9a408d6">Mode Hooks</h2>
- <div class="outline-text-2" id="text-org9a408d6">
+ <div id="outline-container-org24df8ea" class="outline-2">
+ <h2 id="org24df8ea">Mode Hooks</h2>
+ <div class="outline-text-2" id="text-org24df8ea">
  <p>
 Hooks are most commonly encountered in the context of modes. Modes generally define hooks to which users can add functions that will be called at the end of the mode's initialization. For example, I wanted to display line numbers whenever I was in a buffer with code, so I have the following line in my config:
 </p>
@@ -604,9 +613,9 @@ and, indeed, when I open an e.g. Python buffer, line numbers appear as desired.
 </p>
 </div>
 </div>
- <div id="outline-container-org128dc53" class="outline-2">
- <h2 id="org128dc53">Appendix: Hooks in use-package</h2>
- <div class="outline-text-2" id="text-org128dc53">
+ <div id="outline-container-org9864975" class="outline-2">
+ <h2 id="org9864975">Appendix: Hooks in use-package</h2>
+ <div class="outline-text-2" id="text-org9864975">
  <p>
 I use  <code>use-package</code> for managing my emacs packages.  <code>use-package</code> declarations allow users to pass a  <code>:hooks</code> option in the package declaration in order to add functions to hooks. Hooks can be configured in  <code>use-package</code> by defining a cons cell as follows.
 </p>
@@ -624,9 +633,9 @@ Note that we do  <i>not</i> refer to  <code>mode-name-hook</code> in the hook co
 </p>
 </div>
 </div>
- <div id="outline-container-orgd3957fb" class="outline-2">
- <h2 id="orgd3957fb">Further Reading</h2>
- <div class="outline-text-2" id="text-orgd3957fb">
+ <div id="outline-container-orge9d3d5b" class="outline-2">
+ <h2 id="orge9d3d5b">Further Reading</h2>
+ <div class="outline-text-2" id="text-orge9d3d5b">
  <ul class="org-ul"> <li> <a href="https://gitlab.com/dliden/coffeemacs">My Emacs config</a>. This has not, admittedly, been structured for broad consumption, but with a little searching you can find how I've configured some hooks. In particular,  <a href="https://gitlab.com/dliden/coffeemacs/-/blob/master/orgconfig.el?ref_type=heads#L219">here</a> is my  <code>org-tree-slide</code> configuration, which I mentioned at the beginning.</li>
  <li> <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">Emacs Docs</a>, which go into some more detail on abnormal hooks among other topics.</li>
 </ul></div>
@@ -639,10 +648,10 @@ Note that we do  <i>not</i> refer to  <code>mode-name-hook</code> in the hook co
 <item>
   <title>YASnippet for Prompt Templates for Chatgpt-Shell</title>
   <description><![CDATA[<div id="content" class="content">
- <div id="outline-container-org4636400" class="outline-2">
- <h2 id="org4636400">Introduction</h2>
- <div class="outline-text-2" id="text-org4636400">
- <div class="preview" id="org9923fd2">
+ <div id="outline-container-org37386e4" class="outline-2">
+ <h2 id="org37386e4">Introduction</h2>
+ <div class="outline-text-2" id="text-org37386e4">
+ <div class="preview" id="org08f4fec">
  <p>
 The wonderful  <a href="https://github.com/xenodium/chatgpt-shell">chatgpt-shell</a> package by  <a href="https://github.com/xenodium">Xenodium</a> lets you interact with the gpt-3.5 and gpt-4
 APIs in emacs via a handy shell built on top of  <code>comint-mode</code>. It also integrates
@@ -661,9 +670,9 @@ describes how to start using Yasnippet for prompt templates for use with
 </div>
 </div>
 </div>
- <div id="outline-container-org6f0a271" class="outline-2">
- <h2 id="org6f0a271">Setting up ChatGPT Shell</h2>
- <div class="outline-text-2" id="text-org6f0a271">
+ <div id="outline-container-orged8c2aa" class="outline-2">
+ <h2 id="orged8c2aa">Setting up ChatGPT Shell</h2>
+ <div class="outline-text-2" id="text-orged8c2aa">
  <p>
 First of all, if you haven't already tried  <code>chatgpt-shell</code>, it's worth taking a
 few minutes to set up and try out. If you live in emacs, you'll probably prefer
@@ -704,9 +713,9 @@ service (local or cloud)."  <code>ob-chatgpt-shell</code> provides a way to inte
 </p>
 </div>
 </div>
- <div id="outline-container-orgd9590f6" class="outline-2">
- <h2 id="orgd9590f6">YASnippet</h2>
- <div class="outline-text-2" id="text-orgd9590f6">
+ <div id="outline-container-org5b4ed42" class="outline-2">
+ <h2 id="org5b4ed42">YASnippet</h2>
+ <div class="outline-text-2" id="text-org5b4ed42">
  <p>
  <a href="https://github.com/joaotavora/yasnippet">YASnippet</a> is a template system for emacs. It is very powerful, and I'm only
 familiar with a small fraction of its capabilities. But when I work with
@@ -773,9 +782,9 @@ YASnippet provides an easy way for us to define and populate templates for use
 in  <code>chatgpt-shell</code> buffers.
 </p>
 </div>
- <div id="outline-container-orgf044712" class="outline-3">
- <h3 id="orgf044712">Defining a Snippet</h3>
- <div class="outline-text-3" id="text-orgf044712">
+ <div id="outline-container-org3f5cc30" class="outline-3">
+ <h3 id="org3f5cc30">Defining a Snippet</h3>
+ <div class="outline-text-3" id="text-org3f5cc30">
  <p>
 First, you'll need to  <a href="https://github.com/joaotavora/yasnippet/blob/master/README.mdown#installation">install YASnippet</a>.
 </p>
@@ -787,7 +796,7 @@ buffer for defining out snippet.
 
  <div class="org-center">
 
- <figure id="org4c399d6"> <img src="./figures/20230709-yasnippet-chatgpt-shell/yas-new-snippet.png" alt="yas-new-snippet.png"></img> <figcaption> <span class="figure-number">Figure 1: </span>YASnippet new snippet interface</figcaption></figure></div>
+ <figure id="org8933f63"> <img src="./figures/20230709-yasnippet-chatgpt-shell/yas-new-snippet.png" alt="yas-new-snippet.png"></img> <figcaption> <span class="figure-number">Figure 1: </span>YASnippet new snippet interface</figcaption></figure></div>
 
  <p>
 In this example, I'm only going to show how to make templates with text and
@@ -866,9 +875,9 @@ go through the saving dialogue with  <code>C-c C-c</code>.
 </div>
 </div>
 
- <div id="outline-container-orge0235bc" class="outline-3">
- <h3 id="orge0235bc">Using a Snippet</h3>
- <div class="outline-text-3" id="text-orge0235bc">
+ <div id="outline-container-org2b45337" class="outline-3">
+ <h3 id="org2b45337">Using a Snippet</h3>
+ <div class="outline-text-3" id="text-org2b45337">
  <p>
 Note that, in the example snippets above, I've defined a  <code>key</code>: this is for
  <a href="https://joaotavora.github.io/yasnippet/snippet-expansion.html">snippet expansion</a> (follow the link for more details). With my configuration, in
@@ -886,7 +895,7 @@ position at the end of the prompt.
 
  <div class="org-center">
 
- <figure id="orgbce7f01"> <img src="./figures/20230709-yasnippet-chatgpt-shell/text_summarize_snippet.gif" alt="text_summarize_snippet.gif"></img> <figcaption> <span class="figure-number">Figure 2: </span>Inserting a Snippet</figcaption></figure></div>
+ <figure id="org399408d"> <img src="./figures/20230709-yasnippet-chatgpt-shell/text_summarize_snippet.gif" alt="text_summarize_snippet.gif"></img> <figcaption> <span class="figure-number">Figure 2: </span>Inserting a Snippet</figcaption></figure></div>
 
  <p>
 With multiple tab stops (e.g.  <code>$1</code>,  <code>$2</code>, etc.), pressing  <code>TAB</code> multiple times would
@@ -895,9 +904,9 @@ text.  <code>S-TAB</code> enables you to move backward through the tab stops.
 </p>
 </div>
 </div>
- <div id="outline-container-orgc1cb195" class="outline-3">
- <h3 id="orgc1cb195">Inserting the Last Item in the Kill Ring</h3>
- <div class="outline-text-3" id="text-orgc1cb195">
+ <div id="outline-container-org9f53370" class="outline-3">
+ <h3 id="org9f53370">Inserting the Last Item in the Kill Ring</h3>
+ <div class="outline-text-3" id="text-org9f53370">
  <p>
 We're unlike to ever need to summarize text that we manually type into a
  <code>chatgpt-shell</code>. But we might want to copy some text to the kill ring and ask for
@@ -941,13 +950,13 @@ part will automatically be replaced by the copied code.
 
  <div class="org-center">
 
- <figure id="orgb1f4910"> <img src="./figures/20230709-yasnippet-chatgpt-shell/code_explain.gif" alt="code_explain.gif"></img> <figcaption> <span class="figure-number">Figure 3: </span>Inserting from the Kill Ring</figcaption></figure></div>
+ <figure id="orgc83f41b"> <img src="./figures/20230709-yasnippet-chatgpt-shell/code_explain.gif" alt="code_explain.gif"></img> <figcaption> <span class="figure-number">Figure 3: </span>Inserting from the Kill Ring</figcaption></figure></div>
 </div>
 </div>
 </div>
- <div id="outline-container-orge20f397" class="outline-2">
- <h2 id="orge20f397">Next Steps</h2>
- <div class="outline-text-2" id="text-orge20f397">
+ <div id="outline-container-org2cc6221" class="outline-2">
+ <h2 id="org2cc6221">Next Steps</h2>
+ <div class="outline-text-2" id="text-org2cc6221">
  <p>
 There's a lot more to explore here. YASnippet is a very powerful templating
 system, and I've only scratched the surface of the ways to use it for developing
@@ -965,10 +974,10 @@ let me know what you come up with!
 <item>
   <title>Writing on AI and Postgres</title>
   <description><![CDATA[<div id="content" class="content">
- <div id="outline-container-orgbd2da51" class="outline-2">
- <h2 id="orgbd2da51">Background</h2>
- <div class="outline-text-2" id="text-orgbd2da51">
- <div class="preview" id="org7b97255">
+ <div id="outline-container-org9d71acb" class="outline-2">
+ <h2 id="org9d71acb">Background</h2>
+ <div class="outline-text-2" id="text-org9d71acb">
+ <div class="preview" id="org46d3530">
  <p>
 Since this start of this year, I've been working on and writing about AI tools
 for working with Postgres databases. Most of this work has involved finding
@@ -982,9 +991,9 @@ related to a lot of the other things I write about on my personal blog.
 </div>
 
 
- <div id="outline-container-orgc4e9ddf" class="outline-2">
- <h2 id="orgc4e9ddf"> <a href="https://innerjoin.bit.io/making-a-production-llm-prompt-for-text-to-sql-translation-b798b6e94783">Making a Production LLM Prompt for Text-to-SQL Translation</a></h2>
- <div class="outline-text-2" id="text-orgc4e9ddf">
+ <div id="outline-container-org0c44532" class="outline-2">
+ <h2 id="org0c44532"> <a href="https://innerjoin.bit.io/making-a-production-llm-prompt-for-text-to-sql-translation-b798b6e94783">Making a Production LLM Prompt for Text-to-SQL Translation</a></h2>
+ <div class="outline-text-2" id="text-org0c44532">
  <p>
 This article introduces our work on AI+databases. Our original goal was simple:
 make a great natural language to SQL translation system. This article talks
@@ -993,9 +1002,9 @@ about some of the challenges and opportunities in that area and introduces a
 </p>
 </div>
 </div>
- <div id="outline-container-orge85fb33" class="outline-2">
- <h2 id="orge85fb33"> <a href="https://innerjoin.bit.io/make-chatgpt-stop-chatting-and-start-writing-sql-fd5560049ae4">Make ChatGPT Stop Chatting and Start Writing SQL</a></h2>
- <div class="outline-text-2" id="text-orge85fb33">
+ <div id="outline-container-orgf4babdf" class="outline-2">
+ <h2 id="orgf4babdf"> <a href="https://innerjoin.bit.io/make-chatgpt-stop-chatting-and-start-writing-sql-fd5560049ae4">Make ChatGPT Stop Chatting and Start Writing SQL</a></h2>
+ <div class="outline-text-2" id="text-orgf4babdf">
  <p>
 I wrote this article after the ChatGPT API was released. We started by using the
 Codex code completion models but the much lower price of  <code>gpt-3.5-turbo</code> made a
@@ -1006,18 +1015,18 @@ ChatGPT to get much of the same functionality.
 </p>
 </div>
 </div>
- <div id="outline-container-orgac6c79f" class="outline-2">
- <h2 id="orgac6c79f"> <a href="https://innerjoin.bit.io/llm-sql-translation-prompt-testing-part-1-comparing-chatgpt-to-codex-78da57213ebe">LLM Prompt Testing Part 1: Comparing ChatGPT to Codex</a></h2>
- <div class="outline-text-2" id="text-orgac6c79f">
+ <div id="outline-container-org6827716" class="outline-2">
+ <h2 id="org6827716"> <a href="https://innerjoin.bit.io/llm-sql-translation-prompt-testing-part-1-comparing-chatgpt-to-codex-78da57213ebe">LLM Prompt Testing Part 1: Comparing ChatGPT to Codex</a></h2>
+ <div class="outline-text-2" id="text-org6827716">
  <p>
 This article presents a simple suite of text-to-SQL translations and compares
 the performance of the Codex and ChatGPT models.
 </p>
 </div>
 </div>
- <div id="outline-container-orgba5b75c" class="outline-2">
- <h2 id="orgba5b75c"> <a href="https://innerjoin.bit.io/use-llms-with-other-tools-for-better-sql-translation-21e35de8f03e">Use LLMs with Other Tools for Better SQL Translation</a></h2>
- <div class="outline-text-2" id="text-orgba5b75c">
+ <div id="outline-container-org20c684c" class="outline-2">
+ <h2 id="org20c684c"> <a href="https://innerjoin.bit.io/use-llms-with-other-tools-for-better-sql-translation-21e35de8f03e">Use LLMs with Other Tools for Better SQL Translation</a></h2>
+ <div class="outline-text-2" id="text-org20c684c">
  <blockquote>
  <p>
 The Unix Philosophy considers text streams a universal interface, and emphasizes
@@ -1034,9 +1043,9 @@ for chatting.
 </p>
 </div>
 </div>
- <div id="outline-container-orgb0e3eee" class="outline-2">
- <h2 id="orgb0e3eee"> <a href="https://innerjoin.bit.io/vector-similarity-search-in-postgres-with-bit-io-and-pgvector-c58ac34f408b">Vector Similarity Search in Postgres with bit.io and pgvector</a></h2>
- <div class="outline-text-2" id="text-orgb0e3eee">
+ <div id="outline-container-orgb81c744" class="outline-2">
+ <h2 id="orgb81c744"> <a href="https://innerjoin.bit.io/vector-similarity-search-in-postgres-with-bit-io-and-pgvector-c58ac34f408b">Vector Similarity Search in Postgres with bit.io and pgvector</a></h2>
+ <div class="outline-text-2" id="text-orgb81c744">
  <p>
 In this article, I briefly show how to use the  <code>pgvector</code> Postgres extension for
 semantic search. I exported all of bit.io's docs to a Postgres database, created
@@ -1046,9 +1055,9 @@ semantic search applied to the docs.
 </p>
 </div>
 </div>
- <div id="outline-container-orgcea7d84" class="outline-2">
- <h2 id="orgcea7d84"> <a href="https://innerjoin.bit.io/pre-classify-tasks-for-better-chatgpt-completions-f197ad01618c">Pre-Classify Tasks for Better ChatGPT Completions</a></h2>
- <div class="outline-text-2" id="text-orgcea7d84">
+ <div id="outline-container-org80824d3" class="outline-2">
+ <h2 id="org80824d3"> <a href="https://innerjoin.bit.io/pre-classify-tasks-for-better-chatgpt-completions-f197ad01618c">Pre-Classify Tasks for Better ChatGPT Completions</a></h2>
+ <div class="outline-text-2" id="text-org80824d3">
  <p>
 In my most recent article, I described how we used a two-step process to
 generate API calls using ChatGPT. We first used ChatGPT to identify the  <i>task</i>
@@ -1066,7 +1075,7 @@ left much less room for error and resulted in better completion quality.
 <item>
   <title>Using the ChatGPT API with Julia Part 2: Defining a Chat Struct</title>
   <description><![CDATA[<div id="content" class="content">
- <div class="preview" id="org6ea7c9f">
+ <div class="preview" id="org3e079cb">
  <p>
 One of the things that makes working with the ChatGPT API a little different
 from working with, e.g., the  <code>davinci-text-003</code> model api is the need to maintain
@@ -1081,9 +1090,9 @@ For the basics of working with the ChatGPT API, check out  <a href="20230303-cha
 
 </div>
 
- <div id="outline-container-org2cdc1a5" class="outline-2">
- <h2 id="org2cdc1a5">Defining the Struct</h2>
- <div class="outline-text-2" id="text-org2cdc1a5">
+ <div id="outline-container-orgc2dab6c" class="outline-2">
+ <h2 id="orgc2dab6c">Defining the Struct</h2>
+ <div class="outline-text-2" id="text-orgc2dab6c">
  <p>
 A  <code>struct</code>, also referred to as a  <a href="https://docs.julialang.org/en/v1/manual/types/#Composite-Types">composite type</a>, is "a collection of named
 fields, an instance of which can be treated as a single value." By default,
@@ -1176,9 +1185,9 @@ able to act on it. For that, we'll define a function.
 </div>
 </div>
 
- <div id="outline-container-org698ea9f" class="outline-2">
- <h2 id="org698ea9f">Defining the function</h2>
- <div class="outline-text-2" id="text-org698ea9f">
+ <div id="outline-container-orge95fd99" class="outline-2">
+ <h2 id="orge95fd99">Defining the function</h2>
+ <div class="outline-text-2" id="text-orge95fd99">
  <p>
 The purpose of this function is to:
 </p>
@@ -1266,9 +1275,9 @@ list. The  <code>chat</code> function follows both of these conventions.
 </p>
 </div>
 </div>
- <div id="outline-container-org2791911" class="outline-2">
- <h2 id="org2791911">Giving it a Try</h2>
- <div class="outline-text-2" id="text-org2791911">
+ <div id="outline-container-org3cc1772" class="outline-2">
+ <h2 id="org3cc1772">Giving it a Try</h2>
+ <div class="outline-text-2" id="text-org3cc1772">
  <p>
 So, does it work? Let's try it out.
 </p>
@@ -1304,9 +1313,9 @@ the message history in the second API request.
 </p>
 </div>
 </div>
- <div id="outline-container-org89da51c" class="outline-2">
- <h2 id="org89da51c">What's next?</h2>
- <div class="outline-text-2" id="text-org89da51c">
+ <div id="outline-container-org43c27b1" class="outline-2">
+ <h2 id="org43c27b1">What's next?</h2>
+ <div class="outline-text-2" id="text-org43c27b1">
  <p>
 There are a few additional avenues I want to explore, in no particular order:
 </p>
@@ -1329,10 +1338,10 @@ interesting project.</li>
 <item>
   <title>Using the ChatGPT API with Julia Part 1: the HTTP.jl Library</title>
   <description><![CDATA[<div id="content" class="content">
- <div id="outline-container-orgdcdafee" class="outline-2">
- <h2 id="orgdcdafee">Introduction</h2>
- <div class="outline-text-2" id="text-orgdcdafee">
- <div class="preview" id="orge813cd2">
+ <div id="outline-container-orgee548af" class="outline-2">
+ <h2 id="orgee548af">Introduction</h2>
+ <div class="outline-text-2" id="text-orgee548af">
+ <div class="preview" id="org456851a">
  <p>
 This brief post shows the basics of using the Julia  <code>HTTP</code> library to interact
 with the OpenAI ChatGPT API, which was made public a few days ago. This post
@@ -1344,9 +1353,9 @@ histories and engage more interactively with the API.
 </div>
 </div>
 </div>
- <div id="outline-container-org8d5264d" class="outline-2">
- <h2 id="org8d5264d">curl Example</h2>
- <div class="outline-text-2" id="text-org8d5264d">
+ <div id="outline-container-org1e0cfee" class="outline-2">
+ <h2 id="org1e0cfee">curl Example</h2>
+ <div class="outline-text-2" id="text-org1e0cfee">
  <p>
  <a href="https://platform.openai.com/docs/api-reference/chat/create">Here</a> is the API documentation on OpenAI's website. An example request with  <code>curl</code>
 looks like this:
@@ -1365,9 +1374,9 @@ looks like this:
 </div>
 </div>
 
- <div id="outline-container-org4fdfebb" class="outline-2">
- <h2 id="org4fdfebb">Julia example</h2>
- <div class="outline-text-2" id="text-org4fdfebb">
+ <div id="outline-container-org5df4197" class="outline-2">
+ <h2 id="org5df4197">Julia example</h2>
+ <div class="outline-text-2" id="text-org5df4197">
  <p>
 And here's how we can re-create this with the Julia HTTP library:
 </p>
@@ -1425,9 +1434,9 @@ chat_response[1][ <span class="org-string">"message"</span>][ <span class="org-s
 </pre>
 </div>
 </div>
- <div id="outline-container-org44cd297" class="outline-2">
- <h2 id="org44cd297">A little more detail about sending messages</h2>
- <div class="outline-text-2" id="text-org44cd297">
+ <div id="outline-container-org528169f" class="outline-2">
+ <h2 id="org528169f">A little more detail about sending messages</h2>
+ <div class="outline-text-2" id="text-org528169f">
  <p>
 One of the things that makes ChatGPT useful is its ability to "remember" past
 parts of a conversation. We can send whole conversations to the API using the
@@ -1464,7 +1473,7 @@ print(result[ <span class="org-string">"choices"</span>][1][ <span class="org-st
 </pre>
 </div>
 
- <pre class="example" id="org14432eb">
+ <pre class="example" id="orgf56b80b">
 
 ```julia
 using HTTP
@@ -1554,7 +1563,7 @@ print(result[ <span class="org-string">"choices"</span>][1][ <span class="org-st
 </pre>
 </div>
 
- <pre class="example" id="orgda4b78e">
+ <pre class="example" id="orgc412202">
 Sure, here's a simpler example:
 
 ```julia
@@ -1570,9 +1579,9 @@ In this example, we are sending a POST request with form data rather than JSON d
 </pre>
 </div>
 </div>
- <div id="outline-container-org8ec09ad" class="outline-2">
- <h2 id="org8ec09ad">Next Up…</h2>
- <div class="outline-text-2" id="text-org8ec09ad">
+ <div id="outline-container-orgce1a7d5" class="outline-2">
+ <h2 id="orgce1a7d5">Next Up…</h2>
+ <div class="outline-text-2" id="text-orgce1a7d5">
  <p>
 This post showed basic usage of the ChatGPT API with Julia. In the next post,
 I'll show how to make this more modular and useful. We'll create a  <code>Struct</code> for
@@ -1590,10 +1599,10 @@ perhaps as a Julia REPL mode, but at least as a command line utility.
 <item>
   <title>Using Quarto Files with Denote</title>
   <description><![CDATA[<div id="content" class="content">
- <div id="outline-container-orgabc05ef" class="outline-2">
- <h2 id="orgabc05ef">Custom Filetypes in Denote</h2>
- <div class="outline-text-2" id="text-orgabc05ef">
- <div class="PREVIEW" id="orgd100686">
+ <div id="outline-container-org62f5b23" class="outline-2">
+ <h2 id="org62f5b23">Custom Filetypes in Denote</h2>
+ <div class="outline-text-2" id="text-org62f5b23">
+ <div class="PREVIEW" id="orgac99f84">
  <p>
 The latest release of  <a href="https://protesilaos.com/emacs/denote">Denote</a> (by the inimitable Protesilaos Stavrou) introduced
 support for  <a href="https://protesilaos.com/codelog/2022-10-30-demo-denote-custom-file-type/">custom file types</a> in addition to the defaults, Org, Markdown+YAML,
@@ -1607,7 +1616,7 @@ when creating a new Denote file.
 </div>
 
  <p>
-Find the code snippet  <a href="#orgfd2430d">here</a>.
+Find the code snippet  <a href="#org384c504">here</a>.
 </p>
 
  <p>
@@ -1666,9 +1675,9 @@ by modifying the  <code>markdown-yaml</code> file type definition.
 </div>
 </div>
 
- <div id="outline-container-orgfd2430d" class="outline-2">
- <h2 id="orgfd2430d">Modifying the  <code>markdown-yaml</code> file type</h2>
- <div class="outline-text-2" id="text-orgfd2430d">
+ <div id="outline-container-org384c504" class="outline-2">
+ <h2 id="org384c504">Modifying the  <code>markdown-yaml</code> file type</h2>
+ <div class="outline-text-2" id="text-org384c504">
  <p>
 As noted, all we're actually doing is changing the file extension in the
 existing markdown type. So instead of writing out all of the redundant details,
@@ -1765,7 +1774,7 @@ And with that, we can now create new quarto files with denote!
 </style></p>
 
 
- <figure id="org7dd805b"> <img src="figures/20221217-denote-quarto/quarto_denote.png" alt="quarto_denote.png"></img> <figcaption> <span class="figure-number">Figure 1: </span> <i>Quarto in the Denote Menu!</i></figcaption></figure> <p>
+ <figure id="org09684ea"> <img src="figures/20221217-denote-quarto/quarto_denote.png" alt="quarto_denote.png"></img> <figcaption> <span class="figure-number">Figure 1: </span> <i>Quarto in the Denote Menu!</i></figcaption></figure> <p>
 Check out  <a href="https://github.com/quarto-dev/quarto-emacs">quarto-emacs</a> if you're interested in working with quarto files in
 emacs (though I have to admit that working with quarto files in RStudio is a joy
 and is at least worth a try before commiting to an emacs-only workflow).
@@ -1780,10 +1789,10 @@ and is at least worth a try before commiting to an emacs-only workflow).
 <item>
   <title>Processing a JSON API Response with jq</title>
   <description><![CDATA[<div id="content" class="content">
- <div id="outline-container-org972b590" class="outline-2">
- <h2 id="org972b590">Introduction</h2>
- <div class="outline-text-2" id="text-org972b590">
- <div class="preview" id="orgced2fe0">
+ <div id="outline-container-org235b311" class="outline-2">
+ <h2 id="org235b311">Introduction</h2>
+ <div class="outline-text-2" id="text-org235b311">
+ <div class="preview" id="org64b6e69">
  <p>
 There are countless ways of processing JSON data and converting it to different
 formats. Historically, I've used Python and loaded the data into a Pandas
@@ -1820,9 +1829,9 @@ To follow along, begin by  <a href="https://stedolan.github.io/jq/download/">ins
 </div>
 </div>
 
- <div id="outline-container-org97e5787" class="outline-2">
- <h2 id="org97e5787">Download the Data</h2>
- <div class="outline-text-2" id="text-org97e5787">
+ <div id="outline-container-org499c924" class="outline-2">
+ <h2 id="org499c924">Download the Data</h2>
+ <div class="outline-text-2" id="text-org499c924">
  <p>
 As noted above, we use  <code>curl</code> to make a  <code>POST</code> request agains the BLS API. We're
 downloading Consumer Price Index data since the start of 2022. We're downloading
@@ -1837,7 +1846,7 @@ unadjusted data.
 </pre>
 </div>
 
- <pre class="example" id="orgf57e6c9">
+ <pre class="example" id="orge2eb026">
 | status":"REQUEST_SUCCEEDED","responseTime":171,"message":[],"Results               |
 | series                                                                            |
 | seriesID":"CUUR0000SA0","data":[{"year":"2022","period":"M08","periodName":"August", "latest":"true","value":"296.171","footnotes":[{}]},{"year":"2022","period":"M07","periodName":"July","value":"296.276","footnotes":[{}]},{"year":"2022","period":"M06","periodName":"June","value":"296.311","footnotes":[{}]},{"year":"2022","period":"M05","periodName":"May","value":"292.296","footnotes":[{}]},{"year":"2022","period":"M04","periodName":"April","value":"289.109","footnotes":[{}]},{"year":"2022","period":"M03","periodName":"March","value":"287.504","footnotes":[{}]},{"year":"2022","period":"M02","periodName":"February","value":"283.716","footnotes":[{}]},{"year":"2022","period":"M01","periodName":"January","value":"281.148","footnotes |
@@ -1850,9 +1859,9 @@ This is technically readable, but not very nice.
 </p>
 </div>
 </div>
- <div id="outline-container-org3e6d9df" class="outline-2">
- <h2 id="org3e6d9df">Processing the Data with  <code>jq</code></h2>
- <div class="outline-text-2" id="text-org3e6d9df">
+ <div id="outline-container-org2aa0196" class="outline-2">
+ <h2 id="org2aa0196">Processing the Data with  <code>jq</code></h2>
+ <div class="outline-text-2" id="text-org2aa0196">
  <p>
 For most use cases, the data aren't particularly usable in this format. They're
 hard to read; they include metadata about the API response; and the hierarchical
@@ -1861,9 +1870,9 @@ proceed step by step to show how we can use  <code>jq</code> to extract specific
 API results.
 </p>
 </div>
- <div id="outline-container-org66b80d6" class="outline-3">
- <h3 id="org66b80d6"> <code>jq</code> with no further arguments</h3>
- <div class="outline-text-3" id="text-org66b80d6">
+ <div id="outline-container-orgec484f7" class="outline-3">
+ <h3 id="orgec484f7"> <code>jq</code> with no further arguments</h3>
+ <div class="outline-text-3" id="text-orgec484f7">
  <p>
 What happens if we pass the results of the API call to  <code>jq</code> with no further arguments?
 </p>
@@ -1874,7 +1883,7 @@ What happens if we pass the results of the API call to  <code>jq</code> with no 
 </pre>
 </div>
 
- <pre class="example" id="org41f80d4">
+ <pre class="example" id="orgaded9cd">
 {
   "status": "REQUEST_SUCCEEDED",
   "responseTime": 169,
@@ -2052,9 +2061,9 @@ observe:
 the  <code>data</code> values as rows in our resulting table.</li>
 </ul></div>
 </div>
- <div id="outline-container-orge8c5858" class="outline-3">
- <h3 id="orge8c5858">Constructing a Header Row</h3>
- <div class="outline-text-3" id="text-orge8c5858">
+ <div id="outline-container-orgf160059" class="outline-3">
+ <h3 id="orgf160059">Constructing a Header Row</h3>
+ <div class="outline-text-3" id="text-orgf160059">
  <p>
 We want our resulting table to have a header row. The process of making this row
 provides a lot of insight into how  <code>jq</code> works.
@@ -2129,9 +2138,9 @@ section, we'll see how to extract data from multiple sections.
 </p>
 </div>
 </div>
- <div id="outline-container-org46dbef0" class="outline-3">
- <h3 id="org46dbef0">Extracting Data Values</h3>
- <div class="outline-text-3" id="text-org46dbef0">
+ <div id="outline-container-org802d615" class="outline-3">
+ <h3 id="org802d615">Extracting Data Values</h3>
+ <div class="outline-text-3" id="text-org802d615">
  <p>
 Based on the header rows, we need to extract, for each data entry, the series
 ID, footnotes, period, period name, year, value, and whether it's the latest
@@ -2141,7 +2150,7 @@ headers, though, for two key reasons:
  <ul class="org-ul"> <li>We need to get data from each object, not just one</li>
  <li>We need data from different levels of the hierarchy:  <code>seriesID</code> is at a higher
 level than the other values we need.</li>
-</ul> <pre class="example" id="org9c536a1">
+</ul> <pre class="example" id="org517d70b">
 "series": [
     {
         "seriesID": "CUUR0000SA0",
@@ -2173,7 +2182,7 @@ Here's how we might start to approach this.
 </pre>
 </div>
 
- <pre class="example" id="orgaa9f56e">
+ <pre class="example" id="orgdee2828">
 [
   "CUUR0000SA0",
   "2022",
@@ -2244,7 +2253,7 @@ converted directly to the CSV format. So we have a little more work to do.
 </pre>
 </div>
 
- <pre class="example" id="org1887734">
+ <pre class="example" id="org9afba67">
 [
   "CUUR0000SA0",
   "2022",
@@ -2298,9 +2307,9 @@ converts them into comma-separated strings, which the CSV converter can handle
 without issue.</li>
 </ul></div>
 </div>
- <div id="outline-container-org21f7fcd" class="outline-3">
- <h3 id="org21f7fcd">Converting the Results to CSV</h3>
- <div class="outline-text-3" id="text-org21f7fcd">
+ <div id="outline-container-orgb5970ca" class="outline-3">
+ <h3 id="orgb5970ca">Converting the Results to CSV</h3>
+ <div class="outline-text-3" id="text-orgb5970ca">
  <p>
 Lastly, we convert the transformed results to a CSV using the  <code>@csv</code> formatter.
 </p>
@@ -2315,7 +2324,7 @@ Lastly, we convert the transformed results to a CSV using the  <code>@csv</code>
 </pre>
 </div>
 
- <pre class="example" id="orge471fd9">
+ <pre class="example" id="org018cf93">
 "seriesID","year","period","periodName","latest","value","footnotes"
 "CUUR0000SA0","2022","M08","August","true","296.171",""
 "CUUR0000SA0","2022","M07","July","296.276",""
@@ -2358,7 +2367,7 @@ structure.
 <item>
   <title>Figures and Captions Don&apos;t Appear as Expected with Default Export Options</title>
   <description><![CDATA[<div id="content" class="content">
- <div class="preview" id="org8d4cb46">
+ <div class="preview" id="orgad74d62">
  <p>
 I noticed that some of the formatting on this site was a little off and some of
 the org-mode components weren't being translated to HTML in quite the way I
@@ -2376,9 +2385,9 @@ While that brief introduction should capture the necessary changes, we can get
 into more specifics.
 </p>
 
- <div id="outline-container-orgec18fac" class="outline-2">
- <h2 id="orgec18fac">The Problem</h2>
- <div class="outline-text-2" id="text-orgec18fac">
+ <div id="outline-container-org6b1de3c" class="outline-2">
+ <h2 id="org6b1de3c">The Problem</h2>
+ <div class="outline-text-2" id="text-org6b1de3c">
  <p>
 If we use the default settings, figures aren't wrapped in  <code><figure></code> blocks and
 captions aren't wrapped in  <code><figcaption></code> blocks, so none of the formatting we
@@ -2405,9 +2414,9 @@ The image and caption appear left-aligned on the page. Here's the html:
 </div>
 </div>
 
- <div id="outline-container-org182afb9" class="outline-2">
- <h2 id="org182afb9">Changes to the Site Config</h2>
- <div class="outline-text-2" id="text-org182afb9">
+ <div id="outline-container-org0f89660" class="outline-2">
+ <h2 id="org0f89660">Changes to the Site Config</h2>
+ <div class="outline-text-2" id="text-org0f89660">
  <p>
 To address this, we need to change the  <code>org-html-doctype</code> and  <code>org-html-html5-fancy</code>
 variables. We can do this in the export configuration's
@@ -2456,15 +2465,15 @@ key changes.
 </div>
 </div>
 </div>
- <div id="outline-container-org62d9f83" class="outline-2">
- <h2 id="org62d9f83">The Results</h2>
- <div class="outline-text-2" id="text-org62d9f83">
+ <div id="outline-container-org588f45b" class="outline-2">
+ <h2 id="org588f45b">The Results</h2>
+ <div class="outline-text-2" id="text-org588f45b">
  <p>
 With these changes, our images and captions are now centered:
 </p>
 
 
- <figure id="orgdcf2d05"> <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px"></img> <figcaption> <span class="figure-number">Figure 1: </span>This caption is now centered and wrapped in a  <code><figcaption></code> tag!</figcaption></figure> <p>
+ <figure id="orgc97a8ea"> <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px"></img> <figcaption> <span class="figure-number">Figure 1: </span>This caption is now centered and wrapped in a  <code><figcaption></code> tag!</figcaption></figure> <p>
 And the html generated from the org export now looks like this:
 </p>
 
@@ -2513,7 +2522,7 @@ Setting the config to use  <code>html5</code> gives us access to these elements.
 <item>
   <title>Basic Plotting in Julia</title>
   <description><![CDATA[<div id="content" class="content">
- <div class="preview" id="org73404bd">
+ <div class="preview" id="orgec6f61e">
  <p>
 In this short post, I show one of the many ways of using Julia within emacs
 org mode, and will describe some of the basic plotting functionality in Julia.
@@ -2521,9 +2530,9 @@ org mode, and will describe some of the basic plotting functionality in Julia.
 
 </div>
 
- <div id="outline-container-orgc06eb23" class="outline-2">
- <h2 id="orgc06eb23">Getting Started with Julia in Org Mode:  <code>jupyter-julia</code>.</h2>
- <div class="outline-text-2" id="text-orgc06eb23">
+ <div id="outline-container-org09169d0" class="outline-2">
+ <h2 id="org09169d0">Getting Started with Julia in Org Mode:  <code>jupyter-julia</code>.</h2>
+ <div class="outline-text-2" id="text-org09169d0">
  <p>
 While  <a href="https://github.com/gcv/julia-snail">julia-snail</a> is my favorite Julia development environment, it's support for
 org-mode is, at present, quite limited. For example, it seems to ignore the
@@ -2535,9 +2544,9 @@ how to use emacs-jupyter with org-mode.
 </div>
 </div>
 
- <div id="outline-container-orge7bf81d" class="outline-2">
- <h2 id="orge7bf81d">Making some Plots</h2>
- <div class="outline-text-2" id="text-orge7bf81d">
+ <div id="outline-container-org6c31c36" class="outline-2">
+ <h2 id="org6c31c36">Making some Plots</h2>
+ <div class="outline-text-2" id="text-org6c31c36">
  <p>
 Let's make some plots. We'll use the  <a href="https://docs.juliaplots.org/latest/tutorial/">Plots.jl</a> package and explore a few
 different plotting styles. First, we load the packages we'll be using. I tend to
@@ -2553,9 +2562,9 @@ using StatsPlots
 </div>
 </div>
 
- <div id="outline-container-org3abf8ae" class="outline-3">
- <h3 id="org3abf8ae">Building Plots Incrementally</h3>
- <div class="outline-text-3" id="text-org3abf8ae">
+ <div id="outline-container-orge81474b" class="outline-3">
+ <h3 id="orge81474b">Building Plots Incrementally</h3>
+ <div class="outline-text-3" id="text-orge81474b">
  <p>
 With these packages loaded, we'll start simply and plot a standard normal
 distribution.
@@ -2567,7 +2576,7 @@ distribution.
 </div>
 
 
- <figure id="org9341a9b"> <img src="figures/20220719-julia-plots/fig1.svg" alt="fig1.svg" class="org-svg"></img> <figcaption> <span class="figure-number">Figure 1: </span>A basic plot</figcaption></figure> <p>
+ <figure id="orgb9d1951"> <img src="figures/20220719-julia-plots/fig1.svg" alt="fig1.svg" class="org-svg"></img> <figcaption> <span class="figure-number">Figure 1: </span>A basic plot</figcaption></figure> <p>
 The  <code>Plots.jl</code> package makes it easy to update plots after creation. A Julia
 convention is that methods ending in  <code>!</code>  <a href="https://docs.julialang.org/en/v1/manual/style-guide/#bang-convention">modify their arguments in place</a>. In this
 case, we can call  <code>plot!()</code> to incrementally add to our plot.
@@ -2580,7 +2589,7 @@ plot!(leg=false) # Remove the Legend
 </div>
 
 
- <figure id="org04af101"> <img src="figures/20220719-julia-plots/fig2.svg" alt="fig2.svg" class="org-svg"></img> <figcaption> <span class="figure-number">Figure 2: </span>Removing the legend and adding labels</figcaption></figure> <p>
+ <figure id="org597eabc"> <img src="figures/20220719-julia-plots/fig2.svg" alt="fig2.svg" class="org-svg"></img> <figcaption> <span class="figure-number">Figure 2: </span>Removing the legend and adding labels</figcaption></figure> <p>
 Let's make one final set of changes and update some of the font sizes for better
 readability.
 </p>
@@ -2595,14 +2604,14 @@ font(18, "Computer Modern"))
 </div>
 
 
- <figure id="orgffbdcb1"> <img src="figures/20220719-julia-plots/fig3.svg" alt="fig3.svg" class="org-svg"></img> <figcaption> <span class="figure-number">Figure 3: </span>Changing some Fonts</figcaption></figure></div>
+ <figure id="org1fb0dd0"> <img src="figures/20220719-julia-plots/fig3.svg" alt="fig3.svg" class="org-svg"></img> <figcaption> <span class="figure-number">Figure 3: </span>Changing some Fonts</figcaption></figure></div>
 </div>
 </div>
 
 
- <div id="outline-container-org63743cf" class="outline-2">
- <h2 id="org63743cf">Plotting Real Data</h2>
- <div class="outline-text-2" id="text-org63743cf">
+ <div id="outline-container-org26bf829" class="outline-2">
+ <h2 id="org26bf829">Plotting Real Data</h2>
+ <div class="outline-text-2" id="text-org26bf829">
  <p>
 That's enough of that. Usually we're plotting real data, not standard standard
 distributions. Let's get some. First we'll pull from the  <code>RDatasets</code> package,
@@ -2636,12 +2645,12 @@ title!("Horsepower by MPG and N Cylinders")
 </div>
 
 
- <figure id="org0761722"> <img src="figures/20220719-julia-plots/fig4.svg" alt="fig4.svg" class="org-svg"></img> <figcaption> <span class="figure-number">Figure 4: </span>plotting data with Plots.jl</figcaption></figure></div>
+ <figure id="org3e585bb"> <img src="figures/20220719-julia-plots/fig4.svg" alt="fig4.svg" class="org-svg"></img> <figcaption> <span class="figure-number">Figure 4: </span>plotting data with Plots.jl</figcaption></figure></div>
 </div>
 
- <div id="outline-container-org5aa37d0" class="outline-2">
- <h2 id="org5aa37d0">Modifying Plot Visual Components</h2>
- <div class="outline-text-2" id="text-org5aa37d0">
+ <div id="outline-container-orgd4af0ae" class="outline-2">
+ <h2 id="orgd4af0ae">Modifying Plot Visual Components</h2>
+ <div class="outline-text-2" id="text-orgd4af0ae">
  <p>
 It's not always straightforward to figure out how to modify visual components of
 a plot. Most of the relevant information lies in the  <a href="https://docs.juliaplots.org/latest/attributes/">Attributes</a> section of the
@@ -2649,9 +2658,9 @@ Plots.jl documentation (and its subsections).
 </p>
 </div>
 </div>
- <div id="outline-container-org85ee666" class="outline-2">
- <h2 id="org85ee666">Different Plot Styles</h2>
- <div class="outline-text-2" id="text-org85ee666">
+ <div id="outline-container-orgc6de52d" class="outline-2">
+ <h2 id="orgc6de52d">Different Plot Styles</h2>
+ <div class="outline-text-2" id="text-orgc6de52d">
  <p>
 One of the benefits of the Plots.jl package is its support for many different
  <a href="https://docs.juliaplots.org/latest/backends/">plotting backends</a>. The default is GR which, according to the documentation, is
@@ -2685,7 +2694,7 @@ We then specify that we'd like to use this backend with the  <code>unicodeplots(
 </pre>
 </div>
 
- <pre class="example" id="org2049e5a">
+ <pre class="example" id="org22b02fe">
                         HP vs MPG                   
        +----------------------------------------+   
 343.49 |        ⚬                               | y1
@@ -2714,13 +2723,13 @@ update if and when I figure that out. It should look like this:
 </p>
 
 
- <figure id="org3d9302f"> <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="600px"></img> <figcaption> <span class="figure-number">Figure 5: </span>screenshot of unicodeplot from vterm</figcaption></figure></div>
+ <figure id="org5a760bd"> <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="600px"></img> <figcaption> <span class="figure-number">Figure 5: </span>screenshot of unicodeplot from vterm</figcaption></figure></div>
 </div>
 
 
- <div id="outline-container-org7a8dcaa" class="outline-2">
- <h2 id="org7a8dcaa">Conculsion</h2>
- <div class="outline-text-2" id="text-org7a8dcaa">
+ <div id="outline-container-orga6e5419" class="outline-2">
+ <h2 id="orga6e5419">Conculsion</h2>
+ <div class="outline-text-2" id="text-orga6e5419">
  <p>
 There's a lot more to get into with plotting in Julia and with using Julia in
 emacs. This post serves as a small jumping-off point—just enough to get started,
@@ -2742,10 +2751,10 @@ pursuing. I'll write more on this topic as I learn more!
 low-contrast. I will update this soon.</i>
 </p>
 
- <div id="outline-container-orgf350e52" class="outline-2">
- <h2 id="orgf350e52">The Problem</h2>
- <div class="outline-text-2" id="text-orgf350e52">
- <div class="PREVIEW" id="org58f5113">
+ <div id="outline-container-org5e8f756" class="outline-2">
+ <h2 id="org5e8f756">The Problem</h2>
+ <div class="outline-text-2" id="text-org5e8f756">
+ <div class="PREVIEW" id="orgc3a2c8c">
  <p>
 When writing about org mode, one often wants to show what particular org
 headline look like in terms of formatting, properties, tags, options,
@@ -2767,9 +2776,9 @@ a comma before the headline.
 </p>
 </div>
 </div>
- <div id="outline-container-orgd02de2f" class="outline-2">
- <h2 id="orgd02de2f">This Headline Is in an Org Source Block</h2>
- <div class="outline-text-2" id="text-orgd02de2f">
+ <div id="outline-container-org09fb290" class="outline-2">
+ <h2 id="org09fb290">This Headline Is in an Org Source Block</h2>
+ <div class="outline-text-2" id="text-org09fb290">
  <p>
 And it is still parsed and exported as a headline, not as an example.
 #+end <sub>src</sub></p>
@@ -2778,9 +2787,9 @@ Clearly, this isn't what we want.
 </p>
 </div>
 </div>
- <div id="outline-container-org9c0ff34" class="outline-2">
- <h2 id="org9c0ff34">Prepend Headlines in Source Blocks with Commas</h2>
- <div class="outline-text-2" id="text-org9c0ff34">
+ <div id="outline-container-orgf1475b4" class="outline-2">
+ <h2 id="orgf1475b4">Prepend Headlines in Source Blocks with Commas</h2>
+ <div class="outline-text-2" id="text-orgf1475b4">
  <p>
 This issue is easily resolved: just insert a comma before the headline in the
 source block (e.g.  <code>,* Headline</code>). This results in the following:
@@ -2836,9 +2845,9 @@ This headline is also prepended with a comma!
 </div>
 </div>
 </div>
- <div id="outline-container-org0304850" class="outline-2">
- <h2 id="org0304850">An Easier Way</h2>
- <div class="outline-text-2" id="text-org0304850">
+ <div id="outline-container-orge1ea28f" class="outline-2">
+ <h2 id="orge1ea28f">An Easier Way</h2>
+ <div class="outline-text-2" id="text-orge1ea28f">
  <p>
 We can use the  <code>org-edit-special</code> command ( <code>C-c '</code>) within an org source block to
 open a separate editing environment (in this case, another org buffer). We can
@@ -2917,10 +2926,10 @@ source blocks should be much easier.
 <item>
   <title>Task Repeaters in Org Mode</title>
   <description><![CDATA[<div id="content" class="content">
- <div id="outline-container-org4178e81" class="outline-2">
- <h2 id="org4178e81">Background</h2>
- <div class="outline-text-2" id="text-org4178e81">
- <div class="PREVIEW" id="orgb52e8d5">
+ <div id="outline-container-orga145e05" class="outline-2">
+ <h2 id="orga145e05">Background</h2>
+ <div class="outline-text-2" id="text-orga145e05">
+ <div class="PREVIEW" id="orge71cabc">
  <p>
 I recently started using org-mode to keep track of a few habits (morning
 meditation, getting some sunlight and exercise before my morning coffee, etc.)
@@ -2935,9 +2944,9 @@ complete a task after the scheduled date.
 </div>
 </div>
 </div>
- <div id="outline-container-orge58544e" class="outline-2">
- <h2 id="orge58544e">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</h2>
- <div class="outline-text-2" id="text-orge58544e">
+ <div id="outline-container-orgc13b0b8" class="outline-2">
+ <h2 id="orgc13b0b8">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</h2>
+ <div class="outline-text-2" id="text-orgc13b0b8">
  <p>
 The  <a href="https://orgmode.org/manual/Dates-and-Times.html">org-mode manual</a> provides plenty of details on the basics of dates and
 times. Here's a quick review:
@@ -2983,9 +2992,9 @@ appointment) that occurs  <i>on</i> a given date.
 </p></li>
 </ul></div>
 </div>
- <div id="outline-container-org935576a" class="outline-2">
- <h2 id="org935576a">Repeat Intervals</h2>
- <div class="outline-text-2" id="text-org935576a">
+ <div id="outline-container-org0788e33" class="outline-2">
+ <h2 id="org0788e33">Repeat Intervals</h2>
+ <div class="outline-text-2" id="text-org0788e33">
  <p>
 Org-mode makes it possible to schedule recurring events without manually
 specifying each repetition date. There are three key formats for repeated
@@ -3002,9 +3011,9 @@ When specifying repeat intervals,  <code>y</code> means "yearly",  <code>m</code
  <code>+<number></code> tells how often the event should be repeated.
 </p>
 </div>
- <div id="outline-container-org822e5e1" class="outline-3">
- <h3 id="org822e5e1">Different Types of Repeat Intervals</h3>
- <div class="outline-text-3" id="text-org822e5e1">
+ <div id="outline-container-org25371dc" class="outline-3">
+ <h3 id="org25371dc">Different Types of Repeat Intervals</h3>
+ <div class="outline-text-3" id="text-org25371dc">
  <p>
 Here's where I ran into trouble. I scheduled some events as daily "habits." For
 example, I wanted to take a walk each morning, so I included the following in my
@@ -3063,9 +3072,9 @@ and I plan to complete the task again  <i>tomorrow</i>.
 There are two special repeaters for situations like this.
 </p>
 </div>
- <div id="outline-container-org8349362" class="outline-4">
- <h4 id="org8349362">The  <code>.+</code> Repeater</h4>
- <div class="outline-text-4" id="text-org8349362">
+ <div id="outline-container-orgd8f6a63" class="outline-4">
+ <h4 id="orgd8f6a63">The  <code>.+</code> Repeater</h4>
+ <div class="outline-text-4" id="text-orgd8f6a63">
  <p>
 Instead of scheduling with  <code>+1d</code>, we can use  <code>.+1d</code> to specify that, after we mark a
 task  <code>DONE</code> it should advance by exactly one day from the date (and time, if the
@@ -3104,9 +3113,9 @@ A couple of noteworthy things happened here:
 one week from when it was marked  <code>DONE</code>, a Saturday.</li>
 </ul></div>
 </div>
- <div id="outline-container-orgb8206d6" class="outline-4">
- <h4 id="orgb8206d6">The  <code>++</code> Repeater</h4>
- <div class="outline-text-4" id="text-orgb8206d6">
+ <div id="outline-container-org6c40333" class="outline-4">
+ <h4 id="org6c40333">The  <code>++</code> Repeater</h4>
+ <div class="outline-text-4" id="text-org6c40333">
  <p>
 The  <code>++</code> repeater is very similar to the  <code>.+</code> repeater insofar as it will also
 advance the scheduled date into the future. However, it will  <i>also</i> match the
@@ -3153,9 +3162,9 @@ Sunday, only four days later.
 </div>
 </div>
 </div>
- <div id="outline-container-orgfa1be1e" class="outline-3">
- <h3 id="orgfa1be1e">Marking Tasks with Repeaters  <code>DONE</code> (For Good)</h3>
- <div class="outline-text-3" id="text-orgfa1be1e">
+ <div id="outline-container-orgc00f286" class="outline-3">
+ <h3 id="orgc00f286">Marking Tasks with Repeaters  <code>DONE</code> (For Good)</h3>
+ <div class="outline-text-3" id="text-orgc00f286">
  <p>
 You may want to end a repeated task—stop it from appearing in your agenda and
 mark it  <code>DONE</code> —without entirely deleting the task. Maybe you want to maintain the
@@ -3177,9 +3186,9 @@ to square brackets, indicating an inactive timestamp.</li>
 </ol></div>
 </div>
 </div>
- <div id="outline-container-org3d50798" class="outline-2">
- <h2 id="org3d50798">Further Reading</h2>
- <div class="outline-text-2" id="text-org3d50798">
+ <div id="outline-container-orgbbb3f22" class="outline-2">
+ <h2 id="orgbbb3f22">Further Reading</h2>
+ <div class="outline-text-2" id="text-orgbbb3f22">
  <p>
 The org-mode manual is the best place to learn more about timestamps, schedules,
 and deadlines in general and repeated tasks in particular. Here are some places
@@ -3198,10 +3207,10 @@ to start:
 <item>
   <title>Org Babel Source Blocks for R</title>
   <description><![CDATA[<div id="content" class="content">
- <div id="outline-container-orgd6d6295" class="outline-2">
- <h2 id="orgd6d6295">Background</h2>
- <div class="outline-text-2" id="text-orgd6d6295">
- <div class="preview" id="org12ad07e">
+ <div id="outline-container-orgaddf144" class="outline-2">
+ <h2 id="orgaddf144">Background</h2>
+ <div class="outline-text-2" id="text-orgaddf144">
+ <div class="preview" id="orgad9018f">
  <p>
  <a href="https://orgmode.org/worg/org-contrib/babel/intro.html">Org Babel</a> is one of the best tools available for  <a href="https://www-cs-faculty.stanford.edu/~knuth/lp.html">literate programming</a>. As a data scientist, I use it
 as a plain-text alternative to Jupyter notebooks. Org-mode files are much easier to track with
@@ -3226,16 +3235,16 @@ depend on the specifics of your org-babel configuration; you can see mine below 
 </p>
 </div>
 </div>
- <div id="outline-container-orgfc72a28" class="outline-2">
- <h2 id="orgfc72a28">R Source Headers</h2>
- <div class="outline-text-2" id="text-orgfc72a28">
+ <div id="outline-container-org84be28e" class="outline-2">
+ <h2 id="org84be28e">R Source Headers</h2>
+ <div class="outline-text-2" id="text-org84be28e">
  <p>
 I tend to use two different header configurations, one for code output and one for figures.
 </p>
 </div>
- <div id="outline-container-orgbabfb36" class="outline-3">
- <h3 id="orgbabfb36">Code</h3>
- <div class="outline-text-3" id="text-orgbabfb36">
+ <div id="outline-container-orgc2e0b6e" class="outline-3">
+ <h3 id="orgc2e0b6e">Code</h3>
+ <div class="outline-text-3" id="text-orgc2e0b6e">
  <div class="org-src-container">
  <pre class="src src-org"> <span class="org-org-block-begin-line">#+begin_src R :session mysession</span>
  <span class="org-org-block"> <span class="org-comment-delimiter"># </span></span> <span class="org-org-block"> <span class="org-comment">Code goes here</span></span>
@@ -3266,9 +3275,9 @@ add_1(99)
 100
 </pre>
 </div>
- <div id="outline-container-org5544edb" class="outline-4">
- <h4 id="org5544edb">Displaying Tabular Output</h4>
- <div class="outline-text-4" id="text-org5544edb">
+ <div id="outline-container-org4a9d284" class="outline-4">
+ <h4 id="org4a9d284">Displaying Tabular Output</h4>
+ <div class="outline-text-4" id="text-org4a9d284">
  <p>
 When not dealing with plotting outputs, there are two main header options for result formatting that I tend
 to use:  <code>:results output</code> and  <code>:results value</code> (the default). You can find details on these two modes
@@ -3282,7 +3291,7 @@ work within an org file, simply because it is more compact.  <code>:results valu
 readable exports, though.
 </p>
 </div>
- <ul class="org-ul"> <li> <a id="orgd078b44"></a>Value <br></br> <div class="outline-text-5" id="text-orgd078b44">
+ <ul class="org-ul"> <li> <a id="orgcbe261c"></a>Value <br></br> <div class="outline-text-5" id="text-orgcbe261c">
  <p>
 (With  <code>:results value</code> header arg).
 </p>
@@ -3375,7 +3384,7 @@ correctly.
 </div>
 </li>
 
- <li> <a id="org7c9867b"></a>Output <br></br> <div class="outline-text-5" id="text-org7c9867b">
+ <li> <a id="orgcfd72c7"></a>Output <br></br> <div class="outline-text-5" id="text-orgcfd72c7">
  <p>
 (With  <code>:results output</code> header arg).
 </p>
@@ -3398,9 +3407,9 @@ Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
 </ul></div>
 </div>
 
- <div id="outline-container-orgaaa4782" class="outline-3">
- <h3 id="orgaaa4782">Figures</h3>
- <div class="outline-text-3" id="text-orgaaa4782">
+ <div id="outline-container-org2de043b" class="outline-3">
+ <h3 id="org2de043b">Figures</h3>
+ <div class="outline-text-3" id="text-org2de043b">
  <p>
 I don't find the display and exporting of figures particularly intuitive and finding help tends to
 be challening because of differences depending on the plotting system and because of changes over
@@ -3408,9 +3417,9 @@ time.  <i>This approach works as of December 2021</i>. Further details on export
 found  <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org7fbd9c2">here</a>.
 </p>
 </div>
- <div id="outline-container-orgf1041c8" class="outline-4">
- <h4 id="orgf1041c8">Base R</h4>
- <div class="outline-text-4" id="text-orgf1041c8">
+ <div id="outline-container-org7b3bd9d" class="outline-4">
+ <h4 id="org7b3bd9d">Base R</h4>
+ <div class="outline-text-4" id="text-org7b3bd9d">
  <p>
 Using Base R graphics, the following header argument will produce a link to a file which can then be
 previewed in your org-mode buffer and exported.
@@ -3431,8 +3440,8 @@ grid()
 </div>
 
 
- <figure id="org71ad5cf"> <img src="./figures/20211209-R-babel/fig1.png" alt="fig1.png"></img></figure></div>
- <ul class="org-ul"> <li> <a id="org2b34267"></a>Setting Graphical Parameters with Header Arguments <br></br> <div class="outline-text-5" id="text-org2b34267">
+ <figure id="orge5355a3"> <img src="./figures/20211209-R-babel/fig1.png" alt="fig1.png"></img></figure></div>
+ <ul class="org-ul"> <li> <a id="org6b40350"></a>Setting Graphical Parameters with Header Arguments <br></br> <div class="outline-text-5" id="text-org6b40350">
  <p>
 We can also set some graphical parameters such as figure height and width through the header
 arguments. For example, to set the with, height, and resolution, we add  <code>:width 6 :height 3 :units in
@@ -3446,13 +3455,13 @@ grid()
 </div>
 
 
- <figure id="orgb1cb1c2"> <img src="./figures/20211209-R-babel/fig2.png" alt="fig2.png"></img></figure></div>
+ <figure id="org07291f0"> <img src="./figures/20211209-R-babel/fig2.png" alt="fig2.png"></img></figure></div>
 </li>
 </ul></div>
 
- <div id="outline-container-org966b706" class="outline-4">
- <h4 id="org966b706">Ggplot and Lattice</h4>
- <div class="outline-text-4" id="text-org966b706">
+ <div id="outline-container-orgeefe40a" class="outline-4">
+ <h4 id="orgeefe40a">Ggplot and Lattice</h4>
+ <div class="outline-text-4" id="text-orgeefe40a">
  <p>
 Can we just use this approach for everything? From  <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org075fa45">the documentation</a>,
 </p>
@@ -3480,14 +3489,14 @@ ggplot(data=mtcars, mapping=aes(x=hp, y=mpg)) + geom_point()
 </div>
 
 
- <figure id="orgce9d787"> <img src="./figures/20211209-R-babel/fig3.png" alt="fig3.png"></img></figure></div>
+ <figure id="orgca0f7cb"> <img src="./figures/20211209-R-babel/fig3.png" alt="fig3.png"></img></figure></div>
 </div>
 </div>
 </div>
 
- <div id="outline-container-orge8ebf38" class="outline-2">
- <h2 id="orge8ebf38">An Alternative: Emacs-Jupyter</h2>
- <div class="outline-text-2" id="text-orge8ebf38">
+ <div id="outline-container-orgc599283" class="outline-2">
+ <h2 id="orgc599283">An Alternative: Emacs-Jupyter</h2>
+ <div class="outline-text-2" id="text-orgc599283">
  <p>
 The excellent  <a href="https://github.com/nnicandro/emacs-jupyter">emacs-jupyter</a> package is a solid alternative to the approaches described above. To use
 it for R, install the  <code>emacs-jupyter</code> package (e.g. with  <code>(use-package jupyter)</code>. In R, install  <code>IRkernel</code>
@@ -3610,10 +3619,10 @@ challenges in code intentation than it was worth.</li>
 <item>
   <title>Made with Org-Mode</title>
   <description><![CDATA[<div id="content" class="content">
- <div id="outline-container-org3526794" class="outline-2">
- <h2 id="org3526794">Background</h2>
- <div class="outline-text-2" id="text-org3526794">
- <div class="PREVIEW" id="orge446b0c">
+ <div id="outline-container-org670b657" class="outline-2">
+ <h2 id="org670b657">Background</h2>
+ <div class="outline-text-2" id="text-org670b657">
+ <div class="PREVIEW" id="orgc280b41">
  <p>
 I finally made a personal site using org-mode's built-in  <code>ox-publish</code> exporter.
 </p>
@@ -3631,13 +3640,13 @@ on the writing and less on understanding the framework.
 </div>
 </div>
 
- <div id="outline-container-orgfe1c0d8" class="outline-2">
- <h2 id="orgfe1c0d8">First Steps</h2>
- <div class="outline-text-2" id="text-orgfe1c0d8">
+ <div id="outline-container-orgba98576" class="outline-2">
+ <h2 id="orgba98576">First Steps</h2>
+ <div class="outline-text-2" id="text-orgba98576">
 </div>
- <div id="outline-container-org3fe2a16" class="outline-3">
- <h3 id="org3fe2a16">Ox-Publish</h3>
- <div class="outline-text-3" id="text-org3fe2a16">
+ <div id="outline-container-org097a5a1" class="outline-3">
+ <h3 id="org097a5a1">Ox-Publish</h3>
+ <div class="outline-text-3" id="text-org097a5a1">
  <p>
  <a href="https://systemcrafters.net/publishing-websites-with-org-mode/building-the-site/">This great guide</a> from System Crafters got me started with  <code>ox-publish</code>. The very short post
 how to use  <code>ox-publish</code> to set up a basic site;  <code>htmlize</code> to correctly render code blocks, and
@@ -3647,9 +3656,9 @@ your own site with org-mode.
 </div>
 </div>
 
- <div id="outline-container-orgcb74ea1" class="outline-3">
- <h3 id="orgcb74ea1">GitHub Pages</h3>
- <div class="outline-text-3" id="text-orgcb74ea1">
+ <div id="outline-container-org6520bf2" class="outline-3">
+ <h3 id="org6520bf2">GitHub Pages</h3>
+ <div class="outline-text-3" id="text-org6520bf2">
  <p>
  <a href="https://systemcrafters.net/publishing-websites-with-org-mode/automated-site-publishing/">The followup post</a> is just as useful—it describes the process of publishing the site with GitHub
 Pages (or SourceHut; I opted for GitHub Pages). There was one minor point missing from this
@@ -3662,9 +3671,9 @@ was simple to follow and worked perfectly.
 </div>
 </div>
 
- <div id="outline-container-orgb236239" class="outline-2">
- <h2 id="orgb236239">Some Simple Customization</h2>
- <div class="outline-text-2" id="text-orgb236239">
+ <div id="outline-container-org257c2d8" class="outline-2">
+ <h2 id="org257c2d8">Some Simple Customization</h2>
+ <div class="outline-text-2" id="text-org257c2d8">
  <p>
 There were a few simple design and organization changes I wanted before I started writing: a simple
 and readable theme; a list of recent posts with short "preview" snippets, and a link to a post
@@ -3672,9 +3681,9 @@ archive.
 </p>
 </div>
 
- <div id="outline-container-orge05a861" class="outline-3">
- <h3 id="orge05a861">CSS theme</h3>
- <div class="outline-text-3" id="text-orge05a861">
+ <div id="outline-container-org14c39f8" class="outline-3">
+ <h3 id="org14c39f8">CSS theme</h3>
+ <div class="outline-text-3" id="text-org14c39f8">
  <p>
 I opted to use  <a href="https://gongzhitaao.org/orgcss/">orgcss</a>, at least for now. It's a stylesheet explicitly designed for use with
 org-exported HTML files. It looks (to me) quite a bit nicer than the default and it works well
@@ -3696,9 +3705,9 @@ I applied this stylesheet to all of the exported .org files by adding the follow
 </div>
 </div>
 
- <div id="outline-container-org1dc4d29" class="outline-3">
- <h3 id="org1dc4d29">Recent Posts</h3>
- <div class="outline-text-3" id="text-org1dc4d29">
+ <div id="outline-container-orgbc66db0" class="outline-3">
+ <h3 id="orgbc66db0">Recent Posts</h3>
+ <div class="outline-text-3" id="text-orgbc66db0">
  <p>
 I wanted to include a few recent posts on the homepage and separately link to the post archive. I
 also wanted each of these custom posts to have a short "preview"—a paragraph or so of my choosing
@@ -3717,9 +3726,9 @@ To include the recent posts, I included the first 25 lines of the automatically-
 </div>
 </div>
 
- <div id="outline-container-org3d273a1" class="outline-4">
- <h4 id="org3d273a1">Sitemap Configuration</h4>
- <div class="outline-text-4" id="text-org3d273a1">
+ <div id="outline-container-org0e4b28f" class="outline-4">
+ <h4 id="org0e4b28f">Sitemap Configuration</h4>
+ <div class="outline-text-4" id="text-org0e4b28f">
  <p>
 I specified the generation of the sitemap using  <code>org-publish-project-alist</code> configuration variable:
 </p>
@@ -3743,9 +3752,9 @@ I specified the generation of the sitemap using  <code>org-publish-project-alist
 </div>
 </div>
 
- <div id="outline-container-org48b0ac8" class="outline-4">
- <h4 id="org48b0ac8">Sitemap Entry Formatting</h4>
- <div class="outline-text-4" id="text-org48b0ac8">
+ <div id="outline-container-org79a4fe0" class="outline-4">
+ <h4 id="org79a4fe0">Sitemap Entry Formatting</h4>
+ <div class="outline-text-4" id="text-org79a4fe0">
  <p>
 You'll notice two functions used to format and publish the sitemap entries.  <code>sitemap-format-entry</code>
 takes three arguments ( <code>entry</code>,  <code>style</code>, and  <code>project</code>). We only need to worry about the former. Each
@@ -3792,9 +3801,9 @@ return  <code>posts</code>)</li>
  <li>Otherwise, just return the entry unchanged.</li>
 </ol></div>
 </div>
- <div id="outline-container-org09ecdaa" class="outline-4">
- <h4 id="org09ecdaa">Sitemap List Formatting</h4>
- <div class="outline-text-4" id="text-org09ecdaa">
+ <div id="outline-container-orgff7e1a3" class="outline-4">
+ <h4 id="orgff7e1a3">Sitemap List Formatting</h4>
+ <div class="outline-text-4" id="text-orgff7e1a3">
  <p>
 The entries formatted above are all added to a list (formatted in a tree style to represent the
 directory structure). We simply convert this list into an org subtree and publish it to the
@@ -3817,9 +3826,9 @@ of entries (with previews) represented as an org subtree.
 </p>
 </div>
 </div>
- <div id="outline-container-org2b72cf7" class="outline-4">
- <h4 id="org2b72cf7">Previews</h4>
- <div class="outline-text-4" id="text-org2b72cf7">
+ <div id="outline-container-org0553079" class="outline-4">
+ <h4 id="org0553079">Previews</h4>
+ <div class="outline-text-4" id="text-org0553079">
  <p>
 One part we haven't addressed yet is the generation of previews. There are different approaches out
 there, but none of them did exactly what I wanted. I borrowed from posts by   <a href="https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html">Seth Morabito</a> and
@@ -3867,17 +3876,17 @@ block pattern, saving its location under the name  <code>beg</code></li>
 </div>
 </div>
 </div>
- <div id="outline-container-orgaebbc72" class="outline-2">
- <h2 id="orgaebbc72">Putting It All Together</h2>
- <div class="outline-text-2" id="text-orgaebbc72">
+ <div id="outline-container-org6db910c" class="outline-2">
+ <h2 id="org6db910c">Putting It All Together</h2>
+ <div class="outline-text-2" id="text-org6db910c">
  <p>
 Check out the full source code for the site  <a href="https://github.com/djliden/djliden.github.io">on GitHub</a>.
 </p>
 </div>
 </div>
- <div id="outline-container-orgdb730cc" class="outline-2">
- <h2 id="orgdb730cc">What's Next?</h2>
- <div class="outline-text-2" id="text-orgdb730cc">
+ <div id="outline-container-org4f9148a" class="outline-2">
+ <h2 id="org4f9148a">What's Next?</h2>
+ <div class="outline-text-2" id="text-org4f9148a">
  <p>
 This site now has everything I need to write more with minimal need to tweak the site configuration
 every step of the way (which I found myself doing constantly when using Hugo). That said, there are
@@ -3885,9 +3894,9 @@ a few more things I want to do before moving this site to its permanent home und
 domain. These include:
 </p>
 </div>
- <div id="outline-container-org2e40819" class="outline-3">
- <h3 id="org2e40819"> <span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home,  <a href="../index.html">here's the link</a>).</h3>
- <div class="outline-text-3" id="text-org2e40819">
+ <div id="outline-container-org5845d1f" class="outline-3">
+ <h3 id="org5845d1f"> <span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home,  <a href="../index.html">here's the link</a>).</h3>
+ <div class="outline-text-3" id="text-org5845d1f">
  <p>
  <b>Update:</b> I've added this in a very simple way. I updated my  <code>org-publish-project-alist</code> with:
 </p>
@@ -3909,9 +3918,9 @@ domain. These include:
 </div>
 </div>
 </div>
- <div id="outline-container-org162fa90" class="outline-3">
- <h3 id="org162fa90"> <span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</h3>
- <div class="outline-text-3" id="text-org162fa90">
+ <div id="outline-container-orgf494a6b" class="outline-3">
+ <h3 id="orgf494a6b"> <span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</h3>
+ <div class="outline-text-3" id="text-orgf494a6b">
  <p>
 I followed the guide  <a href="https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html">here</a> to set up the export of "static" files using the  <code>org-publish-attachment</code>
 publication function. The new section of my config looks like this:
@@ -3936,14 +3945,14 @@ publication function. The new section of my config looks like this:
 </div>
 </div>
 
- <div id="outline-container-orgdf23709" class="outline-3">
- <h3 id="orgdf23709"> <span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</h3>
+ <div id="outline-container-org2dcd9a4" class="outline-3">
+ <h3 id="org2dcd9a4"> <span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</h3>
 </div>
- <div id="outline-container-orgecbaeae" class="outline-3">
- <h3 id="orgecbaeae"> <span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</h3>
+ <div id="outline-container-org5c24ba6" class="outline-3">
+ <h3 id="org5c24ba6"> <span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</h3>
 </div>
- <div id="outline-container-org945a6a4" class="outline-3">
- <h3 id="org945a6a4"> <span class="todo TODO">TODO</span> Make a more visually interesting home page</h3>
+ <div id="outline-container-orgcafe175" class="outline-3">
+ <h3 id="orgcafe175"> <span class="todo TODO">TODO</span> Make a more visually interesting home page</h3>
 </div>
 </div>
 </div>]]></description>
@@ -3954,7 +3963,7 @@ publication function. The new section of my config looks like this:
 <item>
   <title>Resources</title>
   <description><![CDATA[<div id="content" class="content">
- <div class="PREVIEW" id="orga0b93e3">
+ <div class="PREVIEW" id="org80d4dce">
  <p>
 Here are some resources to reference for building a simple site with org-mode. I've extensively
 used the sites listed as models for building the present site and expect to continue to reference
@@ -3964,52 +3973,52 @@ them for some time.
 </div>
 
 
- <div id="outline-container-org662ba9a" class="outline-2">
- <h2 id="org662ba9a"> <a href="https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html#html_head">Personal Website in Org</a></h2>
- <div class="outline-text-2" id="text-org662ba9a">
+ <div id="outline-container-orgc997fc2" class="outline-2">
+ <h2 id="orgc997fc2"> <a href="https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html#html_head">Personal Website in Org</a></h2>
+ <div class="outline-text-2" id="text-orgc997fc2">
  <p>
 Good resoures for setting up a custom sitemap as an index page.
 </p>
 </div>
 </div>
- <div id="outline-container-org75125b1" class="outline-2">
- <h2 id="org75125b1"> <a href="https://github.com/gongzhitaao/orgcss">OrgCSS Stylesheet</a></h2>
- <div class="outline-text-2" id="text-org75125b1">
+ <div id="outline-container-org0bd7942" class="outline-2">
+ <h2 id="org0bd7942"> <a href="https://github.com/gongzhitaao/orgcss">OrgCSS Stylesheet</a></h2>
+ <div class="outline-text-2" id="text-org0bd7942">
  <p>
 Nice-looking basic stylesheet for site. I likely won't stick with this forever but it looks good for
   now.
 </p>
 </div>
 </div>
- <div id="outline-container-orgf6a8596" class="outline-2">
- <h2 id="orgf6a8596"> <a href="https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html">loomcom</a></h2>
- <div class="outline-text-2" id="text-orgf6a8596">
+ <div id="outline-container-org3e70996" class="outline-2">
+ <h2 id="org3e70996"> <a href="https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html">loomcom</a></h2>
+ <div class="outline-text-2" id="text-org3e70996">
  <p>
 This site includes a good overview of making list of posts with previews of the first few lines of
 text.
 </p>
 </div>
 </div>
- <div id="outline-container-orgc96dafe" class="outline-2">
- <h2 id="orgc96dafe"> <a href="https://ogbe.net/blog/blogging_with_org.html">Blogging using org-mode (and nothing else)</a></h2>
- <div class="outline-text-2" id="text-orgc96dafe">
+ <div id="outline-container-orgfc0522e" class="outline-2">
+ <h2 id="orgfc0522e"> <a href="https://ogbe.net/blog/blogging_with_org.html">Blogging using org-mode (and nothing else)</a></h2>
+ <div class="outline-text-2" id="text-orgfc0522e">
  <p>
 By Dennis Ogbe. The code I ultimately used for generating and showing previews closely followed that
 from this post.
 </p>
 </div>
 </div>
- <div id="outline-container-org6bbea94" class="outline-2">
- <h2 id="org6bbea94"> <a href="https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html">Worg Publishing to HTML Tutorial</a></h2>
- <div class="outline-text-2" id="text-org6bbea94">
+ <div id="outline-container-org51acc52" class="outline-2">
+ <h2 id="org51acc52"> <a href="https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html">Worg Publishing to HTML Tutorial</a></h2>
+ <div class="outline-text-2" id="text-org51acc52">
  <p>
 Good tutorial covering the basics of publishing org-mode projects to html.
 </p>
 </div>
 </div>
- <div id="outline-container-orgc06fd0e" class="outline-2">
- <h2 id="orgc06fd0e"> <a href="https://djliden.github.io/">My Site</a></h2>
- <div class="outline-text-2" id="text-orgc06fd0e">
+ <div id="outline-container-org3690882" class="outline-2">
+ <h2 id="org3690882"> <a href="https://djliden.github.io/">My Site</a></h2>
+ <div class="outline-text-2" id="text-org3690882">
  <p>
 Here is a link to the site I'm making. Ultimately I will add a custom domain.
 </p>
@@ -4023,7 +4032,7 @@ Here is a link to the site I'm making. Ultimately I will add a custom domain.
 <item>
   <title>A Simple PyTorch Model for the Numerai Tournament</title>
   <description><![CDATA[<div id="content" class="content">
- <div class="preview" id="orgbddba96">
+ <div class="preview" id="org6ecad95">
  <p>
  <i>This is another one from the archives. It covers how to train a basic PyTorch
 model for use in the Numerai tournament, at least as it was in May 2021. See the original post  <a href="https://pensive-wing-19c199.netlify.app/post/mlp-numerai-05082021/">here.</a></i>
@@ -4031,9 +4040,9 @@ model for use in the Numerai tournament, at least as it was in May 2021. See the
 
 </div>
 
- <div id="outline-container-orgb9a994f" class="outline-2">
- <h2 id="orgb9a994f">Background</h2>
- <div class="outline-text-2" id="text-orgb9a994f">
+ <div id="outline-container-org26b2ded" class="outline-2">
+ <h2 id="org26b2ded">Background</h2>
+ <div class="outline-text-2" id="text-org26b2ded">
  <p>
 This short write up is in pursuit of a personal goal to put more of my work and thoughts to
 paper. I'm sure the topic will still be useful to others, but it's not yet fully developed. It's a
@@ -4083,9 +4092,9 @@ In this post, I will first briefly show the  <code>fastai</code> model I was pre
 a (simpler) model written in PyTorch. I will conclude with some reflections on the process.
 </p>
 </div>
- <div id="outline-container-org3013a2e" class="outline-3">
- <h3 id="org3013a2e">Problem Setting</h3>
- <div class="outline-text-3" id="text-org3013a2e">
+ <div id="outline-container-org56d3d38" class="outline-3">
+ <h3 id="org56d3d38">Problem Setting</h3>
+ <div class="outline-text-3" id="text-org56d3d38">
  <p>
 I won't go into much detail about the Numerai tournament itself – the interested reader can learn
 more about it  <a href="https://docs.numer.ai/tournament/learn">here</a>. This isn't intended as an introduction to the tournament and I'm not reproducing
@@ -4128,7 +4137,7 @@ coefficient was 0.859 (the highest possible is 1).
 </p>
  <div class="org-center">
 
- <figure id="org0669834"> <img src="./figures/20210514-pytorch-numerai/spearman-sim.png" alt="spearman-sim.png"></img> <figcaption> <span class="figure-number">Figure 1: </span>Even when predictions were shuffled within "blocks," high Spearman correlation coefficients were obtained when those blocks were placed in order.</figcaption></figure></div>
+ <figure id="orgfd8ab81"> <img src="./figures/20210514-pytorch-numerai/spearman-sim.png" alt="spearman-sim.png"></img> <figcaption> <span class="figure-number">Figure 1: </span>Even when predictions were shuffled within "blocks," high Spearman correlation coefficients were obtained when those blocks were placed in order.</figcaption></figure></div>
 
  <p>
 So even when large "blocks" of predictions were shuffled internally, as long as those "blocks" were
@@ -4138,17 +4147,17 @@ ordered correctly relative to each other, the Spearman correlation coefficients 
 </div>
 </div>
 
- <div id="outline-container-orgd7658e0" class="outline-2">
- <h2 id="orgd7658e0">Original  <code>fastai</code> model</h2>
- <div class="outline-text-2" id="text-orgd7658e0">
+ <div id="outline-container-org95e1e50" class="outline-2">
+ <h2 id="org95e1e50">Original  <code>fastai</code> model</h2>
+ <div class="outline-text-2" id="text-org95e1e50">
  <p>
 My original  <code>fastai</code> implementation does not differ appreciably from the implementation detailed in
 the official  <a href="https://docs.fast.ai/tutorial.tabular.html">fastai Tabular Training tutorial</a>. The components are, briefly:
 </p>
 </div>
- <div id="outline-container-orgcb3652e" class="outline-3">
- <h3 id="orgcb3652e">Data Setup</h3>
- <div class="outline-text-3" id="text-orgcb3652e">
+ <div id="outline-container-orgd0f1a06" class="outline-3">
+ <h3 id="orgd0f1a06">Data Setup</h3>
+ <div class="outline-text-3" id="text-orgd0f1a06">
  <p>
 First, we use the  <a href="https://docs.fast.ai/tabular.core.html#TabularPandas">TabularPandas</a> helper to load the data and to generate our  <code>DataLoaders</code>.  <code>DataLoaders</code>
 provide a convenient wrapper around the training and validation data and facilitate passing batches
@@ -4173,9 +4182,9 @@ validation examples.
 </div>
 </div>
 
- <div id="outline-container-orgf39e77e" class="outline-3">
- <h3 id="orgf39e77e">Model Setup</h3>
- <div class="outline-text-3" id="text-orgf39e77e">
+ <div id="outline-container-org29992ba" class="outline-3">
+ <h3 id="org29992ba">Model Setup</h3>
+ <div class="outline-text-3" id="text-org29992ba">
  <p>
 We will use a  <code>fastai</code>  <a href="https://docs.fast.ai/tabular.learner.html#tabular_learner">tabular <sub>learner</sub></a> without much modification and without adjusting many of the
 possible options. As noted above, we're using the MSE loss function.  <code>fastai</code> also lets us directly
@@ -4193,9 +4202,9 @@ each epoch.
 </div>
 </div>
 
- <div id="outline-container-orge2818f4" class="outline-3">
- <h3 id="orge2818f4">Training Loop</h3>
- <div class="outline-text-3" id="text-orge2818f4">
+ <div id="outline-container-org3b23d34" class="outline-3">
+ <h3 id="org3b23d34">Training Loop</h3>
+ <div class="outline-text-3" id="text-org3b23d34">
  <p>
  <code>fastai</code> handles the training loop for us – we don't need to write it out manually. Here we say to
 train the model for three epochs and to apply a weight decay (l2 penalty) of 0.1.
@@ -4208,9 +4217,9 @@ train the model for three epochs and to apply a weight decay (l2 penalty) of 0.1
 </div>
 </div>
 
- <div id="outline-container-orgd9517aa" class="outline-3">
- <h3 id="orgd9517aa">Summary</h3>
- <div class="outline-text-3" id="text-orgd9517aa">
+ <div id="outline-container-orga80efb2" class="outline-3">
+ <h3 id="orga80efb2">Summary</h3>
+ <div class="outline-text-3" id="text-orga80efb2">
  <p>
 Without going into too much detail – this is, after all, supposed to be a post about PyTorch, which
 I've scarcely mentioned so far – I want to highlight some of the key features and shortcomings of
@@ -4234,9 +4243,9 @@ lot of the details hidden.
 </div>
 </div>
 
- <div id="outline-container-org5523767" class="outline-2">
- <h2 id="org5523767">A Simple PyTorch Model</h2>
- <div class="outline-text-2" id="text-org5523767">
+ <div id="outline-container-orgd40a95e" class="outline-2">
+ <h2 id="orgd40a95e">A Simple PyTorch Model</h2>
+ <div class="outline-text-2" id="text-orgd40a95e">
  <p>
 In an effort to learn some basic PyTorch, I set out to develop a very simple working model. It
 doesn't have all of the bells and whistles of the fastai model – no batchnorm, no dropout, no
@@ -4244,9 +4253,9 @@ weight decay – but it works and it is generally easy to understand what the mo
 provides a good foundation for further experimentation with more complex architectures.
 </p>
 </div>
- <div id="outline-container-orgf3b9301" class="outline-3">
- <h3 id="orgf3b9301">Data Setup</h3>
- <div class="outline-text-3" id="text-orgf3b9301">
+ <div id="outline-container-orgce12151" class="outline-3">
+ <h3 id="orgce12151">Data Setup</h3>
+ <div class="outline-text-3" id="text-orgce12151">
  <p>
 A common theme throughout this section is that "It takes a bit more code to do  <code>____</code> in PyTorch than
 in  <code>fastai</code>. Setting up the data is no exception. I mostly followed  <a href="https://pytorch.org/tutorials/beginner/basics/data_tutorial.html#preparing-your-data-for-training-with-dataloaders">this guide</a> for setting up the data
@@ -4327,9 +4336,9 @@ Now our data are ready to go and we can define the model.
 </p>
 </div>
 </div>
- <div id="outline-container-org2b48617" class="outline-3">
- <h3 id="org2b48617">The Model</h3>
- <div class="outline-text-3" id="text-org2b48617">
+ <div id="outline-container-org97b1228" class="outline-3">
+ <h3 id="org97b1228">The Model</h3>
+ <div class="outline-text-3" id="text-org97b1228">
  <p>
 The model has a few separate components – a fact that is easy to miss when working with
  <code>fastai</code>. We need to define:
@@ -4367,9 +4376,9 @@ optimizer can be found  <a href="https://pytorch.org/docs/master/generated/torch
 </p>
 </div>
 </div>
- <div id="outline-container-orgc7bfc60" class="outline-3">
- <h3 id="orgc7bfc60">The Training Loop</h3>
- <div class="outline-text-3" id="text-orgc7bfc60">
+ <div id="outline-container-org3f2a9ad" class="outline-3">
+ <h3 id="org3f2a9ad">The Training Loop</h3>
+ <div class="outline-text-3" id="text-org3f2a9ad">
  <p>
 The training loop represents the part of the implementation where  <code>fastai</code> provides the most help. In
  <code>fastai</code>, the whole process is largely automatic. We called  <code>learn.fit_one_cycle()</code>, specified the number
@@ -4471,9 +4480,9 @@ batches, though, and doing so may be necessary with larger datasets or in the fa
 memory constraints.</li>
 </ul></div>
 </div>
- <div id="outline-container-orgaf5ebfe" class="outline-3">
- <h3 id="orgaf5ebfe">Train the Model</h3>
- <div class="outline-text-3" id="text-orgaf5ebfe">
+ <div id="outline-container-org28087e1" class="outline-3">
+ <h3 id="org28087e1">Train the Model</h3>
+ <div class="outline-text-3" id="text-org28087e1">
  <p>
 We can finally train the model! This part is a simple  <code>for</code> loop.
 </p>
@@ -4487,9 +4496,9 @@ We can finally train the model! This part is a simple  <code>for</code> loop.
 </div>
 </div>
 </div>
- <div id="outline-container-org6fb6f25" class="outline-2">
- <h2 id="org6fb6f25">Summary</h2>
- <div class="outline-text-2" id="text-org6fb6f25">
+ <div id="outline-container-orga1709e5" class="outline-2">
+ <h2 id="orga1709e5">Summary</h2>
+ <div class="outline-text-2" id="text-orga1709e5">
  <p>
 I wrote a lot more code to implement a comparatively-simple PyTorch model than to implement the
  <code>fastai</code> model. The PyTorch model forces us to better understand the structure of the model and the
@@ -4517,16 +4526,16 @@ tournament and I want to see if that distinction also holds true for regression 
 <item>
   <title>Mapping Urban Heat by Census Tract in R</title>
   <description><![CDATA[<div id="content" class="content">
- <div class="preview" id="orgf7a4f01">
+ <div class="preview" id="orgf3451a0">
  <p>
  <i>Another one from the archives–this is one of my projects from my time at the Guinn Center, and something I very much wish I could have developed further: an analysis of urban heat in Las Vegas.</i>
 </p>
 
 </div>
 
- <div id="outline-container-orge7984dc" class="outline-2">
- <h2 id="orge7984dc">Background</h2>
- <div class="outline-text-2" id="text-orge7984dc">
+ <div id="outline-container-org5f80922" class="outline-2">
+ <h2 id="org5f80922">Background</h2>
+ <div class="outline-text-2" id="text-org5f80922">
  <p>
 For the past several months, I have been working on an analysis on the effects
 of urban heat on vulnerable populations, particularly during a public health
@@ -4583,9 +4592,9 @@ polygon boundaries (census tracts).
 </div>
 </div>
 
- <div id="outline-container-orga74c784" class="outline-2">
- <h2 id="orga74c784">Getting the Data</h2>
- <div class="outline-text-2" id="text-orga74c784">
+ <div id="outline-container-org70d17d5" class="outline-2">
+ <h2 id="org70d17d5">Getting the Data</h2>
+ <div class="outline-text-2" id="text-org70d17d5">
  <p>
 I obtained surface temperature satellite data from the NASA/USGS Landsat 8
 satellite. The data can be obtained through an API, though for this example, I
@@ -4607,9 +4616,9 @@ in the map is associated with a surface temperature value.
 </p>
 </div>
 
- <div id="outline-container-org6cfa646" class="outline-3">
- <h3 id="org6cfa646">Unpacking and Visualizing the Raw Data</h3>
- <div class="outline-text-3" id="text-org6cfa646">
+ <div id="outline-container-org6926d2c" class="outline-3">
+ <h3 id="org6926d2c">Unpacking and Visualizing the Raw Data</h3>
+ <div class="outline-text-3" id="text-org6926d2c">
  <p>
 This section requires the  <code>raster</code> and  <code>sf</code> packages. Below, we untar the map and
 extract the map of interest.
@@ -4634,7 +4643,7 @@ dev.off()
 
  <div class="org-center">
 
- <figure id="org8680db0"> <img src="./figures/20210213-urban-heat/st_map.png" alt="st_map.png"></img> <figcaption> <span class="figure-number">Figure 1: </span>Raw raster map of surface temperatures around Las Vegas area</figcaption></figure></div>
+ <figure id="org11e3bcc"> <img src="./figures/20210213-urban-heat/st_map.png" alt="st_map.png"></img> <figcaption> <span class="figure-number">Figure 1: </span>Raw raster map of surface temperatures around Las Vegas area</figcaption></figure></div>
 
  <p>
 Starting from this map, we want to (1) crop to the area immediately surrounding
@@ -4646,9 +4655,9 @@ at the census tract level.
 </div>
 </div>
 
- <div id="outline-container-orga43c0d6" class="outline-2">
- <h2 id="orga43c0d6">Mapping Heat by Census Tract</h2>
- <div class="outline-text-2" id="text-orga43c0d6">
+ <div id="outline-container-org0dfadb9" class="outline-2">
+ <h2 id="org0dfadb9">Mapping Heat by Census Tract</h2>
+ <div class="outline-text-2" id="text-org0dfadb9">
  <p>
 First, we'll use the  <code>tigris</code> package to download the census tract boundaries in
 Nevada and crop to the Las Vegas area.
@@ -4700,7 +4709,7 @@ dev.off()
 
  <div class="org-center">
 
- <figure id="org5f423a6"> <img src="./figures/20210213-urban-heat/heatmaptest.png" alt="heatmaptest.png"></img> <figcaption> <span class="figure-number">Figure 2: </span>Average Surface Temperatures by Census Tract in Las Vegas, Nevada (tenths of a degree Kelvin)</figcaption></figure></div>
+ <figure id="org719be9d"> <img src="./figures/20210213-urban-heat/heatmaptest.png" alt="heatmaptest.png"></img> <figcaption> <span class="figure-number">Figure 2: </span>Average Surface Temperatures by Census Tract in Las Vegas, Nevada (tenths of a degree Kelvin)</figcaption></figure></div>
 
  <p>
 We're closer to our goal, but not quite there yet. Our map is rotated, and the
@@ -4719,13 +4728,13 @@ dev.off()
 
  <div class="org-center">
 
- <figure id="orgfc4f188"> <img src="./figures/20210213-urban-heat/tract_repro.png" alt="tract_repro.png"></img> <figcaption> <span class="figure-number">Figure 3: </span>Re-projected Map of Surface Temperatures by Census Tract</figcaption></figure></div>
+ <figure id="orgd4146e0"> <img src="./figures/20210213-urban-heat/tract_repro.png" alt="tract_repro.png"></img> <figcaption> <span class="figure-number">Figure 3: </span>Re-projected Map of Surface Temperatures by Census Tract</figcaption></figure></div>
 </div>
 </div>
 
- <div id="outline-container-org6225595" class="outline-2">
- <h2 id="org6225595">Final Maps</h2>
- <div class="outline-text-2" id="text-org6225595">
+ <div id="outline-container-orgfde56c3" class="outline-2">
+ <h2 id="orgfde56c3">Final Maps</h2>
+ <div class="outline-text-2" id="text-orgfde56c3">
  <p>
 Lastly, we can apply some formatting to make it more interpretable. I used
  <code>ggplot2</code> for all of the visual tweaks (details not shown).
@@ -4733,7 +4742,7 @@ Lastly, we can apply some formatting to make it more interpretable. I used
 
  <div class="org-center">
 
- <figure id="org0f22413"> <img src="./figures/20210213-urban-heat/ST_LV.png" alt="ST_LV.png"></img> <figcaption> <span class="figure-number">Figure 4: </span>Visualizing Urban Heat by Census Tract in Las Vegas, Nevada</figcaption></figure></div>
+ <figure id="org08f5afd"> <img src="./figures/20210213-urban-heat/ST_LV.png" alt="ST_LV.png"></img> <figcaption> <span class="figure-number">Figure 4: </span>Visualizing Urban Heat by Census Tract in Las Vegas, Nevada</figcaption></figure></div>
 
  <p>
 We can now plot other metrics by census tract and visually compare them to our
@@ -4742,7 +4751,7 @@ urban heat map. For example, we can look at poverty by census tract:
 
  <div class="org-center">
 
- <figure id="org8bf1fb9"> <img src="./figures/20210213-urban-heat/poverty.png" alt="poverty.png"></img> <figcaption> <span class="figure-number">Figure 5: </span>Poverty by Census Tract in Las Vegas, Nevada</figcaption></figure></div>
+ <figure id="org0623e17"> <img src="./figures/20210213-urban-heat/poverty.png" alt="poverty.png"></img> <figcaption> <span class="figure-number">Figure 5: </span>Poverty by Census Tract in Las Vegas, Nevada</figcaption></figure></div>
 
  <p>
 A quick visual inspection of these two maps shows that the Sunrise Manor and
@@ -4764,9 +4773,9 @@ data above – is an important first step to conducting these analyses.
 </div>
 </div>
 
- <div id="outline-container-org2657d2e" class="outline-2">
- <h2 id="org2657d2e">Resources</h2>
- <div class="outline-text-2" id="text-org2657d2e">
+ <div id="outline-container-org4d17b63" class="outline-2">
+ <h2 id="org4d17b63">Resources</h2>
+ <div class="outline-text-2" id="text-org4d17b63">
  <ul class="org-ul"> <li> <a href="https://cran.r-project.org/web/views/Spatial.html">CRAN Task View: Analysis
 of Spatial Data</a>: A CRAN hub explaining the  <code>R</code> ecosystem of spatial data
 analysis packages</li>
@@ -4786,7 +4795,7 @@ mapping, and analyzing spatial data, with numerous excellent examples.</li>
 <item>
   <title>Book Review: Machine Learning Yearning by Andrew Ng</title>
   <description><![CDATA[<div id="content" class="content">
- <div class="preview" id="org507aaca">
+ <div class="preview" id="org0b64c43">
  <p>
  <i>This is the first of a few posts I'm migrating from my old site, which you can
 still find  <a href="https://pensive-wing-19c199.netlify.app/">here</a>. This is a review of Machine Learning Yearning by Andrew Ng.</i>
@@ -4794,9 +4803,9 @@ still find  <a href="https://pensive-wing-19c199.netlify.app/">here</a>. This is
 
 </div>
 
- <div id="outline-container-org339eefa" class="outline-2">
- <h2 id="org339eefa">Introduction and Perspective</h2>
- <div class="outline-text-2" id="text-org339eefa">
+ <div id="outline-container-org8d49a07" class="outline-2">
+ <h2 id="org8d49a07">Introduction and Perspective</h2>
+ <div class="outline-text-2" id="text-org8d49a07">
  <p>
 In this post, I am briefly reviewing the draft of Andrew Ng's  <i>Machine Learning Yearning</i>, which can currently be obtained for free  <a href="https://www.mlyearning.org/">here</a>. This is a work in progress, so my comments will be brief and not particularly critical. I obtained the copy I read on May 11; the page numbers and content may have changed since then.
 </p>
@@ -4811,9 +4820,9 @@ Most of my ML education comes from working through much of the classic  <i>Eleme
 </div>
 </div>
 
- <div id="outline-container-org0c5dcdb" class="outline-2">
- <h2 id="org0c5dcdb">Overview of the Book</h2>
- <div class="outline-text-2" id="text-org0c5dcdb">
+ <div id="outline-container-orgb2c8e3d" class="outline-2">
+ <h2 id="orgb2c8e3d">Overview of the Book</h2>
+ <div class="outline-text-2" id="text-orgb2c8e3d">
  <p>
 In  <i>Machine Learning Yearning</i>, Ng states that "after finishing this book, you will have a deep understanding of how to set technical direction for a machine learning project" (pg. 8). The key element of that statement is  <i>technical direction.</i> This book does not teach (and does not claim to teach) any particular ML algorithms. There is no code. There is very, very little mathematical notation. This book covers broad topics such as structuring training/dev/test sets and conducting error analyses, and it does so in a way that is largely agnostic to the ML algorithms used (though, at times, it is fairly clear that it is geared largely toward deep learning/neural networks).
 </p>
@@ -4837,9 +4846,9 @@ Core topics covered include:
 </ul></div>
 </div>
 
- <div id="outline-container-org3b67e1a" class="outline-2">
- <h2 id="org3b67e1a">General Thoughts on the Topic</h2>
- <div class="outline-text-2" id="text-org3b67e1a">
+ <div id="outline-container-org2e87ba1" class="outline-2">
+ <h2 id="org2e87ba1">General Thoughts on the Topic</h2>
+ <div class="outline-text-2" id="text-org2e87ba1">
  <p>
 I found that this book provided a valuable supplement to my past reading and experience with machine learning insofar as it got "out of the weeds" and discussed the  <i>process</i> rather than the specific implementations. When learning specific ML techniques for the first time, it's easy to get lost in the weeds. And when something goes wrong, that's where one might look for solutions: in the weeds. Is the implementation wrong? Do I need to improve my feature selection? Is the particular method I'm using wrong? This book offers another perspective. Regardless of the techniques used, it may be possible to improve one's model by, for example, seeking out more training examples; conducting a careful error analysis; or increasing the size/complexity of the model. These "big picture" considerations are often taught as an afterthought, if at all, in more mathematically-focused ML books and courses. But they should be taught sooner as they provide an excellent framework for thinking about any given ML approach.
 </p>

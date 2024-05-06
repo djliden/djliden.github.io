@@ -38,20 +38,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org16ac9a5">A different way of thinking about the org agenda</a></li>
-<li><a href="#org5f7308c">org-agenda-custom-commands</a></li>
-<li><a href="#org17ca2cd">Next Steps</a>
+<li><a href="#orga3dcc6c">A different way of thinking about the org agenda</a></li>
+<li><a href="#orga9a87dd">org-agenda-custom-commands</a></li>
+<li><a href="#org8530813">Next Steps</a>
 <ul>
-<li><a href="#orgfc896f7"><span class="todo TODO">TODO</span> Add TODO entries</a></li>
-<li><a href="#org5dd42eb"><span class="todo TODO">TODO</span> Limit the number of files searched</a></li>
-<li><a href="#org5d5255e"><span class="todo TODO">TODO</span> Add and organize tags</a></li>
-<li><a href="#orgb3c9f38"><span class="todo TODO">TODO</span> Other</a></li>
+<li><a href="#org32cc9db"><span class="done DONE">DONE</span> Add TODO entries</a>
+<ul>
+<li><a href="#org1a4af70">UPDATE <span class="timestamp-wrapper"><span class="timestamp">&lt;2024-05-06 Mon&gt;</span></span></a></li>
+</ul>
+</li>
+<li><a href="#orgfaf070e"><span class="todo TODO">TODO</span> Limit the number of files searched</a></li>
+<li><a href="#orge2a7983"><span class="todo TODO">TODO</span> Add and organize tags</a></li>
+<li><a href="#orgd031321"><span class="todo TODO">TODO</span> Other</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgb99381e">
+<div class="preview" id="org329fe57">
 <p>
 I use denote's <a href="https://protesilaos.com/emacs/denote#h:4a6d92dd-19eb-4fcc-a7b5-05ce04da3a92">journaling features</a> to keep a daily project log, where I record whatever I'm working on, stray bits of knowledge, some TODOs, fleeting thoughts, etc.
 </p>
@@ -66,9 +70,9 @@ This post shows a quick solution to this issue using <a href="https://orgmode.or
 
 </div>
 
-<div id="outline-container-org16ac9a5" class="outline-2">
-<h2 id="org16ac9a5">A different way of thinking about the org agenda</h2>
-<div class="outline-text-2" id="text-org16ac9a5">
+<div id="outline-container-orga3dcc6c" class="outline-2">
+<h2 id="orga3dcc6c">A different way of thinking about the org agenda</h2>
+<div class="outline-text-2" id="text-orga3dcc6c">
 <p>
 I've mostly thought of the org agenda as, well, an agenda. It's for managing todos, dates, deadlines. It's a very versatile tool for that purpose, and can pull those elements out of a bunch of different org files. This is great.
 </p>
@@ -99,63 +103,74 @@ With the org agenda, I can remedy this as follows:
 </ul>
 </div>
 </div>
-<div id="outline-container-org5f7308c" class="outline-2">
-<h2 id="org5f7308c">org-agenda-custom-commands</h2>
-<div class="outline-text-2" id="text-org5f7308c">
+<div id="outline-container-orga9a87dd" class="outline-2">
+<h2 id="orga9a87dd">org-agenda-custom-commands</h2>
+<div class="outline-text-2" id="text-orga9a87dd">
 <p>
 I did this with <a href="https://orgmode.org/worg/org-tutorials/org-custom-agenda-commands.html">org-agenda-custom-commands</a>. It looks like this in my config:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> org-agenda-custom-commands
-      '((<span class="org-string">"j"</span> <span class="org-string">"Journals"</span>
-         ((tags
-           <span class="org-string">"persist"</span>
-           ((org-agenda-files
-             (file-expand-wildcards <span class="org-string">"~/org/denotes/journal/*.org"</span>))
-            (org-agenda-prefix-format <span class="org-string">"%-2c:::"</span>)))))))
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> '((<span class="org-string">"j"</span> <span class="org-string">"Journals"</span> ((tags <span class="org-string">"persist"</span>)
+                         (todo))
+         ((org-agenda-files
+           (file-expand-wildcards <span class="org-string">"~/org/denotes/journal/*.org"</span>))
+          (org-agenda-prefix-format <span class="org-string">"%-2c:::"</span>)))))
 </pre>
 </div>
 
 <p>
-This creates a custom view called "journals" that I can select with the "j" command from the agenda menu (from <code>&lt;C-c a&gt;</code>). Any headline tagged with "persist" will appear in that agenda view.
+This creates a custom view called "journals" that I can select with the "j" command from the agenda menu (from <code>&lt;C-c a&gt;</code>). Any headline tagged with "persist" will appear in that agenda view. It was also updated to include all TODO entries in the journals, ensuring that I properly resolve or migrate them.
 </p>
 </div>
 </div>
-<div id="outline-container-org17ca2cd" class="outline-2">
-<h2 id="org17ca2cd">Next Steps</h2>
-<div class="outline-text-2" id="text-org17ca2cd">
+<div id="outline-container-org8530813" class="outline-2">
+<h2 id="org8530813">Next Steps</h2>
+<div class="outline-text-2" id="text-org8530813">
 <p>
 This is a very simple agenda view. There are a few improvements I intend to make in the near future (I will update this post accordingly).
 </p>
 </div>
-<div id="outline-container-orgfc896f7" class="outline-3">
-<h3 id="orgfc896f7"><span class="todo TODO">TODO</span> Add TODO entries</h3>
-<div class="outline-text-3" id="text-orgfc896f7">
+<div id="outline-container-org32cc9db" class="outline-3">
+<h3 id="org32cc9db"><span class="done DONE">DONE</span> Add TODO entries</h3>
+<div class="outline-text-3" id="text-org32cc9db">
 <p>
 I want to add TODO entries to the custom view. Any outstanding TODOs from the daily journals should either be closed out or migrated somewhere more permanent.
 </p>
 </div>
+<div id="outline-container-org1a4af70" class="outline-4">
+<h4 id="org1a4af70">UPDATE <span class="timestamp-wrapper"><span class="timestamp">&lt;2024-05-06 Mon&gt;</span></span></h4>
+<div class="outline-text-4" id="text-org1a4af70">
+<p>
+This required only very minor changes:
+</p>
+<ol class="org-ol">
+<li>add a <code>(todo)</code> block to the <code>org-agenda-custom-commands</code> specification</li>
+<li>make the configuration specifying e.g. the directory and formatting apply to the whole block rather than to individual sections.</li>
+</ol>
 </div>
-<div id="outline-container-org5dd42eb" class="outline-3">
-<h3 id="org5dd42eb"><span class="todo TODO">TODO</span> Limit the number of files searched</h3>
-<div class="outline-text-3" id="text-org5dd42eb">
+</div>
+</div>
+
+<div id="outline-container-orgfaf070e" class="outline-3">
+<h3 id="orgfaf070e"><span class="todo TODO">TODO</span> Limit the number of files searched</h3>
+<div class="outline-text-3" id="text-orgfaf070e">
 <p>
 I am not yet entirely sure how to do this one. Org agenda is notorious for slowing down when dealing with a lot of files. The number of daily journal entries will increase in an obvious way. There are some ways to <a href="https://orgmode.org/manual/Filtering_002flimiting-agenda-items.html">filter and limit</a> the results but I'm not sure if they will prevent the agenda from reading more files than it needs to. Something to investigate.
 </p>
 </div>
 </div>
-<div id="outline-container-org5d5255e" class="outline-3">
-<h3 id="org5d5255e"><span class="todo TODO">TODO</span> Add and organize tags</h3>
-<div class="outline-text-3" id="text-org5d5255e">
+<div id="outline-container-orge2a7983" class="outline-3">
+<h3 id="orge2a7983"><span class="todo TODO">TODO</span> Add and organize tags</h3>
+<div class="outline-text-3" id="text-orge2a7983">
 <p>
 I don't just want a catch-all tag. I'd like to have specific tags for e.g. reading lists, project ideas, recommendations, work notes to follow up on, etc.
 </p>
 </div>
 </div>
-<div id="outline-container-orgb3c9f38" class="outline-3">
-<h3 id="orgb3c9f38"><span class="todo TODO">TODO</span> Other</h3>
-<div class="outline-text-3" id="text-orgb3c9f38">
+<div id="outline-container-orgd031321" class="outline-3">
+<h3 id="orgd031321"><span class="todo TODO">TODO</span> Other</h3>
+<div class="outline-text-3" id="text-orgd031321">
 <p>
 column view settings, nice date display for each entry, etc.
 </p>
