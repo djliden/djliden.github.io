@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Persistent Elements in Daily Journals with Org Agenda</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Persistent Elements in Daily Journals with Org Agenda</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org16ac9a5">A different way of thinking about the org agenda</a></li>
+<li><a href="#org5f7308c">org-agenda-custom-commands</a></li>
+<li><a href="#org17ca2cd">Next Steps</a>
+<ul>
+<li><a href="#orgfc896f7"><span class="todo TODO">TODO</span> Add TODO entries</a></li>
+<li><a href="#org5dd42eb"><span class="todo TODO">TODO</span> Limit the number of files searched</a></li>
+<li><a href="#org5d5255e"><span class="todo TODO">TODO</span> Add and organize tags</a></li>
+<li><a href="#orgb3c9f38"><span class="todo TODO">TODO</span> Other</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<div class="preview" id="orgb99381e">
+<p>
+I use denote's <a href="https://protesilaos.com/emacs/denote#h:4a6d92dd-19eb-4fcc-a7b5-05ce04da3a92">journaling features</a> to keep a daily project log, where I record whatever I'm working on, stray bits of knowledge, some TODOs, fleeting thoughts, etc.
+</p>
+
+<p>
+In some cases, I want to refer back to these notes. But I (will) have a lot of these journal files. I don't want to search through them manually to find the name of that article, or that recommendation I jotted down, or whatever it was.
+</p>
+
+<p>
+This post shows a quick solution to this issue using <a href="https://orgmode.org/worg/org-tutorials/org-custom-agenda-commands.html">org-agenda-custom-commands</a> to make a custom view over specified tags in my journal files.
+</p>
+
+</div>
+
+<div id="outline-container-org16ac9a5" class="outline-2">
+<h2 id="org16ac9a5">A different way of thinking about the org agenda</h2>
+<div class="outline-text-2" id="text-org16ac9a5">
+<p>
+I've mostly thought of the org agenda as, well, an agenda. It's for managing todos, dates, deadlines. It's a very versatile tool for that purpose, and can pull those elements out of a bunch of different org files. This is great.
+</p>
+
+<p>
+But it's a lot more general than that. It's not just about building an agenda. We can pull all kinds of structured data out of org files with no need to conceptualize the end result as having anything to do with an agenda.
+</p>
+
+<p>
+The problem I set out to solve is simple:
+</p>
+<ul class="org-ul">
+<li>I keep daily journal files</li>
+<li>I seldom refer back to those files</li>
+<li>Sometimes I write something in those journal files that I want to revisit in the future.</li>
+</ul>
+
+<p>
+You can see the problem. I'm writing something I intend to revisit in the future in a file I tend not to revisit.
+</p>
+
+<p>
+With the org agenda, I can remedy this as follows:
+</p>
+<ul class="org-ul">
+<li>Apply a tag (or category, or todo status, or another searchable marker) to headers in my journal I want to see in the future</li>
+<li>Build a custom org agenda view that searches only the journal files and displays only those tagged headers.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5f7308c" class="outline-2">
+<h2 id="org5f7308c">org-agenda-custom-commands</h2>
+<div class="outline-text-2" id="text-org5f7308c">
+<p>
+I did this with <a href="https://orgmode.org/worg/org-tutorials/org-custom-agenda-commands.html">org-agenda-custom-commands</a>. It looks like this in my config:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> org-agenda-custom-commands
+      '((<span class="org-string">"j"</span> <span class="org-string">"Journals"</span>
+         ((tags
+           <span class="org-string">"persist"</span>
+           ((org-agenda-files
+             (file-expand-wildcards <span class="org-string">"~/org/denotes/journal/*.org"</span>))
+            (org-agenda-prefix-format <span class="org-string">"%-2c:::"</span>)))))))
+</pre>
+</div>
+
+<p>
+This creates a custom view called "journals" that I can select with the "j" command from the agenda menu (from <code>&lt;C-c a&gt;</code>). Any headline tagged with "persist" will appear in that agenda view.
+</p>
+</div>
+</div>
+<div id="outline-container-org17ca2cd" class="outline-2">
+<h2 id="org17ca2cd">Next Steps</h2>
+<div class="outline-text-2" id="text-org17ca2cd">
+<p>
+This is a very simple agenda view. There are a few improvements I intend to make in the near future (I will update this post accordingly).
+</p>
+</div>
+<div id="outline-container-orgfc896f7" class="outline-3">
+<h3 id="orgfc896f7"><span class="todo TODO">TODO</span> Add TODO entries</h3>
+<div class="outline-text-3" id="text-orgfc896f7">
+<p>
+I want to add TODO entries to the custom view. Any outstanding TODOs from the daily journals should either be closed out or migrated somewhere more permanent.
+</p>
+</div>
+</div>
+<div id="outline-container-org5dd42eb" class="outline-3">
+<h3 id="org5dd42eb"><span class="todo TODO">TODO</span> Limit the number of files searched</h3>
+<div class="outline-text-3" id="text-org5dd42eb">
+<p>
+I am not yet entirely sure how to do this one. Org agenda is notorious for slowing down when dealing with a lot of files. The number of daily journal entries will increase in an obvious way. There are some ways to <a href="https://orgmode.org/manual/Filtering_002flimiting-agenda-items.html">filter and limit</a> the results but I'm not sure if they will prevent the agenda from reading more files than it needs to. Something to investigate.
+</p>
+</div>
+</div>
+<div id="outline-container-org5d5255e" class="outline-3">
+<h3 id="org5d5255e"><span class="todo TODO">TODO</span> Add and organize tags</h3>
+<div class="outline-text-3" id="text-org5d5255e">
+<p>
+I don't just want a catch-all tag. I'd like to have specific tags for e.g. reading lists, project ideas, recommendations, work notes to follow up on, etc.
+</p>
+</div>
+</div>
+<div id="outline-container-orgb3c9f38" class="outline-3">
+<h3 id="orgb3c9f38"><span class="todo TODO">TODO</span> Other</h3>
+<div class="outline-text-3" id="text-orgb3c9f38">
+<p>
+column view settings, nice date display for each entry, etc.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-05-05 Sun 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+</div>
+</body>
+</html>
