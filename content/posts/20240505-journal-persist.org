@@ -1,0 +1,54 @@
+#+TITLE: Persistent Elements in Daily Journals with Org Agenda
+#+AUTHOR: Daniel Liden
+#+DATE: <2024-05-05 Sun>
+
+#+begin_preview
+I use denote's [[https://protesilaos.com/emacs/denote#h:4a6d92dd-19eb-4fcc-a7b5-05ce04da3a92][journaling features]] to keep a daily project log, where I record whatever I'm working on, stray bits of knowledge, some TODOs, fleeting thoughts, etc.
+
+In some cases, I want to refer back to these notes. But I (will) have a lot of these journal files. I don't want to search through them manually to find the name of that article, or that recommendation I jotted down, or whatever it was.
+
+This post shows a quick solution to this issue using [[https://orgmode.org/worg/org-tutorials/org-custom-agenda-commands.html][org-agenda-custom-commands]] to make a custom view over specified tags in my journal files.
+#+end_preview
+
+* A different way of thinking about the org agenda
+
+I've mostly thought of the org agenda as, well, an agenda. It's for managing todos, dates, deadlines. It's a very versatile tool for that purpose, and can pull those elements out of a bunch of different org files. This is great.
+
+But it's a lot more general than that. It's not just about building an agenda. We can pull all kinds of structured data out of org files with no need to conceptualize the end result as having anything to do with an agenda.
+
+The problem I set out to solve is simple:
+- I keep daily journal files
+- I seldom refer back to those files
+- Sometimes I write something in those journal files that I want to revisit in the future.
+
+You can see the problem. I'm writing something I intend to revisit in the future in a file I tend not to revisit.
+
+With the org agenda, I can remedy this as follows:
+- Apply a tag (or category, or todo status, or another searchable marker) to headers in my journal I want to see in the future
+- Build a custom org agenda view that searches only the journal files and displays only those tagged headers.
+* org-agenda-custom-commands
+
+I did this with [[https://orgmode.org/worg/org-tutorials/org-custom-agenda-commands.html][org-agenda-custom-commands]]. It looks like this in my config:
+
+#+begin_src emacs-lisp
+(setq org-agenda-custom-commands
+      '(("j" "Journals"
+         ((tags
+           "persist"
+           ((org-agenda-files
+             (file-expand-wildcards "~/org/denotes/journal/*.org"))
+            (org-agenda-prefix-format "%-2c:::")))))))
+#+end_src
+
+This creates a custom view called "journals" that I can select with the "j" command from the agenda menu (from ~<C-c a>~). Any headline tagged with "persist" will appear in that agenda view.
+* Next Steps
+
+This is a very simple agenda view. There are a few improvements I intend to make in the near future (I will update this post accordingly).
+** TODO Add TODO entries
+I want to add TODO entries to the custom view. Any outstanding TODOs from the daily journals should either be closed out or migrated somewhere more permanent.
+** TODO Limit the number of files searched
+I am not yet entirely sure how to do this one. Org agenda is notorious for slowing down when dealing with a lot of files. The number of daily journal entries will increase in an obvious way. There are some ways to [[https://orgmode.org/manual/Filtering_002flimiting-agenda-items.html][filter and limit]] the results but I'm not sure if they will prevent the agenda from reading more files than it needs to. Something to investigate.
+** TODO Add and organize tags
+I don't just want a catch-all tag. I'd like to have specific tags for e.g. reading lists, project ideas, recommendations, work notes to follow up on, etc.
+** TODO Other
+column view settings, nice date display for each entry, etc.
