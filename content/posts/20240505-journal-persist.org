@@ -31,21 +31,24 @@ With the org agenda, I can remedy this as follows:
 I did this with [[https://orgmode.org/worg/org-tutorials/org-custom-agenda-commands.html][org-agenda-custom-commands]]. It looks like this in my config:
 
 #+begin_src emacs-lisp
-(setq org-agenda-custom-commands
-      '(("j" "Journals"
-         ((tags
-           "persist"
-           ((org-agenda-files
-             (file-expand-wildcards "~/org/denotes/journal/*.org"))
-            (org-agenda-prefix-format "%-2c:::")))))))
+(setq '(("j" "Journals" ((tags "persist")
+                         (todo))
+         ((org-agenda-files
+           (file-expand-wildcards "~/org/denotes/journal/*.org"))
+          (org-agenda-prefix-format "%-2c:::")))))
 #+end_src
 
-This creates a custom view called "journals" that I can select with the "j" command from the agenda menu (from ~<C-c a>~). Any headline tagged with "persist" will appear in that agenda view.
+This creates a custom view called "journals" that I can select with the "j" command from the agenda menu (from ~<C-c a>~). Any headline tagged with "persist" will appear in that agenda view. It was also updated to include all TODO entries in the journals, ensuring that I properly resolve or migrate them.
 * Next Steps
 
 This is a very simple agenda view. There are a few improvements I intend to make in the near future (I will update this post accordingly).
-** TODO Add TODO entries
+** DONE Add TODO entries
 I want to add TODO entries to the custom view. Any outstanding TODOs from the daily journals should either be closed out or migrated somewhere more permanent.
+*** UPDATE <2024-05-06 Mon>
+This required only very minor changes:
+1. add a ~(todo)~ block to the ~org-agenda-custom-commands~ specification
+2. make the configuration specifying e.g. the directory and formatting apply to the whole block rather than to individual sections.
+
 ** TODO Limit the number of files searched
 I am not yet entirely sure how to do this one. Org agenda is notorious for slowing down when dealing with a lot of files. The number of daily journal entries will increase in an obvious way. There are some ways to [[https://orgmode.org/manual/Filtering_002flimiting-agenda-items.html][filter and limit]] the results but I'm not sure if they will prevent the agenda from reading more files than it needs to. Something to investigate.
 ** TODO Add and organize tags
