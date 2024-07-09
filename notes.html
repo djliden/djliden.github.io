@@ -38,9 +38,9 @@
 This page includes miscellaneous notes and drafts. It provides a place for me to record things that I learn and to share work-in-progress posts. Assume everything here is half-baked, a work in progress, provisional.
 </p>
 
-<div id="outline-container-org7abc819" class="outline-2">
-<h2 id="org7abc819"><a href="notes/20240709-python-readline.html">(2024-07-09) "Python interpreter doesn't seem to support readline" error in Emacs on MacOS</a></h2>
-<div class="outline-text-2" id="text-org7abc819">
+<div id="outline-container-org7d9b497" class="outline-2">
+<h2 id="org7d9b497"><a href="notes/20240709-python-readline.html">(2024-07-09) "Python interpreter doesn't seem to support readline" error in Emacs on MacOS</a></h2>
+<div class="outline-text-2" id="text-org7d9b497">
 <p>
 I was encountering this warning when trying to use Python in Emacs on Macos: <code>Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list.  Native completions have been disabled locally.</code> I found years of discussions on this issue, but no solutions. I also found that using Python installed with Conda instead of with virtualenv worked fine. From this, I narrowed down the root cause and found a working solution: (1) install the <code>gnureadline</code> Python package with <code>pip install gnureadline</code>; (2) override the default readline in your virtual environment with <code>python -m override_readline</code>.
 </p>

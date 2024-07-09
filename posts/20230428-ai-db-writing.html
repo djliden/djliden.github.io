@@ -38,20 +38,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd14224c">Background</a></li>
-<li><a href="#orgba47103">Making a Production LLM Prompt for Text-to-SQL Translation</a></li>
-<li><a href="#orgc92bc53">Make ChatGPT Stop Chatting and Start Writing SQL</a></li>
-<li><a href="#org97bfe3e">LLM Prompt Testing Part 1: Comparing ChatGPT to Codex</a></li>
-<li><a href="#orgb118f47">Use LLMs with Other Tools for Better SQL Translation</a></li>
-<li><a href="#org363893f">Vector Similarity Search in Postgres with bit.io and pgvector</a></li>
-<li><a href="#org5975633">Pre-Classify Tasks for Better ChatGPT Completions</a></li>
+<li><a href="#org8803cf7">Background</a></li>
+<li><a href="#org768a328">Making a Production LLM Prompt for Text-to-SQL Translation</a></li>
+<li><a href="#orga33050f">Make ChatGPT Stop Chatting and Start Writing SQL</a></li>
+<li><a href="#org1247033">LLM Prompt Testing Part 1: Comparing ChatGPT to Codex</a></li>
+<li><a href="#org82ec5d0">Use LLMs with Other Tools for Better SQL Translation</a></li>
+<li><a href="#orgaaf2a35">Vector Similarity Search in Postgres with bit.io and pgvector</a></li>
+<li><a href="#org19bbc65">Pre-Classify Tasks for Better ChatGPT Completions</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgd14224c" class="outline-2">
-<h2 id="orgd14224c">Background</h2>
-<div class="outline-text-2" id="text-orgd14224c">
-<div class="preview" id="org5eeec08">
+<div id="outline-container-org8803cf7" class="outline-2">
+<h2 id="org8803cf7">Background</h2>
+<div class="outline-text-2" id="text-org8803cf7">
+<div class="preview" id="org9ad86ef">
 <p>
 Since this start of this year, I've been working on and writing about AI tools
 for working with Postgres databases. Most of this work has involved finding
@@ -65,9 +65,9 @@ related to a lot of the other things I write about on my personal blog.
 </div>
 
 
-<div id="outline-container-orgba47103" class="outline-2">
-<h2 id="orgba47103"><a href="https://innerjoin.bit.io/making-a-production-llm-prompt-for-text-to-sql-translation-b798b6e94783">Making a Production LLM Prompt for Text-to-SQL Translation</a></h2>
-<div class="outline-text-2" id="text-orgba47103">
+<div id="outline-container-org768a328" class="outline-2">
+<h2 id="org768a328"><a href="https://innerjoin.bit.io/making-a-production-llm-prompt-for-text-to-sql-translation-b798b6e94783">Making a Production LLM Prompt for Text-to-SQL Translation</a></h2>
+<div class="outline-text-2" id="text-org768a328">
 <p>
 This article introduces our work on AI+databases. Our original goal was simple:
 make a great natural language to SQL translation system. This article talks
@@ -76,9 +76,9 @@ about some of the challenges and opportunities in that area and introduces a
 </p>
 </div>
 </div>
-<div id="outline-container-orgc92bc53" class="outline-2">
-<h2 id="orgc92bc53"><a href="https://innerjoin.bit.io/make-chatgpt-stop-chatting-and-start-writing-sql-fd5560049ae4">Make ChatGPT Stop Chatting and Start Writing SQL</a></h2>
-<div class="outline-text-2" id="text-orgc92bc53">
+<div id="outline-container-orga33050f" class="outline-2">
+<h2 id="orga33050f"><a href="https://innerjoin.bit.io/make-chatgpt-stop-chatting-and-start-writing-sql-fd5560049ae4">Make ChatGPT Stop Chatting and Start Writing SQL</a></h2>
+<div class="outline-text-2" id="text-orga33050f">
 <p>
 I wrote this article after the ChatGPT API was released. We started by using the
 Codex code completion models but the much lower price of <code>gpt-3.5-turbo</code> made a
@@ -89,18 +89,18 @@ ChatGPT to get much of the same functionality.
 </p>
 </div>
 </div>
-<div id="outline-container-org97bfe3e" class="outline-2">
-<h2 id="org97bfe3e"><a href="https://innerjoin.bit.io/llm-sql-translation-prompt-testing-part-1-comparing-chatgpt-to-codex-78da57213ebe">LLM Prompt Testing Part 1: Comparing ChatGPT to Codex</a></h2>
-<div class="outline-text-2" id="text-org97bfe3e">
+<div id="outline-container-org1247033" class="outline-2">
+<h2 id="org1247033"><a href="https://innerjoin.bit.io/llm-sql-translation-prompt-testing-part-1-comparing-chatgpt-to-codex-78da57213ebe">LLM Prompt Testing Part 1: Comparing ChatGPT to Codex</a></h2>
+<div class="outline-text-2" id="text-org1247033">
 <p>
 This article presents a simple suite of text-to-SQL translations and compares
 the performance of the Codex and ChatGPT models.
 </p>
 </div>
 </div>
-<div id="outline-container-orgb118f47" class="outline-2">
-<h2 id="orgb118f47"><a href="https://innerjoin.bit.io/use-llms-with-other-tools-for-better-sql-translation-21e35de8f03e">Use LLMs with Other Tools for Better SQL Translation</a></h2>
-<div class="outline-text-2" id="text-orgb118f47">
+<div id="outline-container-org82ec5d0" class="outline-2">
+<h2 id="org82ec5d0"><a href="https://innerjoin.bit.io/use-llms-with-other-tools-for-better-sql-translation-21e35de8f03e">Use LLMs with Other Tools for Better SQL Translation</a></h2>
+<div class="outline-text-2" id="text-org82ec5d0">
 <blockquote>
 <p>
 The Unix Philosophy considers text streams a universal interface, and emphasizes
@@ -117,9 +117,9 @@ for chatting.
 </p>
 </div>
 </div>
-<div id="outline-container-org363893f" class="outline-2">
-<h2 id="org363893f"><a href="https://innerjoin.bit.io/vector-similarity-search-in-postgres-with-bit-io-and-pgvector-c58ac34f408b">Vector Similarity Search in Postgres with bit.io and pgvector</a></h2>
-<div class="outline-text-2" id="text-org363893f">
+<div id="outline-container-orgaaf2a35" class="outline-2">
+<h2 id="orgaaf2a35"><a href="https://innerjoin.bit.io/vector-similarity-search-in-postgres-with-bit-io-and-pgvector-c58ac34f408b">Vector Similarity Search in Postgres with bit.io and pgvector</a></h2>
+<div class="outline-text-2" id="text-orgaaf2a35">
 <p>
 In this article, I briefly show how to use the <code>pgvector</code> Postgres extension for
 semantic search. I exported all of bit.io's docs to a Postgres database, created
@@ -129,9 +129,9 @@ semantic search applied to the docs.
 </p>
 </div>
 </div>
-<div id="outline-container-org5975633" class="outline-2">
-<h2 id="org5975633"><a href="https://innerjoin.bit.io/pre-classify-tasks-for-better-chatgpt-completions-f197ad01618c">Pre-Classify Tasks for Better ChatGPT Completions</a></h2>
-<div class="outline-text-2" id="text-org5975633">
+<div id="outline-container-org19bbc65" class="outline-2">
+<h2 id="org19bbc65"><a href="https://innerjoin.bit.io/pre-classify-tasks-for-better-chatgpt-completions-f197ad01618c">Pre-Classify Tasks for Better ChatGPT Completions</a></h2>
+<div class="outline-text-2" id="text-org19bbc65">
 <p>
 In my most recent article, I described how we used a two-step process to
 generate API calls using ChatGPT. We first used ChatGPT to identify the <i>task</i>
