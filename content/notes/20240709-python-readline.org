@@ -1,0 +1,84 @@
+#+title:      "Python interpreter doesn't seem to support readline" error in Emacs on MacOS
+#+date:       <2024-07-09 Tue>
+* Introduction
+#+begin_preview
+I was encountering this warning when trying to use Python in Emacs on Macos: ~Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list.  Native completions have been disabled locally.~ I found years of discussions on this issue, but no solutions. I also found that using Python installed with Conda instead of with virtualenv worked fine. From this, I narrowed down the root cause and found a working solution: (1) install the ~gnureadline~ Python package with ~pip install gnureadline~; (2) override the default readline in your virtual environment with ~python -m override_readline~.
+
+In the rest of this note, I will briefly review the steps of the investigation that led me here. Jump to the [[*Solution][Solution]] if you're (understandably) not interested in the rest!
+
+#+end_preview
+* Background
+
+I have historically used Python in Emacs via Conda. I don't especially enjoy using Conda and much prefer a virtualenv workflow. So, for a recent project, I used virtualenv (actually [[https://github.com/astral-sh/uv][uv venv]], and I recommend checking out uv for your package management and virtual environment needs!).
+
+When I tried to use Python in Emacs, however, I got the warning above. This wasn't catastrophic, but it was annoying. The Python interpreter would return this before the results of whatever code I was trying to run:
+
+#+begin_src
+__PYTHON_EL_eval("try:\n    with open('/var/folders/m_/nbhhpg550yl539yhlgch8qqr0000gp/T/babel-FML4fd/python-qrbxMD') as f:\n        exec(compile(f.read(), f.name, 'exec'))\nexcept:\n    raise\nfinally:\n    print('org_babel_python_eoe')", "<string>")
+#+end_src
+
+and would echo all of my inputs in the interactive shell. Not catastrophic, but very annoying.
+
+I am not the first person to encounter these issues. Here's a sampling of others...
+- [[https://emacs.stackexchange.com/questions/41289/python-in-org-babel-will-not-work][Python in org babel will not work]]
+- [[https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline][Your ‘python-shell-interpreter’ doesn’t seem to support readline]]
+- [[https://east.fm/posts/emacs-26-mojave-elpy-readline/index.html][Emacs 26, Mojave, elpy, readline]]
+- [[https://stackoverflow.com/questions/75103221/emacs-remove-python-el-eval-message][emacs: remove __PYTHON_EL_eval message]]
+- [[https://emacs.stackexchange.com/questions/76493/python-el-eval-file-prints-in-interpreter-when-sending-python-file-from-buffer][__PYTHON_EL_eval_file prints in interpreter when sending python file from buffer using C-x C-l]]
+- [[https://github.com/syl20bnr/spacemacs/issues/15998][__PYTHON_EL_eval printouts in ipython REPL]]
+
+And that list is by no means comprehensive.
+
+After trying to troubleshoot that issue for a while and finding no solution, I recalled that I had no issues when using Python installed via Conda. So what was the difference between the two?
+
+*Conda*:
+
+#+begin_src python
+>>> import readline
+>>> readline.__doc__
+'Importing this module enables command line editing using GNU readline.'
+#+end_src
+
+*virtualenv*:
+
+#+begin_src python
+>>> import readline
+>>> readline.__doc__
+'Importing this module enables command line editing using libedit readline.'
+#+end_src
+
+Alright, now we're getting somewhere. Given that the original warning message talked about ~readline~, and that the (working) Conda Python installation uses GNU readline while the (non-working) virtualenv version uses ~libedit~, it seems like we have to find a way to get the virtualenv version to use GNU readline instead.
+
+I tried a bunch of different things to try to force the virtualenv to use GNU readline, to no avail. Then I found the [[https://pypi.org/project/gnureadline/][gnureadline]] package on PyPi, which seemed promising.
+* Solution
+
+The [[https://github.com/ludwigschwardt/python-gnureadline][~gnureadline~]] Python package explains the issue:
+
+#+begin_quote
+If you install Python on macOS via a popular open-source package manager such as Homebrew or MacPorts, you'll get a readline extension module that calls libedit internally (even though it's confusingly still called "readline"!).
+
+While a lot of effort has gone into making GNU Readline and Editline interchangeable within Python, they are not fully equivalent. If you want proper Readline support, this module provides it by bundling the standard Python readline module with the GNU Readline source code, which is compiled and statically linked to it.
+#+end_quote
+
+And it provides the very straightforward solution:
+
+1. Install ~gnureadline~ with ~pip install gnureadline~.
+2. Run the included override script with ~python -m override_readline~.
+   
+* A little more detail
+The ~gnureadline~ docs suggest the following usage pattern:
+
+#+begin_src python
+try:
+    import gnureadline as readline
+except ImportError:
+    import readline
+#+end_src
+
+However, when it comes to setting up the shell for use with Emacs, running this within the shell would be too late. We actually need to run this when the site module imports customization modules when the Python interpreter is starting.
+
+ How do we do this? Again from the ~gnureadline~ docs:
+
+#+begin_quote
+The script [the above ~override_readline~ script] first tries to add the workaround to usercustomize and then falls back to sitecustomize if the user site is not enabled (for example in virtualenvs). If you want to go straight to sitecustomize, add the standard -s option.
+#+end_quote
