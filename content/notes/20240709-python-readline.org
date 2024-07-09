@@ -1,5 +1,6 @@
 #+title:      "Python interpreter doesn't seem to support readline" error in Emacs on MacOS
 #+date:       <2024-07-09 Tue>
+#+OPTIONS: broken-links:t
 * Introduction
 #+begin_preview
 I was encountering this warning when trying to use Python in Emacs on Macos: ~Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list.  Native completions have been disabled locally.~ I found years of discussions on this issue, but no solutions. I also found that using Python installed with Conda instead of with virtualenv worked fine. From this, I narrowed down the root cause and found a working solution: (1) install the ~gnureadline~ Python package with ~pip install gnureadline~; (2) override the default readline in your virtual environment with ~python -m override_readline~.
