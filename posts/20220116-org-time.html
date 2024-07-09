@@ -38,28 +38,28 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga145e05">Background</a></li>
-<li><a href="#orgc13b0b8">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</a></li>
-<li><a href="#org0788e33">Repeat Intervals</a>
+<li><a href="#orge695518">Background</a></li>
+<li><a href="#org7ac27dc">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</a></li>
+<li><a href="#org9a1e5a5">Repeat Intervals</a>
 <ul>
-<li><a href="#org25371dc">Different Types of Repeat Intervals</a>
+<li><a href="#org6e85bb7">Different Types of Repeat Intervals</a>
 <ul>
-<li><a href="#orgd8f6a63">The <code>.+</code> Repeater</a></li>
-<li><a href="#org6c40333">The <code>++</code> Repeater</a></li>
+<li><a href="#orge4fe791">The <code>.+</code> Repeater</a></li>
+<li><a href="#orgae3212e">The <code>++</code> Repeater</a></li>
 </ul>
 </li>
-<li><a href="#orgc00f286">Marking Tasks with Repeaters <code>DONE</code> (For Good)</a></li>
+<li><a href="#org8fc3f9e">Marking Tasks with Repeaters <code>DONE</code> (For Good)</a></li>
 </ul>
 </li>
-<li><a href="#orgbbb3f22">Further Reading</a></li>
+<li><a href="#org9c304be">Further Reading</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orga145e05" class="outline-2">
-<h2 id="orga145e05">Background</h2>
-<div class="outline-text-2" id="text-orga145e05">
-<div class="PREVIEW" id="orge71cabc">
+<div id="outline-container-orge695518" class="outline-2">
+<h2 id="orge695518">Background</h2>
+<div class="outline-text-2" id="text-orge695518">
+<div class="PREVIEW" id="orgd63a70e">
 <p>
 I recently started using org-mode to keep track of a few habits (morning
 meditation, getting some sunlight and exercise before my morning coffee, etc.)
@@ -74,9 +74,9 @@ complete a task after the scheduled date.
 </div>
 </div>
 </div>
-<div id="outline-container-orgc13b0b8" class="outline-2">
-<h2 id="orgc13b0b8">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</h2>
-<div class="outline-text-2" id="text-orgc13b0b8">
+<div id="outline-container-org7ac27dc" class="outline-2">
+<h2 id="org7ac27dc">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</h2>
+<div class="outline-text-2" id="text-org7ac27dc">
 <p>
 The <a href="https://orgmode.org/manual/Dates-and-Times.html">org-mode manual</a> provides plenty of details on the basics of dates and
 times. Here's a quick review:
@@ -124,9 +124,9 @@ appointment) that occurs <i>on</i> a given date.
 </ul>
 </div>
 </div>
-<div id="outline-container-org0788e33" class="outline-2">
-<h2 id="org0788e33">Repeat Intervals</h2>
-<div class="outline-text-2" id="text-org0788e33">
+<div id="outline-container-org9a1e5a5" class="outline-2">
+<h2 id="org9a1e5a5">Repeat Intervals</h2>
+<div class="outline-text-2" id="text-org9a1e5a5">
 <p>
 Org-mode makes it possible to schedule recurring events without manually
 specifying each repetition date. There are three key formats for repeated
@@ -146,9 +146,9 @@ When specifying repeat intervals, <code>y</code> means "yearly", <code>m</code> 
 <code>+&lt;number&gt;</code> tells how often the event should be repeated.
 </p>
 </div>
-<div id="outline-container-org25371dc" class="outline-3">
-<h3 id="org25371dc">Different Types of Repeat Intervals</h3>
-<div class="outline-text-3" id="text-org25371dc">
+<div id="outline-container-org6e85bb7" class="outline-3">
+<h3 id="org6e85bb7">Different Types of Repeat Intervals</h3>
+<div class="outline-text-3" id="text-org6e85bb7">
 <p>
 Here's where I ran into trouble. I scheduled some events as daily "habits." For
 example, I wanted to take a walk each morning, so I included the following in my
@@ -207,9 +207,9 @@ and I plan to complete the task again <i>tomorrow</i>.
 There are two special repeaters for situations like this.
 </p>
 </div>
-<div id="outline-container-orgd8f6a63" class="outline-4">
-<h4 id="orgd8f6a63">The <code>.+</code> Repeater</h4>
-<div class="outline-text-4" id="text-orgd8f6a63">
+<div id="outline-container-orge4fe791" class="outline-4">
+<h4 id="orge4fe791">The <code>.+</code> Repeater</h4>
+<div class="outline-text-4" id="text-orge4fe791">
 <p>
 Instead of scheduling with <code>+1d</code>, we can use <code>.+1d</code> to specify that, after we mark a
 task <code>DONE</code> it should advance by exactly one day from the date (and time, if the
@@ -250,9 +250,9 @@ one week from when it was marked <code>DONE</code>, a Saturday.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org6c40333" class="outline-4">
-<h4 id="org6c40333">The <code>++</code> Repeater</h4>
-<div class="outline-text-4" id="text-org6c40333">
+<div id="outline-container-orgae3212e" class="outline-4">
+<h4 id="orgae3212e">The <code>++</code> Repeater</h4>
+<div class="outline-text-4" id="text-orgae3212e">
 <p>
 The <code>++</code> repeater is very similar to the <code>.+</code> repeater insofar as it will also
 advance the scheduled date into the future. However, it will <i>also</i> match the
@@ -299,9 +299,9 @@ Sunday, only four days later.
 </div>
 </div>
 </div>
-<div id="outline-container-orgc00f286" class="outline-3">
-<h3 id="orgc00f286">Marking Tasks with Repeaters <code>DONE</code> (For Good)</h3>
-<div class="outline-text-3" id="text-orgc00f286">
+<div id="outline-container-org8fc3f9e" class="outline-3">
+<h3 id="org8fc3f9e">Marking Tasks with Repeaters <code>DONE</code> (For Good)</h3>
+<div class="outline-text-3" id="text-org8fc3f9e">
 <p>
 You may want to end a repeated task—stop it from appearing in your agenda and
 mark it <code>DONE</code> —without entirely deleting the task. Maybe you want to maintain the
@@ -326,9 +326,9 @@ to square brackets, indicating an inactive timestamp.</li>
 </div>
 </div>
 </div>
-<div id="outline-container-orgbbb3f22" class="outline-2">
-<h2 id="orgbbb3f22">Further Reading</h2>
-<div class="outline-text-2" id="text-orgbbb3f22">
+<div id="outline-container-org9c304be" class="outline-2">
+<h2 id="org9c304be">Further Reading</h2>
+<div class="outline-text-2" id="text-org9c304be">
 <p>
 The org-mode manual is the best place to learn more about timestamps, schedules,
 and deadlines in general and repeated tasks in particular. Here are some places

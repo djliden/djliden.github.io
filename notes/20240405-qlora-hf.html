@@ -38,18 +38,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga55a9f8">1. Intro to Quantization</a>
+<li><a href="#org236c7c0">1. Intro to Quantization</a>
 <ul>
-<li><a href="#orgf9f879d">Common data types used in ML</a></li>
-<li><a href="#org931ecab">Different types in training and inference</a></li>
-<li><a href="#orgae7b562">The FP8 Format</a></li>
+<li><a href="#orgd469156">Common data types used in ML</a></li>
+<li><a href="#org6a37104">Different types in training and inference</a></li>
+<li><a href="#orgb891014">The FP8 Format</a></li>
 </ul>
 </li>
-<li><a href="#orga29d549">QLoRA Paper Overview</a></li>
+<li><a href="#orga3ac5ef">QLoRA Paper Overview</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org29aee36">
+<div class="preview" id="org4605998">
 <p>
 I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA and quantization. Later, I will also make a note with some examples.
 </p>
@@ -60,9 +60,9 @@ I have a basic understanding of what QLoRA is, but given its popularity and appa
 Link: <a href="https://huggingface.co/blog/4bit-transformers-bitsandbytes">Making LLMs even more accessible with bitsandbytes, 4-bit quantization and QLoRA</a>
 </p>
 
-<div id="outline-container-orga55a9f8" class="outline-2">
-<h2 id="orga55a9f8">1. Intro to Quantization</h2>
-<div class="outline-text-2" id="text-orga55a9f8">
+<div id="outline-container-org236c7c0" class="outline-2">
+<h2 id="org236c7c0">1. Intro to Quantization</h2>
+<div class="outline-text-2" id="text-org236c7c0">
 <p>
 The post recommends reading the intro to <a href="https://huggingface.co/blog/hf-bitsandbytes-integration">this post</a> first for some background on quantization. Key points:
 </p>
@@ -72,9 +72,9 @@ The post recommends reading the intro to <a href="https://huggingface.co/blog/hf
 <li>int8 inference doesn't appear to significantly degrade model performance.</li>
 </ul>
 </div>
-<div id="outline-container-orgf9f879d" class="outline-3">
-<h3 id="orgf9f879d">Common data types used in ML</h3>
-<div class="outline-text-3" id="text-orgf9f879d">
+<div id="outline-container-orgd469156" class="outline-3">
+<h3 id="orgd469156">Common data types used in ML</h3>
+<div class="outline-text-3" id="text-orgd469156">
 <p>
 The size of a model is determined by the number of its parameters <i>and their precision</i>. Common types include:
 </p>
@@ -109,9 +109,9 @@ result
 </ul>
 </div>
 </div>
-<div id="outline-container-org931ecab" class="outline-3">
-<h3 id="org931ecab">Different types in training and inference</h3>
-<div class="outline-text-3" id="text-org931ecab">
+<div id="outline-container-org6a37104" class="outline-3">
+<h3 id="org6a37104">Different types in training and inference</h3>
+<div class="outline-text-3" id="text-org6a37104">
 <p>
 "Ideally" we should use FP32 for training and inference. But it is two times slower than half precision. So a mixed-precision approach is preferred. Weights are held in FP32 as a precise "main weights" reference. Computation in the forward/backward pass are done in fp16/bf16 to improve training speed. The fp16/bf16 gradients are used to update the fp32 weights.
 </p>
@@ -120,7 +120,7 @@ result
 During inference, there's no real need for the full-precision weights.
 </p>
 
-<div class="question" id="org928502f">
+<div class="question" id="org33df3eb">
 <p>
 What happens when I load a model in bf16 and then train it? Is that still mixed precision? Or is bf16 the reference copy in that case?
 </p>
@@ -128,18 +128,18 @@ What happens when I load a model in bf16 and then train it? Is that still mixed 
 </div>
 </div>
 </div>
-<div id="outline-container-orgae7b562" class="outline-3">
-<h3 id="orgae7b562">The FP8 Format</h3>
-<div class="outline-text-3" id="text-orgae7b562">
+<div id="outline-container-orgb891014" class="outline-3">
+<h3 id="orgb891014">The FP8 Format</h3>
+<div class="outline-text-3" id="text-orgb891014">
 <p>
 The FP8 format has two formats: E4M3 and E5M2 (where E=exponent, M=mantissa). E4M3 (higher precision, smaller range) is best suited for the forward pass, while E5M2 (lower precision, higher range) is better suited for the backward pass.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orga29d549" class="outline-2">
-<h2 id="orga29d549">QLoRA Paper Overview</h2>
-<div class="outline-text-2" id="text-orga29d549">
+<div id="outline-container-orga3ac5ef" class="outline-2">
+<h2 id="orga3ac5ef">QLoRA Paper Overview</h2>
+<div class="outline-text-2" id="text-orga3ac5ef">
 <p>
 QLoRA reduces the memory usage of LLM fine-tuning without appreciable loss of performance compared to half precision fine-tuning.
 </p>

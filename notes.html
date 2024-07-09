@@ -38,75 +38,15 @@
 This page includes miscellaneous notes and drafts. It provides a place for me to record things that I learn and to share work-in-progress posts. Assume everything here is half-baked, a work in progress, provisional.
 </p>
 
-<div id="outline-container-org2c34176" class="outline-2">
-<h2 id="org2c34176"><a href="notes/20240418-instructor-async.html">(2024-04-18) Asynchronous Instructor</a></h2>
-<div class="outline-text-2" id="text-org2c34176">
+<div id="outline-container-org7abc819" class="outline-2">
+<h2 id="org7abc819"><a href="notes/20240709-python-readline.html">(2024-07-09) "Python interpreter doesn't seem to support readline" error in Emacs on MacOS</a></h2>
+<div class="outline-text-2" id="text-org7abc819">
 <p>
-In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts.
+I was encountering this warning when trying to use Python in Emacs on Macos: <code>Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list.  Native completions have been disabled locally.</code> I found years of discussions on this issue, but no solutions. I also found that using Python installed with Conda instead of with virtualenv worked fine. From this, I narrowed down the root cause and found a working solution: (1) install the <code>gnureadline</code> Python package with <code>pip install gnureadline</code>; (2) override the default readline in your virtual environment with <code>python -m override_readline</code>.
 </p>
 
 <p>
-I used the Anthropic Haiku model.
-</p>
-
-<p>
-Using the instructor library with the asynchronous Anthropic client makes it much faster to make a large number of calls to the Anthropic API fairly quickly. 
-</p>
-</div>
-</div>
-<div id="outline-container-org5ffc991" class="outline-2">
-<h2 id="org5ffc991"><a href="notes/20240417-mlflow-qlora.html">(2024-04-17) Logging and Loading a QLoRA Model with MLflow</a></h2>
-<div class="outline-text-2" id="text-org5ffc991">
-<p>
-This is a minimal example of how to log an MLflow qlora model. It does not show any actual model training or data processing, just the basic process of saving the model.
-</p>
-</div>
-</div>
-<div id="outline-container-org125c686" class="outline-2">
-<h2 id="org125c686"><a href="notes/20240416-torch-cuda-flash-attn.html">(2024-04-16) Troubleshooting Flash Attention Installation</a></h2>
-<div class="outline-text-2" id="text-org125c686">
-<p>
-I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platform I tend to be working on (Databricks). This note is a quick summary.
-</p>
-</div>
-</div>
-<div id="outline-container-org43d9e31" class="outline-2">
-<h2 id="org43d9e31"><a href="notes/20240405-qlora-hf.html">(2024-04-05) Intro to QLoRA</a></h2>
-<div class="outline-text-2" id="text-org43d9e31">
-<p>
-I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA and quantization. Later, I will also make a note with some examples.
-</p>
-</div>
-</div>
-<div id="outline-container-org6222b4c" class="outline-2">
-<h2 id="org6222b4c"><a href="notes/20240404-dbrx-mlflow.html">(2024-04-04) DBRX with MLflow</a></h2>
-<div class="outline-text-2" id="text-org6222b4c">
-<p>
-This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.
-</p>
-</div>
-</div>
-<div id="outline-container-orgd16a725" class="outline-2">
-<h2 id="orgd16a725"><a href="notes/20240403-dbrx-instructor.html">(2024-04-03) Using the DBRX Model with Instructor</a></h2>
-<div class="outline-text-2" id="text-orgd16a725">
-<p>
-This note briefly demonstrates how to use the <a href="https://github.com/jxnl/instructor">Instructor</a> library with the Databricks <a href="https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm">DBRX</a> model via the Databricks Foundation Models API.
-</p>
-</div>
-</div>
-<div id="outline-container-orgf955b2c" class="outline-2">
-<h2 id="orgf955b2c"><a href="notes/20240401-mlx-quickstart.html">(2024-04-01) MLX Quickstart</a></h2>
-<div class="outline-text-2" id="text-orgf955b2c">
-<p>
-These are my notes on the <a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">MLX quick start guide and usage notes</a>. It's a work in progress. Ultimately, I'm interested in learning what MLX will let me do with LLMs on my laptop. I might write something more substantial on that topic in the future. For now, you're probably better off consulting the docs yourself than looking at my notes on them.
-</p>
-</div>
-</div>
-<div id="outline-container-org52b210d" class="outline-2">
-<h2 id="org52b210d"><a href="notes/20240330-raschka-torch-notes.html">(2024-03-31) PyTorch Review</a></h2>
-<div class="outline-text-2" id="text-org52b210d">
-<p>
-This is a quick run through the appendix on PyTorch from Sebastian Raschka's <a href="https://www.manning.com/books/build-a-large-language-model-from-scratch">Build a Large Language Model (From Scratch)</a> book, currently available via Manning's MEAP. I haven't spent an enormous amount of time with PyTorch in the last year or so, so it seemed worth the effort to work through it.
+In the rest of this note, I will briefly review the steps of the investigation that led me here. Scroll down to the Solution sectionif you're (understandably) not interested in the rest!
 </p>
 </div>
 </div>

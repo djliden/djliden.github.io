@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>"Python interpreter doesn't seem to support readline" error in Emacs on MacOS</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">"Python interpreter doesn't seem to support readline" error in Emacs on MacOS</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgac72b49">Introduction</a></li>
+<li><a href="#org7b92e7e">Background</a></li>
+<li><a href="#org3da8574">Solution</a></li>
+<li><a href="#org30c2665">A little more detail</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-orgac72b49" class="outline-2">
+<h2 id="orgac72b49">Introduction</h2>
+<div class="outline-text-2" id="text-orgac72b49">
+<div class="preview" id="org1de3f01">
+<p>
+I was encountering this warning when trying to use Python in Emacs on Macos: <code>Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list.  Native completions have been disabled locally.</code> I found years of discussions on this issue, but no solutions. I also found that using Python installed with Conda instead of with virtualenv worked fine. From this, I narrowed down the root cause and found a working solution: (1) install the <code>gnureadline</code> Python package with <code>pip install gnureadline</code>; (2) override the default readline in your virtual environment with <code>python -m override_readline</code>.
+</p>
+
+<p>
+In the rest of this note, I will briefly review the steps of the investigation that led me here. Scroll down to the Solution sectionif you're (understandably) not interested in the rest!
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org7b92e7e" class="outline-2">
+<h2 id="org7b92e7e">Background</h2>
+<div class="outline-text-2" id="text-org7b92e7e">
+<p>
+I have historically used Python in Emacs via Conda. I don't especially enjoy using Conda and much prefer a virtualenv workflow. So, for a recent project, I used virtualenv (actually <a href="https://github.com/astral-sh/uv">uv venv</a>, and I recommend checking out uv for your package management and virtual environment needs!).
+</p>
+
+<p>
+When I tried to use Python in Emacs, however, I got the warning above. This wasn't catastrophic, but it was annoying. The Python interpreter would return this before the results of whatever code I was trying to run:
+</p>
+
+<pre class="example">
+__PYTHON_EL_eval("try:\n    with open('/var/folders/m_/nbhhpg550yl539yhlgch8qqr0000gp/T/babel-FML4fd/python-qrbxMD') as f:\n        exec(compile(f.read(), f.name, 'exec'))\nexcept:\n    raise\nfinally:\n    print('org_babel_python_eoe')", "&lt;string&gt;")
+</pre>
+
+<p>
+and would echo all of my inputs in the interactive shell. Not catastrophic, but very annoying.
+</p>
+
+<p>
+I am not the first person to encounter these issues. Here's a sampling of others&#x2026;
+</p>
+<ul class="org-ul">
+<li><a href="https://emacs.stackexchange.com/questions/41289/python-in-org-babel-will-not-work">Python in org babel will not work</a></li>
+<li><a href="https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline">Your ‘python-shell-interpreter’ doesn’t seem to support readline</a></li>
+<li><a href="https://east.fm/posts/emacs-26-mojave-elpy-readline/index.html">Emacs 26, Mojave, elpy, readline</a></li>
+<li><a href="https://stackoverflow.com/questions/75103221/emacs-remove-python-el-eval-message">emacs: remove _<sub>PYTHON</sub><sub>EL</sub><sub>eval</sub> message</a></li>
+<li><a href="https://emacs.stackexchange.com/questions/76493/python-el-eval-file-prints-in-interpreter-when-sending-python-file-from-buffer">_<sub>PYTHON</sub><sub>EL</sub><sub>eval</sub><sub>file</sub> prints in interpreter when sending python file from buffer using C-x C-l</a></li>
+<li><a href="https://github.com/syl20bnr/spacemacs/issues/15998">_<sub>PYTHON</sub><sub>EL</sub><sub>eval</sub> printouts in ipython REPL</a></li>
+</ul>
+
+<p>
+And that list is by no means comprehensive.
+</p>
+
+<p>
+After trying to troubleshoot that issue for a while and finding no solution, I recalled that I had no issues when using Python installed via Conda. So what was the difference between the two?
+</p>
+
+<p>
+<b>Conda</b>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-operator">&gt;&gt;&gt;</span> <span class="org-keyword">import</span> readline
+<span class="org-operator">&gt;&gt;&gt;</span> readline.<span class="org-builtin">__doc__</span>
+<span class="org-string">'Importing this module enables command line editing using GNU readline.'</span>
+</pre>
+</div>
+
+<p>
+<b>virtualenv</b>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-operator">&gt;&gt;&gt;</span> <span class="org-keyword">import</span> readline
+<span class="org-operator">&gt;&gt;&gt;</span> readline.<span class="org-builtin">__doc__</span>
+<span class="org-string">'Importing this module enables command line editing using libedit readline.'</span>
+</pre>
+</div>
+
+<p>
+Alright, now we're getting somewhere. Given that the original warning message talked about <code>readline</code>, and that the (working) Conda Python installation uses GNU readline while the (non-working) virtualenv version uses <code>libedit</code>, it seems like we have to find a way to get the virtualenv version to use GNU readline instead.
+</p>
+
+<p>
+I tried a bunch of different things to try to force the virtualenv to use GNU readline, to no avail. Then I found the <a href="https://pypi.org/project/gnureadline/">gnureadline</a> package on PyPi, which seemed promising.
+</p>
+</div>
+</div>
+<div id="outline-container-org3da8574" class="outline-2">
+<h2 id="org3da8574">Solution</h2>
+<div class="outline-text-2" id="text-org3da8574">
+<p>
+The <a href="https://github.com/ludwigschwardt/python-gnureadline"><code>gnureadline</code></a> Python package explains the issue:
+</p>
+
+<blockquote>
+<p>
+If you install Python on macOS via a popular open-source package manager such as Homebrew or MacPorts, you'll get a readline extension module that calls libedit internally (even though it's confusingly still called "readline"!).
+</p>
+
+<p>
+While a lot of effort has gone into making GNU Readline and Editline interchangeable within Python, they are not fully equivalent. If you want proper Readline support, this module provides it by bundling the standard Python readline module with the GNU Readline source code, which is compiled and statically linked to it.
+</p>
+</blockquote>
+
+<p>
+And it provides the very straightforward solution:
+</p>
+
+<ol class="org-ol">
+<li>Install <code>gnureadline</code> with <code>pip install gnureadline</code>.</li>
+<li>Run the included override script with <code>python -m override_readline</code>.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org30c2665" class="outline-2">
+<h2 id="org30c2665">A little more detail</h2>
+<div class="outline-text-2" id="text-org30c2665">
+<p>
+The <code>gnureadline</code> docs suggest the following usage pattern:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">try</span>:
+    <span class="org-keyword">import</span> gnureadline <span class="org-keyword">as</span> readline
+<span class="org-keyword">except</span> <span class="org-type">ImportError</span>:
+    <span class="org-keyword">import</span> readline
+</pre>
+</div>
+
+<p>
+However, when it comes to setting up the shell for use with Emacs, running this within the shell would be too late. We actually need to run this when the site module imports customization modules when the Python interpreter is starting.
+</p>
+
+<p>
+How do we do this? Again from the <code>gnureadline</code> docs:
+</p>
+
+<blockquote>
+<p>
+The script [the above <code>override_readline</code> script] first tries to add the workaround to usercustomize and then falls back to sitecustomize if the user site is not enabled (for example in virtualenvs). If you want to go straight to sitecustomize, add the standard -s option.
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-07-09 Tue 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+</div>
+</body>
+</html>
