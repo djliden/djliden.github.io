@@ -38,34 +38,34 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8833f9a">Install Dependencies</a></li>
-<li><a href="#orga9a2091">Set up assets/cache directories</a></li>
-<li><a href="#org29e0c85">Skip Data Processing</a></li>
-<li><a href="#orgc20fab5">Load the model, tokenizer, etc.</a>
+<li><a href="#org7184469">Install Dependencies</a></li>
+<li><a href="#org2df6fdb">Set up assets/cache directories</a></li>
+<li><a href="#org772460e">Skip Data Processing</a></li>
+<li><a href="#org35ebc54">Load the model, tokenizer, etc.</a>
 <ul>
-<li><a href="#org3bdd5f5">Tokenizer</a></li>
-<li><a href="#orgd6e76b1">LoRA config</a></li>
-<li><a href="#orgb9b59cc">Model</a></li>
-<li><a href="#org84d666a">Set up the peft model</a></li>
+<li><a href="#orgf1d7de4">Tokenizer</a></li>
+<li><a href="#orgf498c08">LoRA config</a></li>
+<li><a href="#org9bc3e3c">Model</a></li>
+<li><a href="#org4e57566">Set up the peft model</a></li>
 </ul>
 </li>
-<li><a href="#orgf2e3ef3">Skip Training</a></li>
-<li><a href="#orgaeef05e">Log to MLflow</a></li>
-<li><a href="#org668ab33">Load the MLflow model</a></li>
-<li><a href="#org6dffe7b">Summary</a></li>
+<li><a href="#org2e085a3">Skip Training</a></li>
+<li><a href="#org5b3eaa0">Log to MLflow</a></li>
+<li><a href="#org7421529">Load the MLflow model</a></li>
+<li><a href="#orgace136b">Summary</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgaa8d09d">
+<div class="preview" id="org5cd22fc">
 <p>
 This is a minimal example of how to log an MLflow qlora model. It does not show any actual model training or data processing, just the basic process of saving the model.
 </p>
 
 </div>
 
-<div id="outline-container-org8833f9a" class="outline-2">
-<h2 id="org8833f9a">Install Dependencies</h2>
-<div class="outline-text-2" id="text-org8833f9a">
+<div id="outline-container-org7184469" class="outline-2">
+<h2 id="org7184469">Install Dependencies</h2>
+<div class="outline-text-2" id="text-org7184469">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-operator">%</span>pip install <span class="org-operator">--</span>upgrade torch
 <span class="org-operator">%</span>pip install <span class="org-operator">--</span>upgrade transformers accelerate peft bitsandbytes mlflow pynvml packaging ninja
@@ -86,9 +86,9 @@ pip install . <span class="org-operator">--</span>no<span class="org-operator">-
 </p>
 </div>
 </div>
-<div id="outline-container-orga9a2091" class="outline-2">
-<h2 id="orga9a2091">Set up assets/cache directories</h2>
-<div class="outline-text-2" id="text-orga9a2091">
+<div id="outline-container-org2df6fdb" class="outline-2">
+<h2 id="org2df6fdb">Set up assets/cache directories</h2>
+<div class="outline-text-2" id="text-org2df6fdb">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">Some Environment Setup</span>
 <span class="org-variable-name">ASSETS_DIR</span> <span class="org-operator">=</span> <span class="org-string">"&lt;assets_dir&gt;"</span>
@@ -99,21 +99,21 @@ pip install . <span class="org-operator">--</span>no<span class="org-operator">-
 </div>
 </div>
 </div>
-<div id="outline-container-org29e0c85" class="outline-2">
-<h2 id="org29e0c85">Skip Data Processing</h2>
-<div class="outline-text-2" id="text-org29e0c85">
+<div id="outline-container-org772460e" class="outline-2">
+<h2 id="org772460e">Skip Data Processing</h2>
+<div class="outline-text-2" id="text-org772460e">
 <p>
 We are not preparing or using any training data in this example. We are skipping the training part.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc20fab5" class="outline-2">
-<h2 id="orgc20fab5">Load the model, tokenizer, etc.</h2>
-<div class="outline-text-2" id="text-orgc20fab5">
+<div id="outline-container-org35ebc54" class="outline-2">
+<h2 id="org35ebc54">Load the model, tokenizer, etc.</h2>
+<div class="outline-text-2" id="text-org35ebc54">
 </div>
-<div id="outline-container-org3bdd5f5" class="outline-3">
-<h3 id="org3bdd5f5">Tokenizer</h3>
-<div class="outline-text-3" id="text-org3bdd5f5">
+<div id="outline-container-orgf1d7de4" class="outline-3">
+<h3 id="orgf1d7de4">Tokenizer</h3>
+<div class="outline-text-3" id="text-orgf1d7de4">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> transformers <span class="org-keyword">import</span> AutoTokenizer
 <span class="org-variable-name">tokenizer</span> <span class="org-operator">=</span> AutoTokenizer.from_pretrained(<span class="org-string">"mistralai/Mistral-7B-v0.1"</span>)
@@ -121,9 +121,9 @@ We are not preparing or using any training data in this example. We are skipping
 </div>
 </div>
 </div>
-<div id="outline-container-orgd6e76b1" class="outline-3">
-<h3 id="orgd6e76b1">LoRA config</h3>
-<div class="outline-text-3" id="text-orgd6e76b1">
+<div id="outline-container-orgf498c08" class="outline-3">
+<h3 id="orgf498c08">LoRA config</h3>
+<div class="outline-text-3" id="text-orgf498c08">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> peft <span class="org-keyword">import</span> LoraConfig, TaskType
 
@@ -138,9 +138,9 @@ We are not preparing or using any training data in this example. We are skipping
 </div>
 </div>
 </div>
-<div id="outline-container-orgb9b59cc" class="outline-3">
-<h3 id="orgb9b59cc">Model</h3>
-<div class="outline-text-3" id="text-orgb9b59cc">
+<div id="outline-container-org9bc3e3c" class="outline-3">
+<h3 id="org9bc3e3c">Model</h3>
+<div class="outline-text-3" id="text-org9bc3e3c">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> transformers <span class="org-keyword">import</span> AutoModelForCausalLM, BitsAndBytesConfig
 <span class="org-keyword">import</span> torch
@@ -161,9 +161,9 @@ We are not preparing or using any training data in this example. We are skipping
 </div>
 </div>
 </div>
-<div id="outline-container-org84d666a" class="outline-3">
-<h3 id="org84d666a">Set up the peft model</h3>
-<div class="outline-text-3" id="text-org84d666a">
+<div id="outline-container-org4e57566" class="outline-3">
+<h3 id="org4e57566">Set up the peft model</h3>
+<div class="outline-text-3" id="text-org4e57566">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> peft <span class="org-keyword">import</span> get_peft_model
 
@@ -310,17 +310,17 @@ Though the <code>add_adapter</code> approach does, in fact, add the adapter, it 
 </div>
 </div>
 </div>
-<div id="outline-container-orgf2e3ef3" class="outline-2">
-<h2 id="orgf2e3ef3">Skip Training</h2>
-<div class="outline-text-2" id="text-orgf2e3ef3">
+<div id="outline-container-org2e085a3" class="outline-2">
+<h2 id="org2e085a3">Skip Training</h2>
+<div class="outline-text-2" id="text-org2e085a3">
 <p>
 Again, we are not actually training the model.
 </p>
 </div>
 </div>
-<div id="outline-container-orgaeef05e" class="outline-2">
-<h2 id="orgaeef05e">Log to MLflow</h2>
-<div class="outline-text-2" id="text-orgaeef05e">
+<div id="outline-container-org5b3eaa0" class="outline-2">
+<h2 id="org5b3eaa0">Log to MLflow</h2>
+<div class="outline-text-2" id="text-org5b3eaa0">
 <p>
 (Not all of this is necessary)
 </p>
@@ -407,9 +407,9 @@ This is
 </p>
 </div>
 </div>
-<div id="outline-container-org668ab33" class="outline-2">
-<h2 id="org668ab33">Load the MLflow model</h2>
-<div class="outline-text-2" id="text-org668ab33">
+<div id="outline-container-org7421529" class="outline-2">
+<h2 id="org7421529">Load the MLflow model</h2>
+<div class="outline-text-2" id="text-org7421529">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> mlflow
 
@@ -441,9 +441,9 @@ because we did not actually fine-tune the model to follow any of our instruction
 </div>
 </div>
 
-<div id="outline-container-org6dffe7b" class="outline-2">
-<h2 id="org6dffe7b">Summary</h2>
-<div class="outline-text-2" id="text-org6dffe7b">
+<div id="outline-container-orgace136b" class="outline-2">
+<h2 id="orgace136b">Summary</h2>
+<div class="outline-text-2" id="text-orgace136b">
 <p>
 This note showed the basics of how to log and load a peft model with MLflow.
 </p>
