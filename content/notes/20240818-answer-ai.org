@@ -1,0 +1,214 @@
+#+title:      Answer.ai, Claudette, and FastHTML
+#+date:       <2024-08-18 Sun>
+* Introduction
+I just listened to the latest episode of the [[https://www.latent.space/p/answerai][Latent Space podcast]], which featured Jeremy Howard of [[https://www.fast.ai/][fast.ai]] fame. Fast.ai was my introduction to deep learning—or at least re-introduction following a brief and theory-oriented treatment of the topic in grad school—and the course and book remain among the best learning resources I have ever encountered. The podcast was a good reminder to look into the projects Howard and his team have been working on at [[https://www.answer.ai/][answer.ai]], "a new kind of AI R&D lab which creates practical end-user products based on foundational research breakthroughs."
+
+In particular, I want to spend a few minutes looking into [[https://www.answer.ai/posts/2024-06-23-claudette-src.html][claudette]] and [[https://www.answer.ai/posts/2024-08-03-fasthtml.html][FastHTML]]. The former is a more convenient, high-level interface to Anthropic's model that tries to automate "pretty much everything that can be automated, whilst providing full control." As a daily user of LLM APIs, I'm interested in seeing how this differs from Anthropic's SDK and which better suits my uses.
+
+The latter is a "general-purpose full-stack web programming system" with the goal of becoming "the easiest way to create quick prototypes, and also the easiest way to create scalable, powerful, rich applications." I have some personal projects in the works. I can write the server code just fine, but always get hung up on the interface. One of the main ideas of FastHTML seems to be making it as easy as possible to build prototypes. I'm hoping that proves true in my use cases.
+
+In the rest of this note, I am going to explore some of the major features of these two libraries.
+* Claudette
+:PROPERTIES:
+:header-args:python: :session answer :results output
+:END:
+** Setup
+
+We start by installing the library with ~pip install claudette~. This also installs Anthropic's SDK. We can then import claudette.
+
+#+begin_src python 
+import claudette
+
+# list available models
+print(claudette.models)
+
+# save sonnet as "model" for use later
+model = claudette.models[1]
+#+end_src
+
+#+RESULTS:
+: ('claude-3-opus-20240229', 'claude-3-5-sonnet-20240620', 'claude-3-haiku-20240307')
+** The ~Chat~ class
+
+The ~Chat~ class is the main interface to Claudette. It is a nice convenient chat manager that maintains state. Note that, for this to work, we need to have ~ANTHROPIC_API_KEY~ in our environment.
+
+#+begin_src python
+import os
+
+print(os.getenv("ANTHROPIC_API_KEY") is not None)
+#+end_src
+
+#+RESULTS:
+: True
+
+Now we can start using the ~Chat~ class.
+
+#+begin_src python
+from rich import print
+
+chat = claudette.Chat(model, sp="You are a helpful assistant and an expert in all things emacs. Keep your responses concise and to the point.")
+
+print(chat("Hello!"))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Message(
+    id='msg_016RqYbsX6ULEYPX3CPGeFz3',
+    content=[
+        TextBlock(
+            text="Hello! I'm here to help with any Emacs-related questions you 
+might have. Whether it's about configuration, commands, packages, or general 
+usage, feel free to ask. What would you like to know about Emacs?",
+            type='text'
+        )
+    ],
+    model='claude-3-5-sonnet-20240620',
+    role='assistant',
+    stop_reason='end_turn',
+    stop_sequence=None,
+    type='message',
+    usage=Usage(input_tokens=33, output_tokens=51)
+)
+#+end_example
+
+We can easily include a ~prefill~ argument to specify how the assistant response should begin.
+
+#+begin_src python
+r = chat("Tell me what an emacs hook is", prefill="According to the wisdom of fishermen, hooks are")
+
+print(r)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Message(
+    id='msg_01WMzMzhu7AxfSWEuHtaXZ6s',
+    content=[
+        TextBlock(
+            text='According to the wisdom of fishermen, hooks are used to catch 
+fish. In Emacs, hooks are used to catch events.\n\nAn Emacs hook is a variable 
+that holds a list of functions to be run at a specific time or in response to a 
+particular event. Hooks allow users and developers to customize Emacs behavior 
+without modifying core code.\n\nKey points about hooks:\n\n1. They\'re typically
+named with "-hook" suffix (e.g., `after-init-hook`).\n2. Functions can be added 
+to or removed from hooks.\n3. Hooks are executed in the order functions were 
+added.\n4. Common uses include mode-specific customizations and global 
+behaviors.\n\nExample: `(add-hook \'python-mode-hook \'flycheck-mode)` enables 
+Flycheck for Python files.',
+            type='text'
+        )
+    ],
+    model='claude-3-5-sonnet-20240620',
+    role='assistant',
+    stop_reason='end_turn',
+    stop_sequence=None,
+    type='message',
+    usage=Usage(input_tokens=106, output_tokens=172)
+)
+#+end_example
+
+How does this all compare to the Anthropic SDK? The biggest difference I see is that ~claudette~ handles the chat history for you, saving you from the need to manage a list of dictionaries of chat messages. I usually spend a few mintues searching through old projects to find one of the chat class wrappers I've written, so having a straightforward library that does it for me would save a little bit of time.
+** Tools
+
+Though they have been around for a while now, I really haven't experimented much with tool calling. ~claudette~ actually implements the tool loop, making it straightforward to prompt claude to actually call on a tool and do something with the results. With the Anthropic SDK, you would need to implement this yourself—the SDK would return a tool call, which you'd pass to the tool, get the results, and return it in another API call.
+
+Let's try the ~claudette~ approach. We'll define a function to replace all instances of the letter e with the number 3, something llms generally are not very good at.
+
+#+begin_src python
+def replace_e_with_3(input_string: str) -> str:
+    """
+    Replaces all instances of 'e' (both upper and lower case) in a given string with the digit 3.
+
+    Args:
+        input_string (str): The string to modify.
+
+    Returns:
+        str: The modified string with all 'e's replaced by 3s.
+    """
+
+    return input_string.replace('e', '3').replace('E', '3')
+#+end_src
+
+#+RESULTS:
+: H3llo, 3arth!
+
+Now to prompt ~claude~, giving access to the function:
+
+#+begin_src python
+tool_chat = claudette.Chat(model, tools=[replace_e_with_3])
+
+r = tool_chat("""Replace all es with 3s in the following text:
+
+Claudette automates pretty much everything that can be automated, whilst providing full control.
+""")
+
+print(r)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Message(
+    id='msg_019skDwHaHQZRhzwDRvystqa',
+    content=[
+        TextBlock(
+            text="Certainly! I can help you replace all the 'e's (both uppercase
+and lowercase) with the digit 3 in the text you provided. To do this, I'll use 
+the `replace_e_with_3` function. Here's how we'll do it:",
+            type='text'
+        ),
+        ToolUseBlock(
+            id='toolu_01Y8Ag2mWJSxmLXJRHPGQ9V2',
+            input={
+                'input_string': 'Claudette automates pretty much everything that
+can be automated, whilst providing full control.'
+            },
+            name='replace_e_with_3',
+            type='tool_use'
+        )
+    ],
+    model='claude-3-5-sonnet-20240620',
+    role='assistant',
+    stop_reason='tool_use',
+    stop_sequence=None,
+    type='message',
+    usage=Usage(input_tokens=480, output_tokens=134)
+)
+#+end_example
+
+Now if we call the chat object again, it will be executed.
+
+#+begin_src python
+r = tool_chat()
+print(r)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Message(
+    id='msg_012aEzN2o8977ULFXDviJVnw',
+    content=[
+        TextBlock(
+            text="Here's the result after replacing all 'e's with 
+'3's:\n\nClaud3tt3 automat3s pr3tty much 3v3rything that can b3 automat3d, 
+whilst providing full control.\n\nAs you can see, all instances of 'e' (both 
+lowercase and uppercase, although there were no uppercase E's in this case) have
+been replaced with the digit 3. The rest of the text remains unchanged.",
+            type='text'
+        )
+    ],
+    model='claude-3-5-sonnet-20240620',
+    role='assistant',
+    stop_reason='end_turn',
+    stop_sequence=None,
+    type='message',
+    usage=Usage(input_tokens=662, output_tokens=105)
+)
+#+end_example
+
+We can use ~chat.toolloop~ to do this in a single step. It can even use multiple tools sequentially. And the ~trace_func~ arguments lets us see the sequence of tool calls/responses.
+
+Claudette also supports [[https://claudette.answer.ai/#images][images]].
+
+* TODO FastHTML
+(More on this soon)
