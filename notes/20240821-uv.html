@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python Package Management with uv</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Python Package Management with uv</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgf0d84d1">Introduction</a>
+<ul>
+<li><a href="#org73b77c9">Projects</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-orgf0d84d1" class="outline-2">
+<h2 id="orgf0d84d1">Introduction</h2>
+<div class="outline-text-2" id="text-orgf0d84d1">
+<div class="preview" id="org26264c8">
+<p>
+Yesterday (<span class="timestamp-wrapper"><span class="timestamp">&lt;2024-08-20 Tue&gt;</span></span>), Astral released <a href="https://astral.sh/blog/uv-unified-python-packaging">a bunch of updates</a> to <a href="https://github.com/astral-sh/uv">uv</a>, their Python package/project manager, written in Rust. I've been using uv for the past month or two, mostly as a very fast drop-in replacement for venv and pip.
+</p>
+
+<p>
+The new release expands uv into "an end-to-end solution for managing Python projects, command-line tools, single-file scripts, and even Python itself."
+</p>
+
+<p>
+This post will very briefly explore the workflow I am most interested in—setting up an environment, installing packages, and specifying requirements.
+</p>
+
+</div>
+</div>
+<div id="outline-container-org73b77c9" class="outline-3">
+<h3 id="org73b77c9">Projects</h3>
+<div class="outline-text-3" id="text-org73b77c9">
+<p>
+I've been exploring <a href="20240818-answer-ai.html">FastHTML</a> over the past few days. Let's use uv to set up a project which I can use for my FastHTML experiments. I'll start by navigating to the directory I've already been working from.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span class="org-builtin">cd</span> ~/projects/fhtml_ex/
+</pre>
+</div>
+
+<p>
+and then we'll initialize the project:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">uv init 
+</pre>
+</div>
+
+<p>
+This created a <code>pyproject.toml</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">cat pyproject.toml
+</pre>
+</div>
+
+<pre class="example" id="orga45766a">
+[project]
+name = "fhtml-ex"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = "&gt;=3.12"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+</pre>
+
+<p>
+Now let's add FastHTML to the project.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">uv add python-fasthtml
+</pre>
+</div>
+
+<pre class="example" id="org35d723c">
+Using Python 3.12.4 interpreter at: /opt/homebrew/opt/python@3.12/bin/python3.12
+Creating virtualenv at: .venv
+Resolved 30 packages in 408ms
+Prepared 29 packages in 1.03s
+Installed 29 packages in 25ms
+ + anyio==4.4.0
+ + beautifulsoup4==4.12.3
+ + certifi==2024.7.4
+ + click==8.1.7
+ + fastcore==1.7.1
+ + fastlite==0.0.9
+ + fhtml-ex==0.1.0 (from file:///Users/dliden/projects/fhtml_ex)
+ + h11==0.14.0
+ + httpcore==1.0.5
+ + httptools==0.6.1
+ + httpx==0.27.0
+ + idna==3.7
+ + itsdangerous==2.2.0
+ + oauthlib==3.2.2
+ + packaging==24.1
+ + python-dateutil==2.9.0.post0
+ + python-dotenv==1.0.1
+ + python-fasthtml==0.4.4
+ + python-multipart==0.0.9
+ + pyyaml==6.0.2
+ + six==1.16.0
+ + sniffio==1.3.1
+ + soupsieve==2.6
+ + sqlite-minutils==3.37.0.post1
+ + starlette==0.38.2
+ + uvicorn==0.30.6
+ + uvloop==0.20.0
+ + watchfiles==0.23.0
+ + websockets==13.0
+</pre>
+
+<p>
+Now the project has a virtual environment and a lockfile.
+</p>
+
+<p>
+We can use uv to run a command in the project's environment without explicitly activating the environment. It will very quickly lock and sync the project, making sure it is up to date. For example, without explicitly activating the environment, we can do:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">uv run ./todo/app.py
+</pre>
+</div>
+
+<p>
+and get:
+</p>
+
+<pre class="example" id="orgdf1aea8">
+Link: http://localhost:5001
+INFO:     Will watch for changes in these directories: ['/Users/dliden/projects/fhtml_ex/todo']
+INFO:     Uvicorn running on http://0.0.0.0:5001 (Press CTRL+C to quit)
+INFO:     Started reloader process [7719] using WatchFiles
+INFO:     Started server process [7721]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+</pre>
+
+
+<p>
+See the <a href="https://docs.astral.sh/uv/">documentation</a> for more details.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-08-21 Wed 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+</div>
+</body>
+</html>
