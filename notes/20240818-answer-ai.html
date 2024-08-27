@@ -38,22 +38,22 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5ef17bd">Introduction</a></li>
-<li><a href="#org6262319">Claudette</a>
+<li><a href="#org9979283">Introduction</a></li>
+<li><a href="#org5971231">Claudette</a>
 <ul>
-<li><a href="#orge5ca823">Setup</a></li>
-<li><a href="#org809929b">The <code>Chat</code> class</a></li>
-<li><a href="#org374e3a0">Tools</a></li>
+<li><a href="#org6022e1a">Setup</a></li>
+<li><a href="#orgc7e5810">The <code>Chat</code> class</a></li>
+<li><a href="#orgf140049">Tools</a></li>
 </ul>
 </li>
-<li><a href="#orgc56ccd1">IN PROGRESS FastHTML</a></li>
+<li><a href="#orgccd0d61">FastHTML</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org5ef17bd" class="outline-2">
-<h2 id="org5ef17bd">Introduction</h2>
-<div class="outline-text-2" id="text-org5ef17bd">
-<div class="preview" id="org043b69e">
+<div id="outline-container-org9979283" class="outline-2">
+<h2 id="org9979283">Introduction</h2>
+<div class="outline-text-2" id="text-org9979283">
+<div class="preview" id="org70fc0ed">
 <p>
 I just listened to the latest episode of the <a href="https://www.latent.space/p/answerai">Latent Space podcast</a>, which featured Jeremy Howard of <a href="https://www.fast.ai/">fast.ai</a> fame. Fast.ai was my introduction to deep learning—or at least re-introduction following a brief and theory-oriented treatment of the topic in grad school—and the course and book remain among the best learning resources I have ever encountered. The podcast was a good reminder to look into the projects Howard and his team have been working on at <a href="https://www.answer.ai/">answer.ai</a>, "a new kind of AI R&amp;D lab which creates practical end-user products based on foundational research breakthroughs."
 </p>
@@ -73,13 +73,13 @@ In the rest of this note, I am going to explore some of the major features of th
 </p>
 </div>
 </div>
-<div id="outline-container-org6262319" class="outline-2">
-<h2 id="org6262319">Claudette</h2>
-<div class="outline-text-2" id="text-org6262319">
+<div id="outline-container-org5971231" class="outline-2">
+<h2 id="org5971231">Claudette</h2>
+<div class="outline-text-2" id="text-org5971231">
 </div>
-<div id="outline-container-orge5ca823" class="outline-3">
-<h3 id="orge5ca823">Setup</h3>
-<div class="outline-text-3" id="text-orge5ca823">
+<div id="outline-container-org6022e1a" class="outline-3">
+<h3 id="org6022e1a">Setup</h3>
+<div class="outline-text-3" id="text-org6022e1a">
 <p>
 We start by installing the library with <code>pip install claudette</code>. This also installs Anthropic's SDK. We can then import claudette.
 </p>
@@ -100,9 +100,9 @@ We start by installing the library with <code>pip install claudette</code>. This
 </pre>
 </div>
 </div>
-<div id="outline-container-org809929b" class="outline-3">
-<h3 id="org809929b">The <code>Chat</code> class</h3>
-<div class="outline-text-3" id="text-org809929b">
+<div id="outline-container-orgc7e5810" class="outline-3">
+<h3 id="orgc7e5810">The <code>Chat</code> class</h3>
+<div class="outline-text-3" id="text-orgc7e5810">
 <p>
 The <code>Chat</code> class is the main interface to Claudette. It is a nice convenient chat manager that maintains state. Note that, for this to work, we need to have <code>ANTHROPIC_API_KEY</code> in our environment.
 </p>
@@ -132,7 +132,7 @@ Now we can start using the <code>Chat</code> class.
 </pre>
 </div>
 
-<pre class="example" id="orga9fddb9">
+<pre class="example" id="org4bf5631">
 Message(
     id='msg_016RqYbsX6ULEYPX3CPGeFz3',
     content=[
@@ -163,7 +163,7 @@ We can easily include a <code>prefill</code> argument to specify how the assista
 </pre>
 </div>
 
-<pre class="example" id="org5ed994d">
+<pre class="example" id="org7b1b9e3">
 Message(
     id='msg_01WMzMzhu7AxfSWEuHtaXZ6s',
     content=[
@@ -195,9 +195,9 @@ How does this all compare to the Anthropic SDK? The biggest difference I see is 
 </p>
 </div>
 </div>
-<div id="outline-container-org374e3a0" class="outline-3">
-<h3 id="org374e3a0">Tools</h3>
-<div class="outline-text-3" id="text-org374e3a0">
+<div id="outline-container-orgf140049" class="outline-3">
+<h3 id="orgf140049">Tools</h3>
+<div class="outline-text-3" id="text-orgf140049">
 <p>
 Though they have been around for a while now, I really haven't experimented much with tool calling. <code>claudette</code> actually implements the tool loop, making it straightforward to prompt claude to actually call on a tool and do something with the results. With the Anthropic SDK, you would need to implement this yourself—the SDK would return a tool call, which you'd pass to the tool, get the results, and return it in another API call.
 </p>
@@ -238,7 +238,7 @@ Now to prompt <code>claude</code>, giving access to the function:
 </pre>
 </div>
 
-<pre class="example" id="orgfa1d1e6">
+<pre class="example" id="org9b0b364">
 Message(
     id='msg_019skDwHaHQZRhzwDRvystqa',
     content=[
@@ -277,7 +277,7 @@ Now if we call the chat object again, it will be executed.
 </pre>
 </div>
 
-<pre class="example" id="org8335fcd">
+<pre class="example" id="orgac91b49">
 Message(
     id='msg_012aEzN2o8977ULFXDviJVnw',
     content=[
@@ -310,9 +310,9 @@ Claudette also supports <a href="https://claudette.answer.ai/#images">images</a>
 </div>
 </div>
 
-<div id="outline-container-orgc56ccd1" class="outline-2">
-<h2 id="orgc56ccd1">IN PROGRESS FastHTML</h2>
-<div class="outline-text-2" id="text-orgc56ccd1">
+<div id="outline-container-orgccd0d61" class="outline-2">
+<h2 id="orgccd0d61">FastHTML</h2>
+<div class="outline-text-2" id="text-orgccd0d61">
 <p>
 I am interested in FastHTML because I've realized that many of my AI-related project ideas require more work on the interface than on the actual AI parts. I can write the prompts and AI logic pretty easily, but (for me) there's a lot of friction in building out a decent frontend. If FastHTML can make that even a little bit easier, it'll be huge for me.
 </p>
@@ -326,7 +326,15 @@ I highly recommend watching Jeremy Howards's video introducing and demoing FastH
 </p>
 
 <p>
-Let's take a look at some of the demo projects!
+I have spent some time working through the various examples and tutorials. They all make sense in the moment—I can follow the approach to routing, the mapping from Python to <a href="https://docs.fastht.ml/tutorials/quickstart_for_web_devs.html#http-methods">HTTP methods</a>, and the <a href="https://docs.fastht.ml/explains/explaining_xt_components.html">FT Components</a> (which correspond to HTML tags).
+</p>
+
+<p>
+It is making me realize that the parts I find challenging are problably due to gaps in my understanding of web development basics—gaps in understanding about HTML and CSS, about HTTP methods, about Javascript—more than about peculiarities in the design of FastHTML or gaps in the FastHTML documentation (though those exist too). Which leads to an important point: FastHTML builds on HTMX, Starlette, and Uvicorn. It doesn't totally abstract them away. It doesn't mean you don't need to know HTML; it just means you don't have to write it (directly).
+</p>
+
+<p>
+Anyway, I had just started learning some basic web development skills before FastHTML was released. And I would rather continue that via FastHTML than via learning Javascript. So I'll spend some time on that, and write about it as I go.
 </p>
 </div>
 </div>
