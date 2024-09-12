@@ -22,7 +22,7 @@
     <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
     <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
     <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
     <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
     <a href='/rss.xml'>
       <img src='/rss.png' style='height: 1em;'>
@@ -38,30 +38,30 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org64fc6f7">The Problem</a></li>
-<li><a href="#orgb2d82f8">Solution</a></li>
-<li><a href="#org0cc824b">What didn't work</a></li>
+<li><a href="#org99f9f45">The Problem</a></li>
+<li><a href="#orgc736d87">Solution</a></li>
+<li><a href="#org8614994">What didn't work</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orga56a013">
+<div class="preview" id="orgbd2af96">
 <p>
 I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platform I tend to be working on (Databricks). This note is a quick summary.
 </p>
 
 </div>
-<div id="outline-container-org64fc6f7" class="outline-2">
-<h2 id="org64fc6f7">The Problem</h2>
-<div class="outline-text-2" id="text-org64fc6f7">
+<div id="outline-container-org99f9f45" class="outline-2">
+<h2 id="org99f9f45">The Problem</h2>
+<div class="outline-text-2" id="text-org99f9f45">
 <p>
 I kept getting an "undefined symbol" error like <a href="https://github.com/Dao-AILab/flash-attention/issues/667">this</a> when trying to load a model with flash attention (or even just when importing the flash attention library).
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgb2d82f8" class="outline-2">
-<h2 id="orgb2d82f8">Solution</h2>
-<div class="outline-text-2" id="text-orgb2d82f8">
+<div id="outline-container-orgc736d87" class="outline-2">
+<h2 id="orgc736d87">Solution</h2>
+<div class="outline-text-2" id="text-orgc736d87">
 <p>
 The following approach worked.
 </p>
@@ -118,9 +118,9 @@ We can then make sure everything works (without needing to take extra time to lo
 </div>
 </div>
 
-<div id="outline-container-org0cc824b" class="outline-2">
-<h2 id="org0cc824b">What didn't work</h2>
-<div class="outline-text-2" id="text-org0cc824b">
+<div id="outline-container-org8614994" class="outline-2">
+<h2 id="org8614994">What didn't work</h2>
+<div class="outline-text-2" id="text-org8614994">
 <p>
 I wasn't able to get any variety of <code>pip install flash-attn</code> working. This was regardless of the no build isolation flag; specific versions; etc.
 </p>

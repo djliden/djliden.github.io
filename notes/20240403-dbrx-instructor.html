@@ -22,7 +22,7 @@
     <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
     <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
     <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
     <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
     <a href='/rss.xml'>
       <img src='/rss.png' style='height: 1em;'>
@@ -38,43 +38,43 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org2400d25">Instructor</a></li>
-<li><a href="#org52fd92e">Using it with DBRX/Databricks</a>
+<li><a href="#orge7c8ed8">Instructor</a></li>
+<li><a href="#orgb645fae">Using it with DBRX/Databricks</a>
 <ul>
-<li><a href="#orge36a03d">Set up the client</a></li>
-<li><a href="#orge249398">Simple example</a></li>
-<li><a href="#orgf5d97c2">A slightly more involved example</a></li>
+<li><a href="#org3b4a44f">Set up the client</a></li>
+<li><a href="#orga6cc248">Simple example</a></li>
+<li><a href="#org307eee6">A slightly more involved example</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org8c61b69">
+<div class="preview" id="org018a7d5">
 <p>
 This note briefly demonstrates how to use the <a href="https://github.com/jxnl/instructor">Instructor</a> library with the Databricks <a href="https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm">DBRX</a> model via the Databricks Foundation Models API.
 </p>
 
 </div>
 
-<div id="outline-container-org2400d25" class="outline-2">
-<h2 id="org2400d25">Instructor</h2>
-<div class="outline-text-2" id="text-org2400d25">
+<div id="outline-container-orge7c8ed8" class="outline-2">
+<h2 id="orge7c8ed8">Instructor</h2>
+<div class="outline-text-2" id="text-orge7c8ed8">
 <p>
 The instructor library provides structured output from LLMs. The user specifies a Pydantic model to define the structure of outputs.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org52fd92e" class="outline-2">
-<h2 id="org52fd92e">Using it with DBRX/Databricks</h2>
-<div class="outline-text-2" id="text-org52fd92e">
+<div id="outline-container-orgb645fae" class="outline-2">
+<h2 id="orgb645fae">Using it with DBRX/Databricks</h2>
+<div class="outline-text-2" id="text-orgb645fae">
 <p>
 Instructor works with DBRX/with the databricks foundation model API. Here's how.
 </p>
 </div>
-<div id="outline-container-orge36a03d" class="outline-3">
-<h3 id="orge36a03d">Set up the client</h3>
-<div class="outline-text-3" id="text-orge36a03d">
+<div id="outline-container-org3b4a44f" class="outline-3">
+<h3 id="org3b4a44f">Set up the client</h3>
+<div class="outline-text-3" id="text-org3b4a44f">
 <p>
 We need to define the environment variables <code>OPENAI_API_KEY</code> and <code>OPENAI_BASE_URL</code>. In this example, they are saved in a <code>.env</code> file. We'll start by loading them.
 </p>
@@ -91,9 +91,9 @@ True
 </div>
 </div>
 
-<div id="outline-container-orge249398" class="outline-3">
-<h3 id="orge249398">Simple example</h3>
-<div class="outline-text-3" id="text-orge249398">
+<div id="outline-container-orga6cc248" class="outline-3">
+<h3 id="orga6cc248">Simple example</h3>
+<div class="outline-text-3" id="text-orga6cc248">
 <p>
 Next, we'll run the example from the Instructor docs to make sure everything is working. In this example, we define a schema fro data about users: we expect name and age. We then prompt the model with a sentence about a user. The model will return the Pydantic object with the user's information.
 </p>
@@ -152,9 +152,9 @@ There are a few things to pay attention to here.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf5d97c2" class="outline-3">
-<h3 id="orgf5d97c2">A slightly more involved example</h3>
-<div class="outline-text-3" id="text-orgf5d97c2">
+<div id="outline-container-org307eee6" class="outline-3">
+<h3 id="org307eee6">A slightly more involved example</h3>
+<div class="outline-text-3" id="text-org307eee6">
 <p>
 Let's look at an example of generating an arbitrary number of question/answer pairs from a text, e.g. for evaluating a RAG application.
 </p>
@@ -229,7 +229,7 @@ And how we'll test this on our example text.
 </pre>
 </div>
 
-<pre class="example" id="org698e2d3">
+<pre class="example" id="orgbd5bd7c">
 EvalQAs(
     evalqas=[
         EvalQA(

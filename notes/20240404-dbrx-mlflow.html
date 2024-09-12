@@ -22,7 +22,7 @@
     <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
     <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
     <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
     <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
     <a href='/rss.xml'>
       <img src='/rss.png' style='height: 1em;'>
@@ -38,19 +38,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgdcd8f4c">DBRX and MLflow</a>
+<li><a href="#org2993862">DBRX and MLflow</a>
 <ul>
-<li><a href="#orgd1d135a">Via the MLflow Deployments Server</a></li>
-<li><a href="#org7d5de35">Using the OpenAI Model Flavor</a></li>
+<li><a href="#orgc162bac">Via the MLflow Deployments Server</a></li>
+<li><a href="#orgff6bb6b">Using the OpenAI Model Flavor</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgdcd8f4c" class="outline-2">
-<h2 id="orgdcd8f4c">DBRX and MLflow</h2>
-<div class="outline-text-2" id="text-orgdcd8f4c">
-<div class="preview" id="org69b82f5">
+<div id="outline-container-org2993862" class="outline-2">
+<h2 id="org2993862">DBRX and MLflow</h2>
+<div class="outline-text-2" id="text-org2993862">
+<div class="preview" id="org57441c7">
 <p>
 This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.
 </p>
@@ -65,9 +65,9 @@ Here are two ways to use the DBRX model with MLflow. The following assumes that 
 <li><code>DATABRICKS_ENDPOINT</code>: your databricks workspace model serving endpoint. It will probably have the form <code>https://&lt;workspace_name&gt;.cloud.databricks.com/serving-endpoints</code>.</li>
 </ul>
 </div>
-<div id="outline-container-orgd1d135a" class="outline-3">
-<h3 id="orgd1d135a">Via the MLflow Deployments Server</h3>
-<div class="outline-text-3" id="text-orgd1d135a">
+<div id="outline-container-orgc162bac" class="outline-3">
+<h3 id="orgc162bac">Via the MLflow Deployments Server</h3>
+<div class="outline-text-3" id="text-orgc162bac">
 <ol class="org-ol">
 <li>Configure the Deployments Server</li>
 </ol>
@@ -150,9 +150,9 @@ which will return
 </div>
 </div>
 
-<div id="outline-container-org7d5de35" class="outline-3">
-<h3 id="org7d5de35">Using the OpenAI Model Flavor</h3>
-<div class="outline-text-3" id="text-org7d5de35">
+<div id="outline-container-orgff6bb6b" class="outline-3">
+<h3 id="orgff6bb6b">Using the OpenAI Model Flavor</h3>
+<div class="outline-text-3" id="text-orgff6bb6b">
 <p>
 We can also log the model usign the OpenAI model flavor. We just need to be careful to set up the appropriate environment variables first.
 </p>

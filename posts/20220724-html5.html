@@ -22,7 +22,7 @@
     <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
     <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
     <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
     <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
     <a href='/rss.xml'>
       <img src='/rss.png' style='height: 1em;'>
@@ -38,13 +38,13 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9e50075">The Problem</a></li>
-<li><a href="#orgd8e7e13">Changes to the Site Config</a></li>
-<li><a href="#org002fded">The Results</a></li>
+<li><a href="#org0fa6676">The Problem</a></li>
+<li><a href="#orgaa5bf84">Changes to the Site Config</a></li>
+<li><a href="#org637aeab">The Results</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgd747e99">
+<div class="preview" id="org558f111">
 <p>
 I noticed that some of the formatting on this site was a little off and some of
 the org-mode components weren't being translated to HTML in quite the way I
@@ -62,9 +62,9 @@ While that brief introduction should capture the necessary changes, we can get
 into more specifics.
 </p>
 
-<div id="outline-container-org9e50075" class="outline-2">
-<h2 id="org9e50075">The Problem</h2>
-<div class="outline-text-2" id="text-org9e50075">
+<div id="outline-container-org0fa6676" class="outline-2">
+<h2 id="org0fa6676">The Problem</h2>
+<div class="outline-text-2" id="text-org0fa6676">
 <p>
 If we use the default settings, figures aren't wrapped in <code>&lt;figure&gt;</code> blocks and
 captions aren't wrapped in <code>&lt;figcaption&gt;</code> blocks, so none of the formatting we
@@ -92,9 +92,9 @@ The image and caption appear left-aligned on the page. Here's the html:
 </div>
 </div>
 
-<div id="outline-container-orgd8e7e13" class="outline-2">
-<h2 id="orgd8e7e13">Changes to the Site Config</h2>
-<div class="outline-text-2" id="text-orgd8e7e13">
+<div id="outline-container-orgaa5bf84" class="outline-2">
+<h2 id="orgaa5bf84">Changes to the Site Config</h2>
+<div class="outline-text-2" id="text-orgaa5bf84">
 <p>
 To address this, we need to change the <code>org-html-doctype</code> and <code>org-html-html5-fancy</code>
 variables. We can do this in the export configuration's
@@ -143,15 +143,15 @@ key changes.
 </div>
 </div>
 </div>
-<div id="outline-container-org002fded" class="outline-2">
-<h2 id="org002fded">The Results</h2>
-<div class="outline-text-2" id="text-org002fded">
+<div id="outline-container-org637aeab" class="outline-2">
+<h2 id="org637aeab">The Results</h2>
+<div class="outline-text-2" id="text-org637aeab">
 <p>
 With these changes, our images and captions are now centered:
 </p>
 
 
-<figure id="orgfea1343">
+<figure id="orgd842845">
 <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px">
 
 <figcaption><span class="figure-number">Figure 1: </span>This caption is now centered and wrapped in a <code>&lt;figcaption&gt;</code> tag!</figcaption>

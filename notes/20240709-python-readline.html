@@ -22,7 +22,7 @@
     <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
     <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
     <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/fine-tuning/' style='font-weight:bold; font-style:italic;'>LLM Fine Tuning</a> /
+    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
     <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
     <a href='/rss.xml'>
       <img src='/rss.png' style='height: 1em;'>
@@ -38,17 +38,17 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8daf556">Introduction</a></li>
-<li><a href="#org9ff811a">Background</a></li>
-<li><a href="#org0211b6d">Solution</a></li>
-<li><a href="#org921dc59">A little more detail</a></li>
+<li><a href="#org0809ffb">Introduction</a></li>
+<li><a href="#org2c28559">Background</a></li>
+<li><a href="#org80b9c65">Solution</a></li>
+<li><a href="#orgda0210e">A little more detail</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org8daf556" class="outline-2">
-<h2 id="org8daf556">Introduction</h2>
-<div class="outline-text-2" id="text-org8daf556">
-<div class="preview" id="orgec08919">
+<div id="outline-container-org0809ffb" class="outline-2">
+<h2 id="org0809ffb">Introduction</h2>
+<div class="outline-text-2" id="text-org0809ffb">
+<div class="preview" id="orgd9188de">
 <p>
 I was encountering this warning when trying to use Python in Emacs on Macos: <code>Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list.  Native completions have been disabled locally.</code> I found years of discussions on this issue, but no solutions. I also found that using Python installed with Conda instead of with virtualenv worked fine. From this, I narrowed down the root cause and found a working solution: (1) install the <code>gnureadline</code> Python package with <code>pip install gnureadline</code>; (2) override the default readline in your virtual environment with <code>python -m override_readline</code>.
 </p>
@@ -61,9 +61,9 @@ In the rest of this note, I will briefly review the steps of the investigation t
 </div>
 </div>
 
-<div id="outline-container-org9ff811a" class="outline-2">
-<h2 id="org9ff811a">Background</h2>
-<div class="outline-text-2" id="text-org9ff811a">
+<div id="outline-container-org2c28559" class="outline-2">
+<h2 id="org2c28559">Background</h2>
+<div class="outline-text-2" id="text-org2c28559">
 <p>
 I have historically used Python in Emacs via Conda. I don't especially enjoy using Conda and much prefer a virtualenv workflow. So, for a recent project, I used virtualenv (actually <a href="https://github.com/astral-sh/uv">uv venv</a>, and I recommend checking out uv for your package management and virtual environment needs!).
 </p>
@@ -131,9 +131,9 @@ I tried a bunch of different things to try to force the virtualenv to use GNU re
 </p>
 </div>
 </div>
-<div id="outline-container-org0211b6d" class="outline-2">
-<h2 id="org0211b6d">Solution</h2>
-<div class="outline-text-2" id="text-org0211b6d">
+<div id="outline-container-org80b9c65" class="outline-2">
+<h2 id="org80b9c65">Solution</h2>
+<div class="outline-text-2" id="text-org80b9c65">
 <p>
 The <a href="https://github.com/ludwigschwardt/python-gnureadline"><code>gnureadline</code></a> Python package explains the issue:
 </p>
@@ -159,9 +159,9 @@ And it provides the very straightforward solution:
 </div>
 </div>
 
-<div id="outline-container-org921dc59" class="outline-2">
-<h2 id="org921dc59">A little more detail</h2>
-<div class="outline-text-2" id="text-org921dc59">
+<div id="outline-container-orgda0210e" class="outline-2">
+<h2 id="orgda0210e">A little more detail</h2>
+<div class="outline-text-2" id="text-orgda0210e">
 <p>
 The <code>gnureadline</code> docs suggest the following usage pattern:
 </p>
