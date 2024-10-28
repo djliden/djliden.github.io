@@ -38,21 +38,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9793ef3">Introduction</a>
+<li><a href="#org1b61a23">Introduction</a>
 <ul>
-<li><a href="#orga093346">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</a></li>
+<li><a href="#orge9a9653">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</a></li>
 </ul>
 </li>
-<li><a href="#orgaf839ca">Background</a></li>
-<li><a href="#org595683a">Solution</a></li>
-<li><a href="#org2ec868d">A little more detail</a></li>
+<li><a href="#orgc80b23c">Background</a></li>
+<li><a href="#org32d15ac">Solution</a></li>
+<li><a href="#org12cc789">A little more detail</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org9793ef3" class="outline-2">
-<h2 id="org9793ef3">Introduction</h2>
-<div class="outline-text-2" id="text-org9793ef3">
-<div class="preview" id="org1847a68">
+<div id="outline-container-org1b61a23" class="outline-2">
+<h2 id="org1b61a23">Introduction</h2>
+<div class="outline-text-2" id="text-org1b61a23">
+<div class="preview" id="org89afbde">
 <p>
 I was encountering this warning when trying to use Python in Emacs on Macos: <code>Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list.  Native completions have been disabled locally.</code> I found years of discussions on this issue, but no solutions. I also found that using Python installed with Conda instead of with virtualenv worked fine. From this, I narrowed down the root cause and found a working solution: (1) install the <code>gnureadline</code> Python package with <code>pip install gnureadline</code>; (2) override the default readline in your virtual environment with <code>python -m override_readline</code>.
 </p>
@@ -63,9 +63,9 @@ In the rest of this note, I will briefly review the steps of the investigation t
 
 </div>
 </div>
-<div id="outline-container-orga093346" class="outline-3">
-<h3 id="orga093346">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</h3>
-<div class="outline-text-3" id="text-orga093346">
+<div id="outline-container-orge9a9653" class="outline-3">
+<h3 id="orge9a9653">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</h3>
+<div class="outline-text-3" id="text-orge9a9653">
 <p>
 <a href="https://www.danliden.com/notes/20240821-uv.html">As noted</a>, I have been using <code>uv</code> for Python package management. This approach to resolving the "Python interpreter doesn't seem to support readline" error was not working with <code>uv</code> because of how <code>readline</code> was handled in the <code>python-build-standalone</code> distribution used by <code>uv</code>.
 </p>
@@ -77,9 +77,9 @@ This was resolved with the version of <code>gnureadline</code> <a href="https://
 </div>
 </div>
 
-<div id="outline-container-orgaf839ca" class="outline-2">
-<h2 id="orgaf839ca">Background</h2>
-<div class="outline-text-2" id="text-orgaf839ca">
+<div id="outline-container-orgc80b23c" class="outline-2">
+<h2 id="orgc80b23c">Background</h2>
+<div class="outline-text-2" id="text-orgc80b23c">
 <p>
 I have historically used Python in Emacs via Conda. I don't especially enjoy using Conda and much prefer a virtualenv workflow. So, for a recent project, I used virtualenv (actually <a href="https://github.com/astral-sh/uv">uv venv</a>, and I recommend checking out uv for your package management and virtual environment needs!).
 </p>
@@ -103,9 +103,9 @@ I am not the first person to encounter these issues. Here's a sampling of others
 <li><a href="https://emacs.stackexchange.com/questions/41289/python-in-org-babel-will-not-work">Python in org babel will not work</a></li>
 <li><a href="https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline">Your ‘python-shell-interpreter’ doesn’t seem to support readline</a></li>
 <li><a href="https://east.fm/posts/emacs-26-mojave-elpy-readline/index.html">Emacs 26, Mojave, elpy, readline</a></li>
-<li><a href="https://stackoverflow.com/questions/75103221/emacs-remove-python-el-eval-message">emacs: remove _<sub>PYTHON</sub><sub>EL</sub><sub>eval</sub> message</a></li>
-<li><a href="https://emacs.stackexchange.com/questions/76493/python-el-eval-file-prints-in-interpreter-when-sending-python-file-from-buffer">_<sub>PYTHON</sub><sub>EL</sub><sub>eval</sub><sub>file</sub> prints in interpreter when sending python file from buffer using C-x C-l</a></li>
-<li><a href="https://github.com/syl20bnr/spacemacs/issues/15998">_<sub>PYTHON</sub><sub>EL</sub><sub>eval</sub> printouts in ipython REPL</a></li>
+<li><a href="https://stackoverflow.com/questions/75103221/emacs-remove-python-el-eval-message">emacs: remove __PYTHON_EL_eval message</a></li>
+<li><a href="https://emacs.stackexchange.com/questions/76493/python-el-eval-file-prints-in-interpreter-when-sending-python-file-from-buffer">__PYTHON_EL_eval_file prints in interpreter when sending python file from buffer using C-x C-l</a></li>
+<li><a href="https://github.com/syl20bnr/spacemacs/issues/15998">__PYTHON_EL_eval printouts in ipython REPL</a></li>
 </ul>
 
 <p>
@@ -147,9 +147,9 @@ I tried a bunch of different things to try to force the virtualenv to use GNU re
 </p>
 </div>
 </div>
-<div id="outline-container-org595683a" class="outline-2">
-<h2 id="org595683a">Solution</h2>
-<div class="outline-text-2" id="text-org595683a">
+<div id="outline-container-org32d15ac" class="outline-2">
+<h2 id="org32d15ac">Solution</h2>
+<div class="outline-text-2" id="text-org32d15ac">
 <p>
 The <a href="https://github.com/ludwigschwardt/python-gnureadline"><code>gnureadline</code></a> Python package explains the issue:
 </p>
@@ -175,9 +175,9 @@ And it provides the very straightforward solution:
 </div>
 </div>
 
-<div id="outline-container-org2ec868d" class="outline-2">
-<h2 id="org2ec868d">A little more detail</h2>
-<div class="outline-text-2" id="text-org2ec868d">
+<div id="outline-container-org12cc789" class="outline-2">
+<h2 id="org12cc789">A little more detail</h2>
+<div class="outline-text-2" id="text-org12cc789">
 <p>
 The <code>gnureadline</code> docs suggest the following usage pattern:
 </p>
