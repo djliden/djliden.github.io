@@ -6,6 +6,11 @@ I was encountering this warning when trying to use Python in Emacs on Macos: ~Wa
 
 In the rest of this note, I will briefly review the steps of the investigation that led me here. Scroll down to the Solution sectionif you're (understandably) not interested in the rest!
 #+end_preview
+** (Edit 2024-10-28) ~gnureadline~ and ~uv~.
+
+[[https://www.danliden.com/notes/20240821-uv.html][As noted]], I have been using ~uv~ for Python package management. This approach to resolving the "Python interpreter doesn't seem to support readline" error was not working with ~uv~ because of how ~readline~ was handled in the ~python-build-standalone~ distribution used by ~uv~.
+
+This was resolved with the version of ~gnureadline~ [[https://pypi.org/project/gnureadline/][available on PyPI]] as of 2024-10-18, and the approach detailed here works fine.
 
 * Background
 
