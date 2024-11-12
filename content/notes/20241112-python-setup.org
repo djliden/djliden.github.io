@@ -1,0 +1,22 @@
+#+title: Using Python in Emacs
+#+date: <2024-11-12 Tue>
+* Introduction
+#+begin_preview
+I will keep this note up to date with details on how I use emacs for Python development.
+#+end_preview
+* Setting up a Python project
+
+There are a few things I want when setting up a Python project:
+- a virtual environment
+- a language server (for use via eglot)
+- an interpreter that works well with emacs
+
+To that end, when setting up a project, I follow these steps:
+1. Create a new directory for my project, or navigate to an existing project directory.
+2. Create a new virtual environment in that directory, with e.g. ~uv venv -p 3.13 myenv~ (I [[https://www.danliden.com/notes/20240821-uv.html][tend to use]] uv for python package/environment management these days).
+3. Activate the virtual environment. I use [[https://github.com/jorgenschaefer/pyvenv][pyvenv]] and activate environments via ~pyvenv-activate~. Sometimes, I still need to explicitly call ~source ./myenv/bin/activate~ in e.g. an open vterm buffer. In general, it's a good idea to make sure the environment is active and running as expected before doing anything.
+4. Set up eglot—in your virtual environment, install ~python-lsp-ruff~ or ~ruff-lsp~ or whatever Python language server provides the functionality you want. It's also worth installing ~isort~ if you want to sort your imports with e.g. ~python-sort-imports~.
+5. Install and configure ~gnureadline~ for native completions (if you get the ~Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list. Native completions have been disabled locally.~ warning). See [[https://www.danliden.com/notes/20240709-python-readline.html][here]] for instructions.
+6. Create/open a python buffer and start eglot with ~M-x eglot~.
+* TODO Editing Python Files
+* TODO Executing Python Code
