@@ -38,21 +38,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf2641a0">Introduction</a>
+<li><a href="#org9a575a3">Introduction</a>
 <ul>
-<li><a href="#orga8aa120">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</a></li>
+<li><a href="#org8d083c7">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</a></li>
 </ul>
 </li>
-<li><a href="#orgb8f2637">Background</a></li>
-<li><a href="#org1fcb543">Solution</a></li>
-<li><a href="#org4238fa6">A little more detail</a></li>
+<li><a href="#orge81247f">Background</a></li>
+<li><a href="#orgf919bbe">Solution</a></li>
+<li><a href="#org6cf1e1d">A little more detail</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgf2641a0" class="outline-2">
-<h2 id="orgf2641a0">Introduction</h2>
-<div class="outline-text-2" id="text-orgf2641a0">
-<div class="preview" id="org9c2f3dc">
+<div id="outline-container-org9a575a3" class="outline-2">
+<h2 id="org9a575a3">Introduction</h2>
+<div class="outline-text-2" id="text-org9a575a3">
+<div class="preview" id="org505cdc2">
 <p>
 I was encountering this warning when trying to use Python in Emacs on Macos: <code>Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list.  Native completions have been disabled locally.</code> I found years of discussions on this issue, but no solutions. I also found that using Python installed with Conda instead of with virtualenv worked fine. From this, I narrowed down the root cause and found a working solution: (1) install the <code>gnureadline</code> Python package with <code>pip install gnureadline</code>; (2) override the default readline in your virtual environment with <code>python -m override_readline</code>.
 </p>
@@ -63,9 +63,9 @@ In the rest of this note, I will briefly review the steps of the investigation t
 
 </div>
 </div>
-<div id="outline-container-orga8aa120" class="outline-3">
-<h3 id="orga8aa120">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</h3>
-<div class="outline-text-3" id="text-orga8aa120">
+<div id="outline-container-org8d083c7" class="outline-3">
+<h3 id="org8d083c7">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</h3>
+<div class="outline-text-3" id="text-org8d083c7">
 <p>
 <a href="https://www.danliden.com/notes/20240821-uv.html">As noted</a>, I have been using <code>uv</code> for Python package management. This approach to resolving the "Python interpreter doesn't seem to support readline" error was not working with <code>uv</code> because of how <code>readline</code> was handled in the <code>python-build-standalone</code> distribution used by <code>uv</code>.
 </p>
@@ -77,9 +77,9 @@ This was resolved with the version of <code>gnureadline</code> <a href="https://
 </div>
 </div>
 
-<div id="outline-container-orgb8f2637" class="outline-2">
-<h2 id="orgb8f2637">Background</h2>
-<div class="outline-text-2" id="text-orgb8f2637">
+<div id="outline-container-orge81247f" class="outline-2">
+<h2 id="orge81247f">Background</h2>
+<div class="outline-text-2" id="text-orge81247f">
 <p>
 I have historically used Python in Emacs via Conda. I don't especially enjoy using Conda and much prefer a virtualenv workflow. So, for a recent project, I used virtualenv (actually <a href="https://github.com/astral-sh/uv">uv venv</a>, and I recommend checking out uv for your package management and virtual environment needs!).
 </p>
@@ -147,9 +147,9 @@ I tried a bunch of different things to try to force the virtualenv to use GNU re
 </p>
 </div>
 </div>
-<div id="outline-container-org1fcb543" class="outline-2">
-<h2 id="org1fcb543">Solution</h2>
-<div class="outline-text-2" id="text-org1fcb543">
+<div id="outline-container-orgf919bbe" class="outline-2">
+<h2 id="orgf919bbe">Solution</h2>
+<div class="outline-text-2" id="text-orgf919bbe">
 <p>
 The <a href="https://github.com/ludwigschwardt/python-gnureadline"><code>gnureadline</code></a> Python package explains the issue:
 </p>
@@ -175,9 +175,9 @@ And it provides the very straightforward solution:
 </div>
 </div>
 
-<div id="outline-container-org4238fa6" class="outline-2">
-<h2 id="org4238fa6">A little more detail</h2>
-<div class="outline-text-2" id="text-org4238fa6">
+<div id="outline-container-org6cf1e1d" class="outline-2">
+<h2 id="org6cf1e1d">A little more detail</h2>
+<div class="outline-text-2" id="text-org6cf1e1d">
 <p>
 The <code>gnureadline</code> docs suggest the following usage pattern:
 </p>

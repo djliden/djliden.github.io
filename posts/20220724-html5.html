@@ -38,13 +38,13 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5ceaabd">The Problem</a></li>
-<li><a href="#org938c156">Changes to the Site Config</a></li>
-<li><a href="#org548255d">The Results</a></li>
+<li><a href="#org8625040">The Problem</a></li>
+<li><a href="#orgf80a979">Changes to the Site Config</a></li>
+<li><a href="#orgdd65fc9">The Results</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgc9147d9">
+<div class="preview" id="orga8ed858">
 <p>
 I noticed that some of the formatting on this site was a little off and some of
 the org-mode components weren't being translated to HTML in quite the way I
@@ -62,9 +62,9 @@ While that brief introduction should capture the necessary changes, we can get
 into more specifics.
 </p>
 
-<div id="outline-container-org5ceaabd" class="outline-2">
-<h2 id="org5ceaabd">The Problem</h2>
-<div class="outline-text-2" id="text-org5ceaabd">
+<div id="outline-container-org8625040" class="outline-2">
+<h2 id="org8625040">The Problem</h2>
+<div class="outline-text-2" id="text-org8625040">
 <p>
 If we use the default settings, figures aren't wrapped in <code>&lt;figure&gt;</code> blocks and
 captions aren't wrapped in <code>&lt;figcaption&gt;</code> blocks, so none of the formatting we
@@ -92,9 +92,9 @@ The image and caption appear left-aligned on the page. Here's the html:
 </div>
 </div>
 
-<div id="outline-container-org938c156" class="outline-2">
-<h2 id="org938c156">Changes to the Site Config</h2>
-<div class="outline-text-2" id="text-org938c156">
+<div id="outline-container-orgf80a979" class="outline-2">
+<h2 id="orgf80a979">Changes to the Site Config</h2>
+<div class="outline-text-2" id="text-orgf80a979">
 <p>
 To address this, we need to change the <code>org-html-doctype</code> and <code>org-html-html5-fancy</code>
 variables. We can do this in the export configuration's
@@ -143,15 +143,15 @@ key changes.
 </div>
 </div>
 </div>
-<div id="outline-container-org548255d" class="outline-2">
-<h2 id="org548255d">The Results</h2>
-<div class="outline-text-2" id="text-org548255d">
+<div id="outline-container-orgdd65fc9" class="outline-2">
+<h2 id="orgdd65fc9">The Results</h2>
+<div class="outline-text-2" id="text-orgdd65fc9">
 <p>
 With these changes, our images and captions are now centered:
 </p>
 
 
-<figure id="org414bd09">
+<figure id="org94d38bd">
 <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px">
 
 <figcaption><span class="figure-number">Figure 1: </span>This caption is now centered and wrapped in a <code>&lt;figcaption&gt;</code> tag!</figcaption>

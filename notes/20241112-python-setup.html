@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Using Python in Emacs</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Using Python in Emacs</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org1ecdb94">Introduction</a></li>
+<li><a href="#org3ca139d">Setting up a Python project</a></li>
+<li><a href="#orgc9a29d1"><span class="todo TODO">TODO</span> Editing Python Files</a></li>
+<li><a href="#orgd92fb40"><span class="todo TODO">TODO</span> Executing Python Code</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-org1ecdb94" class="outline-2">
+<h2 id="org1ecdb94">Introduction</h2>
+<div class="outline-text-2" id="text-org1ecdb94">
+<div class="preview" id="org4f4f25c">
+<p>
+I will keep this note up to date with details on how I use emacs for Python development.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org3ca139d" class="outline-2">
+<h2 id="org3ca139d">Setting up a Python project</h2>
+<div class="outline-text-2" id="text-org3ca139d">
+<p>
+There are a few things I want when setting up a Python project:
+</p>
+<ul class="org-ul">
+<li>a virtual environment</li>
+<li>a language server (for use via eglot)</li>
+<li>an interpreter that works well with emacs</li>
+</ul>
+
+<p>
+To that end, when setting up a project, I follow these steps:
+</p>
+<ol class="org-ol">
+<li>Create a new directory for my project, or navigate to an existing project directory.</li>
+<li>Create a new virtual environment in that directory, with e.g. <code>uv venv -p 3.13 myenv</code> (I <a href="https://www.danliden.com/notes/20240821-uv.html">tend to use</a> uv for python package/environment management these days).</li>
+<li>Activate the virtual environment. I use <a href="https://github.com/jorgenschaefer/pyvenv">pyvenv</a> and activate environments via <code>pyvenv-activate</code>. Sometimes, I still need to explicitly call <code>source ./myenv/bin/activate</code> in e.g. an open vterm buffer. In general, it's a good idea to make sure the environment is active and running as expected before doing anything.</li>
+<li>Set up eglot—in your virtual environment, install <code>python-lsp-ruff</code> or <code>ruff-lsp</code> or whatever Python language server provides the functionality you want. It's also worth installing <code>isort</code> if you want to sort your imports with e.g. <code>python-sort-imports</code>.</li>
+<li>Install and configure <code>gnureadline</code> for native completions (if you get the <code>Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list. Native completions have been disabled locally.</code> warning). See <a href="https://www.danliden.com/notes/20240709-python-readline.html">here</a> for instructions.</li>
+<li>Create/open a python buffer and start eglot with <code>M-x eglot</code>.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgc9a29d1" class="outline-2">
+<h2 id="orgc9a29d1"><span class="todo TODO">TODO</span> Editing Python Files</h2>
+</div>
+<div id="outline-container-orgd92fb40" class="outline-2">
+<h2 id="orgd92fb40"><span class="todo TODO">TODO</span> Executing Python Code</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-11-12 Tue 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+</div>
+</body>
+</html>
