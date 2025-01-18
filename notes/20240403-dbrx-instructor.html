@@ -38,43 +38,43 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org48bd52e">Instructor</a></li>
-<li><a href="#orgd227c5b">Using it with DBRX/Databricks</a>
+<li><a href="#orgbb1b144">Instructor</a></li>
+<li><a href="#org2c74c0f">Using it with DBRX/Databricks</a>
 <ul>
-<li><a href="#org7a0c71a">Set up the client</a></li>
-<li><a href="#org73459f0">Simple example</a></li>
-<li><a href="#org745e1d2">A slightly more involved example</a></li>
+<li><a href="#orgf2f777d">Set up the client</a></li>
+<li><a href="#org3d1538a">Simple example</a></li>
+<li><a href="#org472a939">A slightly more involved example</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org89d23c7">
+<div class="preview" id="org912e811">
 <p>
 This note briefly demonstrates how to use the <a href="https://github.com/jxnl/instructor">Instructor</a> library with the Databricks <a href="https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm">DBRX</a> model via the Databricks Foundation Models API.
 </p>
 
 </div>
 
-<div id="outline-container-org48bd52e" class="outline-2">
-<h2 id="org48bd52e">Instructor</h2>
-<div class="outline-text-2" id="text-org48bd52e">
+<div id="outline-container-orgbb1b144" class="outline-2">
+<h2 id="orgbb1b144">Instructor</h2>
+<div class="outline-text-2" id="text-orgbb1b144">
 <p>
 The instructor library provides structured output from LLMs. The user specifies a Pydantic model to define the structure of outputs.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgd227c5b" class="outline-2">
-<h2 id="orgd227c5b">Using it with DBRX/Databricks</h2>
-<div class="outline-text-2" id="text-orgd227c5b">
+<div id="outline-container-org2c74c0f" class="outline-2">
+<h2 id="org2c74c0f">Using it with DBRX/Databricks</h2>
+<div class="outline-text-2" id="text-org2c74c0f">
 <p>
 Instructor works with DBRX/with the databricks foundation model API. Here's how.
 </p>
 </div>
-<div id="outline-container-org7a0c71a" class="outline-3">
-<h3 id="org7a0c71a">Set up the client</h3>
-<div class="outline-text-3" id="text-org7a0c71a">
+<div id="outline-container-orgf2f777d" class="outline-3">
+<h3 id="orgf2f777d">Set up the client</h3>
+<div class="outline-text-3" id="text-orgf2f777d">
 <p>
 We need to define the environment variables <code>OPENAI_API_KEY</code> and <code>OPENAI_BASE_URL</code>. In this example, they are saved in a <code>.env</code> file. We'll start by loading them.
 </p>
@@ -91,9 +91,9 @@ True
 </div>
 </div>
 
-<div id="outline-container-org73459f0" class="outline-3">
-<h3 id="org73459f0">Simple example</h3>
-<div class="outline-text-3" id="text-org73459f0">
+<div id="outline-container-org3d1538a" class="outline-3">
+<h3 id="org3d1538a">Simple example</h3>
+<div class="outline-text-3" id="text-org3d1538a">
 <p>
 Next, we'll run the example from the Instructor docs to make sure everything is working. In this example, we define a schema fro data about users: we expect name and age. We then prompt the model with a sentence about a user. The model will return the Pydantic object with the user's information.
 </p>
@@ -152,9 +152,9 @@ There are a few things to pay attention to here.
 </ul>
 </div>
 </div>
-<div id="outline-container-org745e1d2" class="outline-3">
-<h3 id="org745e1d2">A slightly more involved example</h3>
-<div class="outline-text-3" id="text-org745e1d2">
+<div id="outline-container-org472a939" class="outline-3">
+<h3 id="org472a939">A slightly more involved example</h3>
+<div class="outline-text-3" id="text-org472a939">
 <p>
 Let's look at an example of generating an arbitrary number of question/answer pairs from a text, e.g. for evaluating a RAG application.
 </p>
@@ -229,7 +229,7 @@ And how we'll test this on our example text.
 </pre>
 </div>
 
-<pre class="example" id="org83be37b">
+<pre class="example" id="org9fda332">
 EvalQAs(
     evalqas=[
         EvalQA(
