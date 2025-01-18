@@ -18,5 +18,21 @@ To that end, when setting up a project, I follow these steps:
 4. Set up eglot—in your virtual environment, install ~python-lsp-ruff~ or ~ruff-lsp~ or whatever Python language server provides the functionality you want. It's also worth installing ~isort~ if you want to sort your imports with e.g. ~python-sort-imports~.
 5. Install and configure ~gnureadline~ for native completions (if you get the ~Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list. Native completions have been disabled locally.~ warning). See [[https://www.danliden.com/notes/20240709-python-readline.html][here]] for instructions.
 6. Create/open a python buffer and start eglot with ~M-x eglot~.
+** Using multiple language servers with eglot
+
+For some reason, I recall this working without additional configuration before. But it's now, so I might as well document how to get it working. My best guess is that I overrode the defaults as the eglot docs note that "Eglot comes with a fairly complete set of associations of major-modes to popular language servers predefined." 
+
+Suppose you have installed two different options for a Python LSP. Follow the instructions [[https://www.gnu.org/software/emacs/manual/html_node/eglot/Setting-Up-LSP-Servers.html][here]].
+
+
+#+begin_src emacs-lisp
+(with-eval-after-load 'eglot
+  (add-to-list
+   'eglot-server-programs
+   `(python-mode
+     .
+     ,(eglot-alternatives
+       '(("ruff" "server") ("basedpyright-langserver" "--stdio"))))))
+#+end_src
 * TODO Editing Python Files
 * TODO Executing Python Code
