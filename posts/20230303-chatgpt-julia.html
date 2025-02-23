@@ -38,19 +38,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org2593cfd">Introduction</a></li>
-<li><a href="#orgb1db332">curl Example</a></li>
-<li><a href="#org0f685e9">Julia example</a></li>
-<li><a href="#orgf1504d2">A little more detail about sending messages</a></li>
-<li><a href="#org3e1ee26">Next Up&#x2026;</a></li>
+<li><a href="#orgc3dd041">Introduction</a></li>
+<li><a href="#org07d99bf">curl Example</a></li>
+<li><a href="#org5731dfa">Julia example</a></li>
+<li><a href="#orga4eea2e">A little more detail about sending messages</a></li>
+<li><a href="#org2354003">Next Up&#x2026;</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org2593cfd" class="outline-2">
-<h2 id="org2593cfd">Introduction</h2>
-<div class="outline-text-2" id="text-org2593cfd">
-<div class="preview" id="org66db8ae">
+<div id="outline-container-orgc3dd041" class="outline-2">
+<h2 id="orgc3dd041">Introduction</h2>
+<div class="outline-text-2" id="text-orgc3dd041">
+<div class="preview" id="orgac76d1d">
 <p>
 This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
 with the OpenAI ChatGPT API, which was made public a few days ago. This post
@@ -62,9 +62,9 @@ histories and engage more interactively with the API.
 </div>
 </div>
 </div>
-<div id="outline-container-orgb1db332" class="outline-2">
-<h2 id="orgb1db332">curl Example</h2>
-<div class="outline-text-2" id="text-orgb1db332">
+<div id="outline-container-org07d99bf" class="outline-2">
+<h2 id="org07d99bf">curl Example</h2>
+<div class="outline-text-2" id="text-org07d99bf">
 <p>
 <a href="https://platform.openai.com/docs/api-reference/chat/create">Here</a> is the API documentation on OpenAI's website. An example request with <code>curl</code>
 looks like this:
@@ -83,9 +83,9 @@ looks like this:
 </div>
 </div>
 
-<div id="outline-container-org0f685e9" class="outline-2">
-<h2 id="org0f685e9">Julia example</h2>
-<div class="outline-text-2" id="text-org0f685e9">
+<div id="outline-container-org5731dfa" class="outline-2">
+<h2 id="org5731dfa">Julia example</h2>
+<div class="outline-text-2" id="text-org5731dfa">
 <p>
 And here's how we can re-create this with the Julia HTTP library:
 </p>
@@ -143,9 +143,9 @@ chat_response[1][<span class="org-string">"message"</span>][<span class="org-str
 </pre>
 </div>
 </div>
-<div id="outline-container-orgf1504d2" class="outline-2">
-<h2 id="orgf1504d2">A little more detail about sending messages</h2>
-<div class="outline-text-2" id="text-orgf1504d2">
+<div id="outline-container-orga4eea2e" class="outline-2">
+<h2 id="orga4eea2e">A little more detail about sending messages</h2>
+<div class="outline-text-2" id="text-orga4eea2e">
 <p>
 One of the things that makes ChatGPT useful is its ability to "remember" past
 parts of a conversation. We can send whole conversations to the API using the
@@ -185,7 +185,7 @@ print(result[<span class="org-string">"choices"</span>][1][<span class="org-stri
 </pre>
 </div>
 
-<pre class="example" id="orgadadc32">
+<pre class="example" id="orgdbd3440">
 
 ```julia
 using HTTP
@@ -275,7 +275,7 @@ print(result[<span class="org-string">"choices"</span>][1][<span class="org-stri
 </pre>
 </div>
 
-<pre class="example" id="orgcb8aa5d">
+<pre class="example" id="org47e2cce">
 Sure, here's a simpler example:
 
 ```julia
@@ -291,9 +291,9 @@ In this example, we are sending a POST request with form data rather than JSON d
 </pre>
 </div>
 </div>
-<div id="outline-container-org3e1ee26" class="outline-2">
-<h2 id="org3e1ee26">Next Up&#x2026;</h2>
-<div class="outline-text-2" id="text-org3e1ee26">
+<div id="outline-container-org2354003" class="outline-2">
+<h2 id="org2354003">Next Up&#x2026;</h2>
+<div class="outline-text-2" id="text-org2354003">
 <p>
 This post showed basic usage of the ChatGPT API with Julia. In the next post,
 I'll show how to make this more modular and useful. We'll create a <code>Struct</code> for
