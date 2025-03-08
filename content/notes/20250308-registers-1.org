@@ -1,0 +1,27 @@
+#+title:      Navigating between points with registers
+#+date:       <2025-03-08 Sat>
+* Introduction
+
+#+begin_preview
+Registers provide a very easy way to navigate between different points in emacs. This note briefly describes how to use them.
+#+end_preview
+
+Broadly seaking, [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Registers.html][registers]] are named locations for storing things within Emacs. Each register is identified by a single character—you can save things to register ~a~, register ~b~, etc. Registers can store different types of data, including text, numbers, window/frame configurations, file and buffer names, and more. This note briefly covers how to use registers to store the location of the current point to a register, and how to jump to that point.
+* Registering a Point
+
+You can store the current location of [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Point.html][point]] (usually the location of the cursor, or the position just before the character on which the cursor is located) with the command ~point-to-register~, assigned by default to ~C-x r SPC~. This will prompt you for the register in which to store the point (a single character).
+
+file:img/1_register_point.png
+* Navigating to a registered point
+
+You can navigate to a point you have saved in the registry with ~jump-to-register~, assigned by default to ~C-x r j~. This will bring up a small preview buffer listing the candidate points to which you can jump. You can navigate through these with ~C-n~ and ~C-p~ or, if you know it, just type the character of the register you're trying to access. It may be helpful to use mnemonics in assigning register names. For example, I could register a point in the introduction of the org file used to generate this post under the name ~I~ and then return to it from anywhere in Emacs with ~C-x r j I~.
+* Returning to the point you jumped from
+
+You will likely find that you want to navigate back to the point from which you jumped. Perhaps, for example, in writing this section, I am reminded of something I need to add to the introduction. I jump to the introduction with ~C-x r j I~. But then I want to resume where I left off.
+
+This is easily accomplished by invoking the ~set-mark-command~ command with a prefix (~C-u~). Jumping to a registered point sets the mark at the position you're jumping from, and invoking ~set-mark-command~ with ~C-u C-SPC~ will return to that mark (assuming no subsequent actions have added a new mark to the [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Mark-Ring.html][mark ring]]). You can repeat this command to jump to earlier marks.
+* Conclusion
+
+I've been using Emacs for a long time. I haven't spent much time using registers. But I was working with a larger code repository the other day and found myself needing better ways to navigate between points. This works well!
+
+There is also an argument for using [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Bookmarks.html][bookmarks]] for this application, though they are intended more for recording the point where you left off reading in a given file.
