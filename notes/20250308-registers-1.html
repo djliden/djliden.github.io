@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Navigating between points with registers</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Navigating between points with registers</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org8350900">Introduction</a></li>
+<li><a href="#org23e0747">Registering a Point</a></li>
+<li><a href="#org19392a1">Navigating to a registered point</a></li>
+<li><a href="#org6820067">Returning to the point you jumped from</a></li>
+<li><a href="#org0546153">Conclusion</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-org8350900" class="outline-2">
+<h2 id="org8350900">Introduction</h2>
+<div class="outline-text-2" id="text-org8350900">
+<div class="preview" id="org2f35b11">
+<p>
+Registers provide a very easy way to navigate between different points in emacs. This note briefly describes how to use them.
+</p>
+
+</div>
+
+<p>
+Broadly seaking, <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Registers.html">registers</a> are named locations for storing things within Emacs. Each register is identified by a single character—you can save things to register <code>a</code>, register <code>b</code>, etc. Registers can store different types of data, including text, numbers, window/frame configurations, file and buffer names, and more. This note briefly covers how to use registers to store the location of the current point to a register, and how to jump to that point.
+</p>
+</div>
+</div>
+<div id="outline-container-org23e0747" class="outline-2">
+<h2 id="org23e0747">Registering a Point</h2>
+<div class="outline-text-2" id="text-org23e0747">
+<p>
+You can store the current location of <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Point.html">point</a> (usually the location of the cursor, or the position just before the character on which the cursor is located) with the command <code>point-to-register</code>, assigned by default to <code>C-x r SPC</code>. This will prompt you for the register in which to store the point (a single character).
+</p>
+
+
+<figure id="orgda9ea8d">
+<img src="img/1_register_point.png" alt="1_register_point.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-org19392a1" class="outline-2">
+<h2 id="org19392a1">Navigating to a registered point</h2>
+<div class="outline-text-2" id="text-org19392a1">
+<p>
+You can navigate to a point you have saved in the registry with <code>jump-to-register</code>, assigned by default to <code>C-x r j</code>. This will bring up a small preview buffer listing the candidate points to which you can jump. You can navigate through these with <code>C-n</code> and <code>C-p</code> or, if you know it, just type the character of the register you're trying to access. It may be helpful to use mnemonics in assigning register names. For example, I could register a point in the introduction of the org file used to generate this post under the name <code>I</code> and then return to it from anywhere in Emacs with <code>C-x r j I</code>.
+</p>
+</div>
+</div>
+<div id="outline-container-org6820067" class="outline-2">
+<h2 id="org6820067">Returning to the point you jumped from</h2>
+<div class="outline-text-2" id="text-org6820067">
+<p>
+You will likely find that you want to navigate back to the point from which you jumped. Perhaps, for example, in writing this section, I am reminded of something I need to add to the introduction. I jump to the introduction with <code>C-x r j I</code>. But then I want to resume where I left off.
+</p>
+
+<p>
+This is easily accomplished by invoking the <code>set-mark-command</code> command with a prefix (<code>C-u</code>). Jumping to a registered point sets the mark at the position you're jumping from, and invoking <code>set-mark-command</code> with <code>C-u C-SPC</code> will return to that mark (assuming no subsequent actions have added a new mark to the <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Mark-Ring.html">mark ring</a>). You can repeat this command to jump to earlier marks.
+</p>
+</div>
+</div>
+<div id="outline-container-org0546153" class="outline-2">
+<h2 id="org0546153">Conclusion</h2>
+<div class="outline-text-2" id="text-org0546153">
+<p>
+I've been using Emacs for a long time. I haven't spent much time using registers. But I was working with a larger code repository the other day and found myself needing better ways to navigate between points. This works well!
+</p>
+
+<p>
+There is also an argument for using <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Bookmarks.html">bookmarks</a> for this application, though they are intended more for recording the point where you left off reading in a given file.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2025-03-08 Sat 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+</div>
+</body>
+</html>
