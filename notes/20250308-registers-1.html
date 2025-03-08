@@ -38,54 +38,54 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8350900">Introduction</a></li>
-<li><a href="#org23e0747">Registering a Point</a></li>
-<li><a href="#org19392a1">Navigating to a registered point</a></li>
-<li><a href="#org6820067">Returning to the point you jumped from</a></li>
-<li><a href="#org0546153">Conclusion</a></li>
+<li><a href="#org931f491">Introduction</a></li>
+<li><a href="#orgc5e575e">Registering a Point</a></li>
+<li><a href="#org671c7c2">Navigating to a registered point</a></li>
+<li><a href="#orgbe3db07">Returning to the point you jumped from</a></li>
+<li><a href="#org7b7a026">Conclusion</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org8350900" class="outline-2">
-<h2 id="org8350900">Introduction</h2>
-<div class="outline-text-2" id="text-org8350900">
-<div class="preview" id="org2f35b11">
+<div id="outline-container-org931f491" class="outline-2">
+<h2 id="org931f491">Introduction</h2>
+<div class="outline-text-2" id="text-org931f491">
+<div class="preview" id="orgdae8224">
 <p>
-Registers provide a very easy way to navigate between different points in emacs. This note briefly describes how to use them.
+Registers provide a very easy way to navigate between different points in Emacs. This note briefly describes how to use them.
 </p>
 
 </div>
 
 <p>
-Broadly seaking, <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Registers.html">registers</a> are named locations for storing things within Emacs. Each register is identified by a single character—you can save things to register <code>a</code>, register <code>b</code>, etc. Registers can store different types of data, including text, numbers, window/frame configurations, file and buffer names, and more. This note briefly covers how to use registers to store the location of the current point to a register, and how to jump to that point.
+Broadly speaking, <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Registers.html">registers</a> are named locations for storing things within Emacs. Each register is identified by a single character—you can save things to register <code>a</code>, register <code>b</code>, etc. Registers can store different types of data, including text, numbers, window/frame configurations, file and buffer names, and more. This note briefly covers how to use registers to store the location of the current point to a register, and how to jump to that point.
 </p>
 </div>
 </div>
-<div id="outline-container-org23e0747" class="outline-2">
-<h2 id="org23e0747">Registering a Point</h2>
-<div class="outline-text-2" id="text-org23e0747">
+<div id="outline-container-orgc5e575e" class="outline-2">
+<h2 id="orgc5e575e">Registering a Point</h2>
+<div class="outline-text-2" id="text-orgc5e575e">
 <p>
 You can store the current location of <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Point.html">point</a> (usually the location of the cursor, or the position just before the character on which the cursor is located) with the command <code>point-to-register</code>, assigned by default to <code>C-x r SPC</code>. This will prompt you for the register in which to store the point (a single character).
 </p>
 
 
-<figure id="orgda9ea8d">
+<figure id="orgeadbae4">
 <img src="img/1_register_point.png" alt="1_register_point.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org19392a1" class="outline-2">
-<h2 id="org19392a1">Navigating to a registered point</h2>
-<div class="outline-text-2" id="text-org19392a1">
+<div id="outline-container-org671c7c2" class="outline-2">
+<h2 id="org671c7c2">Navigating to a registered point</h2>
+<div class="outline-text-2" id="text-org671c7c2">
 <p>
 You can navigate to a point you have saved in the registry with <code>jump-to-register</code>, assigned by default to <code>C-x r j</code>. This will bring up a small preview buffer listing the candidate points to which you can jump. You can navigate through these with <code>C-n</code> and <code>C-p</code> or, if you know it, just type the character of the register you're trying to access. It may be helpful to use mnemonics in assigning register names. For example, I could register a point in the introduction of the org file used to generate this post under the name <code>I</code> and then return to it from anywhere in Emacs with <code>C-x r j I</code>.
 </p>
 </div>
 </div>
-<div id="outline-container-org6820067" class="outline-2">
-<h2 id="org6820067">Returning to the point you jumped from</h2>
-<div class="outline-text-2" id="text-org6820067">
+<div id="outline-container-orgbe3db07" class="outline-2">
+<h2 id="orgbe3db07">Returning to the point you jumped from</h2>
+<div class="outline-text-2" id="text-orgbe3db07">
 <p>
 You will likely find that you want to navigate back to the point from which you jumped. Perhaps, for example, in writing this section, I am reminded of something I need to add to the introduction. I jump to the introduction with <code>C-x r j I</code>. But then I want to resume where I left off.
 </p>
@@ -95,9 +95,9 @@ This is easily accomplished by invoking the <code>set-mark-command</code> comman
 </p>
 </div>
 </div>
-<div id="outline-container-org0546153" class="outline-2">
-<h2 id="org0546153">Conclusion</h2>
-<div class="outline-text-2" id="text-org0546153">
+<div id="outline-container-org7b7a026" class="outline-2">
+<h2 id="org7b7a026">Conclusion</h2>
+<div class="outline-text-2" id="text-org7b7a026">
 <p>
 I've been using Emacs for a long time. I haven't spent much time using registers. But I was working with a larger code repository the other day and found myself needing better ways to navigate between points. This works well!
 </p>

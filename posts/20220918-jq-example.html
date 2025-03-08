@@ -38,24 +38,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org533af45">Introduction</a></li>
-<li><a href="#org34042a3">Download the Data</a></li>
-<li><a href="#orgbbf9582">Processing the Data with <code>jq</code></a>
+<li><a href="#org302c4ed">Introduction</a></li>
+<li><a href="#org74c686e">Download the Data</a></li>
+<li><a href="#orga58d82a">Processing the Data with <code>jq</code></a>
 <ul>
-<li><a href="#orga99365d"><code>jq</code> with no further arguments</a></li>
-<li><a href="#orge7395f6">Constructing a Header Row</a></li>
-<li><a href="#org2cefc1a">Extracting Data Values</a></li>
-<li><a href="#orgd00e21d">Converting the Results to CSV</a></li>
+<li><a href="#org14c0838"><code>jq</code> with no further arguments</a></li>
+<li><a href="#orgc4d4803">Constructing a Header Row</a></li>
+<li><a href="#org5284322">Extracting Data Values</a></li>
+<li><a href="#orgeed0fdd">Converting the Results to CSV</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org533af45" class="outline-2">
-<h2 id="org533af45">Introduction</h2>
-<div class="outline-text-2" id="text-org533af45">
-<div class="preview" id="org2d181b1">
+<div id="outline-container-org302c4ed" class="outline-2">
+<h2 id="org302c4ed">Introduction</h2>
+<div class="outline-text-2" id="text-org302c4ed">
+<div class="preview" id="org73eb683">
 <p>
 There are countless ways of processing JSON data and converting it to different
 formats. Historically, I've used Python and loaded the data into a Pandas
@@ -95,9 +95,9 @@ To follow along, begin by <a href="https://stedolan.github.io/jq/download/">inst
 </div>
 </div>
 
-<div id="outline-container-org34042a3" class="outline-2">
-<h2 id="org34042a3">Download the Data</h2>
-<div class="outline-text-2" id="text-org34042a3">
+<div id="outline-container-org74c686e" class="outline-2">
+<h2 id="org74c686e">Download the Data</h2>
+<div class="outline-text-2" id="text-org74c686e">
 <p>
 As noted above, we use <code>curl</code> to make a <code>POST</code> request agains the BLS API. We're
 downloading Consumer Price Index data since the start of 2022. We're downloading
@@ -112,7 +112,7 @@ unadjusted data.
 </pre>
 </div>
 
-<pre class="example" id="orga497c94">
+<pre class="example" id="orga2c3b14">
 | status":"REQUEST_SUCCEEDED","responseTime":171,"message":[],"Results               |
 | series                                                                            |
 | seriesID":"CUUR0000SA0","data":[{"year":"2022","period":"M08","periodName":"August", "latest":"true","value":"296.171","footnotes":[{}]},{"year":"2022","period":"M07","periodName":"July","value":"296.276","footnotes":[{}]},{"year":"2022","period":"M06","periodName":"June","value":"296.311","footnotes":[{}]},{"year":"2022","period":"M05","periodName":"May","value":"292.296","footnotes":[{}]},{"year":"2022","period":"M04","periodName":"April","value":"289.109","footnotes":[{}]},{"year":"2022","period":"M03","periodName":"March","value":"287.504","footnotes":[{}]},{"year":"2022","period":"M02","periodName":"February","value":"283.716","footnotes":[{}]},{"year":"2022","period":"M01","periodName":"January","value":"281.148","footnotes |
@@ -125,9 +125,9 @@ This is technically readable, but not very nice.
 </p>
 </div>
 </div>
-<div id="outline-container-orgbbf9582" class="outline-2">
-<h2 id="orgbbf9582">Processing the Data with <code>jq</code></h2>
-<div class="outline-text-2" id="text-orgbbf9582">
+<div id="outline-container-orga58d82a" class="outline-2">
+<h2 id="orga58d82a">Processing the Data with <code>jq</code></h2>
+<div class="outline-text-2" id="text-orga58d82a">
 <p>
 For most use cases, the data aren't particularly usable in this format. They're
 hard to read; they include metadata about the API response; and the hierarchical
@@ -136,9 +136,9 @@ proceed step by step to show how we can use <code>jq</code> to extract specific 
 API results.
 </p>
 </div>
-<div id="outline-container-orga99365d" class="outline-3">
-<h3 id="orga99365d"><code>jq</code> with no further arguments</h3>
-<div class="outline-text-3" id="text-orga99365d">
+<div id="outline-container-org14c0838" class="outline-3">
+<h3 id="org14c0838"><code>jq</code> with no further arguments</h3>
+<div class="outline-text-3" id="text-org14c0838">
 <p>
 What happens if we pass the results of the API call to <code>jq</code> with no further arguments?
 </p>
@@ -149,7 +149,7 @@ What happens if we pass the results of the API call to <code>jq</code> with no f
 </pre>
 </div>
 
-<pre class="example" id="orgfea67c2">
+<pre class="example" id="org5aae3f8">
 {
   "status": "REQUEST_SUCCEEDED",
   "responseTime": 169,
@@ -329,9 +329,9 @@ the <code>data</code> values as rows in our resulting table.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orge7395f6" class="outline-3">
-<h3 id="orge7395f6">Constructing a Header Row</h3>
-<div class="outline-text-3" id="text-orge7395f6">
+<div id="outline-container-orgc4d4803" class="outline-3">
+<h3 id="orgc4d4803">Constructing a Header Row</h3>
+<div class="outline-text-3" id="text-orgc4d4803">
 <p>
 We want our resulting table to have a header row. The process of making this row
 provides a lot of insight into how <code>jq</code> works.
@@ -409,9 +409,9 @@ section, we'll see how to extract data from multiple sections.
 </p>
 </div>
 </div>
-<div id="outline-container-org2cefc1a" class="outline-3">
-<h3 id="org2cefc1a">Extracting Data Values</h3>
-<div class="outline-text-3" id="text-org2cefc1a">
+<div id="outline-container-org5284322" class="outline-3">
+<h3 id="org5284322">Extracting Data Values</h3>
+<div class="outline-text-3" id="text-org5284322">
 <p>
 Based on the header rows, we need to extract, for each data entry, the series
 ID, footnotes, period, period name, year, value, and whether it's the latest
@@ -424,7 +424,7 @@ headers, though, for two key reasons:
 level than the other values we need.</li>
 </ul>
 
-<pre class="example" id="org06f22b1">
+<pre class="example" id="org3b22916">
 "series": [
     {
         "seriesID": "CUUR0000SA0",
@@ -456,7 +456,7 @@ Here's how we might start to approach this.
 </pre>
 </div>
 
-<pre class="example" id="org74139b8">
+<pre class="example" id="orgb1d080a">
 [
   "CUUR0000SA0",
   "2022",
@@ -530,7 +530,7 @@ converted directly to the CSV format. So we have a little more work to do.
 </pre>
 </div>
 
-<pre class="example" id="org2761454">
+<pre class="example" id="org1f1c7cd">
 [
   "CUUR0000SA0",
   "2022",
@@ -586,9 +586,9 @@ without issue.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd00e21d" class="outline-3">
-<h3 id="orgd00e21d">Converting the Results to CSV</h3>
-<div class="outline-text-3" id="text-orgd00e21d">
+<div id="outline-container-orgeed0fdd" class="outline-3">
+<h3 id="orgeed0fdd">Converting the Results to CSV</h3>
+<div class="outline-text-3" id="text-orgeed0fdd">
 <p>
 Lastly, we convert the transformed results to a CSV using the <code>@csv</code> formatter.
 </p>
@@ -603,7 +603,7 @@ Lastly, we convert the transformed results to a CSV using the <code>@csv</code> 
 </pre>
 </div>
 
-<pre class="example" id="orgde5cd7c">
+<pre class="example" id="orge749625">
 "seriesID","year","period","periodName","latest","value","footnotes"
 "CUUR0000SA0","2022","M08","August","true","296.171",""
 "CUUR0000SA0","2022","M07","July","296.276",""
