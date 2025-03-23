@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Emacs Introspection and Debugging</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+</head>
+<body>
+<div id="preamble" class="status">
+<hr style="border-top: 1px solid black;">
+<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
+  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
+  <div>
+    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
+    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
+    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
+    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
+    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
+    <a href='/rss.xml'>
+      <img src='/rss.png' style='height: 1em;'>
+    </a>
+  </div>
+</div>
+<hr style="border-top: 1px solid black;">
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Emacs Introspection and Debugging</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgb3c926a">Introduction</a></li>
+<li><a href="#orga23e89f">Finding Relevant Variables</a></li>
+<li><a href="#org53c6d57">Confirming the issue with error backtrace</a></li>
+<li><a href="#org82c8e9b">Quick fix—bandaid approach</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview" id="orgad75117">
+<p>
+If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless of the cause, Emacs provides many tools for identifying the causes of errors and learning how to address them.
+</p>
+
+<p>
+This post works through a recent issue I encountered with the <code>eglot</code> package and how I was able to identify and fix the issue using various introspection tools built into Emacs. It provides some general advice for how to use Emacs to learn about and debug issues with Emacs.
+</p>
+
+</div>
+
+<div id="outline-container-orgb3c926a" class="outline-2">
+<h2 id="orgb3c926a">Introduction</h2>
+<div class="outline-text-2" id="text-orgb3c926a">
+<p>
+For a while, whenever I used <a href="https://www.gnu.org/software/emacs/manual/html_mono/eglot.html">eglot</a> (mostly for Python projects) and then shut it down with e.g. <code>M-x eglot-shutdown</code>, all subsequent attempts to save any files in emacs would return the folllowing error: <code>(jsonrpc-error-message . "No current JSON-RPC connection")</code>. The save would generally succeeed, so this was more annoying than anything. But it <i>was</i> annoying.
+</p>
+
+<p>
+Some quick searching online did not yield any useful discussions of how to fix the issue. And neither Claude nor Perplexity had much to offer, either. So I decided to use this as an excuse to learn more about built-in Emacs introspection and debugging tools.
+</p>
+
+<p>
+I went in with the following information:
+</p>
+<ol class="org-ol">
+<li>The issue was related to <code>eglot</code>. Even though the error message did not reference eglot, the issue consistently appeared after using eglot and then shutting it down.</li>
+<li>The issue was triggered when I saved files.</li>
+</ol>
+
+<p>
+Given this pattern, I started by looking for <a href="https://www.danliden.com/posts/20231217-emacs-hooks.html">hooks</a> related to saving.
+</p>
+</div>
+</div>
+<div id="outline-container-orga23e89f" class="outline-2">
+<h2 id="orga23e89f">Finding Relevant Variables</h2>
+<div class="outline-text-2" id="text-orga23e89f">
+<p>
+I wasn't entirely sure what I was looking for. But I knew from previous reading that hooks are variables that, by convention, include the word <code>hook</code> in their names. This already provides plenty to work with.
+</p>
+
+<p>
+The <code>apropos-variable</code> function takes a pattern or a list of words and returns an <code>*Apropos*</code> buffer with a list of matching variables. In this case, I interatively used <code>apropos-variable</code> with <code>M-x apropos-variable RET save hook</code> to search for variables matching <code>save</code> and <code>hook</code>. This returned a couple of good candidates for further exploration!
+</p>
+
+
+<figure id="org8ae73bc">
+<img src="./figures/20250323-emacs-debugging/1_apropos.png" alt="1_apropos.png">
+
+</figure>
+
+<p>
+The <code>after-save-hook</code> and <code>before-save-hook</code> variables look especially promising. We can inspect those further for anything <code>eglot</code>-related by selecting them from the <code>*Apropos*</code> buffer or searching for them with <code>C-h v &lt;variable-name&gt;</code>. Following this approach showed me that:
+</p>
+
+<ol class="org-ol">
+<li>The value of <code>before-save-hook</code> is <code>nil</code>.</li>
+<li>The value of <code>after-save-hook</code> is <code>(eglot-format)</code>.</li>
+</ol>
+
+<p>
+This is already very useful and points toward some directions for fixing the issue! <code>after-save-hook</code> is a "Normal hook that is run after a buffer is saved to its file." This would explain why (1) the issue is associated with saving files and (2) the saves are successful in spite of the error (the hook is run <i>after</i> the save, not before).
+</p>
+</div>
+</div>
+<div id="outline-container-org53c6d57" class="outline-2">
+<h2 id="org53c6d57">Confirming the issue with error backtrace</h2>
+<div class="outline-text-2" id="text-org53c6d57">
+<p>
+I wanted to confirm that this hook was causing the issue so I used <code>M-x toggle-debug-on-error</code> to get a more detailed backtrace. In reality, this is where I should have started—the error trace provides much more specific and useful information than the short error message returned in the echo area. When I tried to save a file with debugging enabled, I received the following in a <b>Backtrace</b> buffer.
+</p>
+
+<pre class="example">
+Debugger entered--Lisp error: (jsonrpc-error "No current JSON-RPC connection" (jsonrpc-error-code . -32603) (jsonrpc-error-message . "No current JSON-RPC connection"))
+  jsonrpc-error("No current JSON-RPC connection")
+  eglot--current-server-or-lose()
+  eglot-server-capable(:documentFormattingProvider)
+  eglot-server-capable-or-lose(:documentFormattingProvider)
+  eglot-format()
+  run-hooks(after-save-hook)
+  #&lt;subr basic-save-buffer&gt;(t)
+  polymode-with-current-base-buffer(#&lt;subr basic-save-buffer&gt; t)
+  apply(polymode-with-current-base-buffer #&lt;subr basic-save-buffer&gt; t)
+  basic-save-buffer(t)
+  save-buffer(1)
+  funcall-interactively(save-buffer 1)
+  command-execute(save-buffer)
+</pre>
+
+
+<p>
+You can read this backtrace from bottom to top. After saving the buffer, we see that <code>run-hooks(after-save-hook)</code> runs, which results in <code>eglot-format()</code> being run. The final function called before the error is <code>eglot--current-server-or-lose()</code>. Inspecting this with <code>C-h f RET eglot--current-server-or-lose</code> tells us that this function returns the "current logical Eglot server connection or error." If I'm saving some random file that is not going to use a Python LSP server, we would expect this to return an error.
+</p>
+
+<p>
+Now that we have some understanding of what is happening, how do we fix it?
+</p>
+</div>
+</div>
+<div id="outline-container-org82c8e9b" class="outline-2">
+<h2 id="org82c8e9b">Quick fix—bandaid approach</h2>
+<div class="outline-text-2" id="text-org82c8e9b">
+<p>
+My initial fix for this issue was to write a simple cleanup script to 
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2025-03-23 Sun 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+</div>
+</body>
+</html>
