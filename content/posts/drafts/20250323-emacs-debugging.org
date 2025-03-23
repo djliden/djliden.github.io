@@ -1,0 +1,60 @@
+#+TITLE: Emacs Introspection and Debugging
+#+DATE: <2025-03-23 Sun>
+
+#+begin_preview
+If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless of the cause, Emacs provides many tools for identifying the causes of errors and learning how to address them.
+
+This post works through a recent issue I encountered with the ~eglot~ package and how I was able to identify and fix the issue using various introspection tools built into Emacs. It provides some general advice for how to use Emacs to learn about and debug issues with Emacs.
+#+end_preview
+
+* Introduction
+
+For a while, whenever I used [[https://www.gnu.org/software/emacs/manual/html_mono/eglot.html][eglot]] (mostly for Python projects) and then shut it down with e.g. ~M-x eglot-shutdown~, all subsequent attempts to save any files in emacs would return the folllowing error: ~(jsonrpc-error-message . "No current JSON-RPC connection")~. The save would generally succeeed, so this was more annoying than anything. But it /was/ annoying.
+
+Some quick searching online did not yield any useful discussions of how to fix the issue. And neither Claude nor Perplexity had much to offer, either. So I decided to use this as an excuse to learn more about built-in Emacs introspection and debugging tools.
+
+I went in with the following information:
+1. The issue was related to ~eglot~. Even though the error message did not reference eglot, the issue consistently appeared after using eglot and then shutting it down.
+2. The issue was triggered when I saved files.
+
+Given this pattern, I started by looking for [[https://www.danliden.com/posts/20231217-emacs-hooks.html][hooks]] related to saving.
+* Finding Relevant Variables
+I wasn't entirely sure what I was looking for. But I knew from previous reading that hooks are variables that, by convention, include the word ~hook~ in their names. This already provides plenty to work with.
+
+The ~apropos-variable~ function takes a pattern or a list of words and returns an ~*Apropos*~ buffer with a list of matching variables. In this case, I interatively used ~apropos-variable~ with ~M-x apropos-variable RET save hook~ to search for variables matching ~save~ and ~hook~. This returned a couple of good candidates for further exploration!
+
+[[./figures/20250323-emacs-debugging/1_apropos.png]]
+
+The ~after-save-hook~ and ~before-save-hook~ variables look especially promising. We can inspect those further for anything ~eglot~-related by selecting them from the ~*Apropos*~ buffer or searching for them with ~C-h v <variable-name>~. Following this approach showed me that:
+
+1. The value of ~before-save-hook~ is ~nil~.
+2. The value of ~after-save-hook~ is ~(eglot-format)~.
+
+This is already very useful and points toward some directions for fixing the issue! ~after-save-hook~ is a "Normal hook that is run after a buffer is saved to its file." This would explain why (1) the issue is associated with saving files and (2) the saves are successful in spite of the error (the hook is run /after/ the save, not before).
+* Confirming the issue with error backtrace
+I wanted to confirm that this hook was causing the issue so I used ~M-x toggle-debug-on-error~ to get a more detailed backtrace. In reality, this is where I should have started—the error trace provides much more specific and useful information than the short error message returned in the echo area. When I tried to save a file with debugging enabled, I received the following in a *Backtrace* buffer.
+
+#+begin_src
+Debugger entered--Lisp error: (jsonrpc-error "No current JSON-RPC connection" (jsonrpc-error-code . -32603) (jsonrpc-error-message . "No current JSON-RPC connection"))
+  jsonrpc-error("No current JSON-RPC connection")
+  eglot--current-server-or-lose()
+  eglot-server-capable(:documentFormattingProvider)
+  eglot-server-capable-or-lose(:documentFormattingProvider)
+  eglot-format()
+  run-hooks(after-save-hook)
+  #<subr basic-save-buffer>(t)
+  polymode-with-current-base-buffer(#<subr basic-save-buffer> t)
+  apply(polymode-with-current-base-buffer #<subr basic-save-buffer> t)
+  basic-save-buffer(t)
+  save-buffer(1)
+  funcall-interactively(save-buffer 1)
+  command-execute(save-buffer)
+#+end_src
+
+
+You can read this backtrace from bottom to top. After saving the buffer, we see that ~run-hooks(after-save-hook)~ runs, which results in ~eglot-format()~ being run. The final function called before the error is ~eglot--current-server-or-lose()~. Inspecting this with ~C-h f RET eglot--current-server-or-lose~ tells us that this function returns the "current logical Eglot server connection or error." If I'm saving some random file that is not going to use a Python LSP server, we would expect this to return an error.
+
+Now that we have some understanding of what is happening, how do we fix it?
+* Quick fix—bandaid approach
+
+My initial fix for this issue was to write a simple cleanup script to 
