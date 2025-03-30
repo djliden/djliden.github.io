@@ -9,7 +9,7 @@ This post works through a recent issue I encountered with the ~eglot~ package an
 
 * Introduction
 
-For a while, whenever I used [[https://www.gnu.org/software/emacs/manual/html_mono/eglot.html][eglot]] (mostly for Python projects) and then shut it down with e.g. ~M-x eglot-shutdown~, all subsequent attempts to save any files in emacs would return the folllowing error: ~(jsonrpc-error-message . "No current JSON-RPC connection")~. The save would generally succeeed, so this was more annoying than anything. But it /was/ annoying.
+For a while, whenever I used [[https://www.gnu.org/software/emacs/manual/html_mono/eglot.html][eglot]] (mostly for Python projects) and then shut it down with e.g. ~M-x eglot-shutdown~, all subsequent attempts to save any files in Emacs would return the following error: ~(jsonrpc-error-message . "No current JSON-RPC connection")~. The save would generally succeed, so this was more annoying than anything. But it /was/ annoying.
 
 Some quick searching online did not yield any useful discussions of how to fix the issue. And neither Claude nor Perplexity had much to offer, either. So I decided to use this as an excuse to learn more about built-in Emacs introspection and debugging tools.
 
@@ -21,7 +21,7 @@ Given this pattern, I started by looking for [[https://www.danliden.com/posts/20
 * Finding Relevant Variables
 I wasn't entirely sure what I was looking for. But I knew from previous reading that hooks are variables that, by convention, include the word ~hook~ in their names. This already provides plenty to work with.
 
-The ~apropos-variable~ function takes a pattern or a list of words and returns an ~*Apropos*~ buffer with a list of matching variables. In this case, I interatively used ~apropos-variable~ with ~M-x apropos-variable RET save hook~ to search for variables matching ~save~ and ~hook~. This returned a couple of good candidates for further exploration!
+The ~apropos-variable~ function takes a pattern or a list of words and returns an ~*Apropos*~ buffer with a list of matching variables. In this case, I interactively used ~apropos-variable~ with ~M-x apropos-variable RET save hook~ to search for variables matching ~save~ and ~hook~. This returned a couple of good candidates for further exploration!
 
 [[./figures/20250323-emacs-debugging/1_apropos.png]]
 
@@ -75,20 +75,44 @@ My initial fix for this issue was to write a simple cleanup script to remove the
 
 This isn't perfect. It /does/ prevent saving from returning an error /after/ I've shut down eglot, resolving a significant nuisance. However, the issue remains when eglot is running and I try to save a buffer without an associated LSP server; i.e., if I am using eglot in a Python buffer but then try to save an org buffer. The ~eglot-format~ hook function is still active; there is no running language server to provide formatting for org buffers, so the hook function returns an error.
 
-I'm going to leave this as the solution for now. It's not clear to me how the hook is set in the first place and whether it is configurable. Deactivating the hook when eglot is not running resolves about 80% of the frustration for me.
+At this point, it was not yet clear to me how the hook was set in the first place. Deactivating the hook when eglot is not running resolves about 80% of the frustration for me. But I *would* like to fully resolve the issue. I don't actually /want/ the format-on-save behavior in the first place. It has to be set *somewhere*. In the next section, I will briefly sketch out my process for identifying the issue.
+
+* Finding the root of the problem
+
+My first thought was that, perhaps, the hook was being set when ~eglot~ was invoked. To check this, I:
+1. Called ~C-h f eglot~ to find the documentation for the ~eglot~ command
+2. Followed the link in the help buffer to ~eglot.el~, the source file where the ~eglot~ command and related functions are defined.
+3. Used ~consult-line~ (or, equivalently, ~isearch~ or one of the many other tools available for searching buffer text) for the term ~hook~.
+
+This showed me that ~eglot-format~ was not, in fact, being set as an ~after-save-hook~ function by eglot itself.
+
+So...did I do this myself, somewhere in my config?
+
+I next navigated to my config folder, ~~/coffeemacs/~, and invoked ~lgrep~ to search my various ~*.el~ config files for anything related to ~eglot~.
+
+And it turns out, I set this hook myself!
+
+
+[[./figures/20250323-emacs-debugging/2_grep.png]]
+
+Once I deleted the ~(add-hook 'after-save-hook ...)~ call from my config, the issue was fully resolved.
 
 * Conclusion—Emacs introspection
 
-The approaches I used here are nowhere close to comprehensive. Emacs has countless introspection tools and a seemingly-inexhaustible collection of functions and variables that enable you to inspect everything going on in your emacs setup. Furthermore, it provides a range of ways to search these variables and functions.
+The approaches I used here are nowhere close to comprehensive. Emacs has countless introspection tools and a seemingly-inexhaustible collection of functions and variables that enable you to inspect everything going on in your Emacs setup. Furthermore, it provides a range of ways to search these variables and functions.
 
 The following tools will go a long way toward helping you debug an error in Emacs:
 
 1. *Enable debugging on error* with ~M-x toggle-debug-on-error~. This will provide a backtrace that will show the source of the error.
 2. *Search for relevant functions and variables* with ~apropos-function~ and ~apropos-variable~. You can pass in a list of relevant terms to search for.
-3. *Get documentation for specific functions and variables* with the ~describe-function~ (~C-h f~) and ~descrive-variable~ (~C-h v~) commands.
+3. *Get documentation for specific functions and variables* with the ~describe-function~ (~C-h f~) and ~describe-variable~ (~C-h v~) commands.
 
 Even these relatively simple tools are often enough to identify the source of an issue and do something about it.
 
-Lastly—we're reaching a point where you don't have to do this yourself. You can configure the [[https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-window-to-scroll-automatically-as-the-response-is-inserted][gptel]] package with a set of tools—emacs functions—that will enable it to recursively search for information in docs, manuals, source code, etc. [[https://youtu.be/JHXG225oP8E?si=6pgmR_S-Vk2QmjU9][This video]] provides a good overview of how to get started.
+Lastly—we're reaching a point where you don't have to do this yourself. You can configure the [[https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-window-to-scroll-automatically-as-the-response-is-inserted][gptel]] package with a set of tools—Emacs functions—that will enable it to recursively search for information in docs, manuals, source code, etc. [[https://youtu.be/JHXG225oP8E?si=6pgmR_S-Vk2QmjU9][This video]] provides a good overview of how to get started.
 
-[[./figures/20250323-emacs-debugging/2_gptel.png]]
+[[./figures/20250323-emacs-debugging/3_gptel.png]]
+
+#  LocalWords:  elisp eglot jsonrpc JSON RPC wasn RET backtrace src subr LSP ve
+#  LocalWords:  documentFormattingProvider polymode funcall bandaid config setq
+#  LocalWords:  autoshutdown defun isn el isearch lgrep gptel
