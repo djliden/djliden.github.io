@@ -57,4 +57,38 @@ You can read this backtrace from bottom to top. After saving the buffer, we see 
 Now that we have some understanding of what is happening, how do we fix it?
 * Quick fix—bandaid approach
 
-My initial fix for this issue was to write a simple cleanup script to 
+My initial fix for this issue was to write a simple cleanup script to remove the offending hook function from the ~after-save-hook~.
+
+#+begin_src emacs-lisp
+(use-package eglot
+  :straight
+  (:type built-in)
+  :hook ((python-mode . eglot-ensure))
+  :config
+  (setq eglot-autoshutdown t)
+  
+  (defun my-eglot-shutdown-cleanup (&rest _)
+    "Perform thorough cleanup after Eglot shutdown."
+    (remove-hook 'after-save-hook #'eglot-format nil)
+  (advice-add 'eglot-shutdown :after #'my-eglot-shutdown-cleanup))
+#+end_src
+
+This isn't perfect. It /does/ prevent saving from returning an error /after/ I've shut down eglot, resolving a significant nuisance. However, the issue remains when eglot is running and I try to save a buffer without an associated LSP server; i.e., if I am using eglot in a Python buffer but then try to save an org buffer. The ~eglot-format~ hook function is still active; there is no running language server to provide formatting for org buffers, so the hook function returns an error.
+
+I'm going to leave this as the solution for now. It's not clear to me how the hook is set in the first place and whether it is configurable. Deactivating the hook when eglot is not running resolves about 80% of the frustration for me.
+
+* Conclusion—Emacs introspection
+
+The approaches I used here are nowhere close to comprehensive. Emacs has countless introspection tools and a seemingly-inexhaustible collection of functions and variables that enable you to inspect everything going on in your emacs setup. Furthermore, it provides a range of ways to search these variables and functions.
+
+The following tools will go a long way toward helping you debug an error in Emacs:
+
+1. *Enable debugging on error* with ~M-x toggle-debug-on-error~. This will provide a backtrace that will show the source of the error.
+2. *Search for relevant functions and variables* with ~apropos-function~ and ~apropos-variable~. You can pass in a list of relevant terms to search for.
+3. *Get documentation for specific functions and variables* with the ~describe-function~ (~C-h f~) and ~descrive-variable~ (~C-h v~) commands.
+
+Even these relatively simple tools are often enough to identify the source of an issue and do something about it.
+
+Lastly—we're reaching a point where you don't have to do this yourself. You can configure the [[https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-window-to-scroll-automatically-as-the-response-is-inserted][gptel]] package with a set of tools—emacs functions—that will enable it to recursively search for information in docs, manuals, source code, etc. [[https://youtu.be/JHXG225oP8E?si=6pgmR_S-Vk2QmjU9][This video]] provides a good overview of how to get started.
+
+[[./figures/20250323-emacs-debugging/2_gptel.png]]
