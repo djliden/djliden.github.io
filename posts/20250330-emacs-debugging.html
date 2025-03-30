@@ -38,15 +38,16 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org34e9eda">Introduction</a></li>
-<li><a href="#org57b3588">Finding Relevant Variables</a></li>
-<li><a href="#org7dae486">Confirming the issue with error backtrace</a></li>
-<li><a href="#org59db9e7">Quick fix—bandaid approach</a></li>
-<li><a href="#org34a4828">Conclusion—Emacs introspection</a></li>
+<li><a href="#orgfe2b05c">Introduction</a></li>
+<li><a href="#orge33d347">Finding Relevant Variables</a></li>
+<li><a href="#org760b18e">Confirming the issue with error backtrace</a></li>
+<li><a href="#org4c5ed01">Quick fix—bandaid approach</a></li>
+<li><a href="#orge479f9e">Finding the root of the problem</a></li>
+<li><a href="#org6b42427">Conclusion—Emacs introspection</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org979576e">
+<div class="preview" id="orgee7b77f">
 <p>
 If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless of the cause, Emacs provides many tools for identifying the causes of errors and learning how to address them.
 </p>
@@ -57,11 +58,11 @@ This post works through a recent issue I encountered with the <code>eglot</code>
 
 </div>
 
-<div id="outline-container-org34e9eda" class="outline-2">
-<h2 id="org34e9eda">Introduction</h2>
-<div class="outline-text-2" id="text-org34e9eda">
+<div id="outline-container-orgfe2b05c" class="outline-2">
+<h2 id="orgfe2b05c">Introduction</h2>
+<div class="outline-text-2" id="text-orgfe2b05c">
 <p>
-For a while, whenever I used <a href="https://www.gnu.org/software/emacs/manual/html_mono/eglot.html">eglot</a> (mostly for Python projects) and then shut it down with e.g. <code>M-x eglot-shutdown</code>, all subsequent attempts to save any files in emacs would return the folllowing error: <code>(jsonrpc-error-message . "No current JSON-RPC connection")</code>. The save would generally succeeed, so this was more annoying than anything. But it <i>was</i> annoying.
+For a while, whenever I used <a href="https://www.gnu.org/software/emacs/manual/html_mono/eglot.html">eglot</a> (mostly for Python projects) and then shut it down with e.g. <code>M-x eglot-shutdown</code>, all subsequent attempts to save any files in Emacs would return the following error: <code>(jsonrpc-error-message . "No current JSON-RPC connection")</code>. The save would generally succeed, so this was more annoying than anything. But it <i>was</i> annoying.
 </p>
 
 <p>
@@ -81,19 +82,19 @@ Given this pattern, I started by looking for <a href="https://www.danliden.com/p
 </p>
 </div>
 </div>
-<div id="outline-container-org57b3588" class="outline-2">
-<h2 id="org57b3588">Finding Relevant Variables</h2>
-<div class="outline-text-2" id="text-org57b3588">
+<div id="outline-container-orge33d347" class="outline-2">
+<h2 id="orge33d347">Finding Relevant Variables</h2>
+<div class="outline-text-2" id="text-orge33d347">
 <p>
 I wasn't entirely sure what I was looking for. But I knew from previous reading that hooks are variables that, by convention, include the word <code>hook</code> in their names. This already provides plenty to work with.
 </p>
 
 <p>
-The <code>apropos-variable</code> function takes a pattern or a list of words and returns an <code>*Apropos*</code> buffer with a list of matching variables. In this case, I interatively used <code>apropos-variable</code> with <code>M-x apropos-variable RET save hook</code> to search for variables matching <code>save</code> and <code>hook</code>. This returned a couple of good candidates for further exploration!
+The <code>apropos-variable</code> function takes a pattern or a list of words and returns an <code>*Apropos*</code> buffer with a list of matching variables. In this case, I interactively used <code>apropos-variable</code> with <code>M-x apropos-variable RET save hook</code> to search for variables matching <code>save</code> and <code>hook</code>. This returned a couple of good candidates for further exploration!
 </p>
 
 
-<figure id="orgc7a6c0b">
+<figure id="org95af986">
 <img src="./figures/20250323-emacs-debugging/1_apropos.png" alt="1_apropos.png">
 
 </figure>
@@ -112,9 +113,9 @@ This is already very useful and points toward some directions for fixing the iss
 </p>
 </div>
 </div>
-<div id="outline-container-org7dae486" class="outline-2">
-<h2 id="org7dae486">Confirming the issue with error backtrace</h2>
-<div class="outline-text-2" id="text-org7dae486">
+<div id="outline-container-org760b18e" class="outline-2">
+<h2 id="org760b18e">Confirming the issue with error backtrace</h2>
+<div class="outline-text-2" id="text-org760b18e">
 <p>
 I wanted to confirm that this hook was causing the issue so I used <code>M-x toggle-debug-on-error</code> to get a more detailed backtrace. In reality, this is where I should have started—the error trace provides much more specific and useful information than the short error message returned in the echo area. When I tried to save a file with debugging enabled, I received the following in a <b>Backtrace</b> buffer.
 </p>
@@ -146,9 +147,9 @@ Now that we have some understanding of what is happening, how do we fix it?
 </p>
 </div>
 </div>
-<div id="outline-container-org59db9e7" class="outline-2">
-<h2 id="org59db9e7">Quick fix—bandaid approach</h2>
-<div class="outline-text-2" id="text-org59db9e7">
+<div id="outline-container-org4c5ed01" class="outline-2">
+<h2 id="org4c5ed01">Quick fix—bandaid approach</h2>
+<div class="outline-text-2" id="text-org4c5ed01">
 <p>
 My initial fix for this issue was to write a simple cleanup script to remove the offending hook function from the <code>after-save-hook</code>.
 </p>
@@ -173,16 +174,57 @@ This isn't perfect. It <i>does</i> prevent saving from returning an error <i>aft
 </p>
 
 <p>
-I'm going to leave this as the solution for now. It's not clear to me how the hook is set in the first place and whether it is configurable. Deactivating the hook when eglot is not running resolves about 80% of the frustration for me.
+At this point, it was not yet clear to me how the hook was set in the first place. Deactivating the hook when eglot is not running resolves about 80% of the frustration for me. But I <b>would</b> like to fully resolve the issue. I don't actually <i>want</i> the format-on-save behavior in the first place. It has to be set <b>somewhere</b>. In the next section, I will briefly sketch out my process for identifying the issue.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org34a4828" class="outline-2">
-<h2 id="org34a4828">Conclusion—Emacs introspection</h2>
-<div class="outline-text-2" id="text-org34a4828">
+<div id="outline-container-orge479f9e" class="outline-2">
+<h2 id="orge479f9e">Finding the root of the problem</h2>
+<div class="outline-text-2" id="text-orge479f9e">
 <p>
-The approaches I used here are nowhere close to comprehensive. Emacs has countless introspection tools and a seemingly-inexhaustible collection of functions and variables that enable you to inspect everything going on in your emacs setup. Furthermore, it provides a range of ways to search these variables and functions.
+My first thought was that, perhaps, the hook was being set when <code>eglot</code> was invoked. To check this, I:
+</p>
+<ol class="org-ol">
+<li>Called <code>C-h f eglot</code> to find the documentation for the <code>eglot</code> command</li>
+<li>Followed the link in the help buffer to <code>eglot.el</code>, the source file where the <code>eglot</code> command and related functions are defined.</li>
+<li>Used <code>consult-line</code> (or, equivalently, <code>isearch</code> or one of the many other tools available for searching buffer text) for the term <code>hook</code>.</li>
+</ol>
+
+<p>
+This showed me that <code>eglot-format</code> was not, in fact, being set as an <code>after-save-hook</code> function by eglot itself.
+</p>
+
+<p>
+So&#x2026;did I do this myself, somewhere in my config?
+</p>
+
+<p>
+I next navigated to my config folder, <code>~/coffeemacs/</code>, and invoked <code>lgrep</code> to search my various <code>*.el</code> config files for anything related to <code>eglot</code>.
+</p>
+
+<p>
+And it turns out, I set this hook myself!
+</p>
+
+
+
+<figure id="orgd434153">
+<img src="./figures/20250323-emacs-debugging/2_grep.png" alt="2_grep.png">
+
+</figure>
+
+<p>
+Once I deleted the <code>(add-hook 'after-save-hook ...)</code> call from my config, the issue was fully resolved.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6b42427" class="outline-2">
+<h2 id="org6b42427">Conclusion—Emacs introspection</h2>
+<div class="outline-text-2" id="text-org6b42427">
+<p>
+The approaches I used here are nowhere close to comprehensive. Emacs has countless introspection tools and a seemingly-inexhaustible collection of functions and variables that enable you to inspect everything going on in your Emacs setup. Furthermore, it provides a range of ways to search these variables and functions.
 </p>
 
 <p>
@@ -192,7 +234,7 @@ The following tools will go a long way toward helping you debug an error in Emac
 <ol class="org-ol">
 <li><b>Enable debugging on error</b> with <code>M-x toggle-debug-on-error</code>. This will provide a backtrace that will show the source of the error.</li>
 <li><b>Search for relevant functions and variables</b> with <code>apropos-function</code> and <code>apropos-variable</code>. You can pass in a list of relevant terms to search for.</li>
-<li><b>Get documentation for specific functions and variables</b> with the <code>describe-function</code> (<code>C-h f</code>) and <code>descrive-variable</code> (<code>C-h v</code>) commands.</li>
+<li><b>Get documentation for specific functions and variables</b> with the <code>describe-function</code> (<code>C-h f</code>) and <code>describe-variable</code> (<code>C-h v</code>) commands.</li>
 </ol>
 
 <p>
@@ -200,12 +242,12 @@ Even these relatively simple tools are often enough to identify the source of an
 </p>
 
 <p>
-Lastly—we're reaching a point where you don't have to do this yourself. You can configure the <a href="https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-window-to-scroll-automatically-as-the-response-is-inserted">gptel</a> package with a set of tools—emacs functions—that will enable it to recursively search for information in docs, manuals, source code, etc. <a href="https://youtu.be/JHXG225oP8E?si=6pgmR_S-Vk2QmjU9">This video</a> provides a good overview of how to get started.
+Lastly—we're reaching a point where you don't have to do this yourself. You can configure the <a href="https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-window-to-scroll-automatically-as-the-response-is-inserted">gptel</a> package with a set of tools—Emacs functions—that will enable it to recursively search for information in docs, manuals, source code, etc. <a href="https://youtu.be/JHXG225oP8E?si=6pgmR_S-Vk2QmjU9">This video</a> provides a good overview of how to get started.
 </p>
 
 
-<figure id="orgce8732f">
-<img src="./figures/20250323-emacs-debugging/2_gptel.png" alt="2_gptel.png">
+<figure id="orgf54921f">
+<img src="./figures/20250323-emacs-debugging/3_gptel.png" alt="3_gptel.png">
 
 </figure>
 </div>
