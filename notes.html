@@ -38,25 +38,25 @@
 This page includes miscellaneous notes and drafts. It provides a place for me to record things that I learn and to share work-in-progress posts. Assume everything here is half-baked, a work in progress, provisional.
 </p>
 
-<div id="outline-container-org4c153a1" class="outline-2">
-<h2 id="org4c153a1"><a href="notes/20250308-registers-1.html">(2025-03-08) Navigating between points with registers</a></h2>
-<div class="outline-text-2" id="text-org4c153a1">
+<div id="outline-container-org67ab29d" class="outline-2">
+<h2 id="org67ab29d"><a href="notes/20250308-registers-1.html">(2025-03-08) Navigating between points with registers</a></h2>
+<div class="outline-text-2" id="text-org67ab29d">
 <p>
 Registers provide a very easy way to navigate between different points in Emacs. This note briefly describes how to use them.
 </p>
 </div>
 </div>
-<div id="outline-container-org83adee8" class="outline-2">
-<h2 id="org83adee8"><a href="notes/20241112-python-setup.html">(2024-11-12) Using Python in Emacs</a></h2>
-<div class="outline-text-2" id="text-org83adee8">
+<div id="outline-container-orge07f13c" class="outline-2">
+<h2 id="orge07f13c"><a href="notes/20241112-python-setup.html">(2024-11-12) Using Python in Emacs</a></h2>
+<div class="outline-text-2" id="text-orge07f13c">
 <p>
 I will keep this note up to date with details on how I use emacs for Python development.
 </p>
 </div>
 </div>
-<div id="outline-container-org3a5f3cd" class="outline-2">
-<h2 id="org3a5f3cd"><a href="notes/20240821-uv.html">(2024-08-21) Python Package Management with uv</a></h2>
-<div class="outline-text-2" id="text-org3a5f3cd">
+<div id="outline-container-org2ee7a34" class="outline-2">
+<h2 id="org2ee7a34"><a href="notes/20240821-uv.html">(2024-08-21) Python Package Management with uv</a></h2>
+<div class="outline-text-2" id="text-org2ee7a34">
 <p>
 Yesterday (<span class="timestamp-wrapper"><span class="timestamp">&lt;2024-08-20 Tue&gt;</span></span>), Astral released <a href="https://astral.sh/blog/uv-unified-python-packaging">a bunch of updates</a> to <a href="https://github.com/astral-sh/uv">uv</a>, their Python package/project manager, written in Rust. I've been using uv for the past month or two, mostly as a very fast drop-in replacement for venv and pip.
 </p>
@@ -70,17 +70,17 @@ This post will very briefly explore the workflow I am most interested in—setti
 </p>
 </div>
 </div>
-<div id="outline-container-org9ea72aa" class="outline-2">
-<h2 id="org9ea72aa"><a href="notes/20240818-answer-ai.html">(2024-08-18) Answer.ai, Claudette, and FastHTML</a></h2>
-<div class="outline-text-2" id="text-org9ea72aa">
+<div id="outline-container-org3623dcf" class="outline-2">
+<h2 id="org3623dcf"><a href="notes/20240818-answer-ai.html">(2024-08-18) Answer.ai, Claudette, and FastHTML</a></h2>
+<div class="outline-text-2" id="text-org3623dcf">
 <p>
 I just listened to the latest episode of the <a href="https://www.latent.space/p/answerai">Latent Space podcast</a>, which featured Jeremy Howard of <a href="https://www.fast.ai/">fast.ai</a> fame. Fast.ai was my introduction to deep learning—or at least re-introduction following a brief and theory-oriented treatment of the topic in grad school—and the course and book remain among the best learning resources I have ever encountered. The podcast was a good reminder to look into the projects Howard and his team have been working on at <a href="https://www.answer.ai/">answer.ai</a>, "a new kind of AI R&amp;D lab which creates practical end-user products based on foundational research breakthroughs."
 </p>
 </div>
 </div>
-<div id="outline-container-org866a2d2" class="outline-2">
-<h2 id="org866a2d2"><a href="notes/20240709-python-readline.html">(2024-07-09) Python interpreter doesn't seem to support readline error in Emacs on MacOS</a></h2>
-<div class="outline-text-2" id="text-org866a2d2">
+<div id="outline-container-org9fc5df5" class="outline-2">
+<h2 id="org9fc5df5"><a href="notes/20240709-python-readline.html">(2024-07-09) Python interpreter doesn't seem to support readline error in Emacs on MacOS</a></h2>
+<div class="outline-text-2" id="text-org9fc5df5">
 <p>
 I was encountering this warning when trying to use Python in Emacs on Macos: <code>Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list.  Native completions have been disabled locally.</code> I found years of discussions on this issue, but no solutions. I also found that using Python installed with Conda instead of with virtualenv worked fine. From this, I narrowed down the root cause and found a working solution: (1) install the <code>gnureadline</code> Python package with <code>pip install gnureadline</code>; (2) override the default readline in your virtual environment with <code>python -m override_readline</code>.
 </p>
@@ -90,9 +90,9 @@ In the rest of this note, I will briefly review the steps of the investigation t
 </p>
 </div>
 </div>
-<div id="outline-container-org2ba6dbf" class="outline-2">
-<h2 id="org2ba6dbf"><a href="notes/20240418-instructor-async.html">(2024-04-18) Asynchronous Instructor</a></h2>
-<div class="outline-text-2" id="text-org2ba6dbf">
+<div id="outline-container-org98a5e18" class="outline-2">
+<h2 id="org98a5e18"><a href="notes/20240418-instructor-async.html">(2024-04-18) Asynchronous Instructor</a></h2>
+<div class="outline-text-2" id="text-org98a5e18">
 <p>
 In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts.
 </p>
@@ -106,57 +106,57 @@ Using the instructor library with the asynchronous Anthropic client makes it muc
 </p>
 </div>
 </div>
-<div id="outline-container-org55b08fa" class="outline-2">
-<h2 id="org55b08fa"><a href="notes/20240417-mlflow-qlora.html">(2024-04-17) Logging and Loading a QLoRA Model with MLflow</a></h2>
-<div class="outline-text-2" id="text-org55b08fa">
+<div id="outline-container-org33de8e5" class="outline-2">
+<h2 id="org33de8e5"><a href="notes/20240417-mlflow-qlora.html">(2024-04-17) Logging and Loading a QLoRA Model with MLflow</a></h2>
+<div class="outline-text-2" id="text-org33de8e5">
 <p>
 This is a minimal example of how to log an MLflow qlora model. It does not show any actual model training or data processing, just the basic process of saving the model.
 </p>
 </div>
 </div>
-<div id="outline-container-org3cdee9c" class="outline-2">
-<h2 id="org3cdee9c"><a href="notes/20240416-torch-cuda-flash-attn.html">(2024-04-16) Troubleshooting Flash Attention Installation</a></h2>
-<div class="outline-text-2" id="text-org3cdee9c">
+<div id="outline-container-org144d4e5" class="outline-2">
+<h2 id="org144d4e5"><a href="notes/20240416-torch-cuda-flash-attn.html">(2024-04-16) Troubleshooting Flash Attention Installation</a></h2>
+<div class="outline-text-2" id="text-org144d4e5">
 <p>
 I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platform I tend to be working on (Databricks). This note is a quick summary.
 </p>
 </div>
 </div>
-<div id="outline-container-orgd75bcc5" class="outline-2">
-<h2 id="orgd75bcc5"><a href="notes/20240405-qlora-hf.html">(2024-04-05) Intro to QLoRA</a></h2>
-<div class="outline-text-2" id="text-orgd75bcc5">
+<div id="outline-container-org01796d0" class="outline-2">
+<h2 id="org01796d0"><a href="notes/20240405-qlora-hf.html">(2024-04-05) Intro to QLoRA</a></h2>
+<div class="outline-text-2" id="text-org01796d0">
 <p>
 I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA and quantization. Later, I will also make a note with some examples.
 </p>
 </div>
 </div>
-<div id="outline-container-orgdb1431c" class="outline-2">
-<h2 id="orgdb1431c"><a href="notes/20240404-dbrx-mlflow.html">(2024-04-04) DBRX with MLflow</a></h2>
-<div class="outline-text-2" id="text-orgdb1431c">
+<div id="outline-container-org8a3c7d7" class="outline-2">
+<h2 id="org8a3c7d7"><a href="notes/20240404-dbrx-mlflow.html">(2024-04-04) DBRX with MLflow</a></h2>
+<div class="outline-text-2" id="text-org8a3c7d7">
 <p>
 This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.
 </p>
 </div>
 </div>
-<div id="outline-container-org043ac4a" class="outline-2">
-<h2 id="org043ac4a"><a href="notes/20240403-dbrx-instructor.html">(2024-04-03) Using the DBRX Model with Instructor</a></h2>
-<div class="outline-text-2" id="text-org043ac4a">
+<div id="outline-container-org85b48c7" class="outline-2">
+<h2 id="org85b48c7"><a href="notes/20240403-dbrx-instructor.html">(2024-04-03) Using the DBRX Model with Instructor</a></h2>
+<div class="outline-text-2" id="text-org85b48c7">
 <p>
 This note briefly demonstrates how to use the <a href="https://github.com/jxnl/instructor">Instructor</a> library with the Databricks <a href="https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm">DBRX</a> model via the Databricks Foundation Models API.
 </p>
 </div>
 </div>
-<div id="outline-container-org5e0252b" class="outline-2">
-<h2 id="org5e0252b"><a href="notes/20240401-mlx-quickstart.html">(2024-04-01) MLX Quickstart</a></h2>
-<div class="outline-text-2" id="text-org5e0252b">
+<div id="outline-container-org249e102" class="outline-2">
+<h2 id="org249e102"><a href="notes/20240401-mlx-quickstart.html">(2024-04-01) MLX Quickstart</a></h2>
+<div class="outline-text-2" id="text-org249e102">
 <p>
 These are my notes on the <a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">MLX quick start guide and usage notes</a>. It's a work in progress. Ultimately, I'm interested in learning what MLX will let me do with LLMs on my laptop. I might write something more substantial on that topic in the future. For now, you're probably better off consulting the docs yourself than looking at my notes on them.
 </p>
 </div>
 </div>
-<div id="outline-container-org9ca8c8c" class="outline-2">
-<h2 id="org9ca8c8c"><a href="notes/20240330-raschka-torch-notes.html">(2024-03-31) PyTorch Review</a></h2>
-<div class="outline-text-2" id="text-org9ca8c8c">
+<div id="outline-container-orga74df28" class="outline-2">
+<h2 id="orga74df28"><a href="notes/20240330-raschka-torch-notes.html">(2024-03-31) PyTorch Review</a></h2>
+<div class="outline-text-2" id="text-orga74df28">
 <p>
 This is a quick run through the appendix on PyTorch from Sebastian Raschka's <a href="https://www.manning.com/books/build-a-large-language-model-from-scratch">Build a Large Language Model (From Scratch)</a> book, currently available via Manning's MEAP. I haven't spent an enormous amount of time with PyTorch in the last year or so, so it seemed worth the effort to work through it.
 </p>

@@ -38,30 +38,30 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga1e1077">The Problem</a></li>
-<li><a href="#orgb90592c">Solution</a></li>
-<li><a href="#orgd7ce8f0">What didn't work</a></li>
+<li><a href="#org7425c9d">The Problem</a></li>
+<li><a href="#org0a5c696">Solution</a></li>
+<li><a href="#org3fc3dbf">What didn't work</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org92b0e16">
+<div class="preview" id="orgd842cc6">
 <p>
 I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platform I tend to be working on (Databricks). This note is a quick summary.
 </p>
 
 </div>
-<div id="outline-container-orga1e1077" class="outline-2">
-<h2 id="orga1e1077">The Problem</h2>
-<div class="outline-text-2" id="text-orga1e1077">
+<div id="outline-container-org7425c9d" class="outline-2">
+<h2 id="org7425c9d">The Problem</h2>
+<div class="outline-text-2" id="text-org7425c9d">
 <p>
 I kept getting an "undefined symbol" error like <a href="https://github.com/Dao-AILab/flash-attention/issues/667">this</a> when trying to load a model with flash attention (or even just when importing the flash attention library).
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgb90592c" class="outline-2">
-<h2 id="orgb90592c">Solution</h2>
-<div class="outline-text-2" id="text-orgb90592c">
+<div id="outline-container-org0a5c696" class="outline-2">
+<h2 id="org0a5c696">Solution</h2>
+<div class="outline-text-2" id="text-org0a5c696">
 <p>
 The following approach worked.
 </p>
@@ -118,9 +118,9 @@ We can then make sure everything works (without needing to take extra time to lo
 </div>
 </div>
 
-<div id="outline-container-orgd7ce8f0" class="outline-2">
-<h2 id="orgd7ce8f0">What didn't work</h2>
-<div class="outline-text-2" id="text-orgd7ce8f0">
+<div id="outline-container-org3fc3dbf" class="outline-2">
+<h2 id="org3fc3dbf">What didn't work</h2>
+<div class="outline-text-2" id="text-org3fc3dbf">
 <p>
 I wasn't able to get any variety of <code>pip install flash-attn</code> working. This was regardless of the no build isolation flag; specific versions; etc.
 </p>
