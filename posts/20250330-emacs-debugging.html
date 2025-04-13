@@ -38,16 +38,16 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga847e5e">Introduction</a></li>
-<li><a href="#orgf6113d9">Finding Relevant Variables</a></li>
-<li><a href="#orga080434">Confirming the issue with error backtrace</a></li>
-<li><a href="#org61980dc">Quick fix—bandaid approach</a></li>
-<li><a href="#orgadf24dc">Finding the root of the problem</a></li>
-<li><a href="#orga58b38b">Conclusion—Emacs introspection</a></li>
+<li><a href="#orgb48a2cc">Introduction</a></li>
+<li><a href="#org0fb7b25">Finding Relevant Variables</a></li>
+<li><a href="#org5e647e0">Confirming the issue with error backtrace</a></li>
+<li><a href="#orgc80f88f">Quick fix—bandaid approach</a></li>
+<li><a href="#org0dd9587">Finding the root of the problem</a></li>
+<li><a href="#org504c206">Conclusion—Emacs introspection</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org5802a1f">
+<div class="preview" id="orgb065e41">
 <p>
 If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless of the cause, Emacs provides many tools for identifying the causes of errors and learning how to address them.
 </p>
@@ -58,9 +58,9 @@ This post works through a recent issue I encountered with the <code>eglot</code>
 
 </div>
 
-<div id="outline-container-orga847e5e" class="outline-2">
-<h2 id="orga847e5e">Introduction</h2>
-<div class="outline-text-2" id="text-orga847e5e">
+<div id="outline-container-orgb48a2cc" class="outline-2">
+<h2 id="orgb48a2cc">Introduction</h2>
+<div class="outline-text-2" id="text-orgb48a2cc">
 <p>
 For a while, whenever I used <a href="https://www.gnu.org/software/emacs/manual/html_mono/eglot.html">eglot</a> (mostly for Python projects) and then shut it down with e.g. <code>M-x eglot-shutdown</code>, all subsequent attempts to save any files in Emacs would return the following error: <code>(jsonrpc-error-message . "No current JSON-RPC connection")</code>. The save would generally succeed, so this was more annoying than anything. But it <i>was</i> annoying.
 </p>
@@ -82,9 +82,9 @@ Given this pattern, I started by looking for <a href="https://www.danliden.com/p
 </p>
 </div>
 </div>
-<div id="outline-container-orgf6113d9" class="outline-2">
-<h2 id="orgf6113d9">Finding Relevant Variables</h2>
-<div class="outline-text-2" id="text-orgf6113d9">
+<div id="outline-container-org0fb7b25" class="outline-2">
+<h2 id="org0fb7b25">Finding Relevant Variables</h2>
+<div class="outline-text-2" id="text-org0fb7b25">
 <p>
 I wasn't entirely sure what I was looking for. But I knew from previous reading that hooks are variables that, by convention, include the word <code>hook</code> in their names. This already provides plenty to work with.
 </p>
@@ -94,7 +94,7 @@ The <code>apropos-variable</code> function takes a pattern or a list of words an
 </p>
 
 
-<figure id="org51da36d">
+<figure id="org258eb1a">
 <img src="./figures/20250323-emacs-debugging/1_apropos.png" alt="1_apropos.png">
 
 </figure>
@@ -113,9 +113,9 @@ This is already very useful and points toward some directions for fixing the iss
 </p>
 </div>
 </div>
-<div id="outline-container-orga080434" class="outline-2">
-<h2 id="orga080434">Confirming the issue with error backtrace</h2>
-<div class="outline-text-2" id="text-orga080434">
+<div id="outline-container-org5e647e0" class="outline-2">
+<h2 id="org5e647e0">Confirming the issue with error backtrace</h2>
+<div class="outline-text-2" id="text-org5e647e0">
 <p>
 I wanted to confirm that this hook was causing the issue so I used <code>M-x toggle-debug-on-error</code> to get a more detailed backtrace. In reality, this is where I should have started—the error trace provides much more specific and useful information than the short error message returned in the echo area. When I tried to save a file with debugging enabled, I received the following in a <b>Backtrace</b> buffer.
 </p>
@@ -147,9 +147,9 @@ Now that we have some understanding of what is happening, how do we fix it?
 </p>
 </div>
 </div>
-<div id="outline-container-org61980dc" class="outline-2">
-<h2 id="org61980dc">Quick fix—bandaid approach</h2>
-<div class="outline-text-2" id="text-org61980dc">
+<div id="outline-container-orgc80f88f" class="outline-2">
+<h2 id="orgc80f88f">Quick fix—bandaid approach</h2>
+<div class="outline-text-2" id="text-orgc80f88f">
 <p>
 My initial fix for this issue was to write a simple cleanup script to remove the offending hook function from the <code>after-save-hook</code>.
 </p>
@@ -179,9 +179,9 @@ At this point, it was not yet clear to me how the hook was set in the first plac
 </div>
 </div>
 
-<div id="outline-container-orgadf24dc" class="outline-2">
-<h2 id="orgadf24dc">Finding the root of the problem</h2>
-<div class="outline-text-2" id="text-orgadf24dc">
+<div id="outline-container-org0dd9587" class="outline-2">
+<h2 id="org0dd9587">Finding the root of the problem</h2>
+<div class="outline-text-2" id="text-org0dd9587">
 <p>
 My first thought was that, perhaps, the hook was being set when <code>eglot</code> was invoked. To check this, I:
 </p>
@@ -209,7 +209,7 @@ And it turns out, I set this hook myself!
 
 
 
-<figure id="org200fee6">
+<figure id="org96f4f32">
 <img src="./figures/20250323-emacs-debugging/2_grep.png" alt="2_grep.png">
 
 </figure>
@@ -220,9 +220,9 @@ Once I deleted the <code>(add-hook 'after-save-hook ...)</code> call from my con
 </div>
 </div>
 
-<div id="outline-container-orga58b38b" class="outline-2">
-<h2 id="orga58b38b">Conclusion—Emacs introspection</h2>
-<div class="outline-text-2" id="text-orga58b38b">
+<div id="outline-container-org504c206" class="outline-2">
+<h2 id="org504c206">Conclusion—Emacs introspection</h2>
+<div class="outline-text-2" id="text-org504c206">
 <p>
 The approaches I used here are nowhere close to comprehensive. Emacs has countless introspection tools and a seemingly-inexhaustible collection of functions and variables that enable you to inspect everything going on in your Emacs setup. Furthermore, it provides a range of ways to search these variables and functions.
 </p>
@@ -246,7 +246,7 @@ Lastly—we're reaching a point where you don't have to do this yourself. You ca
 </p>
 
 
-<figure id="org3495790">
+<figure id="orga2b89f8">
 <img src="./figures/20250323-emacs-debugging/3_gptel.png" alt="3_gptel.png">
 
 </figure>
