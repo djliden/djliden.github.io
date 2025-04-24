@@ -38,26 +38,26 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org2c914f9">Introduction</a></li>
-<li><a href="#org7bde9b4">Claudette</a>
+<li><a href="#org5399835">Introduction</a></li>
+<li><a href="#org81193bb">Claudette</a>
 <ul>
-<li><a href="#org0aa6cac">Setup</a></li>
-<li><a href="#org8867e32">The <code>Chat</code> class</a></li>
-<li><a href="#org8e83815">Tools</a></li>
+<li><a href="#org4bbff1b">Setup</a></li>
+<li><a href="#org205c72a">The <code>Chat</code> class</a></li>
+<li><a href="#orgd59028a">Tools</a></li>
 </ul>
 </li>
-<li><a href="#orgc6eb2b1">FastHTML</a>
+<li><a href="#org997e82b">FastHTML</a>
 <ul>
-<li><a href="#org5f194e4">FastHTML Tutorials</a></li>
+<li><a href="#org39d1425">FastHTML Tutorials</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org2c914f9" class="outline-2">
-<h2 id="org2c914f9">Introduction</h2>
-<div class="outline-text-2" id="text-org2c914f9">
-<div class="preview" id="orgadabc03">
+<div id="outline-container-org5399835" class="outline-2">
+<h2 id="org5399835">Introduction</h2>
+<div class="outline-text-2" id="text-org5399835">
+<div class="preview" id="orgeb7c922">
 <p>
 I just listened to the latest episode of the <a href="https://www.latent.space/p/answerai">Latent Space podcast</a>, which featured Jeremy Howard of <a href="https://www.fast.ai/">fast.ai</a> fame. Fast.ai was my introduction to deep learning—or at least re-introduction following a brief and theory-oriented treatment of the topic in grad school—and the course and book remain among the best learning resources I have ever encountered. The podcast was a good reminder to look into the projects Howard and his team have been working on at <a href="https://www.answer.ai/">answer.ai</a>, "a new kind of AI R&amp;D lab which creates practical end-user products based on foundational research breakthroughs."
 </p>
@@ -77,13 +77,13 @@ In the rest of this note, I am going to explore some of the major features of th
 </p>
 </div>
 </div>
-<div id="outline-container-org7bde9b4" class="outline-2">
-<h2 id="org7bde9b4">Claudette</h2>
-<div class="outline-text-2" id="text-org7bde9b4">
+<div id="outline-container-org81193bb" class="outline-2">
+<h2 id="org81193bb">Claudette</h2>
+<div class="outline-text-2" id="text-org81193bb">
 </div>
-<div id="outline-container-org0aa6cac" class="outline-3">
-<h3 id="org0aa6cac">Setup</h3>
-<div class="outline-text-3" id="text-org0aa6cac">
+<div id="outline-container-org4bbff1b" class="outline-3">
+<h3 id="org4bbff1b">Setup</h3>
+<div class="outline-text-3" id="text-org4bbff1b">
 <p>
 We start by installing the library with <code>pip install claudette</code>. This also installs Anthropic's SDK. We can then import claudette.
 </p>
@@ -104,9 +104,9 @@ We start by installing the library with <code>pip install claudette</code>. This
 </pre>
 </div>
 </div>
-<div id="outline-container-org8867e32" class="outline-3">
-<h3 id="org8867e32">The <code>Chat</code> class</h3>
-<div class="outline-text-3" id="text-org8867e32">
+<div id="outline-container-org205c72a" class="outline-3">
+<h3 id="org205c72a">The <code>Chat</code> class</h3>
+<div class="outline-text-3" id="text-org205c72a">
 <p>
 The <code>Chat</code> class is the main interface to Claudette. It is a nice convenient chat manager that maintains state. Note that, for this to work, we need to have <code>ANTHROPIC_API_KEY</code> in our environment.
 </p>
@@ -136,7 +136,7 @@ Now we can start using the <code>Chat</code> class.
 </pre>
 </div>
 
-<pre class="example" id="org43618ca">
+<pre class="example" id="org6b2e5d1">
 Message(
     id='msg_016RqYbsX6ULEYPX3CPGeFz3',
     content=[
@@ -167,7 +167,7 @@ We can easily include a <code>prefill</code> argument to specify how the assista
 </pre>
 </div>
 
-<pre class="example" id="org95c55d3">
+<pre class="example" id="orgc9f886b">
 Message(
     id='msg_01WMzMzhu7AxfSWEuHtaXZ6s',
     content=[
@@ -199,9 +199,9 @@ How does this all compare to the Anthropic SDK? The biggest difference I see is 
 </p>
 </div>
 </div>
-<div id="outline-container-org8e83815" class="outline-3">
-<h3 id="org8e83815">Tools</h3>
-<div class="outline-text-3" id="text-org8e83815">
+<div id="outline-container-orgd59028a" class="outline-3">
+<h3 id="orgd59028a">Tools</h3>
+<div class="outline-text-3" id="text-orgd59028a">
 <p>
 Though they have been around for a while now, I really haven't experimented much with tool calling. <code>claudette</code> actually implements the tool loop, making it straightforward to prompt claude to actually call on a tool and do something with the results. With the Anthropic SDK, you would need to implement this yourself—the SDK would return a tool call, which you'd pass to the tool, get the results, and return it in another API call.
 </p>
@@ -242,7 +242,7 @@ Now to prompt <code>claude</code>, giving access to the function:
 </pre>
 </div>
 
-<pre class="example" id="org0d87634">
+<pre class="example" id="org52ce0fd">
 Message(
     id='msg_019skDwHaHQZRhzwDRvystqa',
     content=[
@@ -281,7 +281,7 @@ Now if we call the chat object again, it will be executed.
 </pre>
 </div>
 
-<pre class="example" id="orgbd4a86d">
+<pre class="example" id="org0878ff2">
 Message(
     id='msg_012aEzN2o8977ULFXDviJVnw',
     content=[
@@ -314,9 +314,9 @@ Claudette also supports <a href="https://claudette.answer.ai/#images">images</a>
 </div>
 </div>
 
-<div id="outline-container-orgc6eb2b1" class="outline-2">
-<h2 id="orgc6eb2b1">FastHTML</h2>
-<div class="outline-text-2" id="text-orgc6eb2b1">
+<div id="outline-container-org997e82b" class="outline-2">
+<h2 id="org997e82b">FastHTML</h2>
+<div class="outline-text-2" id="text-org997e82b">
 <p>
 I am interested in FastHTML because I've realized that many of my AI-related project ideas require more work on the interface than on the actual AI parts. I can write the prompts and AI logic pretty easily, but (for me) there's a lot of friction in building out a decent frontend. If FastHTML can make that even a little bit easier, it'll be huge for me.
 </p>
@@ -341,9 +341,9 @@ It is making me realize that the parts I find challenging are problably due to g
 Anyway, I had just started learning some basic web development skills before FastHTML was released. And I would rather continue that via FastHTML than via learning Javascript. So I'll spend some time on that, and write about it as I go.
 </p>
 </div>
-<div id="outline-container-org5f194e4" class="outline-3">
-<h3 id="org5f194e4">FastHTML Tutorials</h3>
-<div class="outline-text-3" id="text-org5f194e4">
+<div id="outline-container-org39d1425" class="outline-3">
+<h3 id="org39d1425">FastHTML Tutorials</h3>
+<div class="outline-text-3" id="text-org39d1425">
 <p>
 I have been working on a few short tutorials with the purpose of teaching myself the basics of FastHTML. The ones completed so far are:
 </p>
