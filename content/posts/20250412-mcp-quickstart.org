@@ -14,9 +14,9 @@ Future posts will add more complexity, showing how to use additional MCP abstrac
 Anthropic's [[https://modelcontextprotocol.io/introduction][Model Context Protocol (MCP)]] is intended to standardize the way applications give context (data, tools, prompts, etc.) to LLMs.
 
 We can think of an application using MCP as having three components:
-1. Host: the host is the application, such as an IDE or a chat app, that manages connections to one or more MCP servers. The host application is what the end user typically interacts with.
-2. MCP Server(s): MCP servers provide a standardized interface to resources (such as databases, file systems, tools, etc.) that LLMs can access.
-3. Clients: clients are components of the host application that maintain the connection with the MCP server(s). Each client corresponds to one server. Clients facilitate requests to the server, receives responses, and relays them to the host or user.
+1. *Host*: the host is the application, such as an IDE or a chat app, that manages connections to one or more MCP servers. The host application is what the end user typically interacts with.
+2. *MCP Server(s)*: MCP servers provide a standardized interface to resources (such as databases, file systems, tools, etc.) that LLMs can access.
+3. *Client(s)*: clients are components of the host application that maintain the connection with the MCP server(s). Each client corresponds to one server. A client facilitates requests to the server, receives responses, and relays them to the host or user.
 
 For example, a user might type the following into a chat app (the host): "Give me information about order ORD-1234." The client component of the application will pass this query, along with a list of available tools, to the LLM. Suppose one of the tools gives the ability to query a database of order statuses. The LLM will respond with a "tool call" specifying the tool to use (the database query tool) and the arguments to provide (the order id). The client will then invoke the tool from the MCP server, get the results of the database query, and pass them along to the next step, which might mean asking the LLM to respond to the user based on the results.
 
