@@ -34,5 +34,72 @@ Suppose you have installed two different options for a Python LSP. Follow the in
      ,(eglot-alternatives
        '(("ruff" "server") ("basedpyright-langserver" "--stdio"))))))
 #+end_src
-* TODO Editing Python Files
-* TODO Executing Python Code
+* IN PROGRESS Writing and Executing Python Code
+After setting up the Python project as described above, I tend to follow one of two approaches:
+** Writing + Code with Org Babel
+I often write and execute code blocks in org mode using [[https://orgmode.org/worg/org-contrib/babel/intro.html][babel]]. A lot of my coding work occurs in the context of writing examples and demos (I am a developer advocate) so demonstrating and writing about code segments is often more important to me than working on projects/source files.
+
+This isn't a guide to using org babel, so please consult the docs if you are unfamiliar with it. You can find this inside emacs! Use ~C-h R (info-display-manual)~ and search for ~org~ to find the org mode manual, then navigate to the "Working with Source Code" section.
+
+When working with org babel, I tend to do the following for convenience:
+- *Set header args in properties*: I will usually set at least a /session/ via properties on the parent org mode header. Multiple babel blocks with the same session share an execution context, much like multiple code blocks in a Jupyter notebook. So variables defined in one block will persist to the next block that has the same session name.
+
+  Here's what that looks like:
+
+  #+begin_src org
+,*Headline 1
+:PROPERTIES:
+:header-args:python: :session session_name
+:END:
+
+,#+begin_src python
+x = 42
+,#+end_src
+
+,#+RESULTS:
+: None
+
+
+,#+begin_src python
+x
+,#+end_src
+
+,#+RESULTS:
+: 42
+  #+end_src
+
+  Now, as you can see, all newly-created Python source blocks under ~Headline 1~ will automatically be associated with the session ~session_name~ and you won't need to manually specify the session in each block.
+- *Define snippets to quickly create source blocks*: I use [[https://joaotavora.github.io/yasnippet/][YASnippet]] to make it quicker and easier to define new source blocks in my chosen language, without needing to type out ~C-c , s python~ each time I need a new source block.
+
+  Here is an example snippet:
+
+#+begin_src org
+# -*- mode: snippet -*-
+# name: python babel source block
+# key: p
+# contributor: Daniel Liden
+# --
+
+,#+begin_src python :results ${1:verbatim}
+$0
+,#+end_src
+#+end_src
+
+  With this snippet, you can simply type ~p~ and then ~yas-expand~ (I have this set to ~TAB~). It will create the source block with your cursor set to the results type, which will default to ~verbatim~. Hitting tab again will bring you to the body of the source block (where ~$0~ is), and you can start writing your code. This saves a few keystrokes.
+- *Displaying graphics/tables/plots*: I have never found this straightforward and usually need to do some troubleshooting whenever I try it. In general, I find it easier to write the graphic to a file and then, separately, display the file in org mode rather than trying to get the source block to yield and display the file directly. That said, [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-python.html#org8875314][this]] is a good resource to consult for the various options for displaying graphics.
+** IN PROGRESS Source files + REPL approach
+When working on a Python project, I use a source file + REPL approach. Setting this up in a basic way is simple. First, make sure you have the appropriate Python virtual environment set up (with e.g. ~pyvenv-activate~). Then, with a ~.py~ file open, call ~M-x run-python~ to start a Python REPL. When you want to run a code snippet, or all the code in a given file, you can use one of the various ~python-shell-send-*~ commands to run the code from your source file in the REPL. Some of my most used ones are:
+- ~python-shell-send-buffer (C-c C-c)~: evaluate the whole buffer
+- ~python-shell-send-region (C-c C-r)~: evaluate a region (highlighted/selected section of code)
+- ~python-shell-send-statement (C-c C-e)~: evaluate the statement at the current point. If you have a marked region, this will act the same as ~python-shell-send-region~. Otherwise, this essentially just sends the current line, which is often what I want.
+
+I will say that the various send commands did not behave exactly the way I expected them to, so it is worthwhile to experiment. Make a python file with some classes, functions, and unencapsulated code snippets and see how these commands behave. Marking and then sending a region is the most reliable and precise approach.
+
+Here are some additional tips for using this workflow (/will fill these out in the future/):
+- *Use a Language Server*: I use the [[https://joaotavora.github.io/eglot/][eglot]] language server protocol (LSP) client for emacs, with the [[https://docs.basedpyright.com/latest/][basedpyright]] and/or [[https://docs.astral.sh/ruff/editors/setup/#emacs][ruff server]] language server(s).
+- *Use [[https://magit.vc/][magit]] for git workflows:* Magit is an /excellent/ TUI for git that provides a quick and intuitive way to handle all of your version control tasks.
+- *Use [[https://docs.projectile.mx/projectile/index.html][projectile]] for navigating within a project:* Projectile has a variety of tools for navigating your project structure, searching and browsing project files, etc.
+
+#  LocalWords:  emacs eglot uv venv myenv pyvenv vterm lsp isort gnureadline py
+#  LocalWords:  doesn readline python3 src eval basedpyright langserver isn yas
+#  LocalWords:  args Jupyter Liden org8875314 REPL unencapsulated Magit TUI
