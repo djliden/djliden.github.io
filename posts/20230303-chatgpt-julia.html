@@ -38,19 +38,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org71d49ab">Introduction</a></li>
-<li><a href="#orgaa2dc1d">curl Example</a></li>
-<li><a href="#orga2550f9">Julia example</a></li>
-<li><a href="#org7f611f6">A little more detail about sending messages</a></li>
-<li><a href="#orgdc9c392">Next Up&#x2026;</a></li>
+<li><a href="#org41060a8">Introduction</a></li>
+<li><a href="#orgdd6b505">curl Example</a></li>
+<li><a href="#org0eb77be">Julia example</a></li>
+<li><a href="#org4150ebb">A little more detail about sending messages</a></li>
+<li><a href="#orgf8edbad">Next Up&#x2026;</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org71d49ab" class="outline-2">
-<h2 id="org71d49ab">Introduction</h2>
-<div class="outline-text-2" id="text-org71d49ab">
-<div class="preview" id="org855a408">
+<div id="outline-container-org41060a8" class="outline-2">
+<h2 id="org41060a8">Introduction</h2>
+<div class="outline-text-2" id="text-org41060a8">
+<div class="preview" id="org992f7f1">
 <p>
 This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
 with the OpenAI ChatGPT API, which was made public a few days ago. This post
@@ -62,9 +62,9 @@ histories and engage more interactively with the API.
 </div>
 </div>
 </div>
-<div id="outline-container-orgaa2dc1d" class="outline-2">
-<h2 id="orgaa2dc1d">curl Example</h2>
-<div class="outline-text-2" id="text-orgaa2dc1d">
+<div id="outline-container-orgdd6b505" class="outline-2">
+<h2 id="orgdd6b505">curl Example</h2>
+<div class="outline-text-2" id="text-orgdd6b505">
 <p>
 <a href="https://platform.openai.com/docs/api-reference/chat/create">Here</a> is the API documentation on OpenAI's website. An example request with <code>curl</code>
 looks like this:
@@ -74,18 +74,18 @@ looks like this:
 <pre class="src src-bash">curl https://api.openai.com/v1/chat/completions <span class="org-sh-escaped-newline">\</span>
   -H <span class="org-string">'Content-Type: application/json'</span> <span class="org-sh-escaped-newline">\</span>
   -H <span class="org-string">'Authorization: Bearer YOUR_API_KEY'</span> <span class="org-sh-escaped-newline">\</span>
-  -d <span class="org-string">'{</span>
-<span class="org-string">  "model": "gpt-3.5-turbo",</span>
-<span class="org-string">  "messages": [{"role": "user", "content": "Hello!"}]</span>
-<span class="org-string">}'</span>
+  -d <span class="org-string">'{
+  "model": "gpt-3.5-turbo",
+  "messages": [{"role": "user", "content": "Hello!"}]
+}'</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orga2550f9" class="outline-2">
-<h2 id="orga2550f9">Julia example</h2>
-<div class="outline-text-2" id="text-orga2550f9">
+<div id="outline-container-org0eb77be" class="outline-2">
+<h2 id="org0eb77be">Julia example</h2>
+<div class="outline-text-2" id="text-org0eb77be">
 <p>
 And here's how we can re-create this with the Julia HTTP library:
 </p>
@@ -112,8 +112,8 @@ response = HTTP.post(
     verbose = <span class="org-constant">false</span>,
 )
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Parse the response body as JSON</span>
-result = JSON.parse(String(response.body))
+<span class="org-comment-delimiter"># </span><span class="org-comment">Parse the response body as JSON
+</span>result = JSON.parse(String(response.body))
 print(result)
 </pre>
 </div>
@@ -143,9 +143,9 @@ chat_response[1][<span class="org-string">"message"</span>][<span class="org-str
 </pre>
 </div>
 </div>
-<div id="outline-container-org7f611f6" class="outline-2">
-<h2 id="org7f611f6">A little more detail about sending messages</h2>
-<div class="outline-text-2" id="text-org7f611f6">
+<div id="outline-container-org4150ebb" class="outline-2">
+<h2 id="org4150ebb">A little more detail about sending messages</h2>
+<div class="outline-text-2" id="text-org4150ebb">
 <p>
 One of the things that makes ChatGPT useful is its ability to "remember" past
 parts of a conversation. We can send whole conversations to the API using the
@@ -179,13 +179,13 @@ response = HTTP.post(
     verbose = <span class="org-constant">false</span>,
 )
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Parse the response body as JSON</span>
-result = JSON.parse(String(response.body))
+<span class="org-comment-delimiter"># </span><span class="org-comment">Parse the response body as JSON
+</span>result = JSON.parse(String(response.body))
 print(result[<span class="org-string">"choices"</span>][1][<span class="org-string">"message"</span>][<span class="org-string">"content"</span>])
 </pre>
 </div>
 
-<pre class="example" id="orga3eaa20">
+<pre class="example" id="orgb1cfd6c">
 
 ```julia
 using HTTP
@@ -235,11 +235,11 @@ And if we want to send a followup referring to an earlier part in the conversati
 </p>
 
 <div class="org-src-container">
-<pre class="src src-julia"><span class="org-comment-delimiter"># </span><span class="org-comment">include the assistant's previous response</span>
-push!(messages, result[<span class="org-string">"choices"</span>][1][<span class="org-string">"message"</span>])
+<pre class="src src-julia"><span class="org-comment-delimiter"># </span><span class="org-comment">include the assistant's previous response
+</span>push!(messages, result[<span class="org-string">"choices"</span>][1][<span class="org-string">"message"</span>])
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">ask a new question referring to an earlier part of the conversation</span>
-push!(messages, Dict(<span class="org-string">"role"</span> =&gt; <span class="org-string">"user"</span>,
+<span class="org-comment-delimiter"># </span><span class="org-comment">ask a new question referring to an earlier part of the conversation
+</span>push!(messages, Dict(<span class="org-string">"role"</span> =&gt; <span class="org-string">"user"</span>,
                      <span class="org-string">"content"</span> =&gt; <span class="org-string">"Can you please provide a shorter, simpler example?"</span>))
 
 </pre>
@@ -269,13 +269,13 @@ response = HTTP.post(
     verbose = <span class="org-constant">false</span>,
 )
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Parse the response body as JSON</span>
-result = JSON.parse(String(response.body))
+<span class="org-comment-delimiter"># </span><span class="org-comment">Parse the response body as JSON
+</span>result = JSON.parse(String(response.body))
 print(result[<span class="org-string">"choices"</span>][1][<span class="org-string">"message"</span>][<span class="org-string">"content"</span>])
 </pre>
 </div>
 
-<pre class="example" id="orgeac3d81">
+<pre class="example" id="orge583a20">
 Sure, here's a simpler example:
 
 ```julia
@@ -291,9 +291,9 @@ In this example, we are sending a POST request with form data rather than JSON d
 </pre>
 </div>
 </div>
-<div id="outline-container-orgdc9c392" class="outline-2">
-<h2 id="orgdc9c392">Next Up&#x2026;</h2>
-<div class="outline-text-2" id="text-orgdc9c392">
+<div id="outline-container-orgf8edbad" class="outline-2">
+<h2 id="orgf8edbad">Next Up&#x2026;</h2>
+<div class="outline-text-2" id="text-orgf8edbad">
 <p>
 This post showed basic usage of the ChatGPT API with Julia. In the next post,
 I'll show how to make this more modular and useful. We'll create a <code>Struct</code> for

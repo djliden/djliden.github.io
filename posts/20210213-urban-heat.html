@@ -38,28 +38,28 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge3a4dfb">Background</a></li>
-<li><a href="#orgb879574">Getting the Data</a>
+<li><a href="#org72dc7f2">Background</a></li>
+<li><a href="#org66f5e34">Getting the Data</a>
 <ul>
-<li><a href="#orga1eae13">Unpacking and Visualizing the Raw Data</a></li>
+<li><a href="#org11fff18">Unpacking and Visualizing the Raw Data</a></li>
 </ul>
 </li>
-<li><a href="#org8e48944">Mapping Heat by Census Tract</a></li>
-<li><a href="#orgc174c2f">Final Maps</a></li>
-<li><a href="#org0a1effd">Resources</a></li>
+<li><a href="#orga4f5782">Mapping Heat by Census Tract</a></li>
+<li><a href="#orgf750b7f">Final Maps</a></li>
+<li><a href="#orgb0041d5">Resources</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org5d38e0b">
+<div class="preview" id="orgd178407">
 <p>
 <i>Another one from the archives&#x2013;this is one of my projects from my time at the Guinn Center, and something I very much wish I could have developed further: an analysis of urban heat in Las Vegas.</i>
 </p>
 
 </div>
 
-<div id="outline-container-orge3a4dfb" class="outline-2">
-<h2 id="orge3a4dfb">Background</h2>
-<div class="outline-text-2" id="text-orge3a4dfb">
+<div id="outline-container-org72dc7f2" class="outline-2">
+<h2 id="org72dc7f2">Background</h2>
+<div class="outline-text-2" id="text-org72dc7f2">
 <p>
 For the past several months, I have been working on an analysis on the effects
 of urban heat on vulnerable populations, particularly during a public health
@@ -116,9 +116,9 @@ polygon boundaries (census tracts).
 </div>
 </div>
 
-<div id="outline-container-orgb879574" class="outline-2">
-<h2 id="orgb879574">Getting the Data</h2>
-<div class="outline-text-2" id="text-orgb879574">
+<div id="outline-container-org66f5e34" class="outline-2">
+<h2 id="org66f5e34">Getting the Data</h2>
+<div class="outline-text-2" id="text-org66f5e34">
 <p>
 I obtained surface temperature satellite data from the NASA/USGS Landsat 8
 satellite. The data can be obtained through an API, though for this example, I
@@ -143,9 +143,9 @@ in the map is associated with a surface temperature value.
 </p>
 </div>
 
-<div id="outline-container-orga1eae13" class="outline-3">
-<h3 id="orga1eae13">Unpacking and Visualizing the Raw Data</h3>
-<div class="outline-text-3" id="text-orga1eae13">
+<div id="outline-container-org11fff18" class="outline-3">
+<h3 id="org11fff18">Unpacking and Visualizing the Raw Data</h3>
+<div class="outline-text-3" id="text-org11fff18">
 <p>
 This section requires the <code>raster</code> and <code>sf</code> packages. Below, we untar the map and
 extract the map of interest.
@@ -155,13 +155,13 @@ extract the map of interest.
 <pre class="src src-R"><span class="org-ess-modifiers">library</span>(raster)
 <span class="org-ess-modifiers">library</span>(sf)
 
-<span class="org-comment-delimiter">## </span><span class="org-comment">untar the data</span>
-untar(tarfile = <span class="org-string">"PATH-TO-TARFILE.tar"</span>, exdir = <span class="org-string">"DESTINATION-DIRECTORY"</span>)
+<span class="org-comment-delimiter">## </span><span class="org-comment">untar the data
+</span>untar(tarfile = <span class="org-string">"PATH-TO-TARFILE.tar"</span>, exdir = <span class="org-string">"DESTINATION-DIRECTORY"</span>)
 file.copy(<span class="org-string">"./data/raw/testsat/LC08_CU_005011_20200806_20200824_C01_V01_ST.tif"</span>,
           <span class="org-string">"IMAGE-DESTINATION/st_map.tif"</span>)
 
-<span class="org-comment-delimiter">## </span><span class="org-comment">Access the file as a raster image, plot, and save as png</span>
-st_map = raster(<span class="org-string">"./data/processed/st_map.tif"</span>)
+<span class="org-comment-delimiter">## </span><span class="org-comment">Access the file as a raster image, plot, and save as png
+</span>st_map = raster(<span class="org-string">"./data/processed/st_map.tif"</span>)
 png(file = <span class="org-string">"./figs/st_map.png"</span>)
 plot(st_map)
 dev.off()
@@ -170,7 +170,7 @@ dev.off()
 
 <div class="org-center">
 
-<figure id="org3ad8647">
+<figure id="org51500f3">
 <img src="./figures/20210213-urban-heat/st_map.png" alt="st_map.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>Raw raster map of surface temperatures around Las Vegas area</figcaption>
@@ -187,9 +187,9 @@ at the census tract level.
 </div>
 </div>
 
-<div id="outline-container-org8e48944" class="outline-2">
-<h2 id="org8e48944">Mapping Heat by Census Tract</h2>
-<div class="outline-text-2" id="text-org8e48944">
+<div id="outline-container-orga4f5782" class="outline-2">
+<h2 id="orga4f5782">Mapping Heat by Census Tract</h2>
+<div class="outline-text-2" id="text-orga4f5782">
 <p>
 First, we'll use the <code>tigris</code> package to download the census tract boundaries in
 Nevada and crop to the Las Vegas area.
@@ -225,23 +225,23 @@ align with the raster map.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-R">heat_map = extract(sat_cropped,           <span class="org-comment-delimiter"># </span><span class="org-comment">cropped raster object</span>
-                   lv_tracts_reprojected, <span class="org-comment-delimiter"># </span><span class="org-comment">vector map of LV</span>
-                   df=<span class="org-ess-constant">TRUE</span>,               <span class="org-comment-delimiter"># </span><span class="org-comment">return as data frame</span>
-                   fun=mean,              <span class="org-comment-delimiter"># </span><span class="org-comment">return the mean of each polygon</span>
-                   sp=<span class="org-ess-constant">TRUE</span>)               <span class="org-comment-delimiter"># </span><span class="org-comment">append to lv_tracts_reprojected</span>
-
-<span class="org-comment-delimiter">## </span><span class="org-comment">Visualize</span>
-sf_heat_map = st_as_sf(heat_map)          <span class="org-comment-delimiter"># </span><span class="org-comment">Convert to simple features (sf) vector data</span>
-png(file=<span class="org-string">"IMAGE_DESTINATION/heatmaptest.png"</span>)
-plot(out[<span class="org-string">"st_map"</span>])                       <span class="org-comment-delimiter"># </span><span class="org-comment">plot the column of raster values</span>
-dev.off()
+<pre class="src src-R">heat_map = extract(sat_cropped,           <span class="org-comment-delimiter"># </span><span class="org-comment">cropped raster object
+</span>                   lv_tracts_reprojected, <span class="org-comment-delimiter"># </span><span class="org-comment">vector map of LV
+</span>                   df=<span class="org-ess-constant">TRUE</span>,               <span class="org-comment-delimiter"># </span><span class="org-comment">return as data frame
+</span>                   fun=mean,              <span class="org-comment-delimiter"># </span><span class="org-comment">return the mean of each polygon
+</span>                   sp=<span class="org-ess-constant">TRUE</span>)               <span class="org-comment-delimiter"># </span><span class="org-comment">append to lv_tracts_reprojected
+</span>
+<span class="org-comment-delimiter">## </span><span class="org-comment">Visualize
+</span>sf_heat_map = st_as_sf(heat_map)          <span class="org-comment-delimiter"># </span><span class="org-comment">Convert to simple features (sf) vector data
+</span>png(file=<span class="org-string">"IMAGE_DESTINATION/heatmaptest.png"</span>)
+plot(out[<span class="org-string">"st_map"</span>])                       <span class="org-comment-delimiter"># </span><span class="org-comment">plot the column of raster values
+</span>dev.off()
 </pre>
 </div>
 
 <div class="org-center">
 
-<figure id="orgcc38cbf">
+<figure id="orgb2c2fee">
 <img src="./figures/20210213-urban-heat/heatmaptest.png" alt="heatmaptest.png">
 
 <figcaption><span class="figure-number">Figure 2: </span>Average Surface Temperatures by Census Tract in Las Vegas, Nevada (tenths of a degree Kelvin)</figcaption>
@@ -265,7 +265,7 @@ dev.off()
 
 <div class="org-center">
 
-<figure id="orged9a253">
+<figure id="org80880dc">
 <img src="./figures/20210213-urban-heat/tract_repro.png" alt="tract_repro.png">
 
 <figcaption><span class="figure-number">Figure 3: </span>Re-projected Map of Surface Temperatures by Census Tract</figcaption>
@@ -274,9 +274,9 @@ dev.off()
 </div>
 </div>
 
-<div id="outline-container-orgc174c2f" class="outline-2">
-<h2 id="orgc174c2f">Final Maps</h2>
-<div class="outline-text-2" id="text-orgc174c2f">
+<div id="outline-container-orgf750b7f" class="outline-2">
+<h2 id="orgf750b7f">Final Maps</h2>
+<div class="outline-text-2" id="text-orgf750b7f">
 <p>
 Lastly, we can apply some formatting to make it more interpretable. I used
 <code>ggplot2</code> for all of the visual tweaks (details not shown).
@@ -284,7 +284,7 @@ Lastly, we can apply some formatting to make it more interpretable. I used
 
 <div class="org-center">
 
-<figure id="org911eacd">
+<figure id="orga29e208">
 <img src="./figures/20210213-urban-heat/ST_LV.png" alt="ST_LV.png">
 
 <figcaption><span class="figure-number">Figure 4: </span>Visualizing Urban Heat by Census Tract in Las Vegas, Nevada</figcaption>
@@ -298,7 +298,7 @@ urban heat map. For example, we can look at poverty by census tract:
 
 <div class="org-center">
 
-<figure id="org27c52d9">
+<figure id="org2f69a7c">
 <img src="./figures/20210213-urban-heat/poverty.png" alt="poverty.png">
 
 <figcaption><span class="figure-number">Figure 5: </span>Poverty by Census Tract in Las Vegas, Nevada</figcaption>
@@ -325,9 +325,9 @@ data above &#x2013; is an important first step to conducting these analyses.
 </div>
 </div>
 
-<div id="outline-container-org0a1effd" class="outline-2">
-<h2 id="org0a1effd">Resources</h2>
-<div class="outline-text-2" id="text-org0a1effd">
+<div id="outline-container-orgb0041d5" class="outline-2">
+<h2 id="orgb0041d5">Resources</h2>
+<div class="outline-text-2" id="text-orgb0041d5">
 <ul class="org-ul">
 <li><a href="https://cran.r-project.org/web/views/Spatial.html">CRAN Task View: Analysis
 of Spatial Data</a>: A CRAN hub explaining the <code>R</code> ecosystem of spatial data

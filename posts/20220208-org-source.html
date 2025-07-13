@@ -38,10 +38,10 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0f61e6b">The Problem</a></li>
-<li><a href="#orgf27c0c5">This Headline Is in an Org Source Block</a></li>
-<li><a href="#org829b917">Prepend Headlines in Source Blocks with Commas</a></li>
-<li><a href="#orgbab7339">An Easier Way</a></li>
+<li><a href="#orgb6b5e94">The Problem</a></li>
+<li><a href="#org022fa1f">This Headline Is in an Org Source Block</a></li>
+<li><a href="#org64e9cb5">Prepend Headlines in Source Blocks with Commas</a></li>
+<li><a href="#org421a881">An Easier Way</a></li>
 </ul>
 </div>
 </nav>
@@ -50,10 +50,10 @@
 low-contrast. I will update this soon.</i>
 </p>
 
-<div id="outline-container-org0f61e6b" class="outline-2">
-<h2 id="org0f61e6b">The Problem</h2>
-<div class="outline-text-2" id="text-org0f61e6b">
-<div class="PREVIEW" id="orgcbf070d">
+<div id="outline-container-orgb6b5e94" class="outline-2">
+<h2 id="orgb6b5e94">The Problem</h2>
+<div class="outline-text-2" id="text-orgb6b5e94">
+<div class="PREVIEW" id="orgcfaf428">
 <p>
 When writing about org mode, one often wants to show what particular org
 headline look like in terms of formatting, properties, tags, options,
@@ -76,9 +76,9 @@ a comma before the headline.
 </p>
 </div>
 </div>
-<div id="outline-container-orgf27c0c5" class="outline-2">
-<h2 id="orgf27c0c5">This Headline Is in an Org Source Block</h2>
-<div class="outline-text-2" id="text-orgf27c0c5">
+<div id="outline-container-org022fa1f" class="outline-2">
+<h2 id="org022fa1f">This Headline Is in an Org Source Block</h2>
+<div class="outline-text-2" id="text-org022fa1f">
 <p>
 And it is still parsed and exported as a headline, not as an example.
 #+end<sub>src</sub>
@@ -89,9 +89,9 @@ Clearly, this isn't what we want.
 </p>
 </div>
 </div>
-<div id="outline-container-org829b917" class="outline-2">
-<h2 id="org829b917">Prepend Headlines in Source Blocks with Commas</h2>
-<div class="outline-text-2" id="text-org829b917">
+<div id="outline-container-org64e9cb5" class="outline-2">
+<h2 id="org64e9cb5">Prepend Headlines in Source Blocks with Commas</h2>
+<div class="outline-text-2" id="text-org64e9cb5">
 <p>
 This issue is easily resolved: just insert a comma before the headline in the
 source block (e.g. <code>,* Headline</code>). This results in the following:
@@ -137,19 +137,19 @@ leads to the following (when we specify that it is an org source block).
 <span class="org-org-level-2">** Headline 2</span>
 This headline is also prepended with a comma!
 <span class="org-org-level-2">** Even a Nested Source Block!</span>
-<span class="org-org-block-begin-line">#+begin_src R</span>
-<span class="org-org-block">1+1</span>
-<span class="org-org-block-end-line">#+end_src</span>
-
+<span class="org-org-block-begin-line">#+begin_src R
+</span><span class="org-org-block">1+1
+</span><span class="org-org-block-end-line">#+end_src
+</span>
 <span class="org-org-meta-line">#+RESULTS:</span>
 <span class="org-org-code">: 2</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgbab7339" class="outline-2">
-<h2 id="orgbab7339">An Easier Way</h2>
-<div class="outline-text-2" id="text-orgbab7339">
+<div id="outline-container-org421a881" class="outline-2">
+<h2 id="org421a881">An Easier Way</h2>
+<div class="outline-text-2" id="text-org421a881">
 <p>
 We can use the <code>org-edit-special</code> command (<code>C-c '</code>) within an org source block to
 open a separate editing environment (in this case, another org buffer). We can
@@ -196,12 +196,12 @@ This is an org headline with a tag.
 <span class="org-org-drawer">:END:</span>
 <span class="org-org-level-2">** Babel</span>
 
-<span class="org-org-block-begin-line">#+begin_src jupyter-python :session datasci</span>
-<span class="org-org-block">import numpy as np</span>
+<span class="org-org-block-begin-line">#+begin_src jupyter-python :session datasci
+</span><span class="org-org-block">import numpy as np
 
-<span class="org-org-block">np.array(range(1,10))</span>
-<span class="org-org-block-end-line">#+end_src</span>
-
+np.array(range(1,10))
+</span><span class="org-org-block-end-line">#+end_src
+</span>
 <span class="org-org-meta-line">#+RESULTS:</span>
 <span class="org-org-code">: array([1, 2, 3, 4, 5, 6, 7, 8, 9])</span>
 </pre>

@@ -38,41 +38,41 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org460448b">What is MLX?</a></li>
-<li><a href="#org9c45d9d">Quickstart Guide</a>
+<li><a href="#orgddac799">What is MLX?</a></li>
+<li><a href="#org291bab3">Quickstart Guide</a>
 <ul>
-<li><a href="#org61f06bd">Basics</a></li>
+<li><a href="#orga87a45d">Basics</a></li>
 <li><a href="#h:897CC44C-7D56-4606-B154-EED7083479BE">Lazy Evaluation in More Detail</a>
 <ul>
-<li><a href="#orgad58f48">When to evaluate</a></li>
+<li><a href="#orgb28a432">When to evaluate</a></li>
 </ul>
 </li>
-<li><a href="#org009dac7">Unified Memory</a></li>
-<li><a href="#org04707a4">Indexing arrays</a></li>
-<li><a href="#orgba42cb5">Saving and Loading</a></li>
-<li><a href="#orgd101c61">Function transforms</a>
+<li><a href="#orgc12556f">Unified Memory</a></li>
+<li><a href="#orgcbe3269">Indexing arrays</a></li>
+<li><a href="#org5bb74f3">Saving and Loading</a></li>
+<li><a href="#org59ba499">Function transforms</a>
 <ul>
-<li><a href="#orga4d64f5">Automatic Differentiation</a></li>
-<li><a href="#org191b69a">Automatic Vectorization</a></li>
+<li><a href="#org848e89c">Automatic Differentiation</a></li>
+<li><a href="#org0db69fb">Automatic Vectorization</a></li>
 </ul>
 </li>
-<li><a href="#org7e14231">Compilation</a></li>
-<li><a href="#orgca154d8">Streams</a></li>
+<li><a href="#org76d7e16">Compilation</a></li>
+<li><a href="#org3cf89aa">Streams</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org7e52a6b">
+<div class="preview" id="orgb24241d">
 <p>
 These are my notes on the <a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">MLX quick start guide and usage notes</a>. It's a work in progress. Ultimately, I'm interested in learning what MLX will let me do with LLMs on my laptop. I might write something more substantial on that topic in the future. For now, you're probably better off consulting the docs yourself than looking at my notes on them.
 </p>
 
 </div>
 
-<div id="outline-container-org460448b" class="outline-2">
-<h2 id="org460448b">What is MLX?</h2>
-<div class="outline-text-2" id="text-org460448b">
+<div id="outline-container-orgddac799" class="outline-2">
+<h2 id="orgddac799">What is MLX?</h2>
+<div class="outline-text-2" id="text-orgddac799">
 <p>
 <a href="https://github.com/ml-explore/mlx">MLX</a> is an array framework from Apple ML Research. Its API follows NumPy. It has higher-level packages that follow PyTorch's API for building more complex models modularly. It features:
 </p>
@@ -84,9 +84,9 @@ These are my notes on the <a href="https://ml-explore.github.io/mlx/build/html/u
 </ul>
 </div>
 </div>
-<div id="outline-container-org9c45d9d" class="outline-2">
-<h2 id="org9c45d9d"><a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">Quickstart Guide</a></h2>
-<div class="outline-text-2" id="text-org9c45d9d">
+<div id="outline-container-org291bab3" class="outline-2">
+<h2 id="org291bab3"><a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">Quickstart Guide</a></h2>
+<div class="outline-text-2" id="text-org291bab3">
 <p>
 First, install with <code>pip install mlx</code> or <code>conda install -c conda-forge mlx</code>.
 </p>
@@ -96,9 +96,9 @@ Next, we'll work through the basic features, as shown in the quickstart guide li
 </p>
 </div>
 
-<div id="outline-container-org61f06bd" class="outline-3">
-<h3 id="org61f06bd">Basics</h3>
-<div class="outline-text-3" id="text-org61f06bd">
+<div id="outline-container-orga87a45d" class="outline-3">
+<h3 id="orga87a45d">Basics</h3>
+<div class="outline-text-3" id="text-orga87a45d">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> mlx.core <span class="org-keyword">as</span> mx
 
@@ -181,14 +181,14 @@ It enables this pattern:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">model</span> <span class="org-operator">=</span> Model() <span class="org-comment-delimiter"># </span><span class="org-comment">no memory used yet</span>
-model.load_weights(<span class="org-string">"weights_fp16.safetensors"</span>)
+<pre class="src src-python"><span class="org-variable-name">model</span> <span class="org-operator">=</span> Model() <span class="org-comment-delimiter"># </span><span class="org-comment">no memory used yet
+</span>model.load_weights(<span class="org-string">"weights_fp16.safetensors"</span>)
 </pre>
 </div>
 </div>
-<div id="outline-container-orgad58f48" class="outline-4">
-<h4 id="orgad58f48">When to evaluate</h4>
-<div class="outline-text-4" id="text-orgad58f48">
+<div id="outline-container-orgb28a432" class="outline-4">
+<h4 id="orgb28a432">When to evaluate</h4>
+<div class="outline-text-4" id="text-orgb28a432">
 <p>
 It's a tradeoff between:
 </p>
@@ -214,15 +214,15 @@ Example of a good pattern for a training loop:
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">for</span> batch <span class="org-keyword">in</span> dataset:
 
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Nothing has been evaluated yet</span>
-    <span class="org-variable-name">loss</span>, <span class="org-variable-name">grad</span> <span class="org-operator">=</span> value_and_grad_fn(model, batch)
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Nothing has been evaluated yet
+</span>    <span class="org-variable-name">loss</span>, <span class="org-variable-name">grad</span> <span class="org-operator">=</span> value_and_grad_fn(model, batch)
 
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Still nothing has been evaluated</span>
-    optimizer.update(model, grad)
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Still nothing has been evaluated
+</span>    optimizer.update(model, grad)
 
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Evaluate the loss and the new parameters which will</span>
-    <span class="org-comment-delimiter"># </span><span class="org-comment">run the full gradient computation and optimizer update</span>
-    mx.<span class="org-builtin">eval</span>(loss, model.parameters())
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Evaluate the loss and the new parameters which will
+</span>    <span class="org-comment-delimiter"># </span><span class="org-comment">run the full gradient computation and optimizer update
+</span>    mx.<span class="org-builtin">eval</span>(loss, model.parameters())
 </pre>
 </div>
 
@@ -237,8 +237,8 @@ Using arrays for control flow will trigger an eval.
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">def</span> <span class="org-function-name">fun</span>(x):
     <span class="org-variable-name">h</span>, <span class="org-variable-name">y</span> <span class="org-operator">=</span> first_layer(x)
-    <span class="org-keyword">if</span> y <span class="org-operator">&gt;</span> 0:  <span class="org-comment-delimiter"># </span><span class="org-comment">An evaluation is done here!</span>
-        <span class="org-variable-name">z</span>  <span class="org-operator">=</span> second_layer_a(h)
+    <span class="org-keyword">if</span> y <span class="org-operator">&gt;</span> 0:  <span class="org-comment-delimiter"># </span><span class="org-comment">An evaluation is done here!
+</span>        <span class="org-variable-name">z</span>  <span class="org-operator">=</span> second_layer_a(h)
     <span class="org-keyword">else</span>:
         <span class="org-variable-name">z</span>  <span class="org-operator">=</span> second_layer_b(h)
     <span class="org-keyword">return</span> z
@@ -247,9 +247,9 @@ Using arrays for control flow will trigger an eval.
 </div>
 </div>
 </div>
-<div id="outline-container-org009dac7" class="outline-3">
-<h3 id="org009dac7">Unified Memory</h3>
-<div class="outline-text-3" id="text-org009dac7">
+<div id="outline-container-orgc12556f" class="outline-3">
+<h3 id="orgc12556f">Unified Memory</h3>
+<div class="outline-text-3" id="text-orgc12556f">
 <p>
 You do not need to specify the location of an MLX array in memory. CPU and GPU share memory.
 </p>
@@ -311,9 +311,9 @@ This can be useful if we e.g. send compute-dense operatios to GPU, smaller overh
 </p>
 </div>
 </div>
-<div id="outline-container-org04707a4" class="outline-3">
-<h3 id="org04707a4">Indexing arrays</h3>
-<div class="outline-text-3" id="text-org04707a4">
+<div id="outline-container-orgcbe3269" class="outline-3">
+<h3 id="orgcbe3269">Indexing arrays</h3>
+<div class="outline-text-3" id="text-orgcbe3269">
 <ul class="org-ul">
 <li>Is the same as NumPy in most cases</li>
 <li>EXCEPT:
@@ -324,18 +324,18 @@ This can be useful if we e.g. send compute-dense operatios to GPU, smaller overh
 </ul>
 </div>
 </div>
-<div id="outline-container-orgba42cb5" class="outline-3">
-<h3 id="orgba42cb5">Saving and Loading</h3>
-<div class="outline-text-3" id="text-orgba42cb5">
+<div id="outline-container-org5bb74f3" class="outline-3">
+<h3 id="org5bb74f3">Saving and Loading</h3>
+<div class="outline-text-3" id="text-org5bb74f3">
 <p>
 Support for numpy, numpy archive, safetensors, gguf.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgd101c61" class="outline-3">
-<h3 id="orgd101c61">Function transforms</h3>
-<div class="outline-text-3" id="text-orgd101c61">
+<div id="outline-container-org59ba499" class="outline-3">
+<h3 id="org59ba499">Function transforms</h3>
+<div class="outline-text-3" id="text-org59ba499">
 <p>
 MLX uses <i>composable function transformations</i> for autodiff, vectorization, graph optimization. Main idea: every transformation returns a function that can be further transformed. Here is an example.
 </p>
@@ -356,9 +356,9 @@ array(-1, dtype=float32)
 The output of <code>grad</code> on <code>sin</code> is another function: the gradient of the sine function. To get the second derivative, just do <code>mx.grad(mx.grad())</code>. You can compose any function transform in any order to any depth.
 </p>
 </div>
-<div id="outline-container-orga4d64f5" class="outline-4">
-<h4 id="orga4d64f5">Automatic Differentiation</h4>
-<div class="outline-text-4" id="text-orga4d64f5">
+<div id="outline-container-org848e89c" class="outline-4">
+<h4 id="org848e89c">Automatic Differentiation</h4>
+<div class="outline-text-4" id="text-org848e89c">
 <p>
 Autodiff works on functions, not on implicit graphs. <i>This is a key difference from PyTorch</i>. In PyTorch, autodiff works on implicit graphs.
 </p>
@@ -374,11 +374,11 @@ By default, the gradient is computed w/r/t the first argument. But we can specif
 <span class="org-variable-name">x</span> <span class="org-operator">=</span> mx.array([0.5, <span class="org-operator">-</span>0.5])
 <span class="org-variable-name">y</span> <span class="org-operator">=</span> mx.array([1.5, <span class="org-operator">-</span>1.5])
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Computes the gradient of loss_fn with respect to w:</span>
-<span class="org-variable-name">grad_fn</span> <span class="org-operator">=</span> mx.grad(loss_fn)
+<span class="org-comment-delimiter"># </span><span class="org-comment">Computes the gradient of loss_fn with respect to w:
+</span><span class="org-variable-name">grad_fn</span> <span class="org-operator">=</span> mx.grad(loss_fn)
 <span class="org-variable-name">dloss_dw</span> <span class="org-operator">=</span> grad_fn(w, x, y)
-<span class="org-comment-delimiter"># </span><span class="org-comment">Prints array(-1, dtype=float32)</span>
-dloss_dw
+<span class="org-comment-delimiter"># </span><span class="org-comment">Prints array(-1, dtype=float32)
+</span>dloss_dw
 </pre>
 </div>
 
@@ -388,11 +388,11 @@ array(-1, dtype=float32)
 
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">To get the gradient with respect to x we can do:</span>
-<span class="org-variable-name">grad_fn</span> <span class="org-operator">=</span> mx.grad(loss_fn, argnums<span class="org-operator">=</span>1)
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">To get the gradient with respect to x we can do:
+</span><span class="org-variable-name">grad_fn</span> <span class="org-operator">=</span> mx.grad(loss_fn, argnums<span class="org-operator">=</span>1)
 <span class="org-variable-name">dloss_dx</span> <span class="org-operator">=</span> grad_fn(w, x, y)
-<span class="org-comment-delimiter"># </span><span class="org-comment">Prints array([-1, 1], dtype=float32)</span>
-dloss_dx
+<span class="org-comment-delimiter"># </span><span class="org-comment">Prints array([-1, 1], dtype=float32)
+</span>dloss_dx
 </pre>
 </div>
 
@@ -407,15 +407,15 @@ The <code>value_and_grad</code> function provides an efficient way to get the va
 
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">Computes the gradient of loss_fn with respect to w:</span>
-<span class="org-variable-name">loss_and_grad_fn</span> <span class="org-operator">=</span> mx.value_and_grad(loss_fn)
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">Computes the gradient of loss_fn with respect to w:
+</span><span class="org-variable-name">loss_and_grad_fn</span> <span class="org-operator">=</span> mx.value_and_grad(loss_fn)
 <span class="org-variable-name">loss</span>, <span class="org-variable-name">dloss_dw</span> <span class="org-operator">=</span> loss_and_grad_fn(w, x, y)
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Prints array(1, dtype=float32)</span>
-<span class="org-builtin">print</span>(loss)
+<span class="org-comment-delimiter"># </span><span class="org-comment">Prints array(1, dtype=float32)
+</span><span class="org-builtin">print</span>(loss)
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Prints array(-1, dtype=float32)</span>
-<span class="org-builtin">print</span>(dloss_dw)
+<span class="org-comment-delimiter"># </span><span class="org-comment">Prints array(-1, dtype=float32)
+</span><span class="org-builtin">print</span>(dloss_dw)
 </pre>
 </div>
 
@@ -430,17 +430,17 @@ You can use <code>stop_gradient()</code> to stop gradients from propagating thro
 </p>
 </div>
 </div>
-<div id="outline-container-org191b69a" class="outline-4">
-<h4 id="org191b69a">Automatic Vectorization</h4>
-<div class="outline-text-4" id="text-org191b69a">
+<div id="outline-container-org0db69fb" class="outline-4">
+<h4 id="org0db69fb">Automatic Vectorization</h4>
+<div class="outline-text-4" id="text-org0db69fb">
 <p>
 <code>vmap()</code> automatically vectorizes complex functions.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">Vectorize over the second dimension of x and the</span>
-<span class="org-comment-delimiter"># </span><span class="org-comment">first dimension of y</span>
-<span class="org-variable-name">vmap_add</span> <span class="org-operator">=</span> mx.vmap(<span class="org-keyword">lambda</span> x, y: x <span class="org-operator">+</span> y, in_axes<span class="org-operator">=</span>(1, 0))
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">Vectorize over the second dimension of x and the
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">first dimension of y
+</span><span class="org-variable-name">vmap_add</span> <span class="org-operator">=</span> mx.vmap(<span class="org-keyword">lambda</span> x, y: x <span class="org-operator">+</span> y, in_axes<span class="org-operator">=</span>(1, 0))
 </pre>
 </div>
 
@@ -455,9 +455,9 @@ None
 </div>
 </div>
 </div>
-<div id="outline-container-org7e14231" class="outline-3">
-<h3 id="org7e14231">Compilation</h3>
-<div class="outline-text-3" id="text-org7e14231">
+<div id="outline-container-org76d7e16" class="outline-3">
+<h3 id="org76d7e16">Compilation</h3>
+<div class="outline-text-3" id="text-org76d7e16">
 <p>
 MLX has a <code>compile</code> function for compiling computational graphs. What does compilation mean in this context? Compilation makes <i>smaller graphs</i> by merging common work and fusing common operations.
 </p>
@@ -488,9 +488,9 @@ Compiled functions should be pure. They should not have side effects. Review thi
 </p>
 </div>
 </div>
-<div id="outline-container-orgca154d8" class="outline-3">
-<h3 id="orgca154d8">Streams</h3>
-<div class="outline-text-3" id="text-orgca154d8">
+<div id="outline-container-org3cf89aa" class="outline-3">
+<h3 id="org3cf89aa">Streams</h3>
+<div class="outline-text-3" id="text-org3cf89aa">
 <p>
 All operations take an optional <code>stream</code> keyword specifying which Stream the operation should run on. This is for specifying the device to run on.
 </p>

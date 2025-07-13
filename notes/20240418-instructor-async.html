@@ -38,20 +38,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org906006c">Asynchronous usage pattern for Instructor</a>
+<li><a href="#org987d05e">Asynchronous usage pattern for Instructor</a>
 <ul>
-<li><a href="#org7049b39">Setup</a></li>
-<li><a href="#org3c824c7">Iterate throught the objects</a></li>
+<li><a href="#org73626c5">Setup</a></li>
+<li><a href="#org14e1b65">Iterate throught the objects</a></li>
 </ul>
 </li>
-<li><a href="#org5cce0d8">Related Notes</a></li>
+<li><a href="#orgb001ac1">Related Notes</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org906006c" class="outline-2">
-<h2 id="org906006c">Asynchronous usage pattern for Instructor</h2>
-<div class="outline-text-2" id="text-org906006c">
-<div class="preview" id="org995f96a">
+<div id="outline-container-org987d05e" class="outline-2">
+<h2 id="org987d05e">Asynchronous usage pattern for Instructor</h2>
+<div class="outline-text-2" id="text-org987d05e">
+<div class="preview" id="org176abe3">
 <p>
 In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts.
 </p>
@@ -70,9 +70,9 @@ Using the instructor library with the asynchronous Anthropic client makes it muc
 </p>
 </div>
 
-<div id="outline-container-org7049b39" class="outline-3">
-<h3 id="org7049b39">Setup</h3>
-<div class="outline-text-3" id="text-org7049b39">
+<div id="outline-container-org73626c5" class="outline-3">
+<h3 id="org73626c5">Setup</h3>
+<div class="outline-text-3" id="text-org73626c5">
 <p>
 First, we set up the Anthropic async client with Instructor. We also set up the Pydantic schema we'll be using for structured extraction.
 </p>
@@ -85,14 +85,14 @@ First, we set up the Anthropic async client with Instructor. We also set up the 
 <span class="org-keyword">from</span> pydantic <span class="org-keyword">import</span> BaseModel, Field
 
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">I had ANTHROPIC_API_KEY in a .env file</span>
-load_dotenv()
+<span class="org-comment-delimiter"># </span><span class="org-comment">I had ANTHROPIC_API_KEY in a .env file
+</span>load_dotenv()
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">set up the async client</span>
-<span class="org-variable-name">aclient</span> <span class="org-operator">=</span> instructor.from_anthropic(AsyncAnthropic())
+<span class="org-comment-delimiter"># </span><span class="org-comment">set up the async client
+</span><span class="org-variable-name">aclient</span> <span class="org-operator">=</span> instructor.from_anthropic(AsyncAnthropic())
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">set up pydantic schema</span>
-<span class="org-keyword">class</span> <span class="org-type">Topics</span>(BaseModel):
+<span class="org-comment-delimiter"># </span><span class="org-comment">set up pydantic schema
+</span><span class="org-keyword">class</span> <span class="org-type">Topics</span>(BaseModel):
     <span class="org-variable-name">candidates</span>: <span class="org-builtin">list</span> <span class="org-operator">=</span> Field(
         description<span class="org-operator">=</span>(
             <span class="org-string">"List of topics that might be considered among the main topics of the talk."</span>
@@ -108,9 +108,9 @@ load_dotenv()
 </div>
 </div>
 </div>
-<div id="outline-container-org3c824c7" class="outline-3">
-<h3 id="org3c824c7">Iterate throught the objects</h3>
-<div class="outline-text-3" id="text-org3c824c7">
+<div id="outline-container-org14e1b65" class="outline-3">
+<h3 id="org14e1b65">Iterate throught the objects</h3>
+<div class="outline-text-3" id="text-org14e1b65">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> asyncio
 <span class="org-keyword">import</span> time
@@ -118,22 +118,22 @@ load_dotenv()
 <span class="org-keyword">import</span> anthropic
 <span class="org-keyword">from</span> tqdm <span class="org-keyword">import</span> tqdm
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Create a semaphore with a limit of 10 concurrent tasks</span>
-<span class="org-variable-name">sem</span> <span class="org-operator">=</span> asyncio.Semaphore(10)
+<span class="org-comment-delimiter"># </span><span class="org-comment">Create a semaphore with a limit of 10 concurrent tasks
+</span><span class="org-variable-name">sem</span> <span class="org-operator">=</span> asyncio.Semaphore(10)
 
 <span class="org-variable-name">topics_list</span>: List[<span class="org-builtin">str</span>] <span class="org-operator">=</span> []
 <span class="org-variable-name">new_event_data</span> <span class="org-operator">=</span> event_data.copy()
 
 <span class="org-keyword">async def</span> <span class="org-function-name">process_event</span>(event: <span class="org-builtin">dict</span>, sem: asyncio.Semaphore, progress_bar: tqdm) <span class="org-operator">-&gt;</span> <span class="org-constant">None</span>:
     <span class="org-variable-name">retries</span> <span class="org-operator">=</span> 3
-    <span class="org-variable-name">delay</span> <span class="org-operator">=</span> 1  <span class="org-comment-delimiter"># </span><span class="org-comment">Initial delay in seconds</span>
-
+    <span class="org-variable-name">delay</span> <span class="org-operator">=</span> 1  <span class="org-comment-delimiter"># </span><span class="org-comment">Initial delay in seconds
+</span>
     <span class="org-keyword">while</span> retries <span class="org-operator">&gt;</span> 0:
         <span class="org-keyword">try</span>:
-            <span class="org-comment-delimiter"># </span><span class="org-comment">Acquire the semaphore to limit concurrency</span>
-            <span class="org-keyword">async with</span> sem:
-                <span class="org-comment-delimiter"># </span><span class="org-comment">Make an asynchronous API call to create a message</span>
-                <span class="org-variable-name">resp</span> <span class="org-operator">=</span> <span class="org-keyword">await</span> aclient.messages.create(
+            <span class="org-comment-delimiter"># </span><span class="org-comment">Acquire the semaphore to limit concurrency
+</span>            <span class="org-keyword">async with</span> sem:
+                <span class="org-comment-delimiter"># </span><span class="org-comment">Make an asynchronous API call to create a message
+</span>                <span class="org-variable-name">resp</span> <span class="org-operator">=</span> <span class="org-keyword">await</span> aclient.messages.create(
                     model<span class="org-operator">=</span><span class="org-string">"claude-3-haiku-20240307"</span>,
                     max_tokens<span class="org-operator">=</span>1024,
                     messages<span class="org-operator">=</span>[
@@ -145,24 +145,24 @@ load_dotenv()
                     response_model<span class="org-operator">=</span>Topics,
                 )
 
-                <span class="org-comment-delimiter"># </span><span class="org-comment">Store the topics in the event dictionary</span>
-                <span class="org-variable-name">event</span>[<span class="org-string">'topics'</span>] <span class="org-operator">=</span> resp.topics
+                <span class="org-comment-delimiter"># </span><span class="org-comment">Store the topics in the event dictionary
+</span>                <span class="org-variable-name">event</span>[<span class="org-string">'topics'</span>] <span class="org-operator">=</span> resp.topics
                 topics_list.extend(resp.topics)
                 progress_bar.update(1)
                 <span class="org-keyword">return</span>
         <span class="org-keyword">except</span> <span class="org-type">Exception</span> <span class="org-keyword">as</span> e:
             <span class="org-keyword">if</span> <span class="org-builtin">isinstance</span>(e, anthropic._exceptions.RateLimitError):
-                <span class="org-comment-delimiter"># </span><span class="org-comment">Handle rate limit error</span>
-                <span class="org-variable-name">retries</span> <span class="org-operator">-=</span> 1
+                <span class="org-comment-delimiter"># </span><span class="org-comment">Handle rate limit error
+</span>                <span class="org-variable-name">retries</span> <span class="org-operator">-=</span> 1
                 <span class="org-keyword">if</span> retries <span class="org-operator">&gt;</span> 0:
                     <span class="org-builtin">print</span>(f<span class="org-string">"Rate limit reached, retrying in </span>{delay}<span class="org-string"> seconds..."</span>)
                     <span class="org-keyword">await</span> asyncio.sleep(delay)
-                    <span class="org-variable-name">delay</span> <span class="org-operator">*=</span> 2  <span class="org-comment-delimiter"># </span><span class="org-comment">Exponential backoff</span>
-                <span class="org-keyword">else</span>:
+                    <span class="org-variable-name">delay</span> <span class="org-operator">*=</span> 2  <span class="org-comment-delimiter"># </span><span class="org-comment">Exponential backoff
+</span>                <span class="org-keyword">else</span>:
                     <span class="org-builtin">print</span>(<span class="org-string">"Maximum retries reached, skipping event."</span>)
             <span class="org-keyword">else</span>:
-                <span class="org-comment-delimiter"># </span><span class="org-comment">Handle other errors</span>
-                <span class="org-builtin">print</span>(f<span class="org-string">"Error processing event: </span>{e}<span class="org-string">"</span>)
+                <span class="org-comment-delimiter"># </span><span class="org-comment">Handle other errors
+</span>                <span class="org-builtin">print</span>(f<span class="org-string">"Error processing event: </span>{e}<span class="org-string">"</span>)
                 <span class="org-variable-name">retries</span> <span class="org-operator">-=</span> 1
                 <span class="org-keyword">if</span> retries <span class="org-operator">&gt;</span> 0:
                     <span class="org-keyword">await</span> asyncio.sleep(delay)
@@ -174,18 +174,18 @@ load_dotenv()
     <span class="org-variable-name">tasks</span> <span class="org-operator">=</span> []
     <span class="org-keyword">with</span> tqdm(total<span class="org-operator">=</span><span class="org-builtin">len</span>(new_event_data), unit<span class="org-operator">=</span><span class="org-string">"event"</span>) <span class="org-keyword">as</span> progress_bar:
         <span class="org-keyword">for</span> event <span class="org-keyword">in</span> new_event_data:
-            <span class="org-comment-delimiter"># </span><span class="org-comment">Create a task for each event and add it to the tasks list</span>
-            tasks.append(process_event(event, sem, progress_bar))
+            <span class="org-comment-delimiter"># </span><span class="org-comment">Create a task for each event and add it to the tasks list
+</span>            tasks.append(process_event(event, sem, progress_bar))
 
-        <span class="org-comment-delimiter"># </span><span class="org-comment">Wait for all tasks to complete concurrently</span>
-        <span class="org-keyword">await</span> asyncio.gather(<span class="org-operator">*</span>tasks)
+        <span class="org-comment-delimiter"># </span><span class="org-comment">Wait for all tasks to complete concurrently
+</span>        <span class="org-keyword">await</span> asyncio.gather(<span class="org-operator">*</span>tasks)
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Enable asyncio support in Jupyter Notebook</span>
-<span class="org-keyword">import</span> nest_asyncio
+<span class="org-comment-delimiter"># </span><span class="org-comment">Enable asyncio support in Jupyter Notebook
+</span><span class="org-keyword">import</span> nest_asyncio
 nest_asyncio.<span class="org-builtin">apply</span>()
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Run the async function in the notebook</span>
-asyncio.get_event_loop().run_until_complete(run_in_notebook())
+<span class="org-comment-delimiter"># </span><span class="org-comment">Run the async function in the notebook
+</span>asyncio.get_event_loop().run_until_complete(run_in_notebook())
 </pre>
 </div>
 
@@ -201,9 +201,9 @@ In this code, we:
 </div>
 </div>
 </div>
-<div id="outline-container-org5cce0d8" class="outline-2">
-<h2 id="org5cce0d8">Related Notes</h2>
-<div class="outline-text-2" id="text-org5cce0d8">
+<div id="outline-container-orgb001ac1" class="outline-2">
+<h2 id="orgb001ac1">Related Notes</h2>
+<div class="outline-text-2" id="text-orgb001ac1">
 <ul class="org-ul">
 <li><a href="20240403-dbrx-instructor.html">Use Instructor with DBRX</a></li>
 </ul>

@@ -70,40 +70,40 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3bd69ac">A.1 PyTorch</a></li>
-<li><a href="#orgd6dbc55">A.2 Understanding tensors</a>
+<li><a href="#orgd16e633">A.1 PyTorch</a></li>
+<li><a href="#org805bef0">A.2 Understanding tensors</a>
 <ul>
-<li><a href="#orgc43fcc4">Creating tensors</a></li>
-<li><a href="#orgee4f15f">Tensor data types</a></li>
-<li><a href="#org67c767d">Common tensor operations</a></li>
+<li><a href="#org480aa2f">Creating tensors</a></li>
+<li><a href="#orgdc66905">Tensor data types</a></li>
+<li><a href="#org5cb93c9">Common tensor operations</a></li>
 </ul>
 </li>
-<li><a href="#org27507a1">A.3 Models as Computational Graphs</a></li>
-<li><a href="#org942be59">A.4 Automatic Differentiation</a></li>
-<li><a href="#org2f7aba4">A.5 Implementing multilayer neural networks</a></li>
-<li><a href="#orge9da7db">A.6 Setting up efficient data loaders</a></li>
-<li><a href="#org6ab5b83">A.7 A typical training loop</a></li>
-<li><a href="#org3187ef7">A.8 Saving and Loading Models</a></li>
-<li><a href="#org6319429">A.9 Optimizing training performance with GPUs</a>
+<li><a href="#orgbd33b7f">A.3 Models as Computational Graphs</a></li>
+<li><a href="#orgd3156c4">A.4 Automatic Differentiation</a></li>
+<li><a href="#org21aae24">A.5 Implementing multilayer neural networks</a></li>
+<li><a href="#org42a23c8">A.6 Setting up efficient data loaders</a></li>
+<li><a href="#org142534e">A.7 A typical training loop</a></li>
+<li><a href="#org42139eb">A.8 Saving and Loading Models</a></li>
+<li><a href="#org70bb401">A.9 Optimizing training performance with GPUs</a>
 <ul>
-<li><a href="#org29a6e9a">Computations on GPUs</a></li>
-<li><a href="#org43ddbff">Single-GPU Training</a></li>
-<li><a href="#orgdb320f5">Multi-GPU Training</a></li>
+<li><a href="#org891864b">Computations on GPUs</a></li>
+<li><a href="#org9f6abee">Single-GPU Training</a></li>
+<li><a href="#org844bd04">Multi-GPU Training</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org0fdfbda">
+<div class="preview" id="org35afc3c">
 <p>
 This is a quick run through the appendix on PyTorch from Sebastian Raschka's <a href="https://www.manning.com/books/build-a-large-language-model-from-scratch">Build a Large Language Model (From Scratch)</a> book, currently available via Manning's MEAP. I haven't spent an enormous amount of time with PyTorch in the last year or so, so it seemed worth the effort to work through it.
 </p>
 
 </div>
 
-<div id="outline-container-org3bd69ac" class="outline-2">
-<h2 id="org3bd69ac">A.1 PyTorch</h2>
-<div class="outline-text-2" id="text-org3bd69ac">
+<div id="outline-container-orgd16e633" class="outline-2">
+<h2 id="orgd16e633">A.1 PyTorch</h2>
+<div class="outline-text-2" id="text-orgd16e633">
 <p>
 There are three broad components to PyTorch:
 </p>
@@ -148,9 +148,9 @@ Great.
 </p>
 </div>
 </div>
-<div id="outline-container-orgd6dbc55" class="outline-2">
-<h2 id="orgd6dbc55">A.2 Understanding tensors</h2>
-<div class="outline-text-2" id="text-orgd6dbc55">
+<div id="outline-container-org805bef0" class="outline-2">
+<h2 id="org805bef0">A.2 Understanding tensors</h2>
+<div class="outline-text-2" id="text-org805bef0">
 <p>
 Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors are similar to NumPy arrays but have have several additional features:
 </p>
@@ -162,21 +162,21 @@ Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors
 Still, it has a numpy-like API.
 </p>
 </div>
-<div id="outline-container-orgc43fcc4" class="outline-3">
-<h3 id="orgc43fcc4">Creating tensors</h3>
-<div class="outline-text-3" id="text-orgc43fcc4">
+<div id="outline-container-org480aa2f" class="outline-3">
+<h3 id="org480aa2f">Creating tensors</h3>
+<div class="outline-text-3" id="text-org480aa2f">
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">0d tensor (scalar)</span>
-<span class="org-builtin">print</span>(torch.tensor(1))
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">0d tensor (scalar)
+</span><span class="org-builtin">print</span>(torch.tensor(1))
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">1d tensor (vector)</span>
-<span class="org-builtin">print</span>(torch.tensor([1, 2, 3]))
+<span class="org-comment-delimiter"># </span><span class="org-comment">1d tensor (vector)
+</span><span class="org-builtin">print</span>(torch.tensor([1, 2, 3]))
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">2d tensor</span>
-<span class="org-builtin">print</span>(torch.tensor([[1, 2], [3, 4]]))
+<span class="org-comment-delimiter"># </span><span class="org-comment">2d tensor
+</span><span class="org-builtin">print</span>(torch.tensor([[1, 2], [3, 4]]))
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">3d tensor</span>
-<span class="org-builtin">print</span>(torch.tensor([[[1, 2], [3,4]], [[5,6], [7,8]]]))
+<span class="org-comment-delimiter"># </span><span class="org-comment">3d tensor
+</span><span class="org-builtin">print</span>(torch.tensor([[[1, 2], [3,4]], [[5,6], [7,8]]]))
 </pre>
 </div>
 
@@ -193,9 +193,9 @@ tensor([[[1, 2],
 </pre>
 </div>
 </div>
-<div id="outline-container-orgee4f15f" class="outline-3">
-<h3 id="orgee4f15f">Tensor data types</h3>
-<div class="outline-text-3" id="text-orgee4f15f">
+<div id="outline-container-orgdc66905" class="outline-3">
+<h3 id="orgdc66905">Tensor data types</h3>
+<div class="outline-text-3" id="text-orgdc66905">
 <p>
 These are important to pay attention to! So let's pay attention to them. The default (from above) is the 64-bit integer.
 </p>
@@ -249,9 +249,9 @@ torch.float32
 </pre>
 </div>
 </div>
-<div id="outline-container-org67c767d" class="outline-3">
-<h3 id="org67c767d">Common tensor operations</h3>
-<div class="outline-text-3" id="text-org67c767d">
+<div id="outline-container-org5cb93c9" class="outline-3">
+<h3 id="org5cb93c9">Common tensor operations</h3>
+<div class="outline-text-3" id="text-org5cb93c9">
 <ul class="org-ul">
 <li>brief survey of the most common tensor operations prior to getting into the computational graphs concept.</li>
 </ul>
@@ -338,9 +338,9 @@ tensor([[14, 32],
 </div>
 </div>
 </div>
-<div id="outline-container-org27507a1" class="outline-2">
-<h2 id="org27507a1">A.3 Models as Computational Graphs</h2>
-<div class="outline-text-2" id="text-org27507a1">
+<div id="outline-container-orgbd33b7f" class="outline-2">
+<h2 id="orgbd33b7f">A.3 Models as Computational Graphs</h2>
+<div class="outline-text-2" id="text-orgbd33b7f">
 <p>
 The previous section covered PyTorch's tensor library. This section gets into its automatic differentiation engine (autograd). Autograd provides functions for automatically computing gradients in dynamic computational graphs.
 </p>
@@ -373,9 +373,9 @@ Input and weight -&gt; (u = w<sub>1</sub> * x<sub>1</sub>) -&gt; +b -&gt; (z = u
 </p>
 </div>
 </div>
-<div id="outline-container-org942be59" class="outline-2">
-<h2 id="org942be59">A.4 Automatic Differentiation</h2>
-<div class="outline-text-2" id="text-org942be59">
+<div id="outline-container-orgd3156c4" class="outline-2">
+<h2 id="orgd3156c4">A.4 Automatic Differentiation</h2>
+<div class="outline-text-2" id="text-orgd3156c4">
 <p>
 PyTorch will automatically build such a graph if one of its terminal nodes has the <code>requires_grad</code> attribute set to True. This enables us to train neural nets via backpropagation. Working backward from the above:
 </p>
@@ -414,8 +414,8 @@ So what exactly does this have to do with torch as an autograd engine? PyTorch t
 <span class="org-variable-name">a</span> <span class="org-operator">=</span> torch.sigmoid(z)
 
 <span class="org-variable-name">loss</span> <span class="org-operator">=</span> F.binary_cross_entropy(a, y)
-<span class="org-variable-name">grad_L_w1</span> <span class="org-operator">=</span> grad(loss, w1, retain_graph<span class="org-operator">=</span><span class="org-constant">True</span>) <span class="org-comment-delimiter">#</span><span class="org-comment">A</span>
-<span class="org-variable-name">grad_L_b</span> <span class="org-operator">=</span> grad(loss, b, retain_graph<span class="org-operator">=</span><span class="org-constant">True</span>)
+<span class="org-variable-name">grad_L_w1</span> <span class="org-operator">=</span> grad(loss, w1, retain_graph<span class="org-operator">=</span><span class="org-constant">True</span>) <span class="org-comment-delimiter">#</span><span class="org-comment">A
+</span><span class="org-variable-name">grad_L_b</span> <span class="org-operator">=</span> grad(loss, b, retain_graph<span class="org-operator">=</span><span class="org-constant">True</span>)
 </pre>
 </div>
 
@@ -450,9 +450,9 @@ tensor([-0.0817])
 </pre>
 </div>
 </div>
-<div id="outline-container-org2f7aba4" class="outline-2">
-<h2 id="org2f7aba4">A.5 Implementing multilayer neural networks</h2>
-<div class="outline-text-2" id="text-org2f7aba4">
+<div id="outline-container-org21aae24" class="outline-2">
+<h2 id="org21aae24">A.5 Implementing multilayer neural networks</h2>
+<div class="outline-text-2" id="text-org21aae24">
 <p>
 Now we get to the third major component of Pytorch: its library for implementing deep neural networks.
 </p>
@@ -481,14 +481,14 @@ Here is code illustrating a basic NN with two hidden layers.
         <span class="org-builtin">super</span>().__init__()
 
         <span class="org-keyword">self</span>.<span class="org-variable-name">layers</span> <span class="org-operator">=</span> torch.nn.Sequential(
-            <span class="org-comment-delimiter"># </span><span class="org-comment">1st hidden layer</span>
-            torch.nn.Linear(num_inputs, 30),
+            <span class="org-comment-delimiter"># </span><span class="org-comment">1st hidden layer
+</span>            torch.nn.Linear(num_inputs, 30),
             torch.nn.ReLU(),
-            <span class="org-comment-delimiter"># </span><span class="org-comment">2nd hidden layer</span>
-            torch.nn.Linear(30, 20),
+            <span class="org-comment-delimiter"># </span><span class="org-comment">2nd hidden layer
+</span>            torch.nn.Linear(30, 20),
             torch.nn.ReLU(),
-            <span class="org-comment-delimiter"># </span><span class="org-comment">output layer</span>
-            torch.nn.Linear(20, num_outputs),
+            <span class="org-comment-delimiter"># </span><span class="org-comment">output layer
+</span>            torch.nn.Linear(20, num_outputs),
         )
 
     <span class="org-keyword">def</span> <span class="org-function-name">forward</span>(<span class="org-keyword">self</span>, x):
@@ -630,9 +630,9 @@ tensor([[0.3645, 0.3403, 0.2952]])
 </div>
 </div>
 
-<div id="outline-container-orge9da7db" class="outline-2">
-<h2 id="orge9da7db">A.6 Setting up efficient data loaders</h2>
-<div class="outline-text-2" id="text-orge9da7db">
+<div id="outline-container-org42a23c8" class="outline-2">
+<h2 id="org42a23c8">A.6 Setting up efficient data loaders</h2>
+<div class="outline-text-2" id="text-org42a23c8">
 <p>
 A <code>DataSet</code> is a class that defines how individual records are loaded. A <code>DataLoader</code> class handles dataset shuffling and assembling data records into batches.
 </p>
@@ -758,9 +758,9 @@ The <code>num_workers</code> argument relates to parallelizing data loading/proc
 </div>
 </div>
 
-<div id="outline-container-org6ab5b83" class="outline-2">
-<h2 id="org6ab5b83">A.7 A typical training loop</h2>
-<div class="outline-text-2" id="text-org6ab5b83">
+<div id="outline-container-org142534e" class="outline-2">
+<h2 id="org142534e">A.7 A typical training loop</h2>
+<div class="outline-text-2" id="text-org142534e">
 <p>
 In this section, we combine many of the techniques from above to show a complete training loop.
 </p>
@@ -789,8 +789,8 @@ torch.manual_seed(123)
         loss.backward()
         optimizer.step()
     
-        <span class="org-comment-delimiter">### </span><span class="org-comment">LOGGING</span>
-        <span class="org-builtin">print</span>(f<span class="org-string">"Epoch: </span>{epoch<span class="org-operator">+</span>1:03d}<span class="org-string">/</span>{num_epochs:03d}<span class="org-string">"</span>
+        <span class="org-comment-delimiter">### </span><span class="org-comment">LOGGING
+</span>        <span class="org-builtin">print</span>(f<span class="org-string">"Epoch: </span>{epoch<span class="org-operator">+</span>1:03d}<span class="org-string">/</span>{num_epochs:03d}<span class="org-string">"</span>
               f<span class="org-string">" | Batch </span>{batch_idx:03d}<span class="org-string">/</span>{<span class="org-builtin">len</span>(train_loader):03d}<span class="org-string">"</span>
               f<span class="org-string">" | Train Loss: </span>{loss:.2f}<span class="org-string">"</span>)
  
@@ -928,9 +928,9 @@ tensor(1.)
 </div>
 
 
-<div id="outline-container-org3187ef7" class="outline-2">
-<h2 id="org3187ef7">A.8 Saving and Loading Models</h2>
-<div class="outline-text-2" id="text-org3187ef7">
+<div id="outline-container-org42139eb" class="outline-2">
+<h2 id="org42139eb">A.8 Saving and Loading Models</h2>
+<div class="outline-text-2" id="text-org42139eb">
 <p>
 We can save a model as follows:
 </p>
@@ -959,14 +959,14 @@ It is necessary to have an instance of the model in memory in order to load the 
 </p>
 </div>
 </div>
-<div id="outline-container-org6319429" class="outline-2">
-<h2 id="org6319429">A.9 Optimizing training performance with GPUs</h2>
-<div class="outline-text-2" id="text-org6319429">
+<div id="outline-container-org70bb401" class="outline-2">
+<h2 id="org70bb401">A.9 Optimizing training performance with GPUs</h2>
+<div class="outline-text-2" id="text-org70bb401">
 </div>
 
-<div id="outline-container-org29a6e9a" class="outline-3">
-<h3 id="org29a6e9a">Computations on GPUs</h3>
-<div class="outline-text-3" id="text-org29a6e9a">
+<div id="outline-container-org891864b" class="outline-3">
+<h3 id="org891864b">Computations on GPUs</h3>
+<div class="outline-text-3" id="text-org891864b">
 <ul class="org-ul">
 <li>Modifying training runs to use GPU in PyTorch is easy</li>
 <li>In PyTorch, a <code>device</code> is where computations occur and data resides. A pytorch tensor lives on a device and its operations are executed on that device.</li>
@@ -1041,9 +1041,9 @@ RuntimeError: Expected all tensors to be on the same device, but found at least 
 </pre>
 </div>
 </div>
-<div id="outline-container-org43ddbff" class="outline-3">
-<h3 id="org43ddbff">Single-GPU Training</h3>
-<div class="outline-text-3" id="text-org43ddbff">
+<div id="outline-container-org9f6abee" class="outline-3">
+<h3 id="org9f6abee">Single-GPU Training</h3>
+<div class="outline-text-3" id="text-org9f6abee">
 <p>
 All we need to do to train on a single GPU is:
 </p>
@@ -1063,9 +1063,9 @@ This is usually considered the best practice:
 </div>
 </div>
 </div>
-<div id="outline-container-orgdb320f5" class="outline-3">
-<h3 id="orgdb320f5">Multi-GPU Training</h3>
-<div class="outline-text-3" id="text-orgdb320f5">
+<div id="outline-container-org844bd04" class="outline-3">
+<h3 id="org844bd04">Multi-GPU Training</h3>
+<div class="outline-text-3" id="text-org844bd04">
 <p>
 This section introduces the idea of <i>distributed training</i>.
 </p>
@@ -1083,7 +1083,7 @@ The most basic approach uses PyTorch's <code>DistributedDataParallel</code> stra
 DDP offers enhanced training speed.
 </p>
 
-<div class="notice" id="org8e528de">
+<div class="notice" id="orgdbd72fc">
 <p>
 DDP does not function properly in interactive environments like Jupyter notebooks. DDP code must be run as a script, not within a notebook interface.
 </p>
@@ -1133,8 +1133,8 @@ Here is an example script for distributed training.
         shuffle<span class="org-operator">=</span><span class="org-constant">False</span>,
         pin_memory<span class="org-operator">=</span><span class="org-constant">True</span>,
         drop_last<span class="org-operator">=</span><span class="org-constant">True</span>,
-        <span class="org-comment-delimiter"># </span><span class="org-comment">this ensures each GPU receives different data subsample</span>
-        sampler<span class="org-operator">=</span>DistributedSampler(train_ds) 
+        <span class="org-comment-delimiter"># </span><span class="org-comment">this ensures each GPU receives different data subsample
+</span>        sampler<span class="org-operator">=</span>DistributedSampler(train_ds) 
     )    
     <span class="org-keyword">return</span> train_loader, test_loader
 <span class="org-keyword">def</span> <span class="org-function-name">main</span>(rank, world_size, num_epochs):      
@@ -1143,8 +1143,8 @@ Here is an example script for distributed training.
     <span class="org-variable-name">model</span> <span class="org-operator">=</span> NeuralNetwork(num_inputs<span class="org-operator">=</span>2, num_outputs<span class="org-operator">=</span>2)
     model.to(rank)
     <span class="org-variable-name">optimizer</span> <span class="org-operator">=</span> torch.optim.SGD(model.parameters(), lr<span class="org-operator">=</span>0.5)
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Wrap the model in DDP to enable gradient synchronization</span>
-    <span class="org-variable-name">model</span> <span class="org-operator">=</span> DDP(model, device_ids<span class="org-operator">=</span>[rank])
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Wrap the model in DDP to enable gradient synchronization
+</span>    <span class="org-variable-name">model</span> <span class="org-operator">=</span> DDP(model, device_ids<span class="org-operator">=</span>[rank])
     <span class="org-keyword">for</span> epoch <span class="org-keyword">in</span> <span class="org-builtin">range</span>(num_epochs):
     <span class="org-keyword">for</span> features, labels <span class="org-keyword">in</span> train_loader:
             <span class="org-variable-name">features</span>, <span class="org-variable-name">labels</span> <span class="org-operator">=</span> features.to(rank), labels.to(rank) 
@@ -1157,8 +1157,8 @@ Here is an example script for distributed training.
     <span class="org-builtin">print</span>(f<span class="org-string">"[GPU</span>{rank}<span class="org-string">] Training accuracy"</span>, train_acc)
     <span class="org-variable-name">test_acc</span> <span class="org-operator">=</span> compute_accuracy(model, test_loader, device<span class="org-operator">=</span>rank)
     <span class="org-builtin">print</span>(f<span class="org-string">"[GPU</span>{rank}<span class="org-string">] Test accuracy"</span>, test_acc)
-    <span class="org-comment-delimiter"># </span><span class="org-comment">exit distributed training, free up resources</span>
-    destroy_process_group()                   
+    <span class="org-comment-delimiter"># </span><span class="org-comment">exit distributed training, free up resources
+</span>    destroy_process_group()                   
 
 <span class="org-keyword">if</span> <span class="org-builtin">__name__</span> <span class="org-operator">==</span> <span class="org-string">"__main__"</span>:
     <span class="org-builtin">print</span>(<span class="org-string">"Number of GPUs available:"</span>, torch.cuda.device_count())

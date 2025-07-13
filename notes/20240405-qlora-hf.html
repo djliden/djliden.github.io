@@ -38,18 +38,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge9f5d6f">1. Intro to Quantization</a>
+<li><a href="#orgf3f3247">1. Intro to Quantization</a>
 <ul>
-<li><a href="#orgfdd5bed">Common data types used in ML</a></li>
-<li><a href="#orgbf12bd0">Different types in training and inference</a></li>
-<li><a href="#org750513a">The FP8 Format</a></li>
+<li><a href="#org747ca48">Common data types used in ML</a></li>
+<li><a href="#orgbbab1cb">Different types in training and inference</a></li>
+<li><a href="#orgcc3a85e">The FP8 Format</a></li>
 </ul>
 </li>
-<li><a href="#orga2bd34a">QLoRA Paper Overview</a></li>
+<li><a href="#org9945416">QLoRA Paper Overview</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org67b17ec">
+<div class="preview" id="org82a6f32">
 <p>
 I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA and quantization. Later, I will also make a note with some examples.
 </p>
@@ -60,9 +60,9 @@ I have a basic understanding of what QLoRA is, but given its popularity and appa
 Link: <a href="https://huggingface.co/blog/4bit-transformers-bitsandbytes">Making LLMs even more accessible with bitsandbytes, 4-bit quantization and QLoRA</a>
 </p>
 
-<div id="outline-container-orge9f5d6f" class="outline-2">
-<h2 id="orge9f5d6f">1. Intro to Quantization</h2>
-<div class="outline-text-2" id="text-orge9f5d6f">
+<div id="outline-container-orgf3f3247" class="outline-2">
+<h2 id="orgf3f3247">1. Intro to Quantization</h2>
+<div class="outline-text-2" id="text-orgf3f3247">
 <p>
 The post recommends reading the intro to <a href="https://huggingface.co/blog/hf-bitsandbytes-integration">this post</a> first for some background on quantization. Key points:
 </p>
@@ -72,9 +72,9 @@ The post recommends reading the intro to <a href="https://huggingface.co/blog/hf
 <li>int8 inference doesn't appear to significantly degrade model performance.</li>
 </ul>
 </div>
-<div id="outline-container-orgfdd5bed" class="outline-3">
-<h3 id="orgfdd5bed">Common data types used in ML</h3>
-<div class="outline-text-3" id="text-orgfdd5bed">
+<div id="outline-container-org747ca48" class="outline-3">
+<h3 id="org747ca48">Common data types used in ML</h3>
+<div class="outline-text-3" id="text-org747ca48">
 <p>
 The size of a model is determined by the number of its parameters <i>and their precision</i>. Common types include:
 </p>
@@ -86,15 +86,15 @@ The size of a model is determined by the number of its parameters <i>and their p
 <div class="org-src-container">
 <label class="org-src-name"><span class="listing-number">Listing 1: </span>Example code generated and executed by GPT4/code interpreter</label><pre class="src src-python"><span class="org-keyword">import</span> numpy <span class="org-keyword">as</span> np
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Define two numbers within the FP16 range</span>
-<span class="org-variable-name">a</span> <span class="org-operator">=</span> np.float16(10000)
+<span class="org-comment-delimiter"># </span><span class="org-comment">Define two numbers within the FP16 range
+</span><span class="org-variable-name">a</span> <span class="org-operator">=</span> np.float16(10000)
 <span class="org-variable-name">b</span> <span class="org-operator">=</span> np.float16(10000)
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Perform multiplication</span>
-<span class="org-variable-name">result</span> <span class="org-operator">=</span> a <span class="org-operator">*</span> b
+<span class="org-comment-delimiter"># </span><span class="org-comment">Perform multiplication
+</span><span class="org-variable-name">result</span> <span class="org-operator">=</span> a <span class="org-operator">*</span> b
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Check the result</span>
-result
+<span class="org-comment-delimiter"># </span><span class="org-comment">Check the result
+</span>result
 </pre>
 </div>
 
@@ -109,9 +109,9 @@ result
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbf12bd0" class="outline-3">
-<h3 id="orgbf12bd0">Different types in training and inference</h3>
-<div class="outline-text-3" id="text-orgbf12bd0">
+<div id="outline-container-orgbbab1cb" class="outline-3">
+<h3 id="orgbbab1cb">Different types in training and inference</h3>
+<div class="outline-text-3" id="text-orgbbab1cb">
 <p>
 "Ideally" we should use FP32 for training and inference. But it is two times slower than half precision. So a mixed-precision approach is preferred. Weights are held in FP32 as a precise "main weights" reference. Computation in the forward/backward pass are done in fp16/bf16 to improve training speed. The fp16/bf16 gradients are used to update the fp32 weights.
 </p>
@@ -120,7 +120,7 @@ result
 During inference, there's no real need for the full-precision weights.
 </p>
 
-<div class="question" id="org79a4b79">
+<div class="question" id="orgda910db">
 <p>
 What happens when I load a model in bf16 and then train it? Is that still mixed precision? Or is bf16 the reference copy in that case?
 </p>
@@ -128,18 +128,18 @@ What happens when I load a model in bf16 and then train it? Is that still mixed 
 </div>
 </div>
 </div>
-<div id="outline-container-org750513a" class="outline-3">
-<h3 id="org750513a">The FP8 Format</h3>
-<div class="outline-text-3" id="text-org750513a">
+<div id="outline-container-orgcc3a85e" class="outline-3">
+<h3 id="orgcc3a85e">The FP8 Format</h3>
+<div class="outline-text-3" id="text-orgcc3a85e">
 <p>
 The FP8 format has two formats: E4M3 and E5M2 (where E=exponent, M=mantissa). E4M3 (higher precision, smaller range) is best suited for the forward pass, while E5M2 (lower precision, higher range) is better suited for the backward pass.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orga2bd34a" class="outline-2">
-<h2 id="orga2bd34a">QLoRA Paper Overview</h2>
-<div class="outline-text-2" id="text-orga2bd34a">
+<div id="outline-container-org9945416" class="outline-2">
+<h2 id="org9945416">QLoRA Paper Overview</h2>
+<div class="outline-text-2" id="text-org9945416">
 <p>
 QLoRA reduces the memory usage of LLM fine-tuning without appreciable loss of performance compared to half precision fine-tuning.
 </p>

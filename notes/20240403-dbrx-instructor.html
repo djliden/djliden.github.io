@@ -38,43 +38,43 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc4c3d09">Instructor</a></li>
-<li><a href="#org4458a41">Using it with DBRX/Databricks</a>
+<li><a href="#org1be8e72">Instructor</a></li>
+<li><a href="#org0693bc6">Using it with DBRX/Databricks</a>
 <ul>
-<li><a href="#org3227fec">Set up the client</a></li>
-<li><a href="#org51bfcf5">Simple example</a></li>
-<li><a href="#org32dd364">A slightly more involved example</a></li>
+<li><a href="#org2ced1e6">Set up the client</a></li>
+<li><a href="#org5bfb2c3">Simple example</a></li>
+<li><a href="#org9f546c5">A slightly more involved example</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org001562c">
+<div class="preview" id="org5ebfeac">
 <p>
 This note briefly demonstrates how to use the <a href="https://github.com/jxnl/instructor">Instructor</a> library with the Databricks <a href="https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm">DBRX</a> model via the Databricks Foundation Models API.
 </p>
 
 </div>
 
-<div id="outline-container-orgc4c3d09" class="outline-2">
-<h2 id="orgc4c3d09">Instructor</h2>
-<div class="outline-text-2" id="text-orgc4c3d09">
+<div id="outline-container-org1be8e72" class="outline-2">
+<h2 id="org1be8e72">Instructor</h2>
+<div class="outline-text-2" id="text-org1be8e72">
 <p>
 The instructor library provides structured output from LLMs. The user specifies a Pydantic model to define the structure of outputs.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org4458a41" class="outline-2">
-<h2 id="org4458a41">Using it with DBRX/Databricks</h2>
-<div class="outline-text-2" id="text-org4458a41">
+<div id="outline-container-org0693bc6" class="outline-2">
+<h2 id="org0693bc6">Using it with DBRX/Databricks</h2>
+<div class="outline-text-2" id="text-org0693bc6">
 <p>
 Instructor works with DBRX/with the databricks foundation model API. Here's how.
 </p>
 </div>
-<div id="outline-container-org3227fec" class="outline-3">
-<h3 id="org3227fec">Set up the client</h3>
-<div class="outline-text-3" id="text-org3227fec">
+<div id="outline-container-org2ced1e6" class="outline-3">
+<h3 id="org2ced1e6">Set up the client</h3>
+<div class="outline-text-3" id="text-org2ced1e6">
 <p>
 We need to define the environment variables <code>OPENAI_API_KEY</code> and <code>OPENAI_BASE_URL</code>. In this example, they are saved in a <code>.env</code> file. We'll start by loading them.
 </p>
@@ -91,9 +91,9 @@ True
 </div>
 </div>
 
-<div id="outline-container-org51bfcf5" class="outline-3">
-<h3 id="org51bfcf5">Simple example</h3>
-<div class="outline-text-3" id="text-org51bfcf5">
+<div id="outline-container-org5bfb2c3" class="outline-3">
+<h3 id="org5bfb2c3">Simple example</h3>
+<div class="outline-text-3" id="text-org5bfb2c3">
 <p>
 Next, we'll run the example from the Instructor docs to make sure everything is working. In this example, we define a schema fro data about users: we expect name and age. We then prompt the model with a sentence about a user. The model will return the Pydantic object with the user's information.
 </p>
@@ -106,21 +106,21 @@ Next, we'll run the example from the Instructor docs to make sure everything is 
 
 <span class="org-keyword">from</span> rich <span class="org-keyword">import</span> <span class="org-builtin">print</span>
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Define your desired output structure</span>
-<span class="org-keyword">class</span> <span class="org-type">UserInfo</span>(BaseModel):
+<span class="org-comment-delimiter"># </span><span class="org-comment">Define your desired output structure
+</span><span class="org-keyword">class</span> <span class="org-type">UserInfo</span>(BaseModel):
     name: <span class="org-builtin">str</span>
     age: <span class="org-builtin">int</span>
 
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Patch the OpenAI client</span>
-<span class="org-variable-name">client</span> <span class="org-operator">=</span> instructor.from_openai(
+<span class="org-comment-delimiter"># </span><span class="org-comment">Patch the OpenAI client
+</span><span class="org-variable-name">client</span> <span class="org-operator">=</span> instructor.from_openai(
     OpenAI(), mode<span class="org-operator">=</span>instructor.Mode.MD_JSON
 )
 
 <span class="org-variable-name">model</span> <span class="org-operator">=</span> <span class="org-string">"databricks-dbrx-instruct"</span>
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Extract structured data from natural language</span>
-<span class="org-variable-name">user_info</span> <span class="org-operator">=</span> client.chat.completions.create(
+<span class="org-comment-delimiter"># </span><span class="org-comment">Extract structured data from natural language
+</span><span class="org-variable-name">user_info</span> <span class="org-operator">=</span> client.chat.completions.create(
     model<span class="org-operator">=</span>model,
     response_model<span class="org-operator">=</span>UserInfo,
     messages<span class="org-operator">=</span>[
@@ -129,8 +129,8 @@ Next, we'll run the example from the Instructor docs to make sure everything is 
         {
             <span class="org-string">"role"</span>: <span class="org-string">"assistant"</span>,
             <span class="org-string">"content"</span>: <span class="org-string">" "</span>,
-        },  <span class="org-comment-delimiter"># </span><span class="org-comment">need to include for compatibility reasons</span>
-    ],
+        },  <span class="org-comment-delimiter"># </span><span class="org-comment">need to include for compatibility reasons
+</span>    ],
 )
 
 <span class="org-builtin">print</span>(user_info)
@@ -152,9 +152,9 @@ There are a few things to pay attention to here.
 </ul>
 </div>
 </div>
-<div id="outline-container-org32dd364" class="outline-3">
-<h3 id="org32dd364">A slightly more involved example</h3>
-<div class="outline-text-3" id="text-org32dd364">
+<div id="outline-container-org9f546c5" class="outline-3">
+<h3 id="org9f546c5">A slightly more involved example</h3>
+<div class="outline-text-3" id="text-org9f546c5">
 <p>
 Let's look at an example of generating an arbitrary number of question/answer pairs from a text, e.g. for evaluating a RAG application.
 </p>
@@ -164,17 +164,17 @@ We will use the following text on emacs hooks:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-variable-name">text</span> <span class="org-operator">=</span> <span class="org-string">"""A hook is a variable where you can store a function or functions (see What Is a Function?) to be called on a particular occasion by an existing program. Emacs provides hooks for the sake of customization. Most often, hooks are set up in the init file (see The Init File), but Lisp programs can set them also. See Standard Hooks, for a list of some standard hook variables.</span>
+<pre class="src src-python"><span class="org-variable-name">text</span> <span class="org-operator">=</span> <span class="org-string">"""A hook is a variable where you can store a function or functions (see What Is a Function?) to be called on a particular occasion by an existing program. Emacs provides hooks for the sake of customization. Most often, hooks are set up in the init file (see The Init File), but Lisp programs can set them also. See Standard Hooks, for a list of some standard hook variables.
 
-<span class="org-string">Most of the hooks in Emacs are normal hooks. These variables contain lists of functions to be called with no arguments. By convention, whenever the hook name ends in &#8216;-hook&#8217;, that tells you it is normal. We try to make all hooks normal, as much as possible, so that you can use them in a uniform way.</span>
+Most of the hooks in Emacs are normal hooks. These variables contain lists of functions to be called with no arguments. By convention, whenever the hook name ends in &#8216;-hook&#8217;, that tells you it is normal. We try to make all hooks normal, as much as possible, so that you can use them in a uniform way.
 
-<span class="org-string">Every major mode command is supposed to run a normal hook called the mode hook as one of the last steps of initialization. This makes it easy for a user to customize the behavior of the mode, by overriding the buffer-local variable assignments already made by the mode. Most minor mode functions also run a mode hook at the end. But hooks are used in other contexts too. For example, the hook suspend-hook runs just before Emacs suspends itself (see Suspending Emacs).</span>
+Every major mode command is supposed to run a normal hook called the mode hook as one of the last steps of initialization. This makes it easy for a user to customize the behavior of the mode, by overriding the buffer-local variable assignments already made by the mode. Most minor mode functions also run a mode hook at the end. But hooks are used in other contexts too. For example, the hook suspend-hook runs just before Emacs suspends itself (see Suspending Emacs).
 
-<span class="org-string">If the hook variable&#8217;s name does not end with &#8216;-hook&#8217;, that indicates it is probably an abnormal hook. These differ from normal hooks in two ways: they can be called with one or more arguments, and their return values can be used in some way. The hook&#8217;s documentation says how the functions are called and how their return values are used. Any functions added to an abnormal hook must follow the hook&#8217;s calling convention. By convention, abnormal hook names end in &#8216;-functions&#8217;.</span>
+If the hook variable&#8217;s name does not end with &#8216;-hook&#8217;, that indicates it is probably an abnormal hook. These differ from normal hooks in two ways: they can be called with one or more arguments, and their return values can be used in some way. The hook&#8217;s documentation says how the functions are called and how their return values are used. Any functions added to an abnormal hook must follow the hook&#8217;s calling convention. By convention, abnormal hook names end in &#8216;-functions&#8217;.
 
-<span class="org-string">If the name of the variable ends in &#8216;-predicate&#8217; or &#8216;-function&#8217; (singular) then its value must be a function, not a list of functions. As with abnormal hooks, the expected arguments and meaning of the return value vary across such single function hooks. The details are explained in each variable&#8217;s docstring.</span>
+If the name of the variable ends in &#8216;-predicate&#8217; or &#8216;-function&#8217; (singular) then its value must be a function, not a list of functions. As with abnormal hooks, the expected arguments and meaning of the return value vary across such single function hooks. The details are explained in each variable&#8217;s docstring.
 
-<span class="org-string">Since hooks (both multi and single function) are variables, their values can be modified with setq or temporarily with let. However, it is often useful to add or remove a particular function from a hook while preserving any other functions it might have. For multi function hooks, the recommended way of doing this is with add-hook and remove-hook (see Setting Hooks). Most normal hook variables are initially void; add-hook knows how to deal with this. You can add hooks either globally or buffer-locally with add-hook. For hooks which hold only a single function, add-hook is not appropriate, but you can use add-function (see Advising Emacs Lisp Functions) to combine new functions with the hook. Note that some single function hooks may be nil which add-function cannot deal with, so you must check for that before calling add-function."""</span>
+Since hooks (both multi and single function) are variables, their values can be modified with setq or temporarily with let. However, it is often useful to add or remove a particular function from a hook while preserving any other functions it might have. For multi function hooks, the recommended way of doing this is with add-hook and remove-hook (see Setting Hooks). Most normal hook variables are initially void; add-hook knows how to deal with this. You can add hooks either globally or buffer-locally with add-hook. For hooks which hold only a single function, add-hook is not appropriate, but you can use add-function (see Advising Emacs Lisp Functions) to combine new functions with the hook. Note that some single function hooks may be nil which add-function cannot deal with, so you must check for that before calling add-function."""</span>
 </pre>
 </div>
 
@@ -200,8 +200,8 @@ Now we'll define a new schema for generating questions and answers.
 
 
 <span class="org-keyword">def</span> <span class="org-function-name">generate_qa</span>(text, client<span class="org-operator">=</span>client):
-    <span class="org-variable-name">paragraph</span> <span class="org-operator">=</span> text  <span class="org-comment-delimiter"># </span><span class="org-comment">Assuming 'text' is the column with the content</span>
-    <span class="org-variable-name">response</span> <span class="org-operator">=</span> client.chat.completions.create(
+    <span class="org-variable-name">paragraph</span> <span class="org-operator">=</span> text  <span class="org-comment-delimiter"># </span><span class="org-comment">Assuming 'text' is the column with the content
+</span>    <span class="org-variable-name">response</span> <span class="org-operator">=</span> client.chat.completions.create(
         model<span class="org-operator">=</span>model,
         response_model<span class="org-operator">=</span>EvalQAs,
         messages<span class="org-operator">=</span>[
@@ -209,8 +209,8 @@ Now we'll define a new schema for generating questions and answers.
             {<span class="org-string">"role"</span>: <span class="org-string">"assistant"</span>, <span class="org-string">"content"</span>: <span class="org-string">" "</span>}
         ]
     )
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Extracting the 'evalqas' part from the response</span>
-    <span class="org-keyword">return</span> response
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Extracting the 'evalqas' part from the response
+</span>    <span class="org-keyword">return</span> response
 </pre>
 </div>
 
@@ -229,7 +229,7 @@ And how we'll test this on our example text.
 </pre>
 </div>
 
-<pre class="example" id="org49efb62">
+<pre class="example" id="org401a63f">
 EvalQAs(
     evalqas=[
         EvalQA(

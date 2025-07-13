@@ -38,26 +38,26 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5399835">Introduction</a></li>
-<li><a href="#org81193bb">Claudette</a>
+<li><a href="#orgf4590b1">Introduction</a></li>
+<li><a href="#org0fb3152">Claudette</a>
 <ul>
-<li><a href="#org4bbff1b">Setup</a></li>
-<li><a href="#org205c72a">The <code>Chat</code> class</a></li>
-<li><a href="#orgd59028a">Tools</a></li>
+<li><a href="#orgc04b87a">Setup</a></li>
+<li><a href="#orgc897673">The <code>Chat</code> class</a></li>
+<li><a href="#org031f7a3">Tools</a></li>
 </ul>
 </li>
-<li><a href="#org997e82b">FastHTML</a>
+<li><a href="#org2fa7d92">FastHTML</a>
 <ul>
-<li><a href="#org39d1425">FastHTML Tutorials</a></li>
+<li><a href="#org07b2285">FastHTML Tutorials</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org5399835" class="outline-2">
-<h2 id="org5399835">Introduction</h2>
-<div class="outline-text-2" id="text-org5399835">
-<div class="preview" id="orgeb7c922">
+<div id="outline-container-orgf4590b1" class="outline-2">
+<h2 id="orgf4590b1">Introduction</h2>
+<div class="outline-text-2" id="text-orgf4590b1">
+<div class="preview" id="orgbcce099">
 <p>
 I just listened to the latest episode of the <a href="https://www.latent.space/p/answerai">Latent Space podcast</a>, which featured Jeremy Howard of <a href="https://www.fast.ai/">fast.ai</a> fame. Fast.ai was my introduction to deep learning—or at least re-introduction following a brief and theory-oriented treatment of the topic in grad school—and the course and book remain among the best learning resources I have ever encountered. The podcast was a good reminder to look into the projects Howard and his team have been working on at <a href="https://www.answer.ai/">answer.ai</a>, "a new kind of AI R&amp;D lab which creates practical end-user products based on foundational research breakthroughs."
 </p>
@@ -77,13 +77,13 @@ In the rest of this note, I am going to explore some of the major features of th
 </p>
 </div>
 </div>
-<div id="outline-container-org81193bb" class="outline-2">
-<h2 id="org81193bb">Claudette</h2>
-<div class="outline-text-2" id="text-org81193bb">
+<div id="outline-container-org0fb3152" class="outline-2">
+<h2 id="org0fb3152">Claudette</h2>
+<div class="outline-text-2" id="text-org0fb3152">
 </div>
-<div id="outline-container-org4bbff1b" class="outline-3">
-<h3 id="org4bbff1b">Setup</h3>
-<div class="outline-text-3" id="text-org4bbff1b">
+<div id="outline-container-orgc04b87a" class="outline-3">
+<h3 id="orgc04b87a">Setup</h3>
+<div class="outline-text-3" id="text-orgc04b87a">
 <p>
 We start by installing the library with <code>pip install claudette</code>. This also installs Anthropic's SDK. We can then import claudette.
 </p>
@@ -91,11 +91,11 @@ We start by installing the library with <code>pip install claudette</code>. This
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> claudette
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">list available models</span>
-<span class="org-builtin">print</span>(claudette.models)
+<span class="org-comment-delimiter"># </span><span class="org-comment">list available models
+</span><span class="org-builtin">print</span>(claudette.models)
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">save sonnet as "model" for use later</span>
-<span class="org-variable-name">model</span> <span class="org-operator">=</span> claudette.models[1]
+<span class="org-comment-delimiter"># </span><span class="org-comment">save sonnet as "model" for use later
+</span><span class="org-variable-name">model</span> <span class="org-operator">=</span> claudette.models[1]
 </pre>
 </div>
 
@@ -104,9 +104,9 @@ We start by installing the library with <code>pip install claudette</code>. This
 </pre>
 </div>
 </div>
-<div id="outline-container-org205c72a" class="outline-3">
-<h3 id="org205c72a">The <code>Chat</code> class</h3>
-<div class="outline-text-3" id="text-org205c72a">
+<div id="outline-container-orgc897673" class="outline-3">
+<h3 id="orgc897673">The <code>Chat</code> class</h3>
+<div class="outline-text-3" id="text-orgc897673">
 <p>
 The <code>Chat</code> class is the main interface to Claudette. It is a nice convenient chat manager that maintains state. Note that, for this to work, we need to have <code>ANTHROPIC_API_KEY</code> in our environment.
 </p>
@@ -136,7 +136,7 @@ Now we can start using the <code>Chat</code> class.
 </pre>
 </div>
 
-<pre class="example" id="org6b2e5d1">
+<pre class="example" id="org1c48fd1">
 Message(
     id='msg_016RqYbsX6ULEYPX3CPGeFz3',
     content=[
@@ -167,7 +167,7 @@ We can easily include a <code>prefill</code> argument to specify how the assista
 </pre>
 </div>
 
-<pre class="example" id="orgc9f886b">
+<pre class="example" id="org7ae741d">
 Message(
     id='msg_01WMzMzhu7AxfSWEuHtaXZ6s',
     content=[
@@ -199,9 +199,9 @@ How does this all compare to the Anthropic SDK? The biggest difference I see is 
 </p>
 </div>
 </div>
-<div id="outline-container-orgd59028a" class="outline-3">
-<h3 id="orgd59028a">Tools</h3>
-<div class="outline-text-3" id="text-orgd59028a">
+<div id="outline-container-org031f7a3" class="outline-3">
+<h3 id="org031f7a3">Tools</h3>
+<div class="outline-text-3" id="text-org031f7a3">
 <p>
 Though they have been around for a while now, I really haven't experimented much with tool calling. <code>claudette</code> actually implements the tool loop, making it straightforward to prompt claude to actually call on a tool and do something with the results. With the Anthropic SDK, you would need to implement this yourself—the SDK would return a tool call, which you'd pass to the tool, get the results, and return it in another API call.
 </p>
@@ -212,15 +212,15 @@ Let's try the <code>claudette</code> approach. We'll define a function to replac
 
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">def</span> <span class="org-function-name">replace_e_with_3</span>(input_string: <span class="org-builtin">str</span>) <span class="org-operator">-&gt;</span> <span class="org-builtin">str</span>:
-    <span class="org-doc">"""</span>
-<span class="org-doc">    Replaces all instances of 'e' (both upper and lower case) in a given string with the digit 3.</span>
+    <span class="org-doc">"""
+    Replaces all instances of 'e' (both upper and lower case) in a given string with the digit 3.
 
-<span class="org-doc">    Args:</span>
-<span class="org-doc">        input_string (str): The string to modify.</span>
+    Args:
+        input_string (str): The string to modify.
 
-<span class="org-doc">    Returns:</span>
-<span class="org-doc">        str: The modified string with all 'e's replaced by 3s.</span>
-<span class="org-doc">    """</span>
+    Returns:
+        str: The modified string with all 'e's replaced by 3s.
+    """</span>
 
     <span class="org-keyword">return</span> input_string.replace(<span class="org-string">'e'</span>, <span class="org-string">'3'</span>).replace(<span class="org-string">'E'</span>, <span class="org-string">'3'</span>)
 </pre>
@@ -233,16 +233,16 @@ Now to prompt <code>claude</code>, giving access to the function:
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-variable-name">tool_chat</span> <span class="org-operator">=</span> claudette.Chat(model, tools<span class="org-operator">=</span>[replace_e_with_3])
 
-<span class="org-variable-name">r</span> <span class="org-operator">=</span> tool_chat(<span class="org-string">"""Replace all es with 3s in the following text:</span>
+<span class="org-variable-name">r</span> <span class="org-operator">=</span> tool_chat(<span class="org-string">"""Replace all es with 3s in the following text:
 
-<span class="org-string">Claudette automates pretty much everything that can be automated, whilst providing full control.</span>
-<span class="org-string">"""</span>)
+Claudette automates pretty much everything that can be automated, whilst providing full control.
+"""</span>)
 
 <span class="org-builtin">print</span>(r)
 </pre>
 </div>
 
-<pre class="example" id="org52ce0fd">
+<pre class="example" id="org70ad193">
 Message(
     id='msg_019skDwHaHQZRhzwDRvystqa',
     content=[
@@ -281,7 +281,7 @@ Now if we call the chat object again, it will be executed.
 </pre>
 </div>
 
-<pre class="example" id="org0878ff2">
+<pre class="example" id="orgb4108a4">
 Message(
     id='msg_012aEzN2o8977ULFXDviJVnw',
     content=[
@@ -314,9 +314,9 @@ Claudette also supports <a href="https://claudette.answer.ai/#images">images</a>
 </div>
 </div>
 
-<div id="outline-container-org997e82b" class="outline-2">
-<h2 id="org997e82b">FastHTML</h2>
-<div class="outline-text-2" id="text-org997e82b">
+<div id="outline-container-org2fa7d92" class="outline-2">
+<h2 id="org2fa7d92">FastHTML</h2>
+<div class="outline-text-2" id="text-org2fa7d92">
 <p>
 I am interested in FastHTML because I've realized that many of my AI-related project ideas require more work on the interface than on the actual AI parts. I can write the prompts and AI logic pretty easily, but (for me) there's a lot of friction in building out a decent frontend. If FastHTML can make that even a little bit easier, it'll be huge for me.
 </p>
@@ -341,9 +341,9 @@ It is making me realize that the parts I find challenging are problably due to g
 Anyway, I had just started learning some basic web development skills before FastHTML was released. And I would rather continue that via FastHTML than via learning Javascript. So I'll spend some time on that, and write about it as I go.
 </p>
 </div>
-<div id="outline-container-org39d1425" class="outline-3">
-<h3 id="org39d1425">FastHTML Tutorials</h3>
-<div class="outline-text-3" id="text-org39d1425">
+<div id="outline-container-org07b2285" class="outline-3">
+<h3 id="org07b2285">FastHTML Tutorials</h3>
+<div class="outline-text-3" id="text-org07b2285">
 <p>
 I have been working on a few short tutorials with the purpose of teaching myself the basics of FastHTML. The ones completed so far are:
 </p>

@@ -38,19 +38,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3705adf">DBRX and MLflow</a>
+<li><a href="#orgc981c63">DBRX and MLflow</a>
 <ul>
-<li><a href="#org11f05e3">Via the MLflow Deployments Server</a></li>
-<li><a href="#org348d552">Using the OpenAI Model Flavor</a></li>
+<li><a href="#org2407f86">Via the MLflow Deployments Server</a></li>
+<li><a href="#orgca5c033">Using the OpenAI Model Flavor</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org3705adf" class="outline-2">
-<h2 id="org3705adf">DBRX and MLflow</h2>
-<div class="outline-text-2" id="text-org3705adf">
-<div class="preview" id="org5d7a970">
+<div id="outline-container-orgc981c63" class="outline-2">
+<h2 id="orgc981c63">DBRX and MLflow</h2>
+<div class="outline-text-2" id="text-orgc981c63">
+<div class="preview" id="orgaf7f6a8">
 <p>
 This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.
 </p>
@@ -65,9 +65,9 @@ Here are two ways to use the DBRX model with MLflow. The following assumes that 
 <li><code>DATABRICKS_ENDPOINT</code>: your databricks workspace model serving endpoint. It will probably have the form <code>https://&lt;workspace_name&gt;.cloud.databricks.com/serving-endpoints</code>.</li>
 </ul>
 </div>
-<div id="outline-container-org11f05e3" class="outline-3">
-<h3 id="org11f05e3">Via the MLflow Deployments Server</h3>
-<div class="outline-text-3" id="text-org11f05e3">
+<div id="outline-container-org2407f86" class="outline-3">
+<h3 id="org2407f86">Via the MLflow Deployments Server</h3>
+<div class="outline-text-3" id="text-org2407f86">
 <ol class="org-ol">
 <li>Configure the Deployments Server</li>
 </ol>
@@ -150,16 +150,16 @@ which will return
 </div>
 </div>
 
-<div id="outline-container-org348d552" class="outline-3">
-<h3 id="org348d552">Using the OpenAI Model Flavor</h3>
-<div class="outline-text-3" id="text-org348d552">
+<div id="outline-container-orgca5c033" class="outline-3">
+<h3 id="orgca5c033">Using the OpenAI Model Flavor</h3>
+<div class="outline-text-3" id="text-orgca5c033">
 <p>
 We can also log the model usign the OpenAI model flavor. We just need to be careful to set up the appropriate environment variables first.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">log a model to MLflow using the OpenAI Model Flavor</span>
-
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">log a model to MLflow using the OpenAI Model Flavor
+</span>
 <span class="org-keyword">import</span> os
 <span class="org-keyword">import</span> mlflow
 <span class="org-keyword">import</span> openai
@@ -168,8 +168,8 @@ We can also log the model usign the OpenAI model flavor. We just need to be care
 os.<span class="org-variable-name">environ</span>[<span class="org-string">"OPENAI_API_KEY"</span>] <span class="org-operator">=</span> os.getenv(<span class="org-string">"DATABRICKS_TOKEN"</span>)
 os.<span class="org-variable-name">environ</span>[<span class="org-string">"OPENAI_API_BASE"</span>] <span class="org-operator">=</span> os.getenv(<span class="org-string">"DATABRICKS_ENDPOINT"</span>)
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">Log the OpenAI model to MLflow</span>
-<span class="org-keyword">with</span> mlflow.start_run():
+<span class="org-comment-delimiter"># </span><span class="org-comment">Log the OpenAI model to MLflow
+</span><span class="org-keyword">with</span> mlflow.start_run():
     <span class="org-variable-name">info</span> <span class="org-operator">=</span> mlflow.openai.log_model(
         model<span class="org-operator">=</span><span class="org-string">"databricks-dbrx-instruct"</span>,
         task<span class="org-operator">=</span>openai.chat.completions,
@@ -189,8 +189,8 @@ Which returns:
 
 <div class="org-src-container">
 <pre class="src src-python">[
-    <span class="org-string">"Hello! How can I assist you today? I'm here to help answer any questions you might have or provide information</span>
-<span class="org-string">on a topic of your choosing. Let me know how I can make your day a little bit easier!"</span>
+    <span class="org-string">"Hello! How can I assist you today? I'm here to help answer any questions you might have or provide information
+on a topic of your choosing. Let me know how I can make your day a little bit easier!"</span>
 ]
 </pre>
 </div>

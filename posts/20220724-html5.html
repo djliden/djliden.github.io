@@ -38,13 +38,13 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9cc1878">The Problem</a></li>
-<li><a href="#org6f06886">Changes to the Site Config</a></li>
-<li><a href="#org429c200">The Results</a></li>
+<li><a href="#org0e8854b">The Problem</a></li>
+<li><a href="#org7d5c7de">Changes to the Site Config</a></li>
+<li><a href="#org30ecef3">The Results</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org28a69c9">
+<div class="preview" id="orgcaf0fe7">
 <p>
 I noticed that some of the formatting on this site was a little off and some of
 the org-mode components weren't being translated to HTML in quite the way I
@@ -62,9 +62,9 @@ While that brief introduction should capture the necessary changes, we can get
 into more specifics.
 </p>
 
-<div id="outline-container-org9cc1878" class="outline-2">
-<h2 id="org9cc1878">The Problem</h2>
-<div class="outline-text-2" id="text-org9cc1878">
+<div id="outline-container-org0e8854b" class="outline-2">
+<h2 id="org0e8854b">The Problem</h2>
+<div class="outline-text-2" id="text-org0e8854b">
 <p>
 If we use the default settings, figures aren't wrapped in <code>&lt;figure&gt;</code> blocks and
 captions aren't wrapped in <code>&lt;figcaption&gt;</code> blocks, so none of the formatting we
@@ -92,9 +92,9 @@ The image and caption appear left-aligned on the page. Here's the html:
 </div>
 </div>
 
-<div id="outline-container-org6f06886" class="outline-2">
-<h2 id="org6f06886">Changes to the Site Config</h2>
-<div class="outline-text-2" id="text-org6f06886">
+<div id="outline-container-org7d5c7de" class="outline-2">
+<h2 id="org7d5c7de">Changes to the Site Config</h2>
+<div class="outline-text-2" id="text-org7d5c7de">
 <p>
 To address this, we need to change the <code>org-html-doctype</code> and <code>org-html-html5-fancy</code>
 variables. We can do this in the export configuration's
@@ -118,8 +118,8 @@ key changes.
 <span class="linenr">12: </span>             <span class="org-builtin">:section-numbers</span> nil
 <span class="linenr">13: </span>             <span class="org-builtin">:time-stamp-file</span> nil
 <span class="linenr">14: </span>             <span class="org-builtin">:auto-sitemap</span> t
-<span class="linenr">15: </span>             <span class="org-builtin">:sitemap-title</span> nil<span class="org-comment-delimiter">;</span><span class="org-comment">"Daniel Liden's Blog"</span>
-<span class="linenr">16: </span>             <span class="org-builtin">:sitemap-format-entry</span> 'my/org-publish-org-sitemap-format
+<span class="linenr">15: </span>             <span class="org-builtin">:sitemap-title</span> nil<span class="org-comment-delimiter">;</span><span class="org-comment">"Daniel Liden's Blog"
+<span class="linenr">16: </span></span>             <span class="org-builtin">:sitemap-format-entry</span> 'my/org-publish-org-sitemap-format
 <span class="linenr">17: </span>             <span class="org-builtin">:sitemap-function</span> 'my/org-publish-org-sitemap
 <span class="linenr">18: </span>             <span class="org-builtin">:sitemap-sort-files</span> 'anti-chronologically
 <span class="linenr">19: </span>             <span class="org-builtin">:sitemap-filename</span> <span class="org-string">"sitemap.org"</span>
@@ -143,15 +143,15 @@ key changes.
 </div>
 </div>
 </div>
-<div id="outline-container-org429c200" class="outline-2">
-<h2 id="org429c200">The Results</h2>
-<div class="outline-text-2" id="text-org429c200">
+<div id="outline-container-org30ecef3" class="outline-2">
+<h2 id="org30ecef3">The Results</h2>
+<div class="outline-text-2" id="text-org30ecef3">
 <p>
 With these changes, our images and captions are now centered:
 </p>
 
 
-<figure id="orgac34d71">
+<figure id="org523ae15">
 <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px">
 
 <figcaption><span class="figure-number">Figure 1: </span>This caption is now centered and wrapped in a <code>&lt;figcaption&gt;</code> tag!</figcaption>

@@ -38,14 +38,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7349e40">Defining the Struct</a></li>
-<li><a href="#orgaaeb5db">Defining the function</a></li>
-<li><a href="#org949e042">Giving it a Try</a></li>
-<li><a href="#orgd706626">What's next?</a></li>
+<li><a href="#org04afffe">Defining the Struct</a></li>
+<li><a href="#orgf4bddd5">Defining the function</a></li>
+<li><a href="#org924313e">Giving it a Try</a></li>
+<li><a href="#org80ce5ca">What's next?</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org97feb62">
+<div class="preview" id="orgcc7828d">
 <p>
 One of the things that makes working with the ChatGPT API a little different
 from working with, e.g., the <code>davinci-text-003</code> model api is the need to maintain
@@ -60,9 +60,9 @@ For the basics of working with the ChatGPT API, check out <a href="20230303-chat
 
 </div>
 
-<div id="outline-container-org7349e40" class="outline-2">
-<h2 id="org7349e40">Defining the Struct</h2>
-<div class="outline-text-2" id="text-org7349e40">
+<div id="outline-container-org04afffe" class="outline-2">
+<h2 id="org04afffe">Defining the Struct</h2>
+<div class="outline-text-2" id="text-org04afffe">
 <p>
 A <code>struct</code>, also referred to as a <a href="https://docs.julialang.org/en/v1/manual/types/#Composite-Types">composite type</a>, is "a collection of named
 fields, an instance of which can be treated as a single value." By default,
@@ -89,26 +89,26 @@ With that in mind, here is a possible approach to a <code>struct</code> for Chat
 </p>
 
 <div class="org-src-container">
-<pre class="src src-julia"><span class="org-string">"""</span>
-<span class="org-string">    struct Chat</span>
+<pre class="src src-julia"><span class="org-string">"""
+    struct Chat
 
-<span class="org-string">Represents a conversation between a user and a chatbot powered by OpenAI's GPT.</span>
+Represents a conversation between a user and a chatbot powered by OpenAI's GPT.
 
-<span class="org-string"># Fields</span>
+# Fields
 
-<span class="org-string">- `messages::Array{Dict{String, String}}`: An array of dictionaries representing the chat messages.</span>
+- `messages::Array{Dict{String, String}}`: An array of dictionaries representing the chat messages.
 
-<span class="org-string"># Constructors</span>
+# Constructors
 
-<span class="org-string">- `Chat(system_message::String="You are a helpful assistant")`: Create a new `Chat` object with a single system message.</span>
+- `Chat(system_message::String="You are a helpful assistant")`: Create a new `Chat` object with a single system message.
 
-<span class="org-string"># Example</span>
+# Example
 
-<span class="org-string">```julia</span>
-<span class="org-string">chat = Chat("You are a helpful assistant.")</span>
-<span class="org-string">```</span>
-<span class="org-string">This creates a new Chat object with a single message representing the system message "You are a helpful assistant.".</span>
-<span class="org-string">"""</span>
+```julia
+chat = Chat("You are a helpful assistant.")
+```
+This creates a new Chat object with a single message representing the system message "You are a helpful assistant.".
+"""</span>
 <span class="org-keyword">mutable struct</span> <span class="org-type">Chat</span>
     messages::<span class="org-type">Array</span>{Dict{String, String}}
     
@@ -155,9 +155,9 @@ able to act on it. For that, we'll define a function.
 </div>
 </div>
 
-<div id="outline-container-orgaaeb5db" class="outline-2">
-<h2 id="orgaaeb5db">Defining the function</h2>
-<div class="outline-text-2" id="text-orgaaeb5db">
+<div id="outline-container-orgf4bddd5" class="outline-2">
+<h2 id="orgf4bddd5">Defining the function</h2>
+<div class="outline-text-2" id="text-orgf4bddd5">
 <p>
 The purpose of this function is to:
 </p>
@@ -176,31 +176,31 @@ place. Here's the function:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-julia"><span class="org-string">"""</span>
-<span class="org-string">    chat!(chat, message::String, api_key=ENV["OPENAI_API_KEY"]; kwargs...)</span>
+<pre class="src src-julia"><span class="org-string">"""
+    chat!(chat, message::String, api_key=ENV["OPENAI_API_KEY"]; kwargs...)
 
-<span class="org-string">Add a new message to the chat history and get a response from the OpenAI GPT-3 API.</span>
+Add a new message to the chat history and get a response from the OpenAI GPT-3 API.
 
-<span class="org-string"># Arguments</span>
+# Arguments
 
-<span class="org-string">- `chat`: A `Chat` object representing the chat history.</span>
-<span class="org-string">- `message`: A string representing the user's message.</span>
-<span class="org-string">- `api_key::String=ENV["OPENAI_API_KEY"]`: Your OpenAI API key. If not provided, the function will attempt to get it from the `OPENAI_API_KEY` environment variable.</span>
-<span class="org-string">- `kwargs...`: Any additional keyword arguments to pass as part of the API request body.</span>
+- `chat`: A `Chat` object representing the chat history.
+- `message`: A string representing the user's message.
+- `api_key::String=ENV["OPENAI_API_KEY"]`: Your OpenAI API key. If not provided, the function will attempt to get it from the `OPENAI_API_KEY` environment variable.
+- `kwargs...`: Any additional keyword arguments to pass as part of the API request body.
 
-<span class="org-string"># Returns</span>
+# Returns
 
-<span class="org-string">A string representing the response from the chatbot.</span>
+A string representing the response from the chatbot.
 
-<span class="org-string"># Example</span>
+# Example
 
-<span class="org-string">```julia</span>
-<span class="org-string">chat = Chat("You are a helpful assistant")</span>
-<span class="org-string">response = chat!(chat, "How are you?")</span>
-<span class="org-string">```</span>
+```julia
+chat = Chat("You are a helpful assistant")
+response = chat!(chat, "How are you?")
+```
 
-<span class="org-string">This adds a new message to the Chat object chat, representing the user's message "How are you?", and gets a response from the OpenAI ChatGPT API. The response from the chatbot is returned as a string in the response variable.</span>
-<span class="org-string">"""</span>
+This adds a new message to the Chat object chat, representing the user's message "How are you?", and gets a response from the OpenAI ChatGPT API. The response from the chatbot is returned as a string in the response variable.
+"""</span>
 <span class="org-keyword">function</span> <span class="org-function-name">chat!</span>(chat::<span class="org-type">Chat</span>, message::<span class="org-type">String</span>, api_key=ENV[<span class="org-string">"OPENAI_API_KEY"</span>]; kwargs...)
     <span class="org-keyword">if</span> isnothing(api_key)
         error(<span class="org-string">"API key is required"</span>)
@@ -214,28 +214,28 @@ place. Here's the function:
 
     messages = push!(chat.messages, formatted_query)
 
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Merge the default and keyword parameters</span>
-    params = merge(Dict(<span class="org-string">"model"</span> =&gt; <span class="org-string">"gpt-3.5-turbo"</span>, <span class="org-string">"messages"</span> =&gt; messages), kwargs)
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Merge the default and keyword parameters
+</span>    params = merge(Dict(<span class="org-string">"model"</span> =&gt; <span class="org-string">"gpt-3.5-turbo"</span>, <span class="org-string">"messages"</span> =&gt; messages), kwargs)
 
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Convert the parameters to JSON</span>
-    body = json(params)
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Convert the parameters to JSON
+</span>    body = json(params)
 
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Make a POST request to the OpenAI API endpoint with the query as data</span>
-    response = HTTP.post(
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Make a POST request to the OpenAI API endpoint with the query as data
+</span>    response = HTTP.post(
         <span class="org-string">"https://api.openai.com/v1/chat/completions"</span>,
         headers,
         body;
         verbose = <span class="org-constant">false</span>,
     )
 
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Parse the response body as JSON</span>
-    result = JSON.parse(String(response.body))
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Parse the response body as JSON
+</span>    result = JSON.parse(String(response.body))
 
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Append the response to chat.messages</span>
-    push!(chat.messages, result[<span class="org-string">"choices"</span>][1][<span class="org-string">"message"</span>])
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Append the response to chat.messages
+</span>    push!(chat.messages, result[<span class="org-string">"choices"</span>][1][<span class="org-string">"message"</span>])
 
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Return the text field of the result as a string</span>
-    <span class="org-keyword">return</span> result[<span class="org-string">"choices"</span>][1][<span class="org-string">"message"</span>][<span class="org-string">"content"</span>]
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Return the text field of the result as a string
+</span>    <span class="org-keyword">return</span> result[<span class="org-string">"choices"</span>][1][<span class="org-string">"message"</span>][<span class="org-string">"content"</span>]
 <span class="org-keyword">end</span>
 </pre>
 </div>
@@ -248,9 +248,9 @@ list. The <code>chat</code> function follows both of these conventions.
 </p>
 </div>
 </div>
-<div id="outline-container-org949e042" class="outline-2">
-<h2 id="org949e042">Giving it a Try</h2>
-<div class="outline-text-2" id="text-org949e042">
+<div id="outline-container-org924313e" class="outline-2">
+<h2 id="org924313e">Giving it a Try</h2>
+<div class="outline-text-2" id="text-org924313e">
 <p>
 So, does it work? Let's try it out.
 </p>
@@ -286,9 +286,9 @@ the message history in the second API request.
 </p>
 </div>
 </div>
-<div id="outline-container-orgd706626" class="outline-2">
-<h2 id="orgd706626">What's next?</h2>
-<div class="outline-text-2" id="text-orgd706626">
+<div id="outline-container-org80ce5ca" class="outline-2">
+<h2 id="org80ce5ca">What's next?</h2>
+<div class="outline-text-2" id="text-org80ce5ca">
 <p>
 There are a few additional avenues I want to explore, in no particular order:
 </p>

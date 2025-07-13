@@ -38,21 +38,25 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgaf98872">Introduction</a></li>
-<li><a href="#orgc8f8be1">Setting up a Python project</a>
+<li><a href="#orgcb317a6">Introduction</a></li>
+<li><a href="#org558e8b9">Setting up a Python project</a>
 <ul>
-<li><a href="#org481afc4">Using multiple language servers with eglot</a></li>
+<li><a href="#org9923e36">Using multiple language servers with eglot</a></li>
 </ul>
 </li>
-<li><a href="#org5bcc4a0"><span class="todo TODO">TODO</span> Editing Python Files</a></li>
-<li><a href="#org92836a6"><span class="todo TODO">TODO</span> Executing Python Code</a></li>
+<li><a href="#org5131c39">IN PROGRESS Writing and Executing Python Code</a>
+<ul>
+<li><a href="#org56bc346">Writing + Code with Org Babel</a></li>
+<li><a href="#org75e9e73">IN PROGRESS Source files + REPL approach</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgaf98872" class="outline-2">
-<h2 id="orgaf98872">Introduction</h2>
-<div class="outline-text-2" id="text-orgaf98872">
-<div class="preview" id="org3e95c92">
+<div id="outline-container-orgcb317a6" class="outline-2">
+<h2 id="orgcb317a6">Introduction</h2>
+<div class="outline-text-2" id="text-orgcb317a6">
+<div class="preview" id="org60f90eb">
 <p>
 I will keep this note up to date with details on how I use emacs for Python development.
 </p>
@@ -60,9 +64,9 @@ I will keep this note up to date with details on how I use emacs for Python deve
 </div>
 </div>
 </div>
-<div id="outline-container-orgc8f8be1" class="outline-2">
-<h2 id="orgc8f8be1">Setting up a Python project</h2>
-<div class="outline-text-2" id="text-orgc8f8be1">
+<div id="outline-container-org558e8b9" class="outline-2">
+<h2 id="org558e8b9">Setting up a Python project</h2>
+<div class="outline-text-2" id="text-org558e8b9">
 <p>
 There are a few things I want when setting up a Python project:
 </p>
@@ -84,9 +88,9 @@ To that end, when setting up a project, I follow these steps:
 <li>Create/open a python buffer and start eglot with <code>M-x eglot</code>.</li>
 </ol>
 </div>
-<div id="outline-container-org481afc4" class="outline-3">
-<h3 id="org481afc4">Using multiple language servers with eglot</h3>
-<div class="outline-text-3" id="text-org481afc4">
+<div id="outline-container-org9923e36" class="outline-3">
+<h3 id="org9923e36">Using multiple language servers with eglot</h3>
+<div class="outline-text-3" id="text-org9923e36">
 <p>
 For some reason, I recall this working without additional configuration before. But it's now, so I might as well document how to get it working. My best guess is that I overrode the defaults as the eglot docs note that "Eglot comes with a fairly complete set of associations of major-modes to popular language servers predefined." 
 </p>
@@ -109,11 +113,118 @@ Suppose you have installed two different options for a Python LSP. Follow the in
 </div>
 </div>
 </div>
-<div id="outline-container-org5bcc4a0" class="outline-2">
-<h2 id="org5bcc4a0"><span class="todo TODO">TODO</span> Editing Python Files</h2>
+<div id="outline-container-org5131c39" class="outline-2">
+<h2 id="org5131c39">IN PROGRESS Writing and Executing Python Code</h2>
+<div class="outline-text-2" id="text-org5131c39">
+<p>
+After setting up the Python project as described above, I tend to follow one of two approaches:
+</p>
 </div>
-<div id="outline-container-org92836a6" class="outline-2">
-<h2 id="org92836a6"><span class="todo TODO">TODO</span> Executing Python Code</h2>
+<div id="outline-container-org56bc346" class="outline-3">
+<h3 id="org56bc346">Writing + Code with Org Babel</h3>
+<div class="outline-text-3" id="text-org56bc346">
+<p>
+I often write and execute code blocks in org mode using <a href="https://orgmode.org/worg/org-contrib/babel/intro.html">babel</a>. A lot of my coding work occurs in the context of writing examples and demos (I am a developer advocate) so demonstrating and writing about code segments is often more important to me than working on projects/source files.
+</p>
+
+<p>
+This isn't a guide to using org babel, so please consult the docs if you are unfamiliar with it. You can find this inside emacs! Use <code>C-h R (info-display-manual)</code> and search for <code>org</code> to find the org mode manual, then navigate to the "Working with Source Code" section.
+</p>
+
+<p>
+When working with org babel, I tend to do the following for convenience:
+</p>
+<ul class="org-ul">
+<li><p>
+<b>Set header args in properties</b>: I will usually set at least a <i>session</i> via properties on the parent org mode header. Multiple babel blocks with the same session share an execution context, much like multiple code blocks in a Jupyter notebook. So variables defined in one block will persist to the next block that has the same session name.
+</p>
+
+<p>
+Here's what that looks like:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org">*Headline 1
+<span class="org-org-drawer">:PROPERTIES:</span>
+<span class="org-org-special-keyword">:header-args:python:</span> <span class="org-org-property-value">:session session_name</span>
+<span class="org-org-drawer">:END:</span>
+
+<span class="org-org-block-begin-line">#+begin_src python
+</span><span class="org-org-block"><span class="org-variable-name">x</span></span><span class="org-org-block"> </span><span class="org-org-block"><span class="org-operator">=</span></span><span class="org-org-block"> 42
+</span><span class="org-org-block-end-line">#+end_src
+</span>
+<span class="org-org-meta-line">#+RESULTS:</span>
+<span class="org-org-code">: None
+</span>
+
+<span class="org-org-block-begin-line">#+begin_src python
+</span><span class="org-org-block">x
+</span><span class="org-org-block-end-line">#+end_src
+</span>
+<span class="org-org-meta-line">#+RESULTS:</span>
+<span class="org-org-code">: 42</span>
+</pre>
+</div>
+
+<p>
+Now, as you can see, all newly-created Python source blocks under <code>Headline 1</code> will automatically be associated with the session <code>session_name</code> and you won't need to manually specify the session in each block.
+</p></li>
+<li><p>
+<b>Define snippets to quickly create source blocks</b>: I use <a href="https://joaotavora.github.io/yasnippet/">YASnippet</a> to make it quicker and easier to define new source blocks in my chosen language, without needing to type out <code>C-c , s python</code> each time I need a new source block.
+</p>
+
+<p>
+Here is an example snippet:
+</p></li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-comment"># -*- mode: snippet -*-</span>
+<span class="org-comment"># name: python babel source block</span>
+<span class="org-comment"># key: p</span>
+<span class="org-comment"># contributor: Daniel Liden</span>
+<span class="org-comment"># --</span>
+
+<span class="org-org-block-begin-line">#+begin_src python :results ${1:verbatim}
+</span><span class="org-org-block">$0
+</span><span class="org-org-block-end-line">#+end_src</span>
+</pre>
+</div>
+
+<p>
+With this snippet, you can simply type <code>p</code> and then <code>yas-expand</code> (I have this set to <code>TAB</code>). It will create the source block with your cursor set to the results type, which will default to <code>verbatim</code>. Hitting tab again will bring you to the body of the source block (where <code>$0</code> is), and you can start writing your code. This saves a few keystrokes.
+</p>
+<ul class="org-ul">
+<li><b>Displaying graphics/tables/plots</b>: I have never found this straightforward and usually need to do some troubleshooting whenever I try it. In general, I find it easier to write the graphic to a file and then, separately, display the file in org mode rather than trying to get the source block to yield and display the file directly. That said, <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-python.html#org8875314">this</a> is a good resource to consult for the various options for displaying graphics.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org75e9e73" class="outline-3">
+<h3 id="org75e9e73">IN PROGRESS Source files + REPL approach</h3>
+<div class="outline-text-3" id="text-org75e9e73">
+<p>
+When working on a Python project, I use a source file + REPL approach. Setting this up in a basic way is simple. First, make sure you have the appropriate Python virtual environment set up (with e.g. <code>pyvenv-activate</code>). Then, with a <code>.py</code> file open, call <code>M-x run-python</code> to start a Python REPL. When you want to run a code snippet, or all the code in a given file, you can use one of the various <code>python-shell-send-*</code> commands to run the code from your source file in the REPL. Some of my most used ones are:
+</p>
+<ul class="org-ul">
+<li><code>python-shell-send-buffer (C-c C-c)</code>: evaluate the whole buffer</li>
+<li><code>python-shell-send-region (C-c C-r)</code>: evaluate a region (highlighted/selected section of code)</li>
+<li><code>python-shell-send-statement (C-c C-e)</code>: evaluate the statement at the current point. If you have a marked region, this will act the same as <code>python-shell-send-region</code>. Otherwise, this essentially just sends the current line, which is often what I want.</li>
+</ul>
+
+<p>
+I will say that the various send commands did not behave exactly the way I expected them to, so it is worthwhile to experiment. Make a python file with some classes, functions, and unencapsulated code snippets and see how these commands behave. Marking and then sending a region is the most reliable and precise approach.
+</p>
+
+<p>
+Here are some additional tips for using this workflow (<i>will fill these out in the future</i>):
+</p>
+<ul class="org-ul">
+<li><b>Use a Language Server</b>: I use the <a href="https://joaotavora.github.io/eglot/">eglot</a> language server protocol (LSP) client for emacs, with the <a href="https://docs.basedpyright.com/latest/">basedpyright</a> and/or <a href="https://docs.astral.sh/ruff/editors/setup/#emacs">ruff server</a> language server(s).</li>
+<li><b>Use <a href="https://magit.vc/">magit</a> for git workflows:</b> Magit is an <i>excellent</i> TUI for git that provides a quick and intuitive way to handle all of your version control tasks.</li>
+<li><b>Use <a href="https://docs.projectile.mx/projectile/index.html">projectile</a> for navigating within a project:</b> Projectile has a variety of tools for navigating your project structure, searching and browsing project files, etc.</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">

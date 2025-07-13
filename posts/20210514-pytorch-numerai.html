@@ -38,32 +38,32 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org87478c7">Background</a>
+<li><a href="#orgde57bdf">Background</a>
 <ul>
-<li><a href="#org98ab2be">Problem Setting</a></li>
+<li><a href="#orgb625b39">Problem Setting</a></li>
 </ul>
 </li>
-<li><a href="#org137dde9">Original <code>fastai</code> model</a>
+<li><a href="#org3ebee9b">Original <code>fastai</code> model</a>
 <ul>
-<li><a href="#org3af4c0a">Data Setup</a></li>
-<li><a href="#org607f91c">Model Setup</a></li>
-<li><a href="#org4d1ad26">Training Loop</a></li>
-<li><a href="#orgeb85eb7">Summary</a></li>
+<li><a href="#org0f10c57">Data Setup</a></li>
+<li><a href="#orga724f3a">Model Setup</a></li>
+<li><a href="#org3477f0d">Training Loop</a></li>
+<li><a href="#org0a97c1b">Summary</a></li>
 </ul>
 </li>
-<li><a href="#org6b44c67">A Simple PyTorch Model</a>
+<li><a href="#org9d94def">A Simple PyTorch Model</a>
 <ul>
-<li><a href="#orgf33c454">Data Setup</a></li>
-<li><a href="#org40f910b">The Model</a></li>
-<li><a href="#org6a9db06">The Training Loop</a></li>
-<li><a href="#org35b5c2e">Train the Model</a></li>
+<li><a href="#orge32a62a">Data Setup</a></li>
+<li><a href="#orgfc199d8">The Model</a></li>
+<li><a href="#org53d16b2">The Training Loop</a></li>
+<li><a href="#org38374bf">Train the Model</a></li>
 </ul>
 </li>
-<li><a href="#orgcfd8a14">Summary</a></li>
+<li><a href="#org66abe02">Summary</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgfdeb3f7">
+<div class="preview" id="org7c05e8d">
 <p>
 <i>This is another one from the archives. It covers how to train a basic PyTorch
 model for use in the Numerai tournament, at least as it was in May 2021. See the original post <a href="https://pensive-wing-19c199.netlify.app/post/mlp-numerai-05082021/">here.</a></i>
@@ -71,9 +71,9 @@ model for use in the Numerai tournament, at least as it was in May 2021. See the
 
 </div>
 
-<div id="outline-container-org87478c7" class="outline-2">
-<h2 id="org87478c7">Background</h2>
-<div class="outline-text-2" id="text-org87478c7">
+<div id="outline-container-orgde57bdf" class="outline-2">
+<h2 id="orgde57bdf">Background</h2>
+<div class="outline-text-2" id="text-orgde57bdf">
 <p>
 This short write up is in pursuit of a personal goal to put more of my work and thoughts to
 paper. I'm sure the topic will still be useful to others, but it's not yet fully developed. It's a
@@ -126,9 +126,9 @@ In this post, I will first briefly show the <code>fastai</code> model I was prev
 a (simpler) model written in PyTorch. I will conclude with some reflections on the process.
 </p>
 </div>
-<div id="outline-container-org98ab2be" class="outline-3">
-<h3 id="org98ab2be">Problem Setting</h3>
-<div class="outline-text-3" id="text-org98ab2be">
+<div id="outline-container-orgb625b39" class="outline-3">
+<h3 id="orgb625b39">Problem Setting</h3>
+<div class="outline-text-3" id="text-orgb625b39">
 <p>
 I won't go into much detail about the Numerai tournament itself &#x2013; the interested reader can learn
 more about it <a href="https://docs.numer.ai/tournament/learn">here</a>. This isn't intended as an introduction to the tournament and I'm not reproducing
@@ -171,7 +171,7 @@ coefficient was 0.859 (the highest possible is 1).
 </p>
 <div class="org-center">
 
-<figure id="org133bc86">
+<figure id="org6520234">
 <img src="./figures/20210514-pytorch-numerai/spearman-sim.png" alt="spearman-sim.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>Even when predictions were shuffled within "blocks," high Spearman correlation coefficients were obtained when those blocks were placed in order.</figcaption>
@@ -186,17 +186,17 @@ ordered correctly relative to each other, the Spearman correlation coefficients 
 </div>
 </div>
 
-<div id="outline-container-org137dde9" class="outline-2">
-<h2 id="org137dde9">Original <code>fastai</code> model</h2>
-<div class="outline-text-2" id="text-org137dde9">
+<div id="outline-container-org3ebee9b" class="outline-2">
+<h2 id="org3ebee9b">Original <code>fastai</code> model</h2>
+<div class="outline-text-2" id="text-org3ebee9b">
 <p>
 My original <code>fastai</code> implementation does not differ appreciably from the implementation detailed in
 the official <a href="https://docs.fast.ai/tutorial.tabular.html">fastai Tabular Training tutorial</a>. The components are, briefly:
 </p>
 </div>
-<div id="outline-container-org3af4c0a" class="outline-3">
-<h3 id="org3af4c0a">Data Setup</h3>
-<div class="outline-text-3" id="text-org3af4c0a">
+<div id="outline-container-org0f10c57" class="outline-3">
+<h3 id="org0f10c57">Data Setup</h3>
+<div class="outline-text-3" id="text-org0f10c57">
 <p>
 First, we use the <a href="https://docs.fast.ai/tabular.core.html#TabularPandas">TabularPandas</a> helper to load the data and to generate our <code>DataLoaders</code>. <code>DataLoaders</code>
 provide a convenient wrapper around the training and validation data and facilitate passing batches
@@ -221,9 +221,9 @@ validation examples.
 </div>
 </div>
 
-<div id="outline-container-org607f91c" class="outline-3">
-<h3 id="org607f91c">Model Setup</h3>
-<div class="outline-text-3" id="text-org607f91c">
+<div id="outline-container-orga724f3a" class="outline-3">
+<h3 id="orga724f3a">Model Setup</h3>
+<div class="outline-text-3" id="text-orga724f3a">
 <p>
 We will use a <code>fastai</code> <a href="https://docs.fast.ai/tabular.learner.html#tabular_learner">tabular<sub>learner</sub></a> without much modification and without adjusting many of the
 possible options. As noted above, we're using the MSE loss function. <code>fastai</code> also lets us directly
@@ -241,9 +241,9 @@ each epoch.
 </div>
 </div>
 
-<div id="outline-container-org4d1ad26" class="outline-3">
-<h3 id="org4d1ad26">Training Loop</h3>
-<div class="outline-text-3" id="text-org4d1ad26">
+<div id="outline-container-org3477f0d" class="outline-3">
+<h3 id="org3477f0d">Training Loop</h3>
+<div class="outline-text-3" id="text-org3477f0d">
 <p>
 <code>fastai</code> handles the training loop for us &#x2013; we don't need to write it out manually. Here we say to
 train the model for three epochs and to apply a weight decay (l2 penalty) of 0.1.
@@ -256,9 +256,9 @@ train the model for three epochs and to apply a weight decay (l2 penalty) of 0.1
 </div>
 </div>
 
-<div id="outline-container-orgeb85eb7" class="outline-3">
-<h3 id="orgeb85eb7">Summary</h3>
-<div class="outline-text-3" id="text-orgeb85eb7">
+<div id="outline-container-org0a97c1b" class="outline-3">
+<h3 id="org0a97c1b">Summary</h3>
+<div class="outline-text-3" id="text-org0a97c1b">
 <p>
 Without going into too much detail &#x2013; this is, after all, supposed to be a post about PyTorch, which
 I've scarcely mentioned so far &#x2013; I want to highlight some of the key features and shortcomings of
@@ -285,9 +285,9 @@ lot of the details hidden.
 </div>
 </div>
 
-<div id="outline-container-org6b44c67" class="outline-2">
-<h2 id="org6b44c67">A Simple PyTorch Model</h2>
-<div class="outline-text-2" id="text-org6b44c67">
+<div id="outline-container-org9d94def" class="outline-2">
+<h2 id="org9d94def">A Simple PyTorch Model</h2>
+<div class="outline-text-2" id="text-org9d94def">
 <p>
 In an effort to learn some basic PyTorch, I set out to develop a very simple working model. It
 doesn't have all of the bells and whistles of the fastai model &#x2013; no batchnorm, no dropout, no
@@ -295,9 +295,9 @@ weight decay &#x2013; but it works and it is generally easy to understand what t
 provides a good foundation for further experimentation with more complex architectures.
 </p>
 </div>
-<div id="outline-container-orgf33c454" class="outline-3">
-<h3 id="orgf33c454">Data Setup</h3>
-<div class="outline-text-3" id="text-orgf33c454">
+<div id="outline-container-orge32a62a" class="outline-3">
+<h3 id="orge32a62a">Data Setup</h3>
+<div class="outline-text-3" id="text-orge32a62a">
 <p>
 A common theme throughout this section is that "It takes a bit more code to do <code>____</code> in PyTorch than
 in <code>fastai</code>. Setting up the data is no exception. I mostly followed <a href="https://pytorch.org/tutorials/beginner/basics/data_tutorial.html#preparing-your-data-for-training-with-dataloaders">this guide</a> for setting up the data
@@ -384,9 +384,9 @@ Now our data are ready to go and we can define the model.
 </p>
 </div>
 </div>
-<div id="outline-container-org40f910b" class="outline-3">
-<h3 id="org40f910b">The Model</h3>
-<div class="outline-text-3" id="text-org40f910b">
+<div id="outline-container-orgfc199d8" class="outline-3">
+<h3 id="orgfc199d8">The Model</h3>
+<div class="outline-text-3" id="text-orgfc199d8">
 <p>
 The model has a few separate components &#x2013; a fact that is easy to miss when working with
 <code>fastai</code>. We need to define:
@@ -427,9 +427,9 @@ optimizer can be found <a href="https://pytorch.org/docs/master/generated/torch.
 </p>
 </div>
 </div>
-<div id="outline-container-org6a9db06" class="outline-3">
-<h3 id="org6a9db06">The Training Loop</h3>
-<div class="outline-text-3" id="text-org6a9db06">
+<div id="outline-container-org53d16b2" class="outline-3">
+<h3 id="org53d16b2">The Training Loop</h3>
+<div class="outline-text-3" id="text-org53d16b2">
 <p>
 The training loop represents the part of the implementation where <code>fastai</code> provides the most help. In
 <code>fastai</code>, the whole process is largely automatic. We called <code>learn.fit_one_cycle()</code>, specified the number
@@ -447,27 +447,27 @@ epochs if needed.
     <span class="org-variable-name">device</span> <span class="org-operator">=</span> torch.device(<span class="org-string">"cuda:0"</span> <span class="org-keyword">if</span> torch.cuda.is_available() <span class="org-keyword">else</span> <span class="org-string">"cpu"</span>)
     <span class="org-variable-name">model</span> <span class="org-operator">=</span> model.to(device)
     
-    <span class="org-comment-delimiter"># </span><span class="org-comment">set up tqdm bar</span>
-    <span class="org-variable-name">pbar</span> <span class="org-operator">=</span> tqdm(<span class="org-builtin">enumerate</span>(BackgroundGenerator(train_dl)),
+    <span class="org-comment-delimiter"># </span><span class="org-comment">set up tqdm bar
+</span>    <span class="org-variable-name">pbar</span> <span class="org-operator">=</span> tqdm(<span class="org-builtin">enumerate</span>(BackgroundGenerator(train_dl)),
                 total<span class="org-operator">=</span><span class="org-builtin">len</span>(train_dl), position<span class="org-operator">=</span>0, leave<span class="org-operator">=</span><span class="org-constant">False</span>)
     
     <span class="org-keyword">for</span> batch_idx, (data, target, era) <span class="org-keyword">in</span> pbar:
         <span class="org-variable-name">data</span>, <span class="org-variable-name">target</span> <span class="org-operator">=</span> data.to(device), target.to(device)
         
-        <span class="org-comment-delimiter"># </span><span class="org-comment">reset gradients</span>
-        optim.zero_grad()
+        <span class="org-comment-delimiter"># </span><span class="org-comment">reset gradients
+</span>        optim.zero_grad()
         
-        <span class="org-comment-delimiter"># </span><span class="org-comment">forward pass</span>
-        <span class="org-variable-name">out</span> <span class="org-operator">=</span> model(data)
+        <span class="org-comment-delimiter"># </span><span class="org-comment">forward pass
+</span>        <span class="org-variable-name">out</span> <span class="org-operator">=</span> model(data)
 
-        <span class="org-comment-delimiter">#</span><span class="org-comment">compute loss</span>
-        <span class="org-variable-name">loss</span> <span class="org-operator">=</span> criterion(out, target)
+        <span class="org-comment-delimiter">#</span><span class="org-comment">compute loss
+</span>        <span class="org-variable-name">loss</span> <span class="org-operator">=</span> criterion(out, target)
 
-        <span class="org-comment-delimiter">#</span><span class="org-comment">backpropagation</span>
-        loss.backward()
+        <span class="org-comment-delimiter">#</span><span class="org-comment">backpropagation
+</span>        loss.backward()
         
-        <span class="org-comment-delimiter">#</span><span class="org-comment">update the parameters</span>
-        optim.step()
+        <span class="org-comment-delimiter">#</span><span class="org-comment">update the parameters
+</span>        optim.step()
 
         <span class="org-keyword">if</span> batch_idx <span class="org-operator">%</span> 100 <span class="org-operator">==</span> 0:
             <span class="org-builtin">print</span>(f<span class="org-string">'Train Epoch/Batch: </span>{epoch}<span class="org-string">/</span>{batch_idx}<span class="org-constant">\t</span><span class="org-string">Training Loss: </span>{loss.item():.4f}<span class="org-string">'</span>)
@@ -510,13 +510,13 @@ we can define a validation method as:
             <span class="org-variable-name">data</span>, <span class="org-variable-name">target</span> <span class="org-operator">=</span> data.to(device), target.to(device)
             
             <span class="org-variable-name">out</span> <span class="org-operator">=</span> model(data)
-            <span class="org-variable-name">test_loss</span> <span class="org-operator">+=</span> criterion(out, target).item() <span class="org-comment-delimiter"># </span><span class="org-comment">sum up batch loss</span>
-            <span class="org-variable-name">val_corr</span> <span class="org-operator">=</span> era_spearman(preds <span class="org-operator">=</span> out.cpu().numpy().squeeze(),
+            <span class="org-variable-name">test_loss</span> <span class="org-operator">+=</span> criterion(out, target).item() <span class="org-comment-delimiter"># </span><span class="org-comment">sum up batch loss
+</span>            <span class="org-variable-name">val_corr</span> <span class="org-operator">=</span> era_spearman(preds <span class="org-operator">=</span> out.cpu().numpy().squeeze(),
                                     targs <span class="org-operator">=</span> target.cpu().numpy().squeeze(),
                                     eras <span class="org-operator">=</span> era)
 
-        <span class="org-comment-delimiter">#</span><span class="org-comment">test_loss /= len(val_dl.dataset)</span>
-        <span class="org-builtin">print</span>(f<span class="org-string">'Test Loss: </span>{test_loss:.4f}<span class="org-string">, Test Correlation: </span>{val_corr:.4f}<span class="org-string">'</span>)
+        <span class="org-comment-delimiter">#</span><span class="org-comment">test_loss /= len(val_dl.dataset)
+</span>        <span class="org-builtin">print</span>(f<span class="org-string">'Test Loss: </span>{test_loss:.4f}<span class="org-string">, Test Correlation: </span>{val_corr:.4f}<span class="org-string">'</span>)
 </pre>
 </div>
 
@@ -537,9 +537,9 @@ memory constraints.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org35b5c2e" class="outline-3">
-<h3 id="org35b5c2e">Train the Model</h3>
-<div class="outline-text-3" id="text-org35b5c2e">
+<div id="outline-container-org38374bf" class="outline-3">
+<h3 id="org38374bf">Train the Model</h3>
+<div class="outline-text-3" id="text-org38374bf">
 <p>
 We can finally train the model! This part is a simple <code>for</code> loop.
 </p>
@@ -553,9 +553,9 @@ We can finally train the model! This part is a simple <code>for</code> loop.
 </div>
 </div>
 </div>
-<div id="outline-container-orgcfd8a14" class="outline-2">
-<h2 id="orgcfd8a14">Summary</h2>
-<div class="outline-text-2" id="text-orgcfd8a14">
+<div id="outline-container-org66abe02" class="outline-2">
+<h2 id="org66abe02">Summary</h2>
+<div class="outline-text-2" id="text-org66abe02">
 <p>
 I wrote a lot more code to implement a comparatively-simple PyTorch model than to implement the
 <code>fastai</code> model. The PyTorch model forces us to better understand the structure of the model and the
