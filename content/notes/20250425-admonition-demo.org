@@ -1,0 +1,58 @@
+# +title:      Admonition Styling Demo
+#+title:      Styling Org Callouts for the Site
+#+date:       <2025-09-20 Sat>
+
+#+begin_preview
+Quick walkthrough of the site’s new callout styling for Org blocks: see the raw markup, the rendered result, and the tiny bit of CSS/JS that makes it work.
+#+end_preview
+
+* Why
+I keep reaching for Org special blocks (~#+begin_note~, ~#+begin_warning~, etc.) when I want callouts. This update gives them a consistent look across light and dark themes without much effort.
+
+* Examples
+Each example shows the Org snippet first, followed by how it renders after export.
+
+** Note
+#+begin_src org
+#+begin_note
+Use notes for context or references that amplify the main text.
+#+end_note
+#+end_src
+
+#+begin_note
+Use notes for context or references that amplify the main text.
+#+end_note
+
+** Tip
+#+begin_src org
+#+begin_tip
+Tips are great for quick wins, shortcuts, or “you might not know” details.
+#+end_tip
+#+end_src
+
+#+begin_tip
+Tips are great for quick wins, shortcuts, or “you might not know” details.
+#+end_tip
+
+** Warning
+#+begin_src org
+#+begin_warning
+Warnings (and ~#+begin_caution~ / ~#+begin_important~) announce risky steps or footguns.
+#+end_warning
+#+end_src
+
+#+begin_warning
+Warnings (and =#+begin_caution= / =#+begin_important=) announce risky steps or footguns.
+#+end_warning
+
+* How it Works
+- Styling lives in ~assets/orgstyle.css~ (~.admonition~, ~.admonition--warn~, etc.).
+- A tiny helper script ~assets/admonitions.js~ looks for exported ~<div class="note">~ style blocks and wraps them with a title, icon, and proper roles.
+- No extra Org boilerplate—write the block and the theme handles the rest.
+
+* Using It
+1. Add a special block to your Org file, e.g. ~#+begin_tip~ … ~#+end_tip~.
+2. Run =./build.sh= so the helper script and CSS land in the generated HTML.
+3. Preview the page in both themes to check contrast (the colors adapt automatically).
+
+That’s it. Drop these into any post where a little extra emphasis helps the reader.
