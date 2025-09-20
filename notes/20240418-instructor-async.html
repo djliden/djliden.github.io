@@ -9,12 +9,13 @@
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
+<script src="/admonitions.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -58,20 +59,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgabcc305">Asynchronous usage pattern for Instructor</a>
+<li><a href="#org49701d7">Asynchronous usage pattern for Instructor</a>
 <ul>
-<li><a href="#orgdecaac2">Setup</a></li>
-<li><a href="#org478c6fc">Iterate throught the objects</a></li>
+<li><a href="#orgcf3af05">Setup</a></li>
+<li><a href="#org8db2638">Iterate throught the objects</a></li>
 </ul>
 </li>
-<li><a href="#org895c115">Related Notes</a></li>
+<li><a href="#orga1b9e68">Related Notes</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgabcc305" class="outline-2">
-<h2 id="orgabcc305">Asynchronous usage pattern for Instructor</h2>
-<div class="outline-text-2" id="text-orgabcc305">
-<div class="preview" id="org910b060">
+<div id="outline-container-org49701d7" class="outline-2">
+<h2 id="org49701d7">Asynchronous usage pattern for Instructor</h2>
+<div class="outline-text-2" id="text-org49701d7">
+<div class="preview" id="orgef5c07f">
 <p>
 In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts.
 </p>
@@ -90,9 +91,9 @@ Using the instructor library with the asynchronous Anthropic client makes it muc
 </p>
 </div>
 
-<div id="outline-container-orgdecaac2" class="outline-3">
-<h3 id="orgdecaac2">Setup</h3>
-<div class="outline-text-3" id="text-orgdecaac2">
+<div id="outline-container-orgcf3af05" class="outline-3">
+<h3 id="orgcf3af05">Setup</h3>
+<div class="outline-text-3" id="text-orgcf3af05">
 <p>
 First, we set up the Anthropic async client with Instructor. We also set up the Pydantic schema we'll be using for structured extraction.
 </p>
@@ -128,9 +129,9 @@ First, we set up the Anthropic async client with Instructor. We also set up the 
 </div>
 </div>
 </div>
-<div id="outline-container-org478c6fc" class="outline-3">
-<h3 id="org478c6fc">Iterate throught the objects</h3>
-<div class="outline-text-3" id="text-org478c6fc">
+<div id="outline-container-org8db2638" class="outline-3">
+<h3 id="org8db2638">Iterate throught the objects</h3>
+<div class="outline-text-3" id="text-org8db2638">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> asyncio
 <span class="org-keyword">import</span> time
@@ -221,9 +222,9 @@ In this code, we:
 </div>
 </div>
 </div>
-<div id="outline-container-org895c115" class="outline-2">
-<h2 id="org895c115">Related Notes</h2>
-<div class="outline-text-2" id="text-org895c115">
+<div id="outline-container-orga1b9e68" class="outline-2">
+<h2 id="orga1b9e68">Related Notes</h2>
+<div class="outline-text-2" id="text-orga1b9e68">
 <ul class="org-ul">
 <li><a href="20240403-dbrx-instructor.html">Use Instructor with DBRX</a></li>
 </ul>

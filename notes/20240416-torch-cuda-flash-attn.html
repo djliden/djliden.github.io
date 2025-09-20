@@ -9,12 +9,13 @@
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
+<script src="/admonitions.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -58,30 +59,30 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7ca18fd">The Problem</a></li>
-<li><a href="#org59e983f">Solution</a></li>
-<li><a href="#org1f9d989">What didn't work</a></li>
+<li><a href="#org4b71b3b">The Problem</a></li>
+<li><a href="#org2e4f9dd">Solution</a></li>
+<li><a href="#org297ff93">What didn't work</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org45a9d8f">
+<div class="preview" id="org7ba8f1c">
 <p>
 I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platform I tend to be working on (Databricks). This note is a quick summary.
 </p>
 
 </div>
-<div id="outline-container-org7ca18fd" class="outline-2">
-<h2 id="org7ca18fd">The Problem</h2>
-<div class="outline-text-2" id="text-org7ca18fd">
+<div id="outline-container-org4b71b3b" class="outline-2">
+<h2 id="org4b71b3b">The Problem</h2>
+<div class="outline-text-2" id="text-org4b71b3b">
 <p>
 I kept getting an "undefined symbol" error like <a href="https://github.com/Dao-AILab/flash-attention/issues/667">this</a> when trying to load a model with flash attention (or even just when importing the flash attention library).
 </p>
 </div>
 </div>
 
-<div id="outline-container-org59e983f" class="outline-2">
-<h2 id="org59e983f">Solution</h2>
-<div class="outline-text-2" id="text-org59e983f">
+<div id="outline-container-org2e4f9dd" class="outline-2">
+<h2 id="org2e4f9dd">Solution</h2>
+<div class="outline-text-2" id="text-org2e4f9dd">
 <p>
 The following approach worked.
 </p>
@@ -138,9 +139,9 @@ We can then make sure everything works (without needing to take extra time to lo
 </div>
 </div>
 
-<div id="outline-container-org1f9d989" class="outline-2">
-<h2 id="org1f9d989">What didn't work</h2>
-<div class="outline-text-2" id="text-org1f9d989">
+<div id="outline-container-org297ff93" class="outline-2">
+<h2 id="org297ff93">What didn't work</h2>
+<div class="outline-text-2" id="text-org297ff93">
 <p>
 I wasn't able to get any variety of <code>pip install flash-attn</code> working. This was regardless of the no build isolation flag; specific versions; etc.
 </p>

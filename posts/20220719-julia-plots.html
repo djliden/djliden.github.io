@@ -9,12 +9,13 @@
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
+<script src="/admonitions.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -58,20 +59,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd00be45">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</a></li>
-<li><a href="#orgfa67a50">Making some Plots</a>
+<li><a href="#org6f57ea7">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</a></li>
+<li><a href="#org95ca28b">Making some Plots</a>
 <ul>
-<li><a href="#org6075e95">Building Plots Incrementally</a></li>
+<li><a href="#orgf180848">Building Plots Incrementally</a></li>
 </ul>
 </li>
-<li><a href="#org1efb3e8">Plotting Real Data</a></li>
-<li><a href="#orgdbdcd79">Modifying Plot Visual Components</a></li>
-<li><a href="#orgd65fa6e">Different Plot Styles</a></li>
-<li><a href="#org169ee57">Conculsion</a></li>
+<li><a href="#orgcd55150">Plotting Real Data</a></li>
+<li><a href="#orgfa95a12">Modifying Plot Visual Components</a></li>
+<li><a href="#org32d933a">Different Plot Styles</a></li>
+<li><a href="#org66b1d47">Conculsion</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org5d82bc0">
+<div class="preview" id="orgdff4d5c">
 <p>
 In this short post, I show one of the many ways of using Julia within emacs
 org mode, and will describe some of the basic plotting functionality in Julia.
@@ -79,9 +80,9 @@ org mode, and will describe some of the basic plotting functionality in Julia.
 
 </div>
 
-<div id="outline-container-orgd00be45" class="outline-2">
-<h2 id="orgd00be45">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</h2>
-<div class="outline-text-2" id="text-orgd00be45">
+<div id="outline-container-org6f57ea7" class="outline-2">
+<h2 id="org6f57ea7">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</h2>
+<div class="outline-text-2" id="text-org6f57ea7">
 <p>
 While <a href="https://github.com/gcv/julia-snail">julia-snail</a> is my favorite Julia development environment, it's support for
 org-mode is, at present, quite limited. For example, it seems to ignore the
@@ -93,9 +94,9 @@ how to use emacs-jupyter with org-mode.
 </div>
 </div>
 
-<div id="outline-container-orgfa67a50" class="outline-2">
-<h2 id="orgfa67a50">Making some Plots</h2>
-<div class="outline-text-2" id="text-orgfa67a50">
+<div id="outline-container-org95ca28b" class="outline-2">
+<h2 id="org95ca28b">Making some Plots</h2>
+<div class="outline-text-2" id="text-org95ca28b">
 <p>
 Let's make some plots. We'll use the <a href="https://docs.juliaplots.org/latest/tutorial/">Plots.jl</a> package and explore a few
 different plotting styles. First, we load the packages we'll be using. I tend to
@@ -111,9 +112,9 @@ using StatsPlots
 </div>
 </div>
 
-<div id="outline-container-org6075e95" class="outline-3">
-<h3 id="org6075e95">Building Plots Incrementally</h3>
-<div class="outline-text-3" id="text-org6075e95">
+<div id="outline-container-orgf180848" class="outline-3">
+<h3 id="orgf180848">Building Plots Incrementally</h3>
+<div class="outline-text-3" id="text-orgf180848">
 <p>
 With these packages loaded, we'll start simply and plot a standard normal
 distribution.
@@ -125,7 +126,7 @@ distribution.
 </div>
 
 
-<figure id="org93adbcc">
+<figure id="org1246210">
 <img src="figures/20220719-julia-plots/fig1.svg" alt="fig1.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 1: </span>A basic plot</figcaption>
@@ -144,7 +145,7 @@ plot!(leg=false) # Remove the Legend
 </div>
 
 
-<figure id="org610f90e">
+<figure id="org1c38d3e">
 <img src="figures/20220719-julia-plots/fig2.svg" alt="fig2.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 2: </span>Removing the legend and adding labels</figcaption>
@@ -165,7 +166,7 @@ font(18, "Computer Modern"))
 </div>
 
 
-<figure id="orgd40f5b7">
+<figure id="orgdcbeaf7">
 <img src="figures/20220719-julia-plots/fig3.svg" alt="fig3.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 3: </span>Changing some Fonts</figcaption>
@@ -175,9 +176,9 @@ font(18, "Computer Modern"))
 </div>
 
 
-<div id="outline-container-org1efb3e8" class="outline-2">
-<h2 id="org1efb3e8">Plotting Real Data</h2>
-<div class="outline-text-2" id="text-org1efb3e8">
+<div id="outline-container-orgcd55150" class="outline-2">
+<h2 id="orgcd55150">Plotting Real Data</h2>
+<div class="outline-text-2" id="text-orgcd55150">
 <p>
 That's enough of that. Usually we're plotting real data, not standard standard
 distributions. Let's get some. First we'll pull from the <code>RDatasets</code> package,
@@ -211,7 +212,7 @@ title!("Horsepower by MPG and N Cylinders")
 </div>
 
 
-<figure id="orgae36ba0">
+<figure id="org9b99868">
 <img src="figures/20220719-julia-plots/fig4.svg" alt="fig4.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 4: </span>plotting data with Plots.jl</figcaption>
@@ -219,9 +220,9 @@ title!("Horsepower by MPG and N Cylinders")
 </div>
 </div>
 
-<div id="outline-container-orgdbdcd79" class="outline-2">
-<h2 id="orgdbdcd79">Modifying Plot Visual Components</h2>
-<div class="outline-text-2" id="text-orgdbdcd79">
+<div id="outline-container-orgfa95a12" class="outline-2">
+<h2 id="orgfa95a12">Modifying Plot Visual Components</h2>
+<div class="outline-text-2" id="text-orgfa95a12">
 <p>
 It's not always straightforward to figure out how to modify visual components of
 a plot. Most of the relevant information lies in the <a href="https://docs.juliaplots.org/latest/attributes/">Attributes</a> section of the
@@ -229,9 +230,9 @@ Plots.jl documentation (and its subsections).
 </p>
 </div>
 </div>
-<div id="outline-container-orgd65fa6e" class="outline-2">
-<h2 id="orgd65fa6e">Different Plot Styles</h2>
-<div class="outline-text-2" id="text-orgd65fa6e">
+<div id="outline-container-org32d933a" class="outline-2">
+<h2 id="org32d933a">Different Plot Styles</h2>
+<div class="outline-text-2" id="text-org32d933a">
 <p>
 One of the benefits of the Plots.jl package is its support for many different
 <a href="https://docs.juliaplots.org/latest/backends/">plotting backends</a>. The default is GR which, according to the documentation, is
@@ -265,7 +266,7 @@ We then specify that we'd like to use this backend with the <code>unicodeplots()
 </pre>
 </div>
 
-<pre class="example" id="orgd7ba1fd">
+<pre class="example" id="org12e5e26">
                         HP vs MPG                   
        +----------------------------------------+   
 343.49 |        ⚬                               | y1
@@ -294,7 +295,7 @@ update if and when I figure that out. It should look like this:
 </p>
 
 
-<figure id="org3463bd0">
+<figure id="orga861484">
 <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="600px">
 
 <figcaption><span class="figure-number">Figure 5: </span>screenshot of unicodeplot from vterm</figcaption>
@@ -303,9 +304,9 @@ update if and when I figure that out. It should look like this:
 </div>
 
 
-<div id="outline-container-org169ee57" class="outline-2">
-<h2 id="org169ee57">Conculsion</h2>
-<div class="outline-text-2" id="text-org169ee57">
+<div id="outline-container-org66b1d47" class="outline-2">
+<h2 id="org66b1d47">Conculsion</h2>
+<div class="outline-text-2" id="text-org66b1d47">
 <p>
 There's a lot more to get into with plotting in Julia and with using Julia in
 emacs. This post serves as a small jumping-off point—just enough to get started,

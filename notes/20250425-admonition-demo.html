@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Styling Org Callouts for the Site</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
+<script src="/admonitions.js" defer></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
+    </a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Styling Org Callouts for the Site</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgc041c8c">Why</a></li>
+<li><a href="#org5603ce1">Examples</a>
+<ul>
+<li><a href="#orgce18be6">Note</a></li>
+<li><a href="#org577f644">Tip</a></li>
+<li><a href="#orgc65973f">Warning</a></li>
+</ul>
+</li>
+<li><a href="#orge71763d">How it Works</a></li>
+<li><a href="#org1ecdb6f">Using It</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview" id="orgaa2bd85">
+<p>
+Quick walkthrough of the site’s new callout styling for Org blocks: see the raw markup, the rendered result, and the tiny bit of CSS/JS that makes it work.
+</p>
+
+</div>
+
+<div id="outline-container-orgc041c8c" class="outline-2">
+<h2 id="orgc041c8c">Why</h2>
+<div class="outline-text-2" id="text-orgc041c8c">
+<p>
+I keep reaching for Org special blocks (<code>#+begin_note</code>, <code>#+begin_warning</code>, etc.) when I want callouts. This update gives them a consistent look across light and dark themes without much effort.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5603ce1" class="outline-2">
+<h2 id="org5603ce1">Examples</h2>
+<div class="outline-text-2" id="text-org5603ce1">
+<p>
+Each example shows the Org snippet first, followed by how it renders after export.
+</p>
+</div>
+
+<div id="outline-container-orgce18be6" class="outline-3">
+<h3 id="orgce18be6">Note</h3>
+<div class="outline-text-3" id="text-orgce18be6">
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-block-begin-line">#+begin_note
+</span>Use notes for context or references that amplify the main text.
+<span class="org-org-block-end-line">#+end_note</span>
+</pre>
+</div>
+
+<div class="note" id="org0a8d017">
+<p>
+Use notes for context or references that amplify the main text.
+</p>
+
+</div>
+</div>
+</div>
+
+<div id="outline-container-org577f644" class="outline-3">
+<h3 id="org577f644">Tip</h3>
+<div class="outline-text-3" id="text-org577f644">
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-block-begin-line">#+begin_tip
+</span>Tips are great for quick wins, shortcuts, or &#8220;you might not know&#8221; details.
+<span class="org-org-block-end-line">#+end_tip</span>
+</pre>
+</div>
+
+<div class="tip" id="org61fefcc">
+<p>
+Tips are great for quick wins, shortcuts, or “you might not know” details.
+</p>
+
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc65973f" class="outline-3">
+<h3 id="orgc65973f">Warning</h3>
+<div class="outline-text-3" id="text-orgc65973f">
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-block-begin-line">#+begin_warning
+</span>Warnings (and <span class="org-org-code">~#+begin_caution~</span> / <span class="org-org-code">~#+begin_important~</span>) announce risky steps or footguns.
+<span class="org-org-block-end-line">#+end_warning</span>
+</pre>
+</div>
+
+<div class="warning" id="org3087c74">
+<p>
+Warnings (and <code>#+begin_caution</code> / <code>#+begin_important</code>) announce risky steps or footguns.
+</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge71763d" class="outline-2">
+<h2 id="orge71763d">How it Works</h2>
+<div class="outline-text-2" id="text-orge71763d">
+<ul class="org-ul">
+<li>Styling lives in <code>assets/orgstyle.css</code> (<code>.admonition</code>, <code>.admonition--warn</code>, etc.).</li>
+<li>A tiny helper script <code>assets/admonitions.js</code> looks for exported <code>&lt;div class="note"&gt;</code> style blocks and wraps them with a title, icon, and proper roles.</li>
+<li>No extra Org boilerplate—write the block and the theme handles the rest.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org1ecdb6f" class="outline-2">
+<h2 id="org1ecdb6f">Using It</h2>
+<div class="outline-text-2" id="text-org1ecdb6f">
+<ol class="org-ol">
+<li>Add a special block to your Org file, e.g. <code>#+begin_tip</code> … <code>#+end_tip</code>.</li>
+<li>Run <code>./build.sh</code> so the helper script and CSS land in the generated HTML.</li>
+<li>Preview the page in both themes to check contrast (the colors adapt automatically).</li>
+</ol>
+
+<p>
+That’s it. Drop these into any post where a little extra emphasis helps the reader.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2025-09-20 Sat 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+</div>
+</body>
+</html>

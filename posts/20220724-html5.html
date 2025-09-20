@@ -9,12 +9,13 @@
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
+<script src="/admonitions.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -58,13 +59,13 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org04f15f6">The Problem</a></li>
-<li><a href="#org6cfa7a8">Changes to the Site Config</a></li>
-<li><a href="#org2499091">The Results</a></li>
+<li><a href="#orgd83f2e8">The Problem</a></li>
+<li><a href="#org0c0877d">Changes to the Site Config</a></li>
+<li><a href="#orga104b1a">The Results</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org53c0e51">
+<div class="preview" id="orgc7d24d8">
 <p>
 I noticed that some of the formatting on this site was a little off and some of
 the org-mode components weren't being translated to HTML in quite the way I
@@ -82,9 +83,9 @@ While that brief introduction should capture the necessary changes, we can get
 into more specifics.
 </p>
 
-<div id="outline-container-org04f15f6" class="outline-2">
-<h2 id="org04f15f6">The Problem</h2>
-<div class="outline-text-2" id="text-org04f15f6">
+<div id="outline-container-orgd83f2e8" class="outline-2">
+<h2 id="orgd83f2e8">The Problem</h2>
+<div class="outline-text-2" id="text-orgd83f2e8">
 <p>
 If we use the default settings, figures aren't wrapped in <code>&lt;figure&gt;</code> blocks and
 captions aren't wrapped in <code>&lt;figcaption&gt;</code> blocks, so none of the formatting we
@@ -112,9 +113,9 @@ The image and caption appear left-aligned on the page. Here's the html:
 </div>
 </div>
 
-<div id="outline-container-org6cfa7a8" class="outline-2">
-<h2 id="org6cfa7a8">Changes to the Site Config</h2>
-<div class="outline-text-2" id="text-org6cfa7a8">
+<div id="outline-container-org0c0877d" class="outline-2">
+<h2 id="org0c0877d">Changes to the Site Config</h2>
+<div class="outline-text-2" id="text-org0c0877d">
 <p>
 To address this, we need to change the <code>org-html-doctype</code> and <code>org-html-html5-fancy</code>
 variables. We can do this in the export configuration's
@@ -163,15 +164,15 @@ key changes.
 </div>
 </div>
 </div>
-<div id="outline-container-org2499091" class="outline-2">
-<h2 id="org2499091">The Results</h2>
-<div class="outline-text-2" id="text-org2499091">
+<div id="outline-container-orga104b1a" class="outline-2">
+<h2 id="orga104b1a">The Results</h2>
+<div class="outline-text-2" id="text-orga104b1a">
 <p>
 With these changes, our images and captions are now centered:
 </p>
 
 
-<figure id="org572b88e">
+<figure id="orgccf4939">
 <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px">
 
 <figcaption><span class="figure-number">Figure 1: </span>This caption is now centered and wrapped in a <code>&lt;figcaption&gt;</code> tag!</figcaption>

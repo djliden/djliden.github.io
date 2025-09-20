@@ -9,12 +9,13 @@
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
+<script src="/admonitions.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -58,19 +59,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8cdd387">DBRX and MLflow</a>
+<li><a href="#org5e5db1c">DBRX and MLflow</a>
 <ul>
-<li><a href="#org00c6eb3">Via the MLflow Deployments Server</a></li>
-<li><a href="#org4a9f510">Using the OpenAI Model Flavor</a></li>
+<li><a href="#org2055b3f">Via the MLflow Deployments Server</a></li>
+<li><a href="#org50193d3">Using the OpenAI Model Flavor</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org8cdd387" class="outline-2">
-<h2 id="org8cdd387">DBRX and MLflow</h2>
-<div class="outline-text-2" id="text-org8cdd387">
-<div class="preview" id="org9102f0b">
+<div id="outline-container-org5e5db1c" class="outline-2">
+<h2 id="org5e5db1c">DBRX and MLflow</h2>
+<div class="outline-text-2" id="text-org5e5db1c">
+<div class="preview" id="orgb6c9a7b">
 <p>
 This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.
 </p>
@@ -85,9 +86,9 @@ Here are two ways to use the DBRX model with MLflow. The following assumes that 
 <li><code>DATABRICKS_ENDPOINT</code>: your databricks workspace model serving endpoint. It will probably have the form <code>https://&lt;workspace_name&gt;.cloud.databricks.com/serving-endpoints</code>.</li>
 </ul>
 </div>
-<div id="outline-container-org00c6eb3" class="outline-3">
-<h3 id="org00c6eb3">Via the MLflow Deployments Server</h3>
-<div class="outline-text-3" id="text-org00c6eb3">
+<div id="outline-container-org2055b3f" class="outline-3">
+<h3 id="org2055b3f">Via the MLflow Deployments Server</h3>
+<div class="outline-text-3" id="text-org2055b3f">
 <ol class="org-ol">
 <li>Configure the Deployments Server</li>
 </ol>
@@ -170,9 +171,9 @@ which will return
 </div>
 </div>
 
-<div id="outline-container-org4a9f510" class="outline-3">
-<h3 id="org4a9f510">Using the OpenAI Model Flavor</h3>
-<div class="outline-text-3" id="text-org4a9f510">
+<div id="outline-container-org50193d3" class="outline-3">
+<h3 id="org50193d3">Using the OpenAI Model Flavor</h3>
+<div class="outline-text-3" id="text-org50193d3">
 <p>
 We can also log the model usign the OpenAI model flavor. We just need to be careful to set up the appropriate environment variables first.
 </p>

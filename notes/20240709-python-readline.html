@@ -9,12 +9,13 @@
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
+<script src="/admonitions.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -58,21 +59,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8212782">Introduction</a>
+<li><a href="#org47f3772">Introduction</a>
 <ul>
-<li><a href="#org4eb5787">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</a></li>
+<li><a href="#org45a1bc1">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</a></li>
 </ul>
 </li>
-<li><a href="#orgca7c2e4">Background</a></li>
-<li><a href="#org341b6cc">Solution</a></li>
-<li><a href="#org745849e">A little more detail</a></li>
+<li><a href="#orgffffd7b">Background</a></li>
+<li><a href="#orgea4f857">Solution</a></li>
+<li><a href="#org26140db">A little more detail</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org8212782" class="outline-2">
-<h2 id="org8212782">Introduction</h2>
-<div class="outline-text-2" id="text-org8212782">
-<div class="preview" id="orgc135d11">
+<div id="outline-container-org47f3772" class="outline-2">
+<h2 id="org47f3772">Introduction</h2>
+<div class="outline-text-2" id="text-org47f3772">
+<div class="preview" id="orgcf9cc42">
 <p>
 I was encountering this warning when trying to use Python in Emacs on Macos: <code>Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list.  Native completions have been disabled locally.</code> I found years of discussions on this issue, but no solutions. I also found that using Python installed with Conda instead of with virtualenv worked fine. From this, I narrowed down the root cause and found a working solution: (1) install the <code>gnureadline</code> Python package with <code>pip install gnureadline</code>; (2) override the default readline in your virtual environment with <code>python -m override_readline</code>.
 </p>
@@ -83,9 +84,9 @@ In the rest of this note, I will briefly review the steps of the investigation t
 
 </div>
 </div>
-<div id="outline-container-org4eb5787" class="outline-3">
-<h3 id="org4eb5787">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</h3>
-<div class="outline-text-3" id="text-org4eb5787">
+<div id="outline-container-org45a1bc1" class="outline-3">
+<h3 id="org45a1bc1">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</h3>
+<div class="outline-text-3" id="text-org45a1bc1">
 <p>
 <a href="https://www.danliden.com/notes/20240821-uv.html">As noted</a>, I have been using <code>uv</code> for Python package management. This approach to resolving the "Python interpreter doesn't seem to support readline" error was not working with <code>uv</code> because of how <code>readline</code> was handled in the <code>python-build-standalone</code> distribution used by <code>uv</code>.
 </p>
@@ -97,9 +98,9 @@ This was resolved with the version of <code>gnureadline</code> <a href="https://
 </div>
 </div>
 
-<div id="outline-container-orgca7c2e4" class="outline-2">
-<h2 id="orgca7c2e4">Background</h2>
-<div class="outline-text-2" id="text-orgca7c2e4">
+<div id="outline-container-orgffffd7b" class="outline-2">
+<h2 id="orgffffd7b">Background</h2>
+<div class="outline-text-2" id="text-orgffffd7b">
 <p>
 I have historically used Python in Emacs via Conda. I don't especially enjoy using Conda and much prefer a virtualenv workflow. So, for a recent project, I used virtualenv (actually <a href="https://github.com/astral-sh/uv">uv venv</a>, and I recommend checking out uv for your package management and virtual environment needs!).
 </p>
@@ -167,9 +168,9 @@ I tried a bunch of different things to try to force the virtualenv to use GNU re
 </p>
 </div>
 </div>
-<div id="outline-container-org341b6cc" class="outline-2">
-<h2 id="org341b6cc">Solution</h2>
-<div class="outline-text-2" id="text-org341b6cc">
+<div id="outline-container-orgea4f857" class="outline-2">
+<h2 id="orgea4f857">Solution</h2>
+<div class="outline-text-2" id="text-orgea4f857">
 <p>
 The <a href="https://github.com/ludwigschwardt/python-gnureadline"><code>gnureadline</code></a> Python package explains the issue:
 </p>
@@ -195,9 +196,9 @@ And it provides the very straightforward solution:
 </div>
 </div>
 
-<div id="outline-container-org745849e" class="outline-2">
-<h2 id="org745849e">A little more detail</h2>
-<div class="outline-text-2" id="text-org745849e">
+<div id="outline-container-org26140db" class="outline-2">
+<h2 id="org26140db">A little more detail</h2>
+<div class="outline-text-2" id="text-org26140db">
 <p>
 The <code>gnureadline</code> docs suggest the following usage pattern:
 </p>
