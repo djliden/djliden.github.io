@@ -3,7 +3,7 @@
 /* Header navigation */
 .topnav-rule {
     border: 0;
-    border-top: 1px solid black;
+    border-top: 1px solid var(--nav-border-color);
     margin: 0;
 }
 
@@ -12,7 +12,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 1.5rem;
-    padding: 0.35rem 0;
+    padding: 0.6rem 0;
 }
 
 .site-header__brand {
@@ -24,15 +24,30 @@
 
 .site-header__brand h2 {
     margin: 0;
+    font-size: 1.65rem;
+    font-weight: 650;
+    letter-spacing: 0.005em;
 }
+
+.site-header__brand:hover {
+    text-decoration: none;
+    border-bottom: none;
+}
+
+.site-header__brand:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: 3px;
+}
+
 
 .topnav-links {
     display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    font-weight: bold;
-    font-style: italic;
+    gap: 0.75rem;
+    font-weight: 600;
+    font-style: normal;
+    letter-spacing: 0.01em;
 }
 
 .topnav-links a {
@@ -40,7 +55,7 @@
 }
 
 .topnav-divider {
-    color: var(--border-color);
+    color: var(--nav-divider-color);
     font-style: normal;
 }
 
@@ -49,6 +64,18 @@
     align-items: center;
     justify-content: center;
     color: var(--text-color);
+}
+
+.topnav-links a {
+    padding: 0.15rem 0;
+    transition: color 0.18s ease;
+}
+
+.topnav-links a:hover,
+.topnav-links a:focus-visible {
+    color: var(--link-hover-color);
+    text-decoration: none;
+    border-bottom: none;
 }
 
 .rss-icon,
@@ -92,6 +119,8 @@
     --link-color: #3a869b;
     --link-hover-color: #2f6f81;
     --border-color: #e1e5e9;
+    --nav-border-color: #d2d6da;
+    --nav-divider-color: #cbd0d4;
     --code-bg: #f8f9fa;
     --header-color: #b45c3c;
     --admonition-info-border: #3a869b;
@@ -114,6 +143,8 @@
     --link-color: #86d7eb;
     --link-hover-color: #b4ecff;
     --border-color: #30363d;
+    --nav-border-color: #3d4854;
+    --nav-divider-color: #4b545f;
     --code-bg: #161b22;
     --header-color: #f29c74;
     --admonition-info-border: #86d7eb;
@@ -284,6 +315,11 @@ a:hover,
 p a:hover,
 li a:hover {
     color: var(--link-hover-color);
+    text-decoration: underline;
+    text-decoration-style: solid;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.2em;
+    border-bottom: none;
 }
 
 #text-table-of-contents a {
@@ -294,17 +330,17 @@ li a:hover {
 #text-table-of-contents {
     border-left: 3px solid var(--link-color);
     background: rgba(58, 134, 155, 0.08);
-    padding: 0.75em 1em;
+    padding: 0.45em 0.8em;
     border-radius: 6px;
-    margin: 1.2em 0;
+    margin: 0.8em 0;
 }
 
 #text-table-of-contents ul {
-    margin-left: 1.2em;
+    margin-left: 0.85em;
 }
 
 #text-table-of-contents li {
-    margin: 0.3em 0;
+    margin: 0.12em 0;
     list-style: disc;
 }
 
