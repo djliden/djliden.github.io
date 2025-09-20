@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using the DBRX Model with Instructor</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,43 +58,43 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org1be8e72">Instructor</a></li>
-<li><a href="#org0693bc6">Using it with DBRX/Databricks</a>
+<li><a href="#orgd76b5b9">Instructor</a></li>
+<li><a href="#org19ba9da">Using it with DBRX/Databricks</a>
 <ul>
-<li><a href="#org2ced1e6">Set up the client</a></li>
-<li><a href="#org5bfb2c3">Simple example</a></li>
-<li><a href="#org9f546c5">A slightly more involved example</a></li>
+<li><a href="#orgad53bd6">Set up the client</a></li>
+<li><a href="#org8c7697c">Simple example</a></li>
+<li><a href="#org8f6f302">A slightly more involved example</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org5ebfeac">
+<div class="preview" id="org175e090">
 <p>
 This note briefly demonstrates how to use the <a href="https://github.com/jxnl/instructor">Instructor</a> library with the Databricks <a href="https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm">DBRX</a> model via the Databricks Foundation Models API.
 </p>
 
 </div>
 
-<div id="outline-container-org1be8e72" class="outline-2">
-<h2 id="org1be8e72">Instructor</h2>
-<div class="outline-text-2" id="text-org1be8e72">
+<div id="outline-container-orgd76b5b9" class="outline-2">
+<h2 id="orgd76b5b9">Instructor</h2>
+<div class="outline-text-2" id="text-orgd76b5b9">
 <p>
 The instructor library provides structured output from LLMs. The user specifies a Pydantic model to define the structure of outputs.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org0693bc6" class="outline-2">
-<h2 id="org0693bc6">Using it with DBRX/Databricks</h2>
-<div class="outline-text-2" id="text-org0693bc6">
+<div id="outline-container-org19ba9da" class="outline-2">
+<h2 id="org19ba9da">Using it with DBRX/Databricks</h2>
+<div class="outline-text-2" id="text-org19ba9da">
 <p>
 Instructor works with DBRX/with the databricks foundation model API. Here's how.
 </p>
 </div>
-<div id="outline-container-org2ced1e6" class="outline-3">
-<h3 id="org2ced1e6">Set up the client</h3>
-<div class="outline-text-3" id="text-org2ced1e6">
+<div id="outline-container-orgad53bd6" class="outline-3">
+<h3 id="orgad53bd6">Set up the client</h3>
+<div class="outline-text-3" id="text-orgad53bd6">
 <p>
 We need to define the environment variables <code>OPENAI_API_KEY</code> and <code>OPENAI_BASE_URL</code>. In this example, they are saved in a <code>.env</code> file. We'll start by loading them.
 </p>
@@ -91,9 +111,9 @@ True
 </div>
 </div>
 
-<div id="outline-container-org5bfb2c3" class="outline-3">
-<h3 id="org5bfb2c3">Simple example</h3>
-<div class="outline-text-3" id="text-org5bfb2c3">
+<div id="outline-container-org8c7697c" class="outline-3">
+<h3 id="org8c7697c">Simple example</h3>
+<div class="outline-text-3" id="text-org8c7697c">
 <p>
 Next, we'll run the example from the Instructor docs to make sure everything is working. In this example, we define a schema fro data about users: we expect name and age. We then prompt the model with a sentence about a user. The model will return the Pydantic object with the user's information.
 </p>
@@ -152,9 +172,9 @@ There are a few things to pay attention to here.
 </ul>
 </div>
 </div>
-<div id="outline-container-org9f546c5" class="outline-3">
-<h3 id="org9f546c5">A slightly more involved example</h3>
-<div class="outline-text-3" id="text-org9f546c5">
+<div id="outline-container-org8f6f302" class="outline-3">
+<h3 id="org8f6f302">A slightly more involved example</h3>
+<div class="outline-text-3" id="text-org8f6f302">
 <p>
 Let's look at an example of generating an arbitrary number of question/answer pairs from a text, e.g. for evaluating a RAG application.
 </p>
@@ -229,7 +249,7 @@ And how we'll test this on our example text.
 </pre>
 </div>
 
-<pre class="example" id="org401a63f">
+<pre class="example" id="org8087b8b">
 EvalQAs(
     evalqas=[
         EvalQA(

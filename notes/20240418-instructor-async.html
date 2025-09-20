@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Asynchronous Instructor</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,20 +58,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org987d05e">Asynchronous usage pattern for Instructor</a>
+<li><a href="#orgabcc305">Asynchronous usage pattern for Instructor</a>
 <ul>
-<li><a href="#org73626c5">Setup</a></li>
-<li><a href="#org14e1b65">Iterate throught the objects</a></li>
+<li><a href="#orgdecaac2">Setup</a></li>
+<li><a href="#org478c6fc">Iterate throught the objects</a></li>
 </ul>
 </li>
-<li><a href="#orgb001ac1">Related Notes</a></li>
+<li><a href="#org895c115">Related Notes</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org987d05e" class="outline-2">
-<h2 id="org987d05e">Asynchronous usage pattern for Instructor</h2>
-<div class="outline-text-2" id="text-org987d05e">
-<div class="preview" id="org176abe3">
+<div id="outline-container-orgabcc305" class="outline-2">
+<h2 id="orgabcc305">Asynchronous usage pattern for Instructor</h2>
+<div class="outline-text-2" id="text-orgabcc305">
+<div class="preview" id="org910b060">
 <p>
 In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts.
 </p>
@@ -70,9 +90,9 @@ Using the instructor library with the asynchronous Anthropic client makes it muc
 </p>
 </div>
 
-<div id="outline-container-org73626c5" class="outline-3">
-<h3 id="org73626c5">Setup</h3>
-<div class="outline-text-3" id="text-org73626c5">
+<div id="outline-container-orgdecaac2" class="outline-3">
+<h3 id="orgdecaac2">Setup</h3>
+<div class="outline-text-3" id="text-orgdecaac2">
 <p>
 First, we set up the Anthropic async client with Instructor. We also set up the Pydantic schema we'll be using for structured extraction.
 </p>
@@ -108,9 +128,9 @@ First, we set up the Anthropic async client with Instructor. We also set up the 
 </div>
 </div>
 </div>
-<div id="outline-container-org14e1b65" class="outline-3">
-<h3 id="org14e1b65">Iterate throught the objects</h3>
-<div class="outline-text-3" id="text-org14e1b65">
+<div id="outline-container-org478c6fc" class="outline-3">
+<h3 id="org478c6fc">Iterate throught the objects</h3>
+<div class="outline-text-3" id="text-org478c6fc">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> asyncio
 <span class="org-keyword">import</span> time
@@ -201,9 +221,9 @@ In this code, we:
 </div>
 </div>
 </div>
-<div id="outline-container-orgb001ac1" class="outline-2">
-<h2 id="orgb001ac1">Related Notes</h2>
-<div class="outline-text-2" id="text-orgb001ac1">
+<div id="outline-container-org895c115" class="outline-2">
+<h2 id="org895c115">Related Notes</h2>
+<div class="outline-text-2" id="text-org895c115">
 <ul class="org-ul">
 <li><a href="20240403-dbrx-instructor.html">Use Instructor with DBRX</a></li>
 </ul>

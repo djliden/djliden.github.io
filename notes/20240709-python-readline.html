@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Python interpreter doesn't seem to support readline error in Emacs on MacOS</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,21 +58,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org639bc1b">Introduction</a>
+<li><a href="#org8212782">Introduction</a>
 <ul>
-<li><a href="#org17a0091">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</a></li>
+<li><a href="#org4eb5787">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</a></li>
 </ul>
 </li>
-<li><a href="#org7b83f56">Background</a></li>
-<li><a href="#org7b518fa">Solution</a></li>
-<li><a href="#orgd86cbab">A little more detail</a></li>
+<li><a href="#orgca7c2e4">Background</a></li>
+<li><a href="#org341b6cc">Solution</a></li>
+<li><a href="#org745849e">A little more detail</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org639bc1b" class="outline-2">
-<h2 id="org639bc1b">Introduction</h2>
-<div class="outline-text-2" id="text-org639bc1b">
-<div class="preview" id="orga7b7298">
+<div id="outline-container-org8212782" class="outline-2">
+<h2 id="org8212782">Introduction</h2>
+<div class="outline-text-2" id="text-org8212782">
+<div class="preview" id="orgc135d11">
 <p>
 I was encountering this warning when trying to use Python in Emacs on Macos: <code>Warning (python): Your ‘python-shell-interpreter’ doesn’t seem to support readline, yet ‘python-shell-completion-native’ was t and "python3" is not part of the ‘python-shell-completion-native-disabled-interpreters’ list.  Native completions have been disabled locally.</code> I found years of discussions on this issue, but no solutions. I also found that using Python installed with Conda instead of with virtualenv worked fine. From this, I narrowed down the root cause and found a working solution: (1) install the <code>gnureadline</code> Python package with <code>pip install gnureadline</code>; (2) override the default readline in your virtual environment with <code>python -m override_readline</code>.
 </p>
@@ -63,9 +83,9 @@ In the rest of this note, I will briefly review the steps of the investigation t
 
 </div>
 </div>
-<div id="outline-container-org17a0091" class="outline-3">
-<h3 id="org17a0091">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</h3>
-<div class="outline-text-3" id="text-org17a0091">
+<div id="outline-container-org4eb5787" class="outline-3">
+<h3 id="org4eb5787">(Edit 2024-10-28) <code>gnureadline</code> and <code>uv</code>.</h3>
+<div class="outline-text-3" id="text-org4eb5787">
 <p>
 <a href="https://www.danliden.com/notes/20240821-uv.html">As noted</a>, I have been using <code>uv</code> for Python package management. This approach to resolving the "Python interpreter doesn't seem to support readline" error was not working with <code>uv</code> because of how <code>readline</code> was handled in the <code>python-build-standalone</code> distribution used by <code>uv</code>.
 </p>
@@ -77,9 +97,9 @@ This was resolved with the version of <code>gnureadline</code> <a href="https://
 </div>
 </div>
 
-<div id="outline-container-org7b83f56" class="outline-2">
-<h2 id="org7b83f56">Background</h2>
-<div class="outline-text-2" id="text-org7b83f56">
+<div id="outline-container-orgca7c2e4" class="outline-2">
+<h2 id="orgca7c2e4">Background</h2>
+<div class="outline-text-2" id="text-orgca7c2e4">
 <p>
 I have historically used Python in Emacs via Conda. I don't especially enjoy using Conda and much prefer a virtualenv workflow. So, for a recent project, I used virtualenv (actually <a href="https://github.com/astral-sh/uv">uv venv</a>, and I recommend checking out uv for your package management and virtual environment needs!).
 </p>
@@ -147,9 +167,9 @@ I tried a bunch of different things to try to force the virtualenv to use GNU re
 </p>
 </div>
 </div>
-<div id="outline-container-org7b518fa" class="outline-2">
-<h2 id="org7b518fa">Solution</h2>
-<div class="outline-text-2" id="text-org7b518fa">
+<div id="outline-container-org341b6cc" class="outline-2">
+<h2 id="org341b6cc">Solution</h2>
+<div class="outline-text-2" id="text-org341b6cc">
 <p>
 The <a href="https://github.com/ludwigschwardt/python-gnureadline"><code>gnureadline</code></a> Python package explains the issue:
 </p>
@@ -175,9 +195,9 @@ And it provides the very straightforward solution:
 </div>
 </div>
 
-<div id="outline-container-orgd86cbab" class="outline-2">
-<h2 id="orgd86cbab">A little more detail</h2>
-<div class="outline-text-2" id="text-orgd86cbab">
+<div id="outline-container-org745849e" class="outline-2">
+<h2 id="org745849e">A little more detail</h2>
+<div class="outline-text-2" id="text-org745849e">
 <p>
 The <code>gnureadline</code> docs suggest the following usage pattern:
 </p>

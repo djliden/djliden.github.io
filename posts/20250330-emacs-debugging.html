@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs Introspection and Debugging</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,16 +58,16 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5f72e67">Introduction</a></li>
-<li><a href="#org595deaa">Finding Relevant Variables</a></li>
-<li><a href="#orgca853f4">Confirming the issue with error backtrace</a></li>
-<li><a href="#org3b5d682">Quick fix—bandaid approach</a></li>
-<li><a href="#org0f1e6af">Finding the root of the problem</a></li>
-<li><a href="#org62e7add">Conclusion—Emacs introspection</a></li>
+<li><a href="#orge4ad8a3">Introduction</a></li>
+<li><a href="#orgd6d2a7f">Finding Relevant Variables</a></li>
+<li><a href="#orgf2a27a2">Confirming the issue with error backtrace</a></li>
+<li><a href="#org9029398">Quick fix—bandaid approach</a></li>
+<li><a href="#org616a571">Finding the root of the problem</a></li>
+<li><a href="#org98b633d">Conclusion—Emacs introspection</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org93bd2e5">
+<div class="preview" id="org0361404">
 <p>
 If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless of the cause, Emacs provides many tools for identifying the causes of errors and learning how to address them.
 </p>
@@ -58,9 +78,9 @@ This post works through a recent issue I encountered with the <code>eglot</code>
 
 </div>
 
-<div id="outline-container-org5f72e67" class="outline-2">
-<h2 id="org5f72e67">Introduction</h2>
-<div class="outline-text-2" id="text-org5f72e67">
+<div id="outline-container-orge4ad8a3" class="outline-2">
+<h2 id="orge4ad8a3">Introduction</h2>
+<div class="outline-text-2" id="text-orge4ad8a3">
 <p>
 For a while, whenever I used <a href="https://www.gnu.org/software/emacs/manual/html_mono/eglot.html">eglot</a> (mostly for Python projects) and then shut it down with e.g. <code>M-x eglot-shutdown</code>, all subsequent attempts to save any files in Emacs would return the following error: <code>(jsonrpc-error-message . "No current JSON-RPC connection")</code>. The save would generally succeed, so this was more annoying than anything. But it <i>was</i> annoying.
 </p>
@@ -82,9 +102,9 @@ Given this pattern, I started by looking for <a href="https://www.danliden.com/p
 </p>
 </div>
 </div>
-<div id="outline-container-org595deaa" class="outline-2">
-<h2 id="org595deaa">Finding Relevant Variables</h2>
-<div class="outline-text-2" id="text-org595deaa">
+<div id="outline-container-orgd6d2a7f" class="outline-2">
+<h2 id="orgd6d2a7f">Finding Relevant Variables</h2>
+<div class="outline-text-2" id="text-orgd6d2a7f">
 <p>
 I wasn't entirely sure what I was looking for. But I knew from previous reading that hooks are variables that, by convention, include the word <code>hook</code> in their names. This already provides plenty to work with.
 </p>
@@ -94,7 +114,7 @@ The <code>apropos-variable</code> function takes a pattern or a list of words an
 </p>
 
 
-<figure id="org4ea0278">
+<figure id="org2535b5d">
 <img src="./figures/20250323-emacs-debugging/1_apropos.png" alt="1_apropos.png">
 
 </figure>
@@ -113,9 +133,9 @@ This is already very useful and points toward some directions for fixing the iss
 </p>
 </div>
 </div>
-<div id="outline-container-orgca853f4" class="outline-2">
-<h2 id="orgca853f4">Confirming the issue with error backtrace</h2>
-<div class="outline-text-2" id="text-orgca853f4">
+<div id="outline-container-orgf2a27a2" class="outline-2">
+<h2 id="orgf2a27a2">Confirming the issue with error backtrace</h2>
+<div class="outline-text-2" id="text-orgf2a27a2">
 <p>
 I wanted to confirm that this hook was causing the issue so I used <code>M-x toggle-debug-on-error</code> to get a more detailed backtrace. In reality, this is where I should have started—the error trace provides much more specific and useful information than the short error message returned in the echo area. When I tried to save a file with debugging enabled, I received the following in a <b>Backtrace</b> buffer.
 </p>
@@ -147,9 +167,9 @@ Now that we have some understanding of what is happening, how do we fix it?
 </p>
 </div>
 </div>
-<div id="outline-container-org3b5d682" class="outline-2">
-<h2 id="org3b5d682">Quick fix—bandaid approach</h2>
-<div class="outline-text-2" id="text-org3b5d682">
+<div id="outline-container-org9029398" class="outline-2">
+<h2 id="org9029398">Quick fix—bandaid approach</h2>
+<div class="outline-text-2" id="text-org9029398">
 <p>
 My initial fix for this issue was to write a simple cleanup script to remove the offending hook function from the <code>after-save-hook</code>.
 </p>
@@ -179,9 +199,9 @@ At this point, it was not yet clear to me how the hook was set in the first plac
 </div>
 </div>
 
-<div id="outline-container-org0f1e6af" class="outline-2">
-<h2 id="org0f1e6af">Finding the root of the problem</h2>
-<div class="outline-text-2" id="text-org0f1e6af">
+<div id="outline-container-org616a571" class="outline-2">
+<h2 id="org616a571">Finding the root of the problem</h2>
+<div class="outline-text-2" id="text-org616a571">
 <p>
 My first thought was that, perhaps, the hook was being set when <code>eglot</code> was invoked. To check this, I:
 </p>
@@ -209,7 +229,7 @@ And it turns out, I set this hook myself!
 
 
 
-<figure id="org2826a1d">
+<figure id="orgc72cc1a">
 <img src="./figures/20250323-emacs-debugging/2_grep.png" alt="2_grep.png">
 
 </figure>
@@ -220,9 +240,9 @@ Once I deleted the <code>(add-hook 'after-save-hook ...)</code> call from my con
 </div>
 </div>
 
-<div id="outline-container-org62e7add" class="outline-2">
-<h2 id="org62e7add">Conclusion—Emacs introspection</h2>
-<div class="outline-text-2" id="text-org62e7add">
+<div id="outline-container-org98b633d" class="outline-2">
+<h2 id="org98b633d">Conclusion—Emacs introspection</h2>
+<div class="outline-text-2" id="text-org98b633d">
 <p>
 The approaches I used here are nowhere close to comprehensive. Emacs has countless introspection tools and a seemingly-inexhaustible collection of functions and variables that enable you to inspect everything going on in your Emacs setup. Furthermore, it provides a range of ways to search these variables and functions.
 </p>
@@ -246,7 +266,7 @@ Lastly—we're reaching a point where you don't have to do this yourself. You ca
 </p>
 
 
-<figure id="orgf6db92d">
+<figure id="org1cfdd34">
 <img src="./figures/20250323-emacs-debugging/3_gptel.png" alt="3_gptel.png">
 
 </figure>

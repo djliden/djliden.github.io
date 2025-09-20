@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Mapping Urban Heat by Census Tract in R</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,28 +58,28 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org72dc7f2">Background</a></li>
-<li><a href="#org66f5e34">Getting the Data</a>
+<li><a href="#orgde5672b">Background</a></li>
+<li><a href="#org97e8cd4">Getting the Data</a>
 <ul>
-<li><a href="#org11fff18">Unpacking and Visualizing the Raw Data</a></li>
+<li><a href="#orgdb30000">Unpacking and Visualizing the Raw Data</a></li>
 </ul>
 </li>
-<li><a href="#orga4f5782">Mapping Heat by Census Tract</a></li>
-<li><a href="#orgf750b7f">Final Maps</a></li>
-<li><a href="#orgb0041d5">Resources</a></li>
+<li><a href="#orge818918">Mapping Heat by Census Tract</a></li>
+<li><a href="#org797e5eb">Final Maps</a></li>
+<li><a href="#orgfda0e49">Resources</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgd178407">
+<div class="preview" id="org737b44d">
 <p>
 <i>Another one from the archives&#x2013;this is one of my projects from my time at the Guinn Center, and something I very much wish I could have developed further: an analysis of urban heat in Las Vegas.</i>
 </p>
 
 </div>
 
-<div id="outline-container-org72dc7f2" class="outline-2">
-<h2 id="org72dc7f2">Background</h2>
-<div class="outline-text-2" id="text-org72dc7f2">
+<div id="outline-container-orgde5672b" class="outline-2">
+<h2 id="orgde5672b">Background</h2>
+<div class="outline-text-2" id="text-orgde5672b">
 <p>
 For the past several months, I have been working on an analysis on the effects
 of urban heat on vulnerable populations, particularly during a public health
@@ -116,9 +136,9 @@ polygon boundaries (census tracts).
 </div>
 </div>
 
-<div id="outline-container-org66f5e34" class="outline-2">
-<h2 id="org66f5e34">Getting the Data</h2>
-<div class="outline-text-2" id="text-org66f5e34">
+<div id="outline-container-org97e8cd4" class="outline-2">
+<h2 id="org97e8cd4">Getting the Data</h2>
+<div class="outline-text-2" id="text-org97e8cd4">
 <p>
 I obtained surface temperature satellite data from the NASA/USGS Landsat 8
 satellite. The data can be obtained through an API, though for this example, I
@@ -143,9 +163,9 @@ in the map is associated with a surface temperature value.
 </p>
 </div>
 
-<div id="outline-container-org11fff18" class="outline-3">
-<h3 id="org11fff18">Unpacking and Visualizing the Raw Data</h3>
-<div class="outline-text-3" id="text-org11fff18">
+<div id="outline-container-orgdb30000" class="outline-3">
+<h3 id="orgdb30000">Unpacking and Visualizing the Raw Data</h3>
+<div class="outline-text-3" id="text-orgdb30000">
 <p>
 This section requires the <code>raster</code> and <code>sf</code> packages. Below, we untar the map and
 extract the map of interest.
@@ -170,7 +190,7 @@ dev.off()
 
 <div class="org-center">
 
-<figure id="org51500f3">
+<figure id="orga4f5718">
 <img src="./figures/20210213-urban-heat/st_map.png" alt="st_map.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>Raw raster map of surface temperatures around Las Vegas area</figcaption>
@@ -187,9 +207,9 @@ at the census tract level.
 </div>
 </div>
 
-<div id="outline-container-orga4f5782" class="outline-2">
-<h2 id="orga4f5782">Mapping Heat by Census Tract</h2>
-<div class="outline-text-2" id="text-orga4f5782">
+<div id="outline-container-orge818918" class="outline-2">
+<h2 id="orge818918">Mapping Heat by Census Tract</h2>
+<div class="outline-text-2" id="text-orge818918">
 <p>
 First, we'll use the <code>tigris</code> package to download the census tract boundaries in
 Nevada and crop to the Las Vegas area.
@@ -241,7 +261,7 @@ plot(out[<span class="org-string">"st_map"</span>])                       <span 
 
 <div class="org-center">
 
-<figure id="orgb2c2fee">
+<figure id="orgeeb0174">
 <img src="./figures/20210213-urban-heat/heatmaptest.png" alt="heatmaptest.png">
 
 <figcaption><span class="figure-number">Figure 2: </span>Average Surface Temperatures by Census Tract in Las Vegas, Nevada (tenths of a degree Kelvin)</figcaption>
@@ -265,7 +285,7 @@ dev.off()
 
 <div class="org-center">
 
-<figure id="org80880dc">
+<figure id="orgb656b86">
 <img src="./figures/20210213-urban-heat/tract_repro.png" alt="tract_repro.png">
 
 <figcaption><span class="figure-number">Figure 3: </span>Re-projected Map of Surface Temperatures by Census Tract</figcaption>
@@ -274,9 +294,9 @@ dev.off()
 </div>
 </div>
 
-<div id="outline-container-orgf750b7f" class="outline-2">
-<h2 id="orgf750b7f">Final Maps</h2>
-<div class="outline-text-2" id="text-orgf750b7f">
+<div id="outline-container-org797e5eb" class="outline-2">
+<h2 id="org797e5eb">Final Maps</h2>
+<div class="outline-text-2" id="text-org797e5eb">
 <p>
 Lastly, we can apply some formatting to make it more interpretable. I used
 <code>ggplot2</code> for all of the visual tweaks (details not shown).
@@ -284,7 +304,7 @@ Lastly, we can apply some formatting to make it more interpretable. I used
 
 <div class="org-center">
 
-<figure id="orga29e208">
+<figure id="org3318fe9">
 <img src="./figures/20210213-urban-heat/ST_LV.png" alt="ST_LV.png">
 
 <figcaption><span class="figure-number">Figure 4: </span>Visualizing Urban Heat by Census Tract in Las Vegas, Nevada</figcaption>
@@ -298,7 +318,7 @@ urban heat map. For example, we can look at poverty by census tract:
 
 <div class="org-center">
 
-<figure id="org2f69a7c">
+<figure id="org4231cc4">
 <img src="./figures/20210213-urban-heat/poverty.png" alt="poverty.png">
 
 <figcaption><span class="figure-number">Figure 5: </span>Poverty by Census Tract in Las Vegas, Nevada</figcaption>
@@ -325,9 +345,9 @@ data above &#x2013; is an important first step to conducting these analyses.
 </div>
 </div>
 
-<div id="outline-container-orgb0041d5" class="outline-2">
-<h2 id="orgb0041d5">Resources</h2>
-<div class="outline-text-2" id="text-orgb0041d5">
+<div id="outline-container-orgfda0e49" class="outline-2">
+<h2 id="orgfda0e49">Resources</h2>
+<div class="outline-text-2" id="text-orgfda0e49">
 <ul class="org-ul">
 <li><a href="https://cran.r-project.org/web/views/Spatial.html">CRAN Task View: Analysis
 of Spatial Data</a>: A CRAN hub explaining the <code>R</code> ecosystem of spatial data

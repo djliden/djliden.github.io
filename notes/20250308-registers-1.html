@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Navigating between points with registers</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,18 +58,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0a63f18">Introduction</a></li>
-<li><a href="#org57449f2">Registering a Point</a></li>
-<li><a href="#orge2184cf">Navigating to a registered point</a></li>
-<li><a href="#org8afaf36">Returning to the point you jumped from</a></li>
-<li><a href="#org468bda1">Conclusion</a></li>
+<li><a href="#org74acc21">Introduction</a></li>
+<li><a href="#orga282bb6">Registering a Point</a></li>
+<li><a href="#org07b579c">Navigating to a registered point</a></li>
+<li><a href="#orga089d03">Returning to the point you jumped from</a></li>
+<li><a href="#orgc8c1d6a">Conclusion</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org0a63f18" class="outline-2">
-<h2 id="org0a63f18">Introduction</h2>
-<div class="outline-text-2" id="text-org0a63f18">
-<div class="preview" id="org66e8987">
+<div id="outline-container-org74acc21" class="outline-2">
+<h2 id="org74acc21">Introduction</h2>
+<div class="outline-text-2" id="text-org74acc21">
+<div class="preview" id="org3899427">
 <p>
 Registers provide a very easy way to navigate between different points in Emacs. This note briefly describes how to use them.
 </p>
@@ -61,31 +81,31 @@ Broadly speaking, <a href="https://www.gnu.org/software/emacs/manual/html_node/e
 </p>
 </div>
 </div>
-<div id="outline-container-org57449f2" class="outline-2">
-<h2 id="org57449f2">Registering a Point</h2>
-<div class="outline-text-2" id="text-org57449f2">
+<div id="outline-container-orga282bb6" class="outline-2">
+<h2 id="orga282bb6">Registering a Point</h2>
+<div class="outline-text-2" id="text-orga282bb6">
 <p>
 You can store the current location of <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Point.html">point</a> (usually the location of the cursor, or the position just before the character on which the cursor is located) with the command <code>point-to-register</code>, assigned by default to <code>C-x r SPC</code>. This will prompt you for the register in which to store the point (a single character).
 </p>
 
 
-<figure id="org2239605">
+<figure id="orgbaff829">
 <img src="img/1_register_point.png" alt="1_register_point.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-orge2184cf" class="outline-2">
-<h2 id="orge2184cf">Navigating to a registered point</h2>
-<div class="outline-text-2" id="text-orge2184cf">
+<div id="outline-container-org07b579c" class="outline-2">
+<h2 id="org07b579c">Navigating to a registered point</h2>
+<div class="outline-text-2" id="text-org07b579c">
 <p>
 You can navigate to a point you have saved in the registry with <code>jump-to-register</code>, assigned by default to <code>C-x r j</code>. This will bring up a small preview buffer listing the candidate points to which you can jump. You can navigate through these with <code>C-n</code> and <code>C-p</code> or, if you know it, just type the character of the register you're trying to access. It may be helpful to use mnemonics in assigning register names. For example, I could register a point in the introduction of the org file used to generate this post under the name <code>I</code> and then return to it from anywhere in Emacs with <code>C-x r j I</code>.
 </p>
 </div>
 </div>
-<div id="outline-container-org8afaf36" class="outline-2">
-<h2 id="org8afaf36">Returning to the point you jumped from</h2>
-<div class="outline-text-2" id="text-org8afaf36">
+<div id="outline-container-orga089d03" class="outline-2">
+<h2 id="orga089d03">Returning to the point you jumped from</h2>
+<div class="outline-text-2" id="text-orga089d03">
 <p>
 You will likely find that you want to navigate back to the point from which you jumped. Perhaps, for example, in writing this section, I am reminded of something I need to add to the introduction. I jump to the introduction with <code>C-x r j I</code>. But then I want to resume where I left off.
 </p>
@@ -95,9 +115,9 @@ This is easily accomplished by invoking the <code>set-mark-command</code> comman
 </p>
 </div>
 </div>
-<div id="outline-container-org468bda1" class="outline-2">
-<h2 id="org468bda1">Conclusion</h2>
-<div class="outline-text-2" id="text-org468bda1">
+<div id="outline-container-orgc8c1d6a" class="outline-2">
+<h2 id="orgc8c1d6a">Conclusion</h2>
+<div class="outline-text-2" id="text-orgc8c1d6a">
 <p>
 I've been using Emacs for a long time. I haven't spent much time using registers. But I was working with a larger code repository the other day and found myself needing better ways to navigate between points. This works well!
 </p>

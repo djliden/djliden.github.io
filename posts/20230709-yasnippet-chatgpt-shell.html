@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>YASnippet for Prompt Templates for Chatgpt-Shell</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,23 +58,23 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf61738b">Introduction</a></li>
-<li><a href="#org302a0fb">Setting up ChatGPT Shell</a></li>
-<li><a href="#org380661d">YASnippet</a>
+<li><a href="#orgfa7026f">Introduction</a></li>
+<li><a href="#orgfc6ccfd">Setting up ChatGPT Shell</a></li>
+<li><a href="#orgf47db15">YASnippet</a>
 <ul>
-<li><a href="#org1eb4195">Defining a Snippet</a></li>
-<li><a href="#org7dd3dd1">Using a Snippet</a></li>
-<li><a href="#orgc40f89d">Inserting the Last Item in the Kill Ring</a></li>
+<li><a href="#orgf28d55e">Defining a Snippet</a></li>
+<li><a href="#orgaa183fa">Using a Snippet</a></li>
+<li><a href="#org6d03e56">Inserting the Last Item in the Kill Ring</a></li>
 </ul>
 </li>
-<li><a href="#org7e96e34">Next Steps</a></li>
+<li><a href="#org40f8812">Next Steps</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgf61738b" class="outline-2">
-<h2 id="orgf61738b">Introduction</h2>
-<div class="outline-text-2" id="text-orgf61738b">
-<div class="preview" id="orgaebd71e">
+<div id="outline-container-orgfa7026f" class="outline-2">
+<h2 id="orgfa7026f">Introduction</h2>
+<div class="outline-text-2" id="text-orgfa7026f">
+<div class="preview" id="org2baadd5">
 <p>
 The wonderful <a href="https://github.com/xenodium/chatgpt-shell">chatgpt-shell</a> package by <a href="https://github.com/xenodium">Xenodium</a> lets you interact with the gpt-3.5 and gpt-4
 APIs in emacs via a handy shell built on top of <code>comint-mode</code>. It also integrates
@@ -73,9 +93,9 @@ describes how to start using Yasnippet for prompt templates for use with
 </div>
 </div>
 </div>
-<div id="outline-container-org302a0fb" class="outline-2">
-<h2 id="org302a0fb">Setting up ChatGPT Shell</h2>
-<div class="outline-text-2" id="text-org302a0fb">
+<div id="outline-container-orgfc6ccfd" class="outline-2">
+<h2 id="orgfc6ccfd">Setting up ChatGPT Shell</h2>
+<div class="outline-text-2" id="text-orgfc6ccfd">
 <p>
 First of all, if you haven't already tried <code>chatgpt-shell</code>, it's worth taking a
 few minutes to set up and try out. If you live in emacs, you'll probably prefer
@@ -116,9 +136,9 @@ service (local or cloud)." <code>ob-chatgpt-shell</code> provides a way to inter
 </p>
 </div>
 </div>
-<div id="outline-container-org380661d" class="outline-2">
-<h2 id="org380661d">YASnippet</h2>
-<div class="outline-text-2" id="text-org380661d">
+<div id="outline-container-orgf47db15" class="outline-2">
+<h2 id="orgf47db15">YASnippet</h2>
+<div class="outline-text-2" id="text-orgf47db15">
 <p>
 <a href="https://github.com/joaotavora/yasnippet">YASnippet</a> is a template system for emacs. It is very powerful, and I'm only
 familiar with a small fraction of its capabilities. But when I work with
@@ -185,9 +205,9 @@ YASnippet provides an easy way for us to define and populate templates for use
 in <code>chatgpt-shell</code> buffers.
 </p>
 </div>
-<div id="outline-container-org1eb4195" class="outline-3">
-<h3 id="org1eb4195">Defining a Snippet</h3>
-<div class="outline-text-3" id="text-org1eb4195">
+<div id="outline-container-orgf28d55e" class="outline-3">
+<h3 id="orgf28d55e">Defining a Snippet</h3>
+<div class="outline-text-3" id="text-orgf28d55e">
 <p>
 First, you'll need to <a href="https://github.com/joaotavora/yasnippet/blob/master/README.mdown#installation">install YASnippet</a>.
 </p>
@@ -199,7 +219,7 @@ buffer for defining out snippet.
 
 <div class="org-center">
 
-<figure id="org55c7c57">
+<figure id="orgfd9121a">
 <img src="./figures/20230709-yasnippet-chatgpt-shell/yas-new-snippet.png" alt="yas-new-snippet.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>YASnippet new snippet interface</figcaption>
@@ -283,9 +303,9 @@ go through the saving dialogue with <code>C-c C-c</code>.
 </div>
 </div>
 
-<div id="outline-container-org7dd3dd1" class="outline-3">
-<h3 id="org7dd3dd1">Using a Snippet</h3>
-<div class="outline-text-3" id="text-org7dd3dd1">
+<div id="outline-container-orgaa183fa" class="outline-3">
+<h3 id="orgaa183fa">Using a Snippet</h3>
+<div class="outline-text-3" id="text-orgaa183fa">
 <p>
 Note that, in the example snippets above, I've defined a <code>key</code>: this is for
 <a href="https://joaotavora.github.io/yasnippet/snippet-expansion.html">snippet expansion</a> (follow the link for more details). With my configuration, in
@@ -303,7 +323,7 @@ position at the end of the prompt.
 
 <div class="org-center">
 
-<figure id="org6f1dca1">
+<figure id="orga0b32db">
 <img src="./figures/20230709-yasnippet-chatgpt-shell/text_summarize_snippet.gif" alt="text_summarize_snippet.gif">
 
 <figcaption><span class="figure-number">Figure 2: </span>Inserting a Snippet</figcaption>
@@ -317,9 +337,9 @@ text. <code>S-TAB</code> enables you to move backward through the tab stops.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc40f89d" class="outline-3">
-<h3 id="orgc40f89d">Inserting the Last Item in the Kill Ring</h3>
-<div class="outline-text-3" id="text-orgc40f89d">
+<div id="outline-container-org6d03e56" class="outline-3">
+<h3 id="org6d03e56">Inserting the Last Item in the Kill Ring</h3>
+<div class="outline-text-3" id="text-org6d03e56">
 <p>
 We're unlike to ever need to summarize text that we manually type into a
 <code>chatgpt-shell</code>. But we might want to copy some text to the kill ring and ask for
@@ -363,7 +383,7 @@ part will automatically be replaced by the copied code.
 
 <div class="org-center">
 
-<figure id="orgc11ea94">
+<figure id="org24ceb01">
 <img src="./figures/20230709-yasnippet-chatgpt-shell/code_explain.gif" alt="code_explain.gif">
 
 <figcaption><span class="figure-number">Figure 3: </span>Inserting from the Kill Ring</figcaption>
@@ -372,9 +392,9 @@ part will automatically be replaced by the copied code.
 </div>
 </div>
 </div>
-<div id="outline-container-org7e96e34" class="outline-2">
-<h2 id="org7e96e34">Next Steps</h2>
-<div class="outline-text-2" id="text-org7e96e34">
+<div id="outline-container-org40f8812" class="outline-2">
+<h2 id="org40f8812">Next Steps</h2>
+<div class="outline-text-2" id="text-org40f8812">
 <p>
 There's a lot more to explore here. YASnippet is a very powerful templating
 system, and I've only scratched the surface of the ways to use it for developing

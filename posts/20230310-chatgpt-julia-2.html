@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using the ChatGPT API with Julia Part 2: Defining a Chat Struct</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,14 +58,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org04afffe">Defining the Struct</a></li>
-<li><a href="#orgf4bddd5">Defining the function</a></li>
-<li><a href="#org924313e">Giving it a Try</a></li>
-<li><a href="#org80ce5ca">What's next?</a></li>
+<li><a href="#orgcac3d0e">Defining the Struct</a></li>
+<li><a href="#org548f106">Defining the function</a></li>
+<li><a href="#org2a88daa">Giving it a Try</a></li>
+<li><a href="#org7f7cf36">What's next?</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgcc7828d">
+<div class="preview" id="orga16a2e1">
 <p>
 One of the things that makes working with the ChatGPT API a little different
 from working with, e.g., the <code>davinci-text-003</code> model api is the need to maintain
@@ -60,9 +80,9 @@ For the basics of working with the ChatGPT API, check out <a href="20230303-chat
 
 </div>
 
-<div id="outline-container-org04afffe" class="outline-2">
-<h2 id="org04afffe">Defining the Struct</h2>
-<div class="outline-text-2" id="text-org04afffe">
+<div id="outline-container-orgcac3d0e" class="outline-2">
+<h2 id="orgcac3d0e">Defining the Struct</h2>
+<div class="outline-text-2" id="text-orgcac3d0e">
 <p>
 A <code>struct</code>, also referred to as a <a href="https://docs.julialang.org/en/v1/manual/types/#Composite-Types">composite type</a>, is "a collection of named
 fields, an instance of which can be treated as a single value." By default,
@@ -155,9 +175,9 @@ able to act on it. For that, we'll define a function.
 </div>
 </div>
 
-<div id="outline-container-orgf4bddd5" class="outline-2">
-<h2 id="orgf4bddd5">Defining the function</h2>
-<div class="outline-text-2" id="text-orgf4bddd5">
+<div id="outline-container-org548f106" class="outline-2">
+<h2 id="org548f106">Defining the function</h2>
+<div class="outline-text-2" id="text-org548f106">
 <p>
 The purpose of this function is to:
 </p>
@@ -248,9 +268,9 @@ list. The <code>chat</code> function follows both of these conventions.
 </p>
 </div>
 </div>
-<div id="outline-container-org924313e" class="outline-2">
-<h2 id="org924313e">Giving it a Try</h2>
-<div class="outline-text-2" id="text-org924313e">
+<div id="outline-container-org2a88daa" class="outline-2">
+<h2 id="org2a88daa">Giving it a Try</h2>
+<div class="outline-text-2" id="text-org2a88daa">
 <p>
 So, does it work? Let's try it out.
 </p>
@@ -286,9 +306,9 @@ the message history in the second API request.
 </p>
 </div>
 </div>
-<div id="outline-container-org80ce5ca" class="outline-2">
-<h2 id="org80ce5ca">What's next?</h2>
-<div class="outline-text-2" id="text-org80ce5ca">
+<div id="outline-container-org7f7cf36" class="outline-2">
+<h2 id="org7f7cf36">What's next?</h2>
+<div class="outline-text-2" id="text-org7f7cf36">
 <p>
 There are a few additional avenues I want to explore, in no particular order:
 </p>

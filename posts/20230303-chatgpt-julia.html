@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using the ChatGPT API with Julia Part 1: the HTTP.jl Library</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,19 +58,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org41060a8">Introduction</a></li>
-<li><a href="#orgdd6b505">curl Example</a></li>
-<li><a href="#org0eb77be">Julia example</a></li>
-<li><a href="#org4150ebb">A little more detail about sending messages</a></li>
-<li><a href="#orgf8edbad">Next Up&#x2026;</a></li>
+<li><a href="#org202b195">Introduction</a></li>
+<li><a href="#org61d0850">curl Example</a></li>
+<li><a href="#org0b49cd0">Julia example</a></li>
+<li><a href="#orgef9b96d">A little more detail about sending messages</a></li>
+<li><a href="#org3bdd26b">Next Up&#x2026;</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org41060a8" class="outline-2">
-<h2 id="org41060a8">Introduction</h2>
-<div class="outline-text-2" id="text-org41060a8">
-<div class="preview" id="org992f7f1">
+<div id="outline-container-org202b195" class="outline-2">
+<h2 id="org202b195">Introduction</h2>
+<div class="outline-text-2" id="text-org202b195">
+<div class="preview" id="orgbb1174e">
 <p>
 This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
 with the OpenAI ChatGPT API, which was made public a few days ago. This post
@@ -62,9 +82,9 @@ histories and engage more interactively with the API.
 </div>
 </div>
 </div>
-<div id="outline-container-orgdd6b505" class="outline-2">
-<h2 id="orgdd6b505">curl Example</h2>
-<div class="outline-text-2" id="text-orgdd6b505">
+<div id="outline-container-org61d0850" class="outline-2">
+<h2 id="org61d0850">curl Example</h2>
+<div class="outline-text-2" id="text-org61d0850">
 <p>
 <a href="https://platform.openai.com/docs/api-reference/chat/create">Here</a> is the API documentation on OpenAI's website. An example request with <code>curl</code>
 looks like this:
@@ -83,9 +103,9 @@ looks like this:
 </div>
 </div>
 
-<div id="outline-container-org0eb77be" class="outline-2">
-<h2 id="org0eb77be">Julia example</h2>
-<div class="outline-text-2" id="text-org0eb77be">
+<div id="outline-container-org0b49cd0" class="outline-2">
+<h2 id="org0b49cd0">Julia example</h2>
+<div class="outline-text-2" id="text-org0b49cd0">
 <p>
 And here's how we can re-create this with the Julia HTTP library:
 </p>
@@ -143,9 +163,9 @@ chat_response[1][<span class="org-string">"message"</span>][<span class="org-str
 </pre>
 </div>
 </div>
-<div id="outline-container-org4150ebb" class="outline-2">
-<h2 id="org4150ebb">A little more detail about sending messages</h2>
-<div class="outline-text-2" id="text-org4150ebb">
+<div id="outline-container-orgef9b96d" class="outline-2">
+<h2 id="orgef9b96d">A little more detail about sending messages</h2>
+<div class="outline-text-2" id="text-orgef9b96d">
 <p>
 One of the things that makes ChatGPT useful is its ability to "remember" past
 parts of a conversation. We can send whole conversations to the API using the
@@ -185,7 +205,7 @@ print(result[<span class="org-string">"choices"</span>][1][<span class="org-stri
 </pre>
 </div>
 
-<pre class="example" id="orgb1cfd6c">
+<pre class="example" id="org70b4f29">
 
 ```julia
 using HTTP
@@ -275,7 +295,7 @@ print(result[<span class="org-string">"choices"</span>][1][<span class="org-stri
 </pre>
 </div>
 
-<pre class="example" id="orge583a20">
+<pre class="example" id="orgeb3929b">
 Sure, here's a simpler example:
 
 ```julia
@@ -291,9 +311,9 @@ In this example, we are sending a POST request with form data rather than JSON d
 </pre>
 </div>
 </div>
-<div id="outline-container-orgf8edbad" class="outline-2">
-<h2 id="orgf8edbad">Next Up&#x2026;</h2>
-<div class="outline-text-2" id="text-orgf8edbad">
+<div id="outline-container-org3bdd26b" class="outline-2">
+<h2 id="org3bdd26b">Next Up&#x2026;</h2>
+<div class="outline-text-2" id="text-org3bdd26b">
 <p>
 This post showed basic usage of the ChatGPT API with Julia. In the next post,
 I'll show how to make this more modular and useful. We'll create a <code>Struct</code> for

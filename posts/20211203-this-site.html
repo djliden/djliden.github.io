@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Made with Org-Mode</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,44 +58,44 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org361d2f8">Background</a></li>
-<li><a href="#orgfbbf85b">First Steps</a>
+<li><a href="#org8b34298">Background</a></li>
+<li><a href="#org8c9b20d">First Steps</a>
 <ul>
-<li><a href="#org2dc6d7a">Ox-Publish</a></li>
-<li><a href="#org3ade79b">GitHub Pages</a></li>
+<li><a href="#org4ccb172">Ox-Publish</a></li>
+<li><a href="#orgb25b7ee">GitHub Pages</a></li>
 </ul>
 </li>
-<li><a href="#org20c7703">Some Simple Customization</a>
+<li><a href="#org39d0ae9">Some Simple Customization</a>
 <ul>
-<li><a href="#orgde811ba">CSS theme</a></li>
-<li><a href="#orgb77e8ea">Recent Posts</a>
+<li><a href="#orgae3cb5f">CSS theme</a></li>
+<li><a href="#orgce1f457">Recent Posts</a>
 <ul>
-<li><a href="#orgfd07b73">Sitemap Configuration</a></li>
-<li><a href="#orga325c81">Sitemap Entry Formatting</a></li>
-<li><a href="#orgcf2fe24">Sitemap List Formatting</a></li>
-<li><a href="#org5c6ef3b">Previews</a></li>
+<li><a href="#org99cc959">Sitemap Configuration</a></li>
+<li><a href="#org772ccbc">Sitemap Entry Formatting</a></li>
+<li><a href="#org44b0434">Sitemap List Formatting</a></li>
+<li><a href="#orgcea901e">Previews</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org883e90b">Putting It All Together</a></li>
-<li><a href="#orgb120fd5">What's Next?</a>
+<li><a href="#org0231d5a">Putting It All Together</a></li>
+<li><a href="#org5d44f61">What's Next?</a>
 <ul>
-<li><a href="#org83a233a"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, here's the link).</a></li>
-<li><a href="#orge15c227"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</a></li>
-<li><a href="#org2202c0e"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</a></li>
-<li><a href="#org0aa6f46"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</a></li>
-<li><a href="#org9940320"><span class="todo TODO">TODO</span> Make a more visually interesting home page</a></li>
+<li><a href="#org281e94b"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, here's the link).</a></li>
+<li><a href="#org046b87d"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</a></li>
+<li><a href="#org6287e80"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</a></li>
+<li><a href="#org59a616f"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</a></li>
+<li><a href="#org4339c8e"><span class="todo TODO">TODO</span> Make a more visually interesting home page</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org361d2f8" class="outline-2">
-<h2 id="org361d2f8">Background</h2>
-<div class="outline-text-2" id="text-org361d2f8">
-<div class="PREVIEW" id="org4ef9a77">
+<div id="outline-container-org8b34298" class="outline-2">
+<h2 id="org8b34298">Background</h2>
+<div class="outline-text-2" id="text-org8b34298">
+<div class="PREVIEW" id="orgc179576">
 <p>
 I finally made a personal site using org-mode's built-in <code>ox-publish</code> exporter.
 </p>
@@ -93,13 +113,13 @@ on the writing and less on understanding the framework.
 </div>
 </div>
 
-<div id="outline-container-orgfbbf85b" class="outline-2">
-<h2 id="orgfbbf85b">First Steps</h2>
-<div class="outline-text-2" id="text-orgfbbf85b">
+<div id="outline-container-org8c9b20d" class="outline-2">
+<h2 id="org8c9b20d">First Steps</h2>
+<div class="outline-text-2" id="text-org8c9b20d">
 </div>
-<div id="outline-container-org2dc6d7a" class="outline-3">
-<h3 id="org2dc6d7a">Ox-Publish</h3>
-<div class="outline-text-3" id="text-org2dc6d7a">
+<div id="outline-container-org4ccb172" class="outline-3">
+<h3 id="org4ccb172">Ox-Publish</h3>
+<div class="outline-text-3" id="text-org4ccb172">
 <p>
 <a href="https://systemcrafters.net/publishing-websites-with-org-mode/building-the-site/">This great guide</a> from System Crafters got me started with <code>ox-publish</code>. The very short post
 how to use <code>ox-publish</code> to set up a basic site; <code>htmlize</code> to correctly render code blocks, and
@@ -109,9 +129,9 @@ your own site with org-mode.
 </div>
 </div>
 
-<div id="outline-container-org3ade79b" class="outline-3">
-<h3 id="org3ade79b">GitHub Pages</h3>
-<div class="outline-text-3" id="text-org3ade79b">
+<div id="outline-container-orgb25b7ee" class="outline-3">
+<h3 id="orgb25b7ee">GitHub Pages</h3>
+<div class="outline-text-3" id="text-orgb25b7ee">
 <p>
 <a href="https://systemcrafters.net/publishing-websites-with-org-mode/automated-site-publishing/">The followup post</a> is just as useful—it describes the process of publishing the site with GitHub
 Pages (or SourceHut; I opted for GitHub Pages). There was one minor point missing from this
@@ -124,9 +144,9 @@ was simple to follow and worked perfectly.
 </div>
 </div>
 
-<div id="outline-container-org20c7703" class="outline-2">
-<h2 id="org20c7703">Some Simple Customization</h2>
-<div class="outline-text-2" id="text-org20c7703">
+<div id="outline-container-org39d0ae9" class="outline-2">
+<h2 id="org39d0ae9">Some Simple Customization</h2>
+<div class="outline-text-2" id="text-org39d0ae9">
 <p>
 There were a few simple design and organization changes I wanted before I started writing: a simple
 and readable theme; a list of recent posts with short "preview" snippets, and a link to a post
@@ -134,9 +154,9 @@ archive.
 </p>
 </div>
 
-<div id="outline-container-orgde811ba" class="outline-3">
-<h3 id="orgde811ba">CSS theme</h3>
-<div class="outline-text-3" id="text-orgde811ba">
+<div id="outline-container-orgae3cb5f" class="outline-3">
+<h3 id="orgae3cb5f">CSS theme</h3>
+<div class="outline-text-3" id="text-orgae3cb5f">
 <p>
 I opted to use <a href="https://gongzhitaao.org/orgcss/">orgcss</a>, at least for now. It's a stylesheet explicitly designed for use with
 org-exported HTML files. It looks (to me) quite a bit nicer than the default and it works well
@@ -158,9 +178,9 @@ I applied this stylesheet to all of the exported .org files by adding the follow
 </div>
 </div>
 
-<div id="outline-container-orgb77e8ea" class="outline-3">
-<h3 id="orgb77e8ea">Recent Posts</h3>
-<div class="outline-text-3" id="text-orgb77e8ea">
+<div id="outline-container-orgce1f457" class="outline-3">
+<h3 id="orgce1f457">Recent Posts</h3>
+<div class="outline-text-3" id="text-orgce1f457">
 <p>
 I wanted to include a few recent posts on the homepage and separately link to the post archive. I
 also wanted each of these custom posts to have a short "preview"—a paragraph or so of my choosing
@@ -179,9 +199,9 @@ To include the recent posts, I included the first 25 lines of the automatically-
 </div>
 </div>
 
-<div id="outline-container-orgfd07b73" class="outline-4">
-<h4 id="orgfd07b73">Sitemap Configuration</h4>
-<div class="outline-text-4" id="text-orgfd07b73">
+<div id="outline-container-org99cc959" class="outline-4">
+<h4 id="org99cc959">Sitemap Configuration</h4>
+<div class="outline-text-4" id="text-org99cc959">
 <p>
 I specified the generation of the sitemap using <code>org-publish-project-alist</code> configuration variable:
 </p>
@@ -205,9 +225,9 @@ I specified the generation of the sitemap using <code>org-publish-project-alist<
 </div>
 </div>
 
-<div id="outline-container-orga325c81" class="outline-4">
-<h4 id="orga325c81">Sitemap Entry Formatting</h4>
-<div class="outline-text-4" id="text-orga325c81">
+<div id="outline-container-org772ccbc" class="outline-4">
+<h4 id="org772ccbc">Sitemap Entry Formatting</h4>
+<div class="outline-text-4" id="text-org772ccbc">
 <p>
 You'll notice two functions used to format and publish the sitemap entries. <code>sitemap-format-entry</code>
 takes three arguments (<code>entry</code>, <code>style</code>, and <code>project</code>). We only need to worry about the former. Each
@@ -257,9 +277,9 @@ return <code>posts</code>)</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgcf2fe24" class="outline-4">
-<h4 id="orgcf2fe24">Sitemap List Formatting</h4>
-<div class="outline-text-4" id="text-orgcf2fe24">
+<div id="outline-container-org44b0434" class="outline-4">
+<h4 id="org44b0434">Sitemap List Formatting</h4>
+<div class="outline-text-4" id="text-org44b0434">
 <p>
 The entries formatted above are all added to a list (formatted in a tree style to represent the
 directory structure). We simply convert this list into an org subtree and publish it to the
@@ -282,9 +302,9 @@ of entries (with previews) represented as an org subtree.
 </p>
 </div>
 </div>
-<div id="outline-container-org5c6ef3b" class="outline-4">
-<h4 id="org5c6ef3b">Previews</h4>
-<div class="outline-text-4" id="text-org5c6ef3b">
+<div id="outline-container-orgcea901e" class="outline-4">
+<h4 id="orgcea901e">Previews</h4>
+<div class="outline-text-4" id="text-orgcea901e">
 <p>
 One part we haven't addressed yet is the generation of previews. There are different approaches out
 there, but none of them did exactly what I wanted. I borrowed from posts by  <a href="https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html">Seth Morabito</a> and
@@ -336,17 +356,17 @@ block pattern, saving its location under the name <code>beg</code></li>
 </div>
 </div>
 </div>
-<div id="outline-container-org883e90b" class="outline-2">
-<h2 id="org883e90b">Putting It All Together</h2>
-<div class="outline-text-2" id="text-org883e90b">
+<div id="outline-container-org0231d5a" class="outline-2">
+<h2 id="org0231d5a">Putting It All Together</h2>
+<div class="outline-text-2" id="text-org0231d5a">
 <p>
 Check out the full source code for the site <a href="https://github.com/djliden/djliden.github.io">on GitHub</a>.
 </p>
 </div>
 </div>
-<div id="outline-container-orgb120fd5" class="outline-2">
-<h2 id="orgb120fd5">What's Next?</h2>
-<div class="outline-text-2" id="text-orgb120fd5">
+<div id="outline-container-org5d44f61" class="outline-2">
+<h2 id="org5d44f61">What's Next?</h2>
+<div class="outline-text-2" id="text-org5d44f61">
 <p>
 This site now has everything I need to write more with minimal need to tweak the site configuration
 every step of the way (which I found myself doing constantly when using Hugo). That said, there are
@@ -354,9 +374,9 @@ a few more things I want to do before moving this site to its permanent home und
 domain. These include:
 </p>
 </div>
-<div id="outline-container-org83a233a" class="outline-3">
-<h3 id="org83a233a"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, <a href="../index.html">here's the link</a>).</h3>
-<div class="outline-text-3" id="text-org83a233a">
+<div id="outline-container-org281e94b" class="outline-3">
+<h3 id="org281e94b"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, <a href="../index.html">here's the link</a>).</h3>
+<div class="outline-text-3" id="text-org281e94b">
 <p>
 <b>Update:</b> I've added this in a very simple way. I updated my <code>org-publish-project-alist</code> with:
 </p>
@@ -378,9 +398,9 @@ domain. These include:
 </div>
 </div>
 </div>
-<div id="outline-container-orge15c227" class="outline-3">
-<h3 id="orge15c227"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</h3>
-<div class="outline-text-3" id="text-orge15c227">
+<div id="outline-container-org046b87d" class="outline-3">
+<h3 id="org046b87d"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</h3>
+<div class="outline-text-3" id="text-org046b87d">
 <p>
 I followed the guide <a href="https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html">here</a> to set up the export of "static" files using the <code>org-publish-attachment</code>
 publication function. The new section of my config looks like this:
@@ -405,14 +425,14 @@ publication function. The new section of my config looks like this:
 </div>
 </div>
 
-<div id="outline-container-org2202c0e" class="outline-3">
-<h3 id="org2202c0e"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</h3>
+<div id="outline-container-org6287e80" class="outline-3">
+<h3 id="org6287e80"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</h3>
 </div>
-<div id="outline-container-org0aa6f46" class="outline-3">
-<h3 id="org0aa6f46"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</h3>
+<div id="outline-container-org59a616f" class="outline-3">
+<h3 id="org59a616f"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</h3>
 </div>
-<div id="outline-container-org9940320" class="outline-3">
-<h3 id="org9940320"><span class="todo TODO">TODO</span> Make a more visually interesting home page</h3>
+<div id="outline-container-org4339c8e" class="outline-3">
+<h3 id="org4339c8e"><span class="todo TODO">TODO</span> Make a more visually interesting home page</h3>
 </div>
 </div>
 </div>

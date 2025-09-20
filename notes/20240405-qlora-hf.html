@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Intro to QLoRA</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,18 +58,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf3f3247">1. Intro to Quantization</a>
+<li><a href="#org68cbd35">1. Intro to Quantization</a>
 <ul>
-<li><a href="#org747ca48">Common data types used in ML</a></li>
-<li><a href="#orgbbab1cb">Different types in training and inference</a></li>
-<li><a href="#orgcc3a85e">The FP8 Format</a></li>
+<li><a href="#org5edc1de">Common data types used in ML</a></li>
+<li><a href="#org4e1bd1f">Different types in training and inference</a></li>
+<li><a href="#org7435ff7">The FP8 Format</a></li>
 </ul>
 </li>
-<li><a href="#org9945416">QLoRA Paper Overview</a></li>
+<li><a href="#org68494cf">QLoRA Paper Overview</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org82a6f32">
+<div class="preview" id="orgb68ec8b">
 <p>
 I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA and quantization. Later, I will also make a note with some examples.
 </p>
@@ -60,9 +80,9 @@ I have a basic understanding of what QLoRA is, but given its popularity and appa
 Link: <a href="https://huggingface.co/blog/4bit-transformers-bitsandbytes">Making LLMs even more accessible with bitsandbytes, 4-bit quantization and QLoRA</a>
 </p>
 
-<div id="outline-container-orgf3f3247" class="outline-2">
-<h2 id="orgf3f3247">1. Intro to Quantization</h2>
-<div class="outline-text-2" id="text-orgf3f3247">
+<div id="outline-container-org68cbd35" class="outline-2">
+<h2 id="org68cbd35">1. Intro to Quantization</h2>
+<div class="outline-text-2" id="text-org68cbd35">
 <p>
 The post recommends reading the intro to <a href="https://huggingface.co/blog/hf-bitsandbytes-integration">this post</a> first for some background on quantization. Key points:
 </p>
@@ -72,9 +92,9 @@ The post recommends reading the intro to <a href="https://huggingface.co/blog/hf
 <li>int8 inference doesn't appear to significantly degrade model performance.</li>
 </ul>
 </div>
-<div id="outline-container-org747ca48" class="outline-3">
-<h3 id="org747ca48">Common data types used in ML</h3>
-<div class="outline-text-3" id="text-org747ca48">
+<div id="outline-container-org5edc1de" class="outline-3">
+<h3 id="org5edc1de">Common data types used in ML</h3>
+<div class="outline-text-3" id="text-org5edc1de">
 <p>
 The size of a model is determined by the number of its parameters <i>and their precision</i>. Common types include:
 </p>
@@ -109,9 +129,9 @@ The size of a model is determined by the number of its parameters <i>and their p
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbbab1cb" class="outline-3">
-<h3 id="orgbbab1cb">Different types in training and inference</h3>
-<div class="outline-text-3" id="text-orgbbab1cb">
+<div id="outline-container-org4e1bd1f" class="outline-3">
+<h3 id="org4e1bd1f">Different types in training and inference</h3>
+<div class="outline-text-3" id="text-org4e1bd1f">
 <p>
 "Ideally" we should use FP32 for training and inference. But it is two times slower than half precision. So a mixed-precision approach is preferred. Weights are held in FP32 as a precise "main weights" reference. Computation in the forward/backward pass are done in fp16/bf16 to improve training speed. The fp16/bf16 gradients are used to update the fp32 weights.
 </p>
@@ -120,7 +140,7 @@ The size of a model is determined by the number of its parameters <i>and their p
 During inference, there's no real need for the full-precision weights.
 </p>
 
-<div class="question" id="orgda910db">
+<div class="question" id="org6d806fb">
 <p>
 What happens when I load a model in bf16 and then train it? Is that still mixed precision? Or is bf16 the reference copy in that case?
 </p>
@@ -128,18 +148,18 @@ What happens when I load a model in bf16 and then train it? Is that still mixed 
 </div>
 </div>
 </div>
-<div id="outline-container-orgcc3a85e" class="outline-3">
-<h3 id="orgcc3a85e">The FP8 Format</h3>
-<div class="outline-text-3" id="text-orgcc3a85e">
+<div id="outline-container-org7435ff7" class="outline-3">
+<h3 id="org7435ff7">The FP8 Format</h3>
+<div class="outline-text-3" id="text-org7435ff7">
 <p>
 The FP8 format has two formats: E4M3 and E5M2 (where E=exponent, M=mantissa). E4M3 (higher precision, smaller range) is best suited for the forward pass, while E5M2 (lower precision, higher range) is better suited for the backward pass.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org9945416" class="outline-2">
-<h2 id="org9945416">QLoRA Paper Overview</h2>
-<div class="outline-text-2" id="text-org9945416">
+<div id="outline-container-org68494cf" class="outline-2">
+<h2 id="org68494cf">QLoRA Paper Overview</h2>
+<div class="outline-text-2" id="text-org68494cf">
 <p>
 QLoRA reduces the memory usage of LLM fine-tuning without appreciable loss of performance compared to half precision fine-tuning.
 </p>

@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Org Babel Source Blocks for R</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr style="border-top: 1px solid black;">
-<div class='topnav' style='display: flex; justify-content: space-between; align-items: center;'>
-  <a href="/index.html"><h2 style='margin-top: 0; margin-bottom: 0; margin-left:0px;'>Daniel Liden</h2></a>
-  <div>
-    <a href='/archive.html' style='font-weight:bold; font-style:italic;'>Blog</a> / 
-    <a href='/about.html' style='font-weight:bold; font-style:italic;'>About Me</a> /
-    <a href='/photos.html' style='font-weight:bold; font-style:italic;'>Photos</a> /
-    <a href='/notebooks/' style='font-weight:bold; font-style:italic;'>Notebooks</a> /
-    <a href='/notes.html' style='font-weight:bold; font-style:italic;'>Notes</a> /
-    <a href='/rss.xml'>
-      <img src='/rss.png' style='height: 1em;'>
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
     </a>
-  </div>
-</div>
-<hr style="border-top: 1px solid black;">
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -38,31 +58,31 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf41071e">Background</a></li>
-<li><a href="#org989900c">R Source Headers</a>
+<li><a href="#orgd869365">Background</a></li>
+<li><a href="#org5346c91">R Source Headers</a>
 <ul>
-<li><a href="#orgd99aee2">Code</a>
+<li><a href="#org20697ef">Code</a>
 <ul>
-<li><a href="#org79df620">Displaying Tabular Output</a></li>
+<li><a href="#org93b9148">Displaying Tabular Output</a></li>
 </ul>
 </li>
-<li><a href="#org01782c8">Figures</a>
+<li><a href="#org43800a8">Figures</a>
 <ul>
-<li><a href="#org39d7983">Base R</a></li>
-<li><a href="#org4d7b61b">Ggplot and Lattice</a></li>
+<li><a href="#org3f65b04">Base R</a></li>
+<li><a href="#orge0753a0">Ggplot and Lattice</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgcc501eb">An Alternative: Emacs-Jupyter</a></li>
+<li><a href="#org8cc4d67">An Alternative: Emacs-Jupyter</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orgf41071e" class="outline-2">
-<h2 id="orgf41071e">Background</h2>
-<div class="outline-text-2" id="text-orgf41071e">
-<div class="preview" id="org5c4968f">
+<div id="outline-container-orgd869365" class="outline-2">
+<h2 id="orgd869365">Background</h2>
+<div class="outline-text-2" id="text-orgd869365">
+<div class="preview" id="org0389280">
 <p>
 <a href="https://orgmode.org/worg/org-contrib/babel/intro.html">Org Babel</a> is one of the best tools available for <a href="https://www-cs-faculty.stanford.edu/~knuth/lp.html">literate programming</a>. As a data scientist, I use it
 as a plain-text alternative to Jupyter notebooks. Org-mode files are much easier to track with
@@ -87,16 +107,16 @@ depend on the specifics of your org-babel configuration; you can see mine below<
 </p>
 </div>
 </div>
-<div id="outline-container-org989900c" class="outline-2">
-<h2 id="org989900c">R Source Headers</h2>
-<div class="outline-text-2" id="text-org989900c">
+<div id="outline-container-org5346c91" class="outline-2">
+<h2 id="org5346c91">R Source Headers</h2>
+<div class="outline-text-2" id="text-org5346c91">
 <p>
 I tend to use two different header configurations, one for code output and one for figures.
 </p>
 </div>
-<div id="outline-container-orgd99aee2" class="outline-3">
-<h3 id="orgd99aee2">Code</h3>
-<div class="outline-text-3" id="text-orgd99aee2">
+<div id="outline-container-org20697ef" class="outline-3">
+<h3 id="org20697ef">Code</h3>
+<div class="outline-text-3" id="text-org20697ef">
 <div class="org-src-container">
 <pre class="src src-org"><span class="org-org-block-begin-line">#+begin_src R :session mysession
 </span><span class="org-org-block"><span class="org-comment-delimiter"># </span></span><span class="org-org-block"><span class="org-comment">Code goes here
@@ -127,9 +147,9 @@ add_1(99)
 100
 </pre>
 </div>
-<div id="outline-container-org79df620" class="outline-4">
-<h4 id="org79df620">Displaying Tabular Output</h4>
-<div class="outline-text-4" id="text-org79df620">
+<div id="outline-container-org93b9148" class="outline-4">
+<h4 id="org93b9148">Displaying Tabular Output</h4>
+<div class="outline-text-4" id="text-org93b9148">
 <p>
 When not dealing with plotting outputs, there are two main header options for result formatting that I tend
 to use: <code>:results output</code> and <code>:results value</code> (the default). You can find details on these two modes
@@ -144,8 +164,8 @@ readable exports, though.
 </p>
 </div>
 <ul class="org-ul">
-<li><a id="orgad8fbeb"></a>Value<br>
-<div class="outline-text-5" id="text-orgad8fbeb">
+<li><a id="orgd91060a"></a>Value<br>
+<div class="outline-text-5" id="text-orgd91060a">
 <p>
 (With <code>:results value</code> header arg).
 </p>
@@ -289,8 +309,8 @@ correctly.
 </div>
 </li>
 
-<li><a id="org4518ac9"></a>Output<br>
-<div class="outline-text-5" id="text-org4518ac9">
+<li><a id="org7e62880"></a>Output<br>
+<div class="outline-text-5" id="text-org7e62880">
 <p>
 (With <code>:results output</code> header arg).
 </p>
@@ -314,9 +334,9 @@ Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
 </div>
 </div>
 
-<div id="outline-container-org01782c8" class="outline-3">
-<h3 id="org01782c8">Figures</h3>
-<div class="outline-text-3" id="text-org01782c8">
+<div id="outline-container-org43800a8" class="outline-3">
+<h3 id="org43800a8">Figures</h3>
+<div class="outline-text-3" id="text-org43800a8">
 <p>
 I don't find the display and exporting of figures particularly intuitive and finding help tends to
 be challening because of differences depending on the plotting system and because of changes over
@@ -324,9 +344,9 @@ time. <i>This approach works as of December 2021</i>. Further details on exporti
 found <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org7fbd9c2">here</a>.
 </p>
 </div>
-<div id="outline-container-org39d7983" class="outline-4">
-<h4 id="org39d7983">Base R</h4>
-<div class="outline-text-4" id="text-org39d7983">
+<div id="outline-container-org3f65b04" class="outline-4">
+<h4 id="org3f65b04">Base R</h4>
+<div class="outline-text-4" id="text-org3f65b04">
 <p>
 Using Base R graphics, the following header argument will produce a link to a file which can then be
 previewed in your org-mode buffer and exported.
@@ -347,14 +367,14 @@ grid()
 </div>
 
 
-<figure id="org8dc8256">
+<figure id="orgdfe9ad5">
 <img src="./figures/20211209-R-babel/fig1.png" alt="fig1.png">
 
 </figure>
 </div>
 <ul class="org-ul">
-<li><a id="org64142ca"></a>Setting Graphical Parameters with Header Arguments<br>
-<div class="outline-text-5" id="text-org64142ca">
+<li><a id="org90fc983"></a>Setting Graphical Parameters with Header Arguments<br>
+<div class="outline-text-5" id="text-org90fc983">
 <p>
 We can also set some graphical parameters such as figure height and width through the header
 arguments. For example, to set the with, height, and resolution, we add <code>:width 6 :height 3 :units in
@@ -368,7 +388,7 @@ grid()
 </div>
 
 
-<figure id="org59c970a">
+<figure id="orgcce3e3d">
 <img src="./figures/20211209-R-babel/fig2.png" alt="fig2.png">
 
 </figure>
@@ -377,9 +397,9 @@ grid()
 </ul>
 </div>
 
-<div id="outline-container-org4d7b61b" class="outline-4">
-<h4 id="org4d7b61b">Ggplot and Lattice</h4>
-<div class="outline-text-4" id="text-org4d7b61b">
+<div id="outline-container-orge0753a0" class="outline-4">
+<h4 id="orge0753a0">Ggplot and Lattice</h4>
+<div class="outline-text-4" id="text-orge0753a0">
 <p>
 Can we just use this approach for everything? From <a href="https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#org075fa45">the documentation</a>,
 </p>
@@ -407,7 +427,7 @@ ggplot(data=mtcars, mapping=aes(x=hp, y=mpg)) + geom_point()
 </div>
 
 
-<figure id="org2de869b">
+<figure id="orgac793f9">
 <img src="./figures/20211209-R-babel/fig3.png" alt="fig3.png">
 
 </figure>
@@ -416,9 +436,9 @@ ggplot(data=mtcars, mapping=aes(x=hp, y=mpg)) + geom_point()
 </div>
 </div>
 
-<div id="outline-container-orgcc501eb" class="outline-2">
-<h2 id="orgcc501eb">An Alternative: Emacs-Jupyter</h2>
-<div class="outline-text-2" id="text-orgcc501eb">
+<div id="outline-container-org8cc4d67" class="outline-2">
+<h2 id="org8cc4d67">An Alternative: Emacs-Jupyter</h2>
+<div class="outline-text-2" id="text-org8cc4d67">
 <p>
 The excellent <a href="https://github.com/nnicandro/emacs-jupyter">emacs-jupyter</a> package is a solid alternative to the approaches described above. To use
 it for R, install the <code>emacs-jupyter</code> package (e.g. with <code>(use-package jupyter)</code>. In R, install <code>IRkernel</code>
