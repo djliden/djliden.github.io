@@ -5,7 +5,14 @@
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
-(package-refresh-contents)
+(let ((force-refresh (getenv "ORG_SITE_REFRESH_PACKAGES")))
+  (when (or force-refresh (null package-archive-contents))
+    (message "Refreshing package archives%s"
+             (if force-refresh " (forced)" ""))
+    (condition-case err
+        (package-refresh-contents)
+      (error
+       (message "Package refresh failed: %s" err)))))
 
 ;; Check and install dependencies
 (dolist (package '(htmlize julia-mode ess ox-rss webfeeder esxml))
@@ -49,9 +56,9 @@ https://ogbe.net/blog/blogging_with_org.html"
 (defun my/org-publish-org-sitemap-format (entry style project)
   "Custom sitemap entry formatting: add date"
   (cond ((not (directory-name-p entry))
-         (let ((preview (if (my/get-preview (concat "content/" entry))
-                            (my/get-preview (concat "content/" entry))
-                          "(No preview)")))
+         (let* ((full-path (concat "content/" entry))
+                (preview (or (my/get-preview full-path)
+                             "(No preview)")))
          (format "[[file:%s][(%s) %s]]\n%s"
                  entry
                  (format-time-string "%Y-%m-%d"
@@ -134,17 +141,24 @@ https://ogbe.net/blog/blogging_with_org.html"
 ;;;; https://codeberg.org/SystemCrafters/systemcrafters-site/src/commit/ce3717201ab727f709f9e739842b209d10c8c51a/publish.el#L411
 ;;;; https://codeberg.org/SystemCrafters/systemcrafters-site/src/commit/ce3717201ab727f709f9e739842b209d10c8c51a/publish.el#L418
 (defun dw/rss-extract-date (html-file)
-  "Extract the post date from an HTML file."
+  "Extract the post date from an HTML file, falling back gracefully if missing."
   (with-temp-buffer
     (insert-file-contents html-file)
     (let* ((dom (libxml-parse-html-region (point-min) (point-max)))
-           (date-string (dom-text (car (dom-by-class dom "date"))))
-           (parsed-date (parse-time-string date-string))
-           (day (nth 3 parsed-date))
-           (month (nth 4 parsed-date))
-           (year (nth 5 parsed-date)))
-      ;; NOTE: Hardcoding this at 8am for now
-      (encode-time 0 0 8 day month year))))
+           (date-node (car (dom-by-class dom "date")))
+           (date-string (when date-node (dom-text date-node))))
+      (if (and date-string (not (string= "" date-string)))
+          (let* ((parsed-date (parse-time-string date-string))
+                 (day (nth 3 parsed-date))
+                 (month (nth 4 parsed-date))
+                 (year (nth 5 parsed-date)))
+            ;; NOTE: Hardcoding this at 8am for now
+            (encode-time 0 0 8 day month year))
+        (let* ((file-attrs (file-attributes html-file))
+               (mtime (and file-attrs
+                           (file-attribute-modification-time file-attrs))))
+          (message "RSS date fallback: using mtime for %s" html-file)
+          (or mtime (current-time)))))))
 
 ;(defun dw/rss-extract-summary (html-file)
 ;  )
