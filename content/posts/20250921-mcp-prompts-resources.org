@@ -1,0 +1,157 @@
+#+TITLE: Getting Started with Model Context Protocol Part 2: Prompts and Resources
+#+DATE: <2025-09-21 Sun>
+
+
+#+begin_preview
+In the first part of this series on Anthropic's Model Context Protocol, I showed how to define a very simple MCP server with one tool and install it to Claude Desktop. In this post, we will look at two more MCP concepts and learn how to use them: *resources*, which expose data and other content to models, and *prompts*, which are intended to allow users to select reusable prompt templates suited for certain tasks or workflows.
+#+end_preview
+* Review of Part 1
+
+In the [[https://www.danliden.com/posts/20250412-mcp-quickstart.html][first post]] in this series, we learned (1) what an MCP server is, (2) how to define a simple MCP server with a single tool, and (3) how to install that server to Claude Desktop. Let's briefly recap these points.
+
+1. MCP servers provide a standardized interface to resources (such as databases, file systems, tools, etc.) that LLMs can access. An MCP /client/ corresponding to that server facilitates requests to the server, receives responses, and relays them to the host or user. MCP clients and servers are usually used in the context of a /host/ application such as an IDE or chat app; the host is what the end user typically interacts with.
+2. The following code snippet defines an MCP server that exposes a single tool.
+
+   #+begin_src python
+    # server.py
+
+    # install the mcp sdk with pip install "mcp[cli]"
+    from mcp.server.fastmcp import FastMCP
+
+    mcp = FastMCP("SecretServer")
+
+    @mcp.tool()
+    def get_secret_number() -> int:
+        """Returns a predefined secret number."""
+        return 13
+   #+end_src
+
+   The tool, ~get_secret_number~, just returns a "secret number." If you ask an LLM with access to this MCP server for the secret number, it should invoke this function in order to retrieve it.
+3. We installed the server to Claude Desktop with ~mcp install server.py~.
+
+This was an example of defining and using a [[https://modelcontextprotocol.io/docs/concepts/tools][tool]] with MCP. In this post, we will learn about other MCP primitives allowing the MCP server to expose data and enable specific workflows.
+* Resources: Expose data to your LLMs
+
+/Resources/ provide a way to give your LLMs access to data. The data can include database records, file contents, API responses, images, and more. Getting data from a resource in an MCP server is like making an HTTP GET request. The expectation is that it will return data without any side effects.
+
+In fact, the secret number method we defined previously would be a perfect candidate for a resource. It returns *data* and does nothing else. Let's show how to define an equivalent resource, this time to return a secret letter.
+
+We can expand our MCP server with this new resource as follows:
+
+#+begin_tip
+Refer to the [[https://www.danliden.com/posts/20250412-mcp-quickstart.html#setup][Setup section of the previous post]] for details on setting up your project. We will be testing our MCP server with Claude Desktop.
+#+end_tip
+
+
+#+begin_src python
+# server.py
+
+# install the mcp sdk with pip install "mcp[cli]"
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("SecretServer")
+
+@mcp.tool()
+def get_secret_number() -> int:
+    """Returns a predefined secret number."""
+    return 13
+
+@mcp.resource("data://secret_letter")
+def get_secret_letter() -> str:
+    """Returns a predefined secret letter."""
+    return "L"
+#+end_src
+
+
+The ~@mcp.resource~ decorator takes the resource's unique URI as an argument. Clients use this URI to request data.
+** Accessing Resource with Claude Desktop
+
+We have a couple of different options for how to give Claude Desktop access to these resources. First, we can directly attach it to a chat message via the ~+~ menu, where we can select ~add from SecretServer~ (the name of our server). This will essentially attach the resource as a document Claude can refer to.
+
+[[./figures/20250921-mcp-2/1_attach_resource.png]]
+
+We can also define a /tool/ that claude can use to access the /resource/. Let's update our server code to see this option.
+
+
+#+begin_src python
+# server.py
+
+from mcp.server.fastmcp import FastMCP, Context
+
+mcp = FastMCP("SecretServer")
+
+@mcp.tool()
+def get_secret_number() -> int:
+    """Returns a predefined secret number."""
+    return 13
+
+@mcp.resource("data://secret_letter")
+def get_secret_letter() -> str:
+    """Returns a predefined secret letter."""
+    return "L"
+
+@mcp.tool()
+async def retrieve_secret_letter_tool(ctx: Context) -> str:
+    """Tool to retrieve the secret letter from the corresponding resource"""
+    resources = await ctx.read_resource("data://secret_letter")
+    return resources[0].content
+#+end_src
+
+Now, if we re-install the server with ~mcp install server.py~, Claude will be able to invoke this tool to access the secret letter resource, even if we have not explicitly added the resource to the chat.
+
+[[./figures/20250921-mcp-2/2_secret_letter_via_tool.png]]
+
+For a more in-depth guide on using resources, check out the [[https://gofastmcp.com/servers/resources][FastMCP]] docs. I recommend reading the section on how to [[https://gofastmcp.com/servers/resources#resource-templates][parameterize resources]] next.
+* Prompts: Reusable prompt templates
+
+MCP prompts let you set up parameterized prompt templates. Just like with tools and resources, we use the ~@mcp.prompt()~ decorator to define prompts with the Python SDK. Let's update our server with a simple prompt that can generate a haiku on a topic.
+
+#+begin_src python
+# server.py
+
+from mcp.server.fastmcp import FastMCP, Context
+
+mcp = FastMCP("SecretServer")
+
+@mcp.tool()
+def get_secret_number() -> int:
+    """Returns a predefined secret number."""
+    return 13
+
+@mcp.resource("data://secret_letter")
+def get_secret_letter() -> str:
+    """Returns a predefined secret letter."""
+    return "L"
+
+@mcp.tool()
+async def retrieve_secret_letter_tool(ctx: Context) -> str:
+    """Tool to retrieve the secret letter from the corresponding resource"""
+    resources = await ctx.read_resource("data://secret_letter")
+    return resources[0].content
+
+@mcp.prompt()
+def haiku(topic: str) -> str:
+    """Generates a user message asking for an explanation of a topic."""
+    return f"Can you please write a haiku about '{topic}'?"
+#+end_src
+
+** Using prompts with Claude Desktop
+
+Using MCP prompts with Claude Desktop is similar to using resources: you can send a custom prompt along with a message using the ~+~ menu. If the prompt accepts an argument (like ours does), you will be prompted for it when adding.
+
+[[./figures/20250921-mcp-2/3_attach_prompt.png]]
+
+This will result in a text file containing the filled-in prompt. You can send this along with an empty message, and Claude will respond to the prompt.
+
+[[./figures/20250921-mcp-2/4_prompt_response.png]]
+
+
+To learn more, check out the [[https://gofastmcp.com/servers/prompts][Prompts section of the FastMCP docs]].
+* Conclusion, Observations, and Next Steps
+
+In this two-part series, we have seen how to set up an MCP server for use with Claude Desktop and how to define tools, resources, and prompts on that server. This should have given you what you need to take your first steps into the world of MCP servers.
+
+Using the MCP Python SDK makes it straightforward to define these MCP server components. As we saw above, they all follow the same general pattern: we define a function, which may or may not take arguments, and decorate it with the decorator corresponding to the component type.
+
+While this introduction only scratches the surface, MCP's real power comes when you start connecting your LLMs to actual systems like databases, APIs, and file systems. The standardized interface means you can combine MCP servers from different sources without worrying about compatibility issues.
+
