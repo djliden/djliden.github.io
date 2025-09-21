@@ -4,18 +4,34 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Styling Org Callouts for the Site</title>
+<meta name="description" content="Quick walkthrough of the site’s new callout styling and how to use it." />
+<meta name="keywords" content="org-mode, admonitions, emacs site, publishing workflow" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
 <script src="/admonitions.js" defer></script>
+<link rel="canonical" href="https://danliden.com/notes/20250425-admonition-demo.html">
+<meta name="author" content="Daniel Liden">
+<meta property="og:url" content="https://danliden.com/notes/20250425-admonition-demo.html">
+<meta property="og:title" content="Styling Org Callouts for the Site">
+<meta property="og:description" content="Quick walkthrough of the site’s new callout styling and how to use it.">
+<meta property="og:site_name" content="Daniel Liden">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-09-20T00:00:00Z">
+<meta property="article:modified_time" content="2025-09-21T15:39:24Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Styling Org Callouts for the Site">
+<meta name="twitter:description" content="Quick walkthrough of the site’s new callout styling and how to use it.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Styling Org Callouts for the Site","description":"Quick walkthrough of the site’s new callout styling and how to use it.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20250425-admonition-demo.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-09-20T00:00:00Z","dateModified":"2025-09-21T15:39:24Z","keywords":"org-mode, admonitions, emacs site, publishing workflow"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -59,46 +75,46 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org42363a6">Why</a></li>
-<li><a href="#org4c8ec77">Examples</a>
+<li><a href="#org304a3f1">Why</a></li>
+<li><a href="#org8002e8c">Examples</a>
 <ul>
-<li><a href="#orge1f062a">Note</a></li>
-<li><a href="#org872ce3c">Tip</a></li>
-<li><a href="#org06d3326">Warning</a></li>
+<li><a href="#orgb940ef8">Note</a></li>
+<li><a href="#org60404d2">Tip</a></li>
+<li><a href="#orgeba2c12">Warning</a></li>
 </ul>
 </li>
-<li><a href="#org586bab2">How it Works</a></li>
-<li><a href="#orge4ef396">Using It</a></li>
+<li><a href="#org8c17be7">How it Works</a></li>
+<li><a href="#orge3e509a">Using It</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgcfc2b35">
+<div class="preview" id="orgbecc826">
 <p>
 Quick walkthrough of the site’s new callout styling for Org blocks: see the raw markup, the rendered result, and the tiny bit of CSS/JS that makes it work.
 </p>
 
 </div>
 
-<div id="outline-container-org42363a6" class="outline-2">
-<h2 id="org42363a6">Why</h2>
-<div class="outline-text-2" id="text-org42363a6">
+<div id="outline-container-org304a3f1" class="outline-2">
+<h2 id="org304a3f1">Why</h2>
+<div class="outline-text-2" id="text-org304a3f1">
 <p>
 I keep reaching for Org special blocks (<code>#+begin_note</code>, <code>#+begin_warning</code>, etc.) when I want callouts. This update gives them a consistent look across light and dark themes without much effort.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org4c8ec77" class="outline-2">
-<h2 id="org4c8ec77">Examples</h2>
-<div class="outline-text-2" id="text-org4c8ec77">
+<div id="outline-container-org8002e8c" class="outline-2">
+<h2 id="org8002e8c">Examples</h2>
+<div class="outline-text-2" id="text-org8002e8c">
 <p>
 Each example shows the Org snippet first, followed by how it renders after export.
 </p>
 </div>
 
-<div id="outline-container-orge1f062a" class="outline-3">
-<h3 id="orge1f062a">Note</h3>
-<div class="outline-text-3" id="text-orge1f062a">
+<div id="outline-container-orgb940ef8" class="outline-3">
+<h3 id="orgb940ef8">Note</h3>
+<div class="outline-text-3" id="text-orgb940ef8">
 <div class="org-src-container">
 <pre class="src src-org"><span class="org-org-block-begin-line">#+begin_note
 </span>Use notes for context or references that amplify the main text.
@@ -106,7 +122,7 @@ Each example shows the Org snippet first, followed by how it renders after expor
 </pre>
 </div>
 
-<div class="note" id="org81543cc">
+<div class="note" id="org060dcdc">
 <p>
 Use notes for context or references that amplify the main text.
 </p>
@@ -115,9 +131,9 @@ Use notes for context or references that amplify the main text.
 </div>
 </div>
 
-<div id="outline-container-org872ce3c" class="outline-3">
-<h3 id="org872ce3c">Tip</h3>
-<div class="outline-text-3" id="text-org872ce3c">
+<div id="outline-container-org60404d2" class="outline-3">
+<h3 id="org60404d2">Tip</h3>
+<div class="outline-text-3" id="text-org60404d2">
 <div class="org-src-container">
 <pre class="src src-org"><span class="org-org-block-begin-line">#+begin_tip
 </span>Tips are great for quick wins, shortcuts, or &#8220;you might not know&#8221; details.
@@ -125,7 +141,7 @@ Use notes for context or references that amplify the main text.
 </pre>
 </div>
 
-<div class="tip" id="org1ccddbc">
+<div class="tip" id="org369386b">
 <p>
 Tips are great for quick wins, shortcuts, or “you might not know” details.
 </p>
@@ -134,9 +150,9 @@ Tips are great for quick wins, shortcuts, or “you might not know” details.
 </div>
 </div>
 
-<div id="outline-container-org06d3326" class="outline-3">
-<h3 id="org06d3326">Warning</h3>
-<div class="outline-text-3" id="text-org06d3326">
+<div id="outline-container-orgeba2c12" class="outline-3">
+<h3 id="orgeba2c12">Warning</h3>
+<div class="outline-text-3" id="text-orgeba2c12">
 <div class="org-src-container">
 <pre class="src src-org"><span class="org-org-block-begin-line">#+begin_warning
 </span>Warnings (and <span class="org-org-code">~#+begin_caution~</span> / <span class="org-org-code">~#+begin_important~</span>) announce risky steps or footguns.
@@ -144,7 +160,7 @@ Tips are great for quick wins, shortcuts, or “you might not know” details.
 </pre>
 </div>
 
-<div class="warning" id="orga7b9676">
+<div class="warning" id="orgbd3975a">
 <p>
 Warnings (and <code>#+begin_caution</code> / <code>#+begin_important</code>) announce risky steps or footguns.
 </p>
@@ -154,9 +170,9 @@ Warnings (and <code>#+begin_caution</code> / <code>#+begin_important</code>) ann
 </div>
 </div>
 
-<div id="outline-container-org586bab2" class="outline-2">
-<h2 id="org586bab2">How it Works</h2>
-<div class="outline-text-2" id="text-org586bab2">
+<div id="outline-container-org8c17be7" class="outline-2">
+<h2 id="org8c17be7">How it Works</h2>
+<div class="outline-text-2" id="text-org8c17be7">
 <ul class="org-ul">
 <li>Styling lives in <code>assets/orgstyle.css</code> (<code>.admonition</code>, <code>.admonition--warn</code>, etc.).</li>
 <li>A tiny helper script <code>assets/admonitions.js</code> looks for exported <code>&lt;div class="note"&gt;</code> style blocks and wraps them with a title, icon, and proper roles.</li>
@@ -165,9 +181,9 @@ Warnings (and <code>#+begin_caution</code> / <code>#+begin_important</code>) ann
 </div>
 </div>
 
-<div id="outline-container-orge4ef396" class="outline-2">
-<h2 id="orge4ef396">Using It</h2>
-<div class="outline-text-2" id="text-orge4ef396">
+<div id="outline-container-orge3e509a" class="outline-2">
+<h2 id="orge3e509a">Using It</h2>
+<div class="outline-text-2" id="text-orge3e509a">
 <ol class="org-ol">
 <li>Add a special block to your Org file, e.g. <code>#+begin_tip</code> … <code>#+end_tip</code>.</li>
 <li>Run <code>./build.sh</code> so the helper script and CSS land in the generated HTML.</li>

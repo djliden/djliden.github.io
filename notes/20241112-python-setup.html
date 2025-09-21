@@ -10,12 +10,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
 <script src="/admonitions.js" defer></script>
+<link rel="canonical" href="https://danliden.com/notes/20241112-python-setup.html">
+<meta name="author" content="Daniel Liden">
+<meta property="og:url" content="https://danliden.com/notes/20241112-python-setup.html">
+<meta property="og:title" content="Using Python in Emacs">
+<meta property="og:description" content="I will keep this note up to date with details on how I use emacs for Python development.">
+<meta property="og:site_name" content="Daniel Liden">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-11-12T00:00:00Z">
+<meta property="article:modified_time" content="2025-09-21T15:39:24Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Using Python in Emacs">
+<meta name="twitter:description" content="I will keep this note up to date with details on how I use emacs for Python development.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using Python in Emacs","description":"I will keep this note up to date with details on how I use emacs for Python development.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20241112-python-setup.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-11-12T00:00:00Z","dateModified":"2025-09-21T15:39:24Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -59,25 +73,25 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd07f380">Introduction</a></li>
-<li><a href="#orgfe698ee">Setting up a Python project</a>
+<li><a href="#org0eb2ab2">Introduction</a></li>
+<li><a href="#org8bb76dc">Setting up a Python project</a>
 <ul>
-<li><a href="#org74a0369">Using multiple language servers with eglot</a></li>
+<li><a href="#orge0bab3b">Using multiple language servers with eglot</a></li>
 </ul>
 </li>
-<li><a href="#org3a8f09c">IN PROGRESS Writing and Executing Python Code</a>
+<li><a href="#org483393a">IN PROGRESS Writing and Executing Python Code</a>
 <ul>
-<li><a href="#orgdb8ba23">Writing + Code with Org Babel</a></li>
-<li><a href="#orgae07cce">IN PROGRESS Source files + REPL approach</a></li>
+<li><a href="#org9c2a327">Writing + Code with Org Babel</a></li>
+<li><a href="#org9533cd2">IN PROGRESS Source files + REPL approach</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgd07f380" class="outline-2">
-<h2 id="orgd07f380">Introduction</h2>
-<div class="outline-text-2" id="text-orgd07f380">
-<div class="preview" id="orge9c4d5e">
+<div id="outline-container-org0eb2ab2" class="outline-2">
+<h2 id="org0eb2ab2">Introduction</h2>
+<div class="outline-text-2" id="text-org0eb2ab2">
+<div class="preview" id="org33d02a5">
 <p>
 I will keep this note up to date with details on how I use emacs for Python development.
 </p>
@@ -85,9 +99,9 @@ I will keep this note up to date with details on how I use emacs for Python deve
 </div>
 </div>
 </div>
-<div id="outline-container-orgfe698ee" class="outline-2">
-<h2 id="orgfe698ee">Setting up a Python project</h2>
-<div class="outline-text-2" id="text-orgfe698ee">
+<div id="outline-container-org8bb76dc" class="outline-2">
+<h2 id="org8bb76dc">Setting up a Python project</h2>
+<div class="outline-text-2" id="text-org8bb76dc">
 <p>
 There are a few things I want when setting up a Python project:
 </p>
@@ -109,9 +123,9 @@ To that end, when setting up a project, I follow these steps:
 <li>Create/open a python buffer and start eglot with <code>M-x eglot</code>.</li>
 </ol>
 </div>
-<div id="outline-container-org74a0369" class="outline-3">
-<h3 id="org74a0369">Using multiple language servers with eglot</h3>
-<div class="outline-text-3" id="text-org74a0369">
+<div id="outline-container-orge0bab3b" class="outline-3">
+<h3 id="orge0bab3b">Using multiple language servers with eglot</h3>
+<div class="outline-text-3" id="text-orge0bab3b">
 <p>
 For some reason, I recall this working without additional configuration before. But it's now, so I might as well document how to get it working. My best guess is that I overrode the defaults as the eglot docs note that "Eglot comes with a fairly complete set of associations of major-modes to popular language servers predefined." 
 </p>
@@ -134,16 +148,16 @@ Suppose you have installed two different options for a Python LSP. Follow the in
 </div>
 </div>
 </div>
-<div id="outline-container-org3a8f09c" class="outline-2">
-<h2 id="org3a8f09c">IN PROGRESS Writing and Executing Python Code</h2>
-<div class="outline-text-2" id="text-org3a8f09c">
+<div id="outline-container-org483393a" class="outline-2">
+<h2 id="org483393a">IN PROGRESS Writing and Executing Python Code</h2>
+<div class="outline-text-2" id="text-org483393a">
 <p>
 After setting up the Python project as described above, I tend to follow one of two approaches:
 </p>
 </div>
-<div id="outline-container-orgdb8ba23" class="outline-3">
-<h3 id="orgdb8ba23">Writing + Code with Org Babel</h3>
-<div class="outline-text-3" id="text-orgdb8ba23">
+<div id="outline-container-org9c2a327" class="outline-3">
+<h3 id="org9c2a327">Writing + Code with Org Babel</h3>
+<div class="outline-text-3" id="text-org9c2a327">
 <p>
 I often write and execute code blocks in org mode using <a href="https://orgmode.org/worg/org-contrib/babel/intro.html">babel</a>. A lot of my coding work occurs in the context of writing examples and demos (I am a developer advocate) so demonstrating and writing about code segments is often more important to me than working on projects/source files.
 </p>
@@ -220,9 +234,9 @@ With this snippet, you can simply type <code>p</code> and then <code>yas-expand<
 </ul>
 </div>
 </div>
-<div id="outline-container-orgae07cce" class="outline-3">
-<h3 id="orgae07cce">IN PROGRESS Source files + REPL approach</h3>
-<div class="outline-text-3" id="text-orgae07cce">
+<div id="outline-container-org9533cd2" class="outline-3">
+<h3 id="org9533cd2">IN PROGRESS Source files + REPL approach</h3>
+<div class="outline-text-3" id="text-org9533cd2">
 <p>
 When working on a Python project, I use a source file + REPL approach. Setting this up in a basic way is simple. First, make sure you have the appropriate Python virtual environment set up (with e.g. <code>pyvenv-activate</code>). Then, with a <code>.py</code> file open, call <code>M-x run-python</code> to start a Python REPL. When you want to run a code snippet, or all the code in a given file, you can use one of the various <code>python-shell-send-*</code> commands to run the code from your source file in the REPL. Some of my most used ones are:
 </p>

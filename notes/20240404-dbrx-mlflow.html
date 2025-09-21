@@ -10,12 +10,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
 <script src="/admonitions.js" defer></script>
+<link rel="canonical" href="https://danliden.com/notes/20240404-dbrx-mlflow.html">
+<meta name="author" content="Daniel Liden">
+<meta property="og:url" content="https://danliden.com/notes/20240404-dbrx-mlflow.html">
+<meta property="og:title" content="DBRX with MLflow">
+<meta property="og:description" content="This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.">
+<meta property="og:site_name" content="Daniel Liden">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-04-04T00:00:00Z">
+<meta property="article:modified_time" content="2025-09-21T15:39:24Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DBRX with MLflow">
+<meta name="twitter:description" content="This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"DBRX with MLflow","description":"This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240404-dbrx-mlflow.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-04T00:00:00Z","dateModified":"2025-09-21T15:39:24Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -59,19 +73,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org940e866">DBRX and MLflow</a>
+<li><a href="#org69f7e00">DBRX and MLflow</a>
 <ul>
-<li><a href="#orgdcea42e">Via the MLflow Deployments Server</a></li>
-<li><a href="#orgbf1b15f">Using the OpenAI Model Flavor</a></li>
+<li><a href="#org7d6a941">Via the MLflow Deployments Server</a></li>
+<li><a href="#org2c0b83a">Using the OpenAI Model Flavor</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org940e866" class="outline-2">
-<h2 id="org940e866">DBRX and MLflow</h2>
-<div class="outline-text-2" id="text-org940e866">
-<div class="preview" id="org55450ca">
+<div id="outline-container-org69f7e00" class="outline-2">
+<h2 id="org69f7e00">DBRX and MLflow</h2>
+<div class="outline-text-2" id="text-org69f7e00">
+<div class="preview" id="org04bb18d">
 <p>
 This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.
 </p>
@@ -86,9 +100,9 @@ Here are two ways to use the DBRX model with MLflow. The following assumes that 
 <li><code>DATABRICKS_ENDPOINT</code>: your databricks workspace model serving endpoint. It will probably have the form <code>https://&lt;workspace_name&gt;.cloud.databricks.com/serving-endpoints</code>.</li>
 </ul>
 </div>
-<div id="outline-container-orgdcea42e" class="outline-3">
-<h3 id="orgdcea42e">Via the MLflow Deployments Server</h3>
-<div class="outline-text-3" id="text-orgdcea42e">
+<div id="outline-container-org7d6a941" class="outline-3">
+<h3 id="org7d6a941">Via the MLflow Deployments Server</h3>
+<div class="outline-text-3" id="text-org7d6a941">
 <ol class="org-ol">
 <li>Configure the Deployments Server</li>
 </ol>
@@ -171,9 +185,9 @@ which will return
 </div>
 </div>
 
-<div id="outline-container-orgbf1b15f" class="outline-3">
-<h3 id="orgbf1b15f">Using the OpenAI Model Flavor</h3>
-<div class="outline-text-3" id="text-orgbf1b15f">
+<div id="outline-container-org2c0b83a" class="outline-3">
+<h3 id="org2c0b83a">Using the OpenAI Model Flavor</h3>
+<div class="outline-text-3" id="text-org2c0b83a">
 <p>
 We can also log the model usign the OpenAI model flavor. We just need to be careful to set up the appropriate environment variables first.
 </p>

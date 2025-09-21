@@ -10,12 +10,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
 <script src="/admonitions.js" defer></script>
+<link rel="canonical" href="https://danliden.com/posts/20211203-this-site.html">
+<meta name="author" content="Daniel Liden">
+<meta property="og:url" content="https://danliden.com/posts/20211203-this-site.html">
+<meta property="og:title" content="Made with Org-Mode">
+<meta property="og:description" content="I finally made a personal site using org-mode&#39;s built-in ~ox-publish~ exporter. I&#39;ve written my personal website with org-mode for years (it is, after all, [[https://karl-voit.at/2017/09/23/orgmode...">
+<meta property="og:site_name" content="Daniel Liden">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-12-03T00:00:00Z">
+<meta property="article:modified_time" content="2025-09-21T15:39:24Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Made with Org-Mode">
+<meta name="twitter:description" content="I finally made a personal site using org-mode&#39;s built-in ~ox-publish~ exporter. I&#39;ve written my personal website with org-mode for years (it is, after all, [[https://karl-voit.at/2017/09/23/orgmode...">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Made with Org-Mode","description":"I finally made a personal site using org-mode's built-in ~ox-publish~ exporter. I've written my personal website with org-mode for years (it is, after all, [[https://karl-voit.at/2017/09/23/orgmode...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20211203-this-site.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2021-12-03T00:00:00Z","dateModified":"2025-09-21T15:39:24Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -59,44 +73,44 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5c3cfa1">Background</a></li>
-<li><a href="#org1a8b818">First Steps</a>
+<li><a href="#orgbc2e44a">Background</a></li>
+<li><a href="#orgf4ba46d">First Steps</a>
 <ul>
-<li><a href="#orgc7d599c">Ox-Publish</a></li>
-<li><a href="#org53f0f5c">GitHub Pages</a></li>
+<li><a href="#org82f10db">Ox-Publish</a></li>
+<li><a href="#org8f94680">GitHub Pages</a></li>
 </ul>
 </li>
-<li><a href="#orgf787483">Some Simple Customization</a>
+<li><a href="#orgfee9479">Some Simple Customization</a>
 <ul>
-<li><a href="#orgd441f4a">CSS theme</a></li>
-<li><a href="#org824f81a">Recent Posts</a>
+<li><a href="#org0fc9ee0">CSS theme</a></li>
+<li><a href="#orga65d9a2">Recent Posts</a>
 <ul>
-<li><a href="#orge32dfd1">Sitemap Configuration</a></li>
-<li><a href="#org2125c61">Sitemap Entry Formatting</a></li>
-<li><a href="#org7e4c00f">Sitemap List Formatting</a></li>
-<li><a href="#orgdabfc73">Previews</a></li>
+<li><a href="#orge7ea6f4">Sitemap Configuration</a></li>
+<li><a href="#org0f6d3fa">Sitemap Entry Formatting</a></li>
+<li><a href="#orgb812157">Sitemap List Formatting</a></li>
+<li><a href="#orgf66b5d1">Previews</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgb0f65ee">Putting It All Together</a></li>
-<li><a href="#org3e57529">What's Next?</a>
+<li><a href="#org7ef6b5d">Putting It All Together</a></li>
+<li><a href="#orge5beeba">What's Next?</a>
 <ul>
-<li><a href="#orge26ec8e"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, here's the link).</a></li>
-<li><a href="#org0ba1dd9"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</a></li>
-<li><a href="#org6e32256"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</a></li>
-<li><a href="#orgd592f88"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</a></li>
-<li><a href="#org49343b5"><span class="todo TODO">TODO</span> Make a more visually interesting home page</a></li>
+<li><a href="#orgd452019"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, here's the link).</a></li>
+<li><a href="#org453bb12"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</a></li>
+<li><a href="#orgf8b5628"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</a></li>
+<li><a href="#org8ee42ee"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</a></li>
+<li><a href="#org308bc7d"><span class="todo TODO">TODO</span> Make a more visually interesting home page</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org5c3cfa1" class="outline-2">
-<h2 id="org5c3cfa1">Background</h2>
-<div class="outline-text-2" id="text-org5c3cfa1">
-<div class="PREVIEW" id="org2dfb92d">
+<div id="outline-container-orgbc2e44a" class="outline-2">
+<h2 id="orgbc2e44a">Background</h2>
+<div class="outline-text-2" id="text-orgbc2e44a">
+<div class="PREVIEW" id="orgf213a5e">
 <p>
 I finally made a personal site using org-mode's built-in <code>ox-publish</code> exporter.
 </p>
@@ -114,13 +128,13 @@ on the writing and less on understanding the framework.
 </div>
 </div>
 
-<div id="outline-container-org1a8b818" class="outline-2">
-<h2 id="org1a8b818">First Steps</h2>
-<div class="outline-text-2" id="text-org1a8b818">
+<div id="outline-container-orgf4ba46d" class="outline-2">
+<h2 id="orgf4ba46d">First Steps</h2>
+<div class="outline-text-2" id="text-orgf4ba46d">
 </div>
-<div id="outline-container-orgc7d599c" class="outline-3">
-<h3 id="orgc7d599c">Ox-Publish</h3>
-<div class="outline-text-3" id="text-orgc7d599c">
+<div id="outline-container-org82f10db" class="outline-3">
+<h3 id="org82f10db">Ox-Publish</h3>
+<div class="outline-text-3" id="text-org82f10db">
 <p>
 <a href="https://systemcrafters.net/publishing-websites-with-org-mode/building-the-site/">This great guide</a> from System Crafters got me started with <code>ox-publish</code>. The very short post
 how to use <code>ox-publish</code> to set up a basic site; <code>htmlize</code> to correctly render code blocks, and
@@ -130,9 +144,9 @@ your own site with org-mode.
 </div>
 </div>
 
-<div id="outline-container-org53f0f5c" class="outline-3">
-<h3 id="org53f0f5c">GitHub Pages</h3>
-<div class="outline-text-3" id="text-org53f0f5c">
+<div id="outline-container-org8f94680" class="outline-3">
+<h3 id="org8f94680">GitHub Pages</h3>
+<div class="outline-text-3" id="text-org8f94680">
 <p>
 <a href="https://systemcrafters.net/publishing-websites-with-org-mode/automated-site-publishing/">The followup post</a> is just as useful—it describes the process of publishing the site with GitHub
 Pages (or SourceHut; I opted for GitHub Pages). There was one minor point missing from this
@@ -145,9 +159,9 @@ was simple to follow and worked perfectly.
 </div>
 </div>
 
-<div id="outline-container-orgf787483" class="outline-2">
-<h2 id="orgf787483">Some Simple Customization</h2>
-<div class="outline-text-2" id="text-orgf787483">
+<div id="outline-container-orgfee9479" class="outline-2">
+<h2 id="orgfee9479">Some Simple Customization</h2>
+<div class="outline-text-2" id="text-orgfee9479">
 <p>
 There were a few simple design and organization changes I wanted before I started writing: a simple
 and readable theme; a list of recent posts with short "preview" snippets, and a link to a post
@@ -155,9 +169,9 @@ archive.
 </p>
 </div>
 
-<div id="outline-container-orgd441f4a" class="outline-3">
-<h3 id="orgd441f4a">CSS theme</h3>
-<div class="outline-text-3" id="text-orgd441f4a">
+<div id="outline-container-org0fc9ee0" class="outline-3">
+<h3 id="org0fc9ee0">CSS theme</h3>
+<div class="outline-text-3" id="text-org0fc9ee0">
 <p>
 I opted to use <a href="https://gongzhitaao.org/orgcss/">orgcss</a>, at least for now. It's a stylesheet explicitly designed for use with
 org-exported HTML files. It looks (to me) quite a bit nicer than the default and it works well
@@ -179,9 +193,9 @@ I applied this stylesheet to all of the exported .org files by adding the follow
 </div>
 </div>
 
-<div id="outline-container-org824f81a" class="outline-3">
-<h3 id="org824f81a">Recent Posts</h3>
-<div class="outline-text-3" id="text-org824f81a">
+<div id="outline-container-orga65d9a2" class="outline-3">
+<h3 id="orga65d9a2">Recent Posts</h3>
+<div class="outline-text-3" id="text-orga65d9a2">
 <p>
 I wanted to include a few recent posts on the homepage and separately link to the post archive. I
 also wanted each of these custom posts to have a short "preview"—a paragraph or so of my choosing
@@ -200,9 +214,9 @@ To include the recent posts, I included the first 25 lines of the automatically-
 </div>
 </div>
 
-<div id="outline-container-orge32dfd1" class="outline-4">
-<h4 id="orge32dfd1">Sitemap Configuration</h4>
-<div class="outline-text-4" id="text-orge32dfd1">
+<div id="outline-container-orge7ea6f4" class="outline-4">
+<h4 id="orge7ea6f4">Sitemap Configuration</h4>
+<div class="outline-text-4" id="text-orge7ea6f4">
 <p>
 I specified the generation of the sitemap using <code>org-publish-project-alist</code> configuration variable:
 </p>
@@ -226,9 +240,9 @@ I specified the generation of the sitemap using <code>org-publish-project-alist<
 </div>
 </div>
 
-<div id="outline-container-org2125c61" class="outline-4">
-<h4 id="org2125c61">Sitemap Entry Formatting</h4>
-<div class="outline-text-4" id="text-org2125c61">
+<div id="outline-container-org0f6d3fa" class="outline-4">
+<h4 id="org0f6d3fa">Sitemap Entry Formatting</h4>
+<div class="outline-text-4" id="text-org0f6d3fa">
 <p>
 You'll notice two functions used to format and publish the sitemap entries. <code>sitemap-format-entry</code>
 takes three arguments (<code>entry</code>, <code>style</code>, and <code>project</code>). We only need to worry about the former. Each
@@ -278,9 +292,9 @@ return <code>posts</code>)</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org7e4c00f" class="outline-4">
-<h4 id="org7e4c00f">Sitemap List Formatting</h4>
-<div class="outline-text-4" id="text-org7e4c00f">
+<div id="outline-container-orgb812157" class="outline-4">
+<h4 id="orgb812157">Sitemap List Formatting</h4>
+<div class="outline-text-4" id="text-orgb812157">
 <p>
 The entries formatted above are all added to a list (formatted in a tree style to represent the
 directory structure). We simply convert this list into an org subtree and publish it to the
@@ -303,9 +317,9 @@ of entries (with previews) represented as an org subtree.
 </p>
 </div>
 </div>
-<div id="outline-container-orgdabfc73" class="outline-4">
-<h4 id="orgdabfc73">Previews</h4>
-<div class="outline-text-4" id="text-orgdabfc73">
+<div id="outline-container-orgf66b5d1" class="outline-4">
+<h4 id="orgf66b5d1">Previews</h4>
+<div class="outline-text-4" id="text-orgf66b5d1">
 <p>
 One part we haven't addressed yet is the generation of previews. There are different approaches out
 there, but none of them did exactly what I wanted. I borrowed from posts by  <a href="https://loomcom.com/blog/0110_emacs_blogging_for_fun_and_profit.html">Seth Morabito</a> and
@@ -357,17 +371,17 @@ block pattern, saving its location under the name <code>beg</code></li>
 </div>
 </div>
 </div>
-<div id="outline-container-orgb0f65ee" class="outline-2">
-<h2 id="orgb0f65ee">Putting It All Together</h2>
-<div class="outline-text-2" id="text-orgb0f65ee">
+<div id="outline-container-org7ef6b5d" class="outline-2">
+<h2 id="org7ef6b5d">Putting It All Together</h2>
+<div class="outline-text-2" id="text-org7ef6b5d">
 <p>
 Check out the full source code for the site <a href="https://github.com/djliden/djliden.github.io">on GitHub</a>.
 </p>
 </div>
 </div>
-<div id="outline-container-org3e57529" class="outline-2">
-<h2 id="org3e57529">What's Next?</h2>
-<div class="outline-text-2" id="text-org3e57529">
+<div id="outline-container-orge5beeba" class="outline-2">
+<h2 id="orge5beeba">What's Next?</h2>
+<div class="outline-text-2" id="text-orge5beeba">
 <p>
 This site now has everything I need to write more with minimal need to tweak the site configuration
 every step of the way (which I found myself doing constantly when using Hugo). That said, there are
@@ -375,9 +389,9 @@ a few more things I want to do before moving this site to its permanent home und
 domain. These include:
 </p>
 </div>
-<div id="outline-container-orge26ec8e" class="outline-3">
-<h3 id="orge26ec8e"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, <a href="../index.html">here's the link</a>).</h3>
-<div class="outline-text-3" id="text-orge26ec8e">
+<div id="outline-container-orgd452019" class="outline-3">
+<h3 id="orgd452019"><span class="done DONE">DONE</span> Add navigation buttons to return to the home page/about page/archive page/etc. from any page. (incidentally, if you want to get back home, <a href="../index.html">here's the link</a>).</h3>
+<div class="outline-text-3" id="text-orgd452019">
 <p>
 <b>Update:</b> I've added this in a very simple way. I updated my <code>org-publish-project-alist</code> with:
 </p>
@@ -399,9 +413,9 @@ domain. These include:
 </div>
 </div>
 </div>
-<div id="outline-container-org0ba1dd9" class="outline-3">
-<h3 id="org0ba1dd9"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</h3>
-<div class="outline-text-3" id="text-org0ba1dd9">
+<div id="outline-container-org453bb12" class="outline-3">
+<h3 id="org453bb12"><span class="done DONE">DONE</span> Set up a good system for managing images (e.g. for data visualizations from R/Python)</h3>
+<div class="outline-text-3" id="text-org453bb12">
 <p>
 I followed the guide <a href="https://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html">here</a> to set up the export of "static" files using the <code>org-publish-attachment</code>
 publication function. The new section of my config looks like this:
@@ -426,14 +440,14 @@ publication function. The new section of my config looks like this:
 </div>
 </div>
 
-<div id="outline-container-org6e32256" class="outline-3">
-<h3 id="org6e32256"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</h3>
+<div id="outline-container-orgf8b5628" class="outline-3">
+<h3 id="orgf8b5628"><span class="todo TODO">TODO</span> Set up and test LaTeX exporting for formulas etc.</h3>
 </div>
-<div id="outline-container-orgd592f88" class="outline-3">
-<h3 id="orgd592f88"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</h3>
+<div id="outline-container-org8ee42ee" class="outline-3">
+<h3 id="org8ee42ee"><span class="todo TODO">TODO</span> Add a portfolio page showing some of my past work</h3>
 </div>
-<div id="outline-container-org49343b5" class="outline-3">
-<h3 id="org49343b5"><span class="todo TODO">TODO</span> Make a more visually interesting home page</h3>
+<div id="outline-container-org308bc7d" class="outline-3">
+<h3 id="org308bc7d"><span class="todo TODO">TODO</span> Make a more visually interesting home page</h3>
 </div>
 </div>
 </div>
