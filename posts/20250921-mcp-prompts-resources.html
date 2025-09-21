@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Getting Started with Model Context Protocol Part 2: Prompts and Resources</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
+<script src="/admonitions.js" defer></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
+    </a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Getting Started with Model Context Protocol Part 2: Prompts and Resources</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org2140cbc">Review of Part 1</a></li>
+<li><a href="#orgc6917b5">Resources: Expose data to your LLMs</a>
+<ul>
+<li><a href="#orga44e052">Accessing Resource with Claude Desktop</a></li>
+</ul>
+</li>
+<li><a href="#orga8c3b15">Prompts: Reusable prompt templates</a>
+<ul>
+<li><a href="#orgb144f00">Using prompts with Claude Desktop</a></li>
+</ul>
+</li>
+<li><a href="#orgee2ca2d">Conclusion, Observations, and Next Steps</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview" id="orge1544f4">
+<p>
+In the first part of this series on Anthropic's Model Context Protocol, I showed how to define a very simple MCP server with one tool and install it to Claude Desktop. In this post, we will look at two more MCP concepts and learn how to use them: <b>resources</b>, which expose data and other content to models, and <b>prompts</b>, which are intended to allow users to select reusable prompt templates suited for certain tasks or workflows.
+</p>
+
+</div>
+<div id="outline-container-org2140cbc" class="outline-2">
+<h2 id="org2140cbc">Review of Part 1</h2>
+<div class="outline-text-2" id="text-org2140cbc">
+<p>
+In the <a href="https://www.danliden.com/posts/20250412-mcp-quickstart.html">first post</a> in this series, we learned (1) what an MCP server is, (2) how to define a simple MCP server with a single tool, and (3) how to install that server to Claude Desktop. Let's briefly recap these points.
+</p>
+
+<ol class="org-ol">
+<li>MCP servers provide a standardized interface to resources (such as databases, file systems, tools, etc.) that LLMs can access. An MCP <i>client</i> corresponding to that server facilitates requests to the server, receives responses, and relays them to the host or user. MCP clients and servers are usually used in the context of a <i>host</i> application such as an IDE or chat app; the host is what the end user typically interacts with.</li>
+<li><p>
+The following code snippet defines an MCP server that exposes a single tool.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">server.py
+</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">install the mcp sdk with pip install "mcp[cli]"
+</span><span class="org-keyword">from</span> mcp.server.fastmcp <span class="org-keyword">import</span> FastMCP
+
+<span class="org-variable-name">mcp</span> <span class="org-operator">=</span> FastMCP(<span class="org-string">"SecretServer"</span>)
+
+<span class="org-type">@mcp.tool</span>()
+<span class="org-keyword">def</span> <span class="org-function-name">get_secret_number</span>() <span class="org-operator">-&gt;</span> <span class="org-builtin">int</span>:
+    <span class="org-doc">"""Returns a predefined secret number."""</span>
+    <span class="org-keyword">return</span> 13
+</pre>
+</div>
+
+<p>
+The tool, <code>get_secret_number</code>, just returns a "secret number." If you ask an LLM with access to this MCP server for the secret number, it should invoke this function in order to retrieve it.
+</p></li>
+<li>We installed the server to Claude Desktop with <code>mcp install server.py</code>.</li>
+</ol>
+
+<p>
+This was an example of defining and using a <a href="https://modelcontextprotocol.io/docs/concepts/tools">tool</a> with MCP. In this post, we will learn about other MCP primitives allowing the MCP server to expose data and enable specific workflows.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc6917b5" class="outline-2">
+<h2 id="orgc6917b5">Resources: Expose data to your LLMs</h2>
+<div class="outline-text-2" id="text-orgc6917b5">
+<p>
+<i>Resources</i> provide a way to give your LLMs access to data. The data can include database records, file contents, API responses, images, and more. Getting data from a resource in an MCP server is like making an HTTP GET request. The expectation is that it will return data without any side effects.
+</p>
+
+<p>
+In fact, the secret number method we defined previously would be a perfect candidate for a resource. It returns <b>data</b> and does nothing else. Let's show how to define an equivalent resource, this time to return a secret letter.
+</p>
+
+<p>
+We can expand our MCP server with this new resource as follows:
+</p>
+
+<div class="tip" id="org3069e3c">
+<p>
+Refer to the <a href="https://www.danliden.com/posts/20250412-mcp-quickstart.html#setup">Setup section of the previous post</a> for details on setting up your project. We will be testing our MCP server with Claude Desktop.
+</p>
+
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">server.py
+</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">install the mcp sdk with pip install "mcp[cli]"
+</span><span class="org-keyword">from</span> mcp.server.fastmcp <span class="org-keyword">import</span> FastMCP
+
+<span class="org-variable-name">mcp</span> <span class="org-operator">=</span> FastMCP(<span class="org-string">"SecretServer"</span>)
+
+<span class="org-type">@mcp.tool</span>()
+<span class="org-keyword">def</span> <span class="org-function-name">get_secret_number</span>() <span class="org-operator">-&gt;</span> <span class="org-builtin">int</span>:
+    <span class="org-doc">"""Returns a predefined secret number."""</span>
+    <span class="org-keyword">return</span> 13
+
+<span class="org-type">@mcp.resource</span>(<span class="org-string">"data://secret_letter"</span>)
+<span class="org-keyword">def</span> <span class="org-function-name">get_secret_letter</span>() <span class="org-operator">-&gt;</span> <span class="org-builtin">str</span>:
+    <span class="org-doc">"""Returns a predefined secret letter."""</span>
+    <span class="org-keyword">return</span> <span class="org-string">"L"</span>
+</pre>
+</div>
+
+
+<p>
+The <code>@mcp.resource</code> decorator takes the resource's unique URI as an argument. Clients use this URI to request data.
+</p>
+</div>
+<div id="outline-container-orga44e052" class="outline-3">
+<h3 id="orga44e052">Accessing Resource with Claude Desktop</h3>
+<div class="outline-text-3" id="text-orga44e052">
+<p>
+We have a couple of different options for how to give Claude Desktop access to these resources. First, we can directly attach it to a chat message via the <code>+</code> menu, where we can select <code>add from SecretServer</code> (the name of our server). This will essentially attach the resource as a document Claude can refer to.
+</p>
+
+
+<figure id="org23c5734">
+<img src="./figures/20250921-mcp-2/1_attach_resource.png" alt="1_attach_resource.png">
+
+</figure>
+
+<p>
+We can also define a <i>tool</i> that claude can use to access the <i>resource</i>. Let's update our server code to see this option.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">server.py
+</span>
+<span class="org-keyword">from</span> mcp.server.fastmcp <span class="org-keyword">import</span> FastMCP, Context
+
+<span class="org-variable-name">mcp</span> <span class="org-operator">=</span> FastMCP(<span class="org-string">"SecretServer"</span>)
+
+<span class="org-type">@mcp.tool</span>()
+<span class="org-keyword">def</span> <span class="org-function-name">get_secret_number</span>() <span class="org-operator">-&gt;</span> <span class="org-builtin">int</span>:
+    <span class="org-doc">"""Returns a predefined secret number."""</span>
+    <span class="org-keyword">return</span> 13
+
+<span class="org-type">@mcp.resource</span>(<span class="org-string">"data://secret_letter"</span>)
+<span class="org-keyword">def</span> <span class="org-function-name">get_secret_letter</span>() <span class="org-operator">-&gt;</span> <span class="org-builtin">str</span>:
+    <span class="org-doc">"""Returns a predefined secret letter."""</span>
+    <span class="org-keyword">return</span> <span class="org-string">"L"</span>
+
+<span class="org-type">@mcp.tool</span>()
+<span class="org-keyword">async def</span> <span class="org-function-name">retrieve_secret_letter_tool</span>(ctx: Context) <span class="org-operator">-&gt;</span> <span class="org-builtin">str</span>:
+    <span class="org-doc">"""Tool to retrieve the secret letter from the corresponding resource"""</span>
+    <span class="org-variable-name">resources</span> <span class="org-operator">=</span> <span class="org-keyword">await</span> ctx.read_resource(<span class="org-string">"data://secret_letter"</span>)
+    <span class="org-keyword">return</span> resources[0].content
+</pre>
+</div>
+
+<p>
+Now, if we re-install the server with <code>mcp install server.py</code>, Claude will be able to invoke this tool to access the secret letter resource, even if we have not explicitly added the resource to the chat.
+</p>
+
+
+<figure id="org8697035">
+<img src="./figures/20250921-mcp-2/2_secret_letter_via_tool.png" alt="2_secret_letter_via_tool.png">
+
+</figure>
+
+<p>
+For a more in-depth guide on using resources, check out the <a href="https://gofastmcp.com/servers/resources">FastMCP</a> docs. I recommend reading the section on how to <a href="https://gofastmcp.com/servers/resources#resource-templates">parameterize resources</a> next.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orga8c3b15" class="outline-2">
+<h2 id="orga8c3b15">Prompts: Reusable prompt templates</h2>
+<div class="outline-text-2" id="text-orga8c3b15">
+<p>
+MCP prompts let you set up parameterized prompt templates. Just like with tools and resources, we use the <code>@mcp.prompt()</code> decorator to define prompts with the Python SDK. Let's update our server with a simple prompt that can generate a haiku on a topic.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">server.py
+</span>
+<span class="org-keyword">from</span> mcp.server.fastmcp <span class="org-keyword">import</span> FastMCP, Context
+
+<span class="org-variable-name">mcp</span> <span class="org-operator">=</span> FastMCP(<span class="org-string">"SecretServer"</span>)
+
+<span class="org-type">@mcp.tool</span>()
+<span class="org-keyword">def</span> <span class="org-function-name">get_secret_number</span>() <span class="org-operator">-&gt;</span> <span class="org-builtin">int</span>:
+    <span class="org-doc">"""Returns a predefined secret number."""</span>
+    <span class="org-keyword">return</span> 13
+
+<span class="org-type">@mcp.resource</span>(<span class="org-string">"data://secret_letter"</span>)
+<span class="org-keyword">def</span> <span class="org-function-name">get_secret_letter</span>() <span class="org-operator">-&gt;</span> <span class="org-builtin">str</span>:
+    <span class="org-doc">"""Returns a predefined secret letter."""</span>
+    <span class="org-keyword">return</span> <span class="org-string">"L"</span>
+
+<span class="org-type">@mcp.tool</span>()
+<span class="org-keyword">async def</span> <span class="org-function-name">retrieve_secret_letter_tool</span>(ctx: Context) <span class="org-operator">-&gt;</span> <span class="org-builtin">str</span>:
+    <span class="org-doc">"""Tool to retrieve the secret letter from the corresponding resource"""</span>
+    <span class="org-variable-name">resources</span> <span class="org-operator">=</span> <span class="org-keyword">await</span> ctx.read_resource(<span class="org-string">"data://secret_letter"</span>)
+    <span class="org-keyword">return</span> resources[0].content
+
+<span class="org-type">@mcp.prompt</span>()
+<span class="org-keyword">def</span> <span class="org-function-name">haiku</span>(topic: <span class="org-builtin">str</span>) <span class="org-operator">-&gt;</span> <span class="org-builtin">str</span>:
+    <span class="org-doc">"""Generates a user message asking for an explanation of a topic."""</span>
+    <span class="org-keyword">return</span> f<span class="org-string">"Can you please write a haiku about '</span>{topic}<span class="org-string">'?"</span>
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb144f00" class="outline-3">
+<h3 id="orgb144f00">Using prompts with Claude Desktop</h3>
+<div class="outline-text-3" id="text-orgb144f00">
+<p>
+Using MCP prompts with Claude Desktop is similar to using resources: you can send a custom prompt along with a message using the <code>+</code> menu. If the prompt accepts an argument (like ours does), you will be prompted for it when adding.
+</p>
+
+
+<figure id="org22c4b17">
+<img src="./figures/20250921-mcp-2/3_attach_prompt.png" alt="3_attach_prompt.png">
+
+</figure>
+
+<p>
+This will result in a text file containing the filled-in prompt. You can send this along with an empty message, and Claude will respond to the prompt.
+</p>
+
+
+<figure id="orga03190a">
+<img src="./figures/20250921-mcp-2/4_prompt_response.png" alt="4_prompt_response.png">
+
+</figure>
+
+
+<p>
+To learn more, check out the <a href="https://gofastmcp.com/servers/prompts">Prompts section of the FastMCP docs</a>.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgee2ca2d" class="outline-2">
+<h2 id="orgee2ca2d">Conclusion, Observations, and Next Steps</h2>
+<div class="outline-text-2" id="text-orgee2ca2d">
+<p>
+In this two-part series, we have seen how to set up an MCP server for use with Claude Desktop and how to define tools, resources, and prompts on that server. This should have given you what you need to take your first steps into the world of MCP servers.
+</p>
+
+<p>
+Using the MCP Python SDK makes it straightforward to define these MCP server components. As we saw above, they all follow the same general pattern: we define a function, which may or may not take arguments, and decorate it with the decorator corresponding to the component type.
+</p>
+
+<p>
+While this introduction only scratches the surface, MCP's real power comes when you start connecting your LLMs to actual systems like databases, APIs, and file systems. The standardized interface means you can combine MCP servers from different sources without worrying about compatibility issues.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2025-09-21 Sun 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+</div>
+</body>
+</html>
