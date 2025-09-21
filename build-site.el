@@ -26,6 +26,193 @@
 (require 'ox-rss)
 (require 'webfeeder)
 (require 'esxml)
+(require 'json)
+(require 'subr-x)
+
+(defconst my/org-site-base-url "https://danliden.com"
+  "Canonical base URL for the published site without trailing slash.")
+
+(defconst my/org-site-root
+  (file-name-directory (file-truename (or load-file-name default-directory)))
+  "Root directory of the org-site repository while building.")
+
+(defconst my/org-site-content-root
+  (expand-file-name "content" my/org-site-root)
+  "Absolute path to the content directory for canonical derivation.")
+
+(defvar my/org-site--current-export-file nil
+  "Holds the source Org file path during export for metadata helpers.")
+
+(defun my/org-site--with-current-export (orig-fun filename &rest args)
+  "Wrap ORIG-FUN to expose FILENAME during publishing."
+  (let ((my/org-site--current-export-file filename))
+    (prog1 (apply orig-fun filename args)
+      (setq my/org-site--current-export-file nil))))
+
+(defun my/org-site--escape-html (text)
+  "Return TEXT with HTML entities escaped."
+  (when text
+    (let ((escaped (replace-regexp-in-string "&" "&amp;" text)))
+      (setq escaped (replace-regexp-in-string "<" "&lt;" escaped))
+      (setq escaped (replace-regexp-in-string ">" "&gt;" escaped))
+      (setq escaped (replace-regexp-in-string "\"" "&quot;" escaped))
+      (replace-regexp-in-string "'" "&#39;" escaped))))
+
+(defun my/org-site--normalize-space (text)
+  "Collapse whitespace inside TEXT and trim the ends."
+  (when text
+    (let ((collapsed (replace-regexp-in-string "[\n\r\t ]+" " " text)))
+      (string-trim collapsed))))
+
+(defun my/org-site--truncate (text &optional limit)
+  "Trim TEXT to LIMIT characters (default 260) with ellipsis."
+  (when text
+    (let* ((limit (or limit 260))
+           (trimmed (string-trim text)))
+      (if (<= (length trimmed) limit)
+          trimmed
+        (concat (substring trimmed 0 (max 0 (- limit 3))) "...")))))
+
+(defun my/org-site--abs-url (path)
+  "Return absolute URL for PATH relative to the site base."
+  (when path
+    (let ((base (string-remove-suffix "/" my/org-site-base-url)))
+      (cond
+       ((string-match-p "\\`https?://" path) path)
+       ((string-prefix-p "/" path) (concat base path))
+       (t (concat base "/" path))))))
+
+(defun my/org-site--canonical-from-file (file)
+  "Compute canonical URL for FILE within the publishing project."
+  (when (and file (file-exists-p file))
+    (let* ((relative (file-relative-name file my/org-site-content-root))
+           (outside (string-match-p "^\.\./" relative)))
+      (unless outside
+        (let* ((output (concat (file-name-sans-extension relative) ".html"))
+               (web-path (replace-regexp-in-string "\\`\\./" "" output))
+               (base (string-remove-suffix "/" my/org-site-base-url)))
+          (if (string= web-path "index.html")
+              base
+            (concat base "/" web-path)))))))
+
+(defun my/org-site--format-iso8601 (time)
+  "Format TIME (Emacs internal time) as UTC ISO 8601 string."
+  (when time
+    (format-time-string "%Y-%m-%dT%H:%M:%SZ" time t)))
+
+(defun my/org-site--collect-keyword (name)
+  "Return first value for keyword NAME from current buffer."
+  (let ((val (cdr (assoc-string name (org-collect-keywords (list name)) t))))
+    (when val (car val))))
+
+(defun my/org-site--insert-head-extra (lines)
+  "Insert LINES (HTML strings) as #+HTML_HEAD_EXTRA entries."
+  (when lines
+    (save-excursion
+      (goto-char (point-min))
+      ;; Skip initial option lines to keep order tidy.
+      (while (looking-at "^#\\+")
+        (forward-line 1))
+      (dolist (line lines)
+        (insert (format "#+HTML_HEAD_EXTRA: %s\n" line))))))
+
+(defun my/org-site--build-jsonld (title description canonical published modified keywords image)
+  "Construct JSON-LD string for the current page."
+  (let* ((base `(("@context" . "https://schema.org")
+                 ("@type" . ,(if published "BlogPosting" "WebPage"))
+                 ("headline" . ,title)
+                 ("description" . ,description)
+                 ("mainEntityOfPage" . (("@type" . "WebPage")
+                                        ("@id" . ,canonical)))
+                 ("author" . (("@type" . "Person")
+                               ("name" . "Daniel Liden"))))))
+    (setq base (if published
+                   (append base `(("datePublished" . ,published)))
+                 base))
+    (setq base (if modified
+                   (append base `(("dateModified" . ,modified)))
+                 base))
+    (setq base (if keywords
+                   (append base `(("keywords" . ,keywords)))
+                 base))
+    (setq base (if image
+                   (append base `(("image" . ,image)))
+                 base))
+    (let ((json-object-type 'alist)
+          (json-array-type 'list)
+          (json-key-type 'string))
+      (json-encode base))))
+
+(defun my/org-site--add-page-metadata (backend)
+  "Inject SEO metadata for HTML BACKEND exports."
+  (when (org-export-derived-backend-p backend 'html)
+    (let* ((info (org-export-get-environment backend))
+           (input (plist-get info :input-file))
+           (source (or input my/org-site--current-export-file))
+           (title (my/org-site--normalize-space
+                   (org-element-interpret-data (plist-get info :title))))
+           (desc (or (my/org-site--collect-keyword "DESCRIPTION")
+                     (when source (my/org-site--normalize-space (my/get-preview source)))))
+           (desc (my/org-site--truncate desc 200))
+           (keywords (my/org-site--collect-keyword "KEYWORDS"))
+           (image (my/org-site--collect-keyword "IMAGE"))
+           (canonical (or (my/org-site--collect-keyword "CANONICAL_URL")
+                          (my/org-site--canonical-from-file source)))
+           (project (when source
+                      (ignore-errors (org-publish-get-project-from-filename source org-publish-project-alist))))
+           (date-str (my/org-site--collect-keyword "DATE"))
+           (published-time (or (and date-str (ignore-errors (org-time-string-to-time date-str)))
+                               (when (and project source)
+                                 (ignore-errors (org-publish-find-date source project)))))
+           (modified-time (when (and source (file-exists-p source))
+                            (file-attribute-modification-time (file-attributes source))))
+           (published-iso (my/org-site--format-iso8601 published-time))
+           (modified-iso (my/org-site--format-iso8601 modified-time))
+           (abs-image (my/org-site--abs-url image))
+           (site-name "Daniel Liden")
+           (normalized-title (or title canonical))
+           (meta-lines nil))
+      (setq meta-lines
+            (delq nil
+                  (list
+                   (when canonical
+                     (format "<link rel=\"canonical\" href=\"%s\">" canonical))
+                   (format "<meta name=\"author\" content=\"%s\">" (my/org-site--escape-html site-name))
+                   (when canonical
+                     (format "<meta property=\"og:url\" content=\"%s\">" canonical))
+                   (when normalized-title
+                     (format "<meta property=\"og:title\" content=\"%s\">"
+                             (my/org-site--escape-html normalized-title)))
+                   (when desc
+                     (format "<meta property=\"og:description\" content=\"%s\">"
+                             (my/org-site--escape-html desc)))
+                   (format "<meta property=\"og:site_name\" content=\"%s\">"
+                           (my/org-site--escape-html site-name))
+                   (format "<meta property=\"og:type\" content=\"%s\">"
+                           (if published-iso "article" "website"))
+                   (when published-iso
+                     (format "<meta property=\"article:published_time\" content=\"%s\">" published-iso))
+                   (when modified-iso
+                     (format "<meta property=\"article:modified_time\" content=\"%s\">" modified-iso))
+                   (when abs-image
+                     (format "<meta property=\"og:image\" content=\"%s\">" abs-image))
+                   (when abs-image
+                     (format "<meta name=\"twitter:card\" content=\"summary_large_image\">"))
+                   (unless abs-image
+                     "<meta name=\"twitter:card\" content=\"summary\">")
+                   (when normalized-title
+                     (format "<meta name=\"twitter:title\" content=\"%s\">"
+                             (my/org-site--escape-html normalized-title)))
+                   (when desc
+                     (format "<meta name=\"twitter:description\" content=\"%s\">"
+                             (my/org-site--escape-html desc)))
+                   (when abs-image
+                     (format "<meta name=\"twitter:image\" content=\"%s\">" abs-image))
+                   (when (and canonical desc normalized-title)
+                     (let ((jsonld (my/org-site--build-jsonld normalized-title desc canonical
+                                                             published-iso modified-iso keywords abs-image)))
+                       (format "<script type=\"application/ld+json\">%s</script>" jsonld))))))
+      (my/org-site--insert-head-extra meta-lines))))
 
 ;;; Sitemap preprocessing
 ;;;; Get Preview
@@ -132,6 +319,9 @@ https://ogbe.net/blog/blogging_with_org.html"
       org-html-htmlize-output-type 'css
       org-html-style-default (file-contents "assets/head.html")
       org-export-use-babel nil)
+
+(advice-add 'org-publish-file :around #'my/org-site--with-current-export)
+(add-hook 'org-export-before-processing-hook #'my/org-site--add-page-metadata)
 
 ;;; generate site output
 (org-publish-all t)
