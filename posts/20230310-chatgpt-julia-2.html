@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2023-03-10T00:00:00Z">
-<meta property="article:modified_time" content="2025-09-21T15:39:24Z">
+<meta property="article:modified_time" content="2025-09-21T16:05:22Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Using the ChatGPT API with Julia Part 2: Defining a Chat Struct">
 <meta name="twitter:description" content="One of the things that makes working with the ChatGPT API a little different from working with, e.g., the ~davinci-text-003~ model api is the need to maintain the history of a given chat session. A...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the ChatGPT API with Julia Part 2: Defining a Chat Struct","description":"One of the things that makes working with the ChatGPT API a little different from working with, e.g., the ~davinci-text-003~ model api is the need to maintain the history of a given chat session. A...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230310-chatgpt-julia-2.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2023-03-10T00:00:00Z","dateModified":"2025-09-21T15:39:24Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the ChatGPT API with Julia Part 2: Defining a Chat Struct","description":"One of the things that makes working with the ChatGPT API a little different from working with, e.g., the ~davinci-text-003~ model api is the need to maintain the history of a given chat session. A...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230310-chatgpt-julia-2.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2023-03-10T00:00:00Z","dateModified":"2025-09-21T16:05:22Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -73,14 +73,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5fbfd93">Defining the Struct</a></li>
-<li><a href="#orgab727b0">Defining the function</a></li>
-<li><a href="#org9fb4044">Giving it a Try</a></li>
-<li><a href="#orgee6c8d3">What's next?</a></li>
+<li><a href="#org6f451fe">Defining the Struct</a></li>
+<li><a href="#orgfebed97">Defining the function</a></li>
+<li><a href="#org547e159">Giving it a Try</a></li>
+<li><a href="#orge74f389">What's next?</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org2376060">
+<div class="preview" id="orgd8633d1">
 <p>
 One of the things that makes working with the ChatGPT API a little different
 from working with, e.g., the <code>davinci-text-003</code> model api is the need to maintain
@@ -95,9 +95,9 @@ For the basics of working with the ChatGPT API, check out <a href="20230303-chat
 
 </div>
 
-<div id="outline-container-org5fbfd93" class="outline-2">
-<h2 id="org5fbfd93">Defining the Struct</h2>
-<div class="outline-text-2" id="text-org5fbfd93">
+<div id="outline-container-org6f451fe" class="outline-2">
+<h2 id="org6f451fe">Defining the Struct</h2>
+<div class="outline-text-2" id="text-org6f451fe">
 <p>
 A <code>struct</code>, also referred to as a <a href="https://docs.julialang.org/en/v1/manual/types/#Composite-Types">composite type</a>, is "a collection of named
 fields, an instance of which can be treated as a single value." By default,
@@ -190,9 +190,9 @@ able to act on it. For that, we'll define a function.
 </div>
 </div>
 
-<div id="outline-container-orgab727b0" class="outline-2">
-<h2 id="orgab727b0">Defining the function</h2>
-<div class="outline-text-2" id="text-orgab727b0">
+<div id="outline-container-orgfebed97" class="outline-2">
+<h2 id="orgfebed97">Defining the function</h2>
+<div class="outline-text-2" id="text-orgfebed97">
 <p>
 The purpose of this function is to:
 </p>
@@ -283,9 +283,9 @@ list. The <code>chat</code> function follows both of these conventions.
 </p>
 </div>
 </div>
-<div id="outline-container-org9fb4044" class="outline-2">
-<h2 id="org9fb4044">Giving it a Try</h2>
-<div class="outline-text-2" id="text-org9fb4044">
+<div id="outline-container-org547e159" class="outline-2">
+<h2 id="org547e159">Giving it a Try</h2>
+<div class="outline-text-2" id="text-org547e159">
 <p>
 So, does it work? Let's try it out.
 </p>
@@ -321,9 +321,9 @@ the message history in the second API request.
 </p>
 </div>
 </div>
-<div id="outline-container-orgee6c8d3" class="outline-2">
-<h2 id="orgee6c8d3">What's next?</h2>
-<div class="outline-text-2" id="text-orgee6c8d3">
+<div id="outline-container-orge74f389" class="outline-2">
+<h2 id="orge74f389">What's next?</h2>
+<div class="outline-text-2" id="text-orge74f389">
 <p>
 There are a few additional avenues I want to explore, in no particular order:
 </p>

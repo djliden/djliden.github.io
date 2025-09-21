@@ -27,13 +27,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2025-04-12T00:00:00Z">
-<meta property="article:modified_time" content="2025-09-21T15:39:24Z">
+<meta property="article:modified_time" content="2025-09-21T16:05:22Z">
 <meta property="og:image" content="https://danliden.com/posts/figures/20250412-mcp-1/1-claude-config.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Getting Started with Model Context Protocol Part 1: Add a Simple MCP Server to Claude Desktop">
 <meta name="twitter:description" content="Minimal, end-to-end walkthrough of building a FastMCP server, installing it to Claude Desktop, and verifying tool calls with a secret-number example.">
 <meta name="twitter:image" content="https://danliden.com/posts/figures/20250412-mcp-1/1-claude-config.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Getting Started with Model Context Protocol Part 1: Add a Simple MCP Server to Claude Desktop","description":"Minimal, end-to-end walkthrough of building a FastMCP server, installing it to Claude Desktop, and verifying tool calls with a secret-number example.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20250412-mcp-quickstart.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-04-12T00:00:00Z","dateModified":"2025-09-21T15:39:24Z","keywords":"model context protocol, mcp server, claude desktop, fastmcp, uv python","image":"https://danliden.com/posts/figures/20250412-mcp-1/1-claude-config.png"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Getting Started with Model Context Protocol Part 1: Add a Simple MCP Server to Claude Desktop","description":"Minimal, end-to-end walkthrough of building a FastMCP server, installing it to Claude Desktop, and verifying tool calls with a secret-number example.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20250412-mcp-quickstart.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-04-12T00:00:00Z","dateModified":"2025-09-21T16:05:22Z","keywords":"model context protocol, mcp server, claude desktop, fastmcp, uv python","image":"https://danliden.com/posts/figures/20250412-mcp-1/1-claude-config.png"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -77,25 +77,25 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org46073ef">Introduction: MCP Concepts</a></li>
-<li><a href="#org1f783ec">Quickstart: Set up a Simple MCP Server and Use It with Claude Desktop</a>
+<li><a href="#org01bd4f8">Introduction: MCP Concepts</a></li>
+<li><a href="#org2de325c">Quickstart: Set up a Simple MCP Server and Use It with Claude Desktop</a>
 <ul>
-<li><a href="#orgc7fd0bf">Setup</a></li>
-<li><a href="#orgb922e40">Define the MCP server</a></li>
-<li><a href="#org6d09e77">Add the server to Claude Desktop</a>
+<li><a href="#org113db7b">Setup</a></li>
+<li><a href="#orgdd773d4">Define the MCP server</a></li>
+<li><a href="#orgd8fa621">Add the server to Claude Desktop</a>
 <ul>
-<li><a href="#org58ddc83">Install the MCP server</a></li>
-<li><a href="#orge40c74a">Configure the Claude Desktop app</a></li>
+<li><a href="#org64ad81c">Install the MCP server</a></li>
+<li><a href="#org1f7459b">Configure the Claude Desktop app</a></li>
 </ul>
 </li>
-<li><a href="#org3eab97b">Use the tool provided by the MCP Server</a></li>
+<li><a href="#org218ef5e">Use the tool provided by the MCP Server</a></li>
 </ul>
 </li>
-<li><a href="#orgac39811">Recap and Next Steps</a></li>
+<li><a href="#orgb119ce5">Recap and Next Steps</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgc61e5e2">
+<div class="preview" id="orgd00c12d">
 <p>
 This post provides a simple, minimal example of setting up and using an MCP (model context protocol) server for use with Claude Desktop.
 </p>
@@ -109,9 +109,9 @@ Future posts will add more complexity, showing how to use additional MCP abstrac
 </p>
 
 </div>
-<div id="outline-container-org46073ef" class="outline-2">
-<h2 id="org46073ef">Introduction: MCP Concepts</h2>
-<div class="outline-text-2" id="text-org46073ef">
+<div id="outline-container-org01bd4f8" class="outline-2">
+<h2 id="org01bd4f8">Introduction: MCP Concepts</h2>
+<div class="outline-text-2" id="text-org01bd4f8">
 <p>
 Anthropic's <a href="https://modelcontextprotocol.io/introduction">Model Context Protocol (MCP)</a> is intended to standardize the way applications give context (data, tools, prompts, etc.) to LLMs.
 </p>
@@ -131,9 +131,9 @@ For example, a user might type the following into a chat app (the host): "Give m
 </div>
 </div>
 
-<div id="outline-container-org1f783ec" class="outline-2">
-<h2 id="org1f783ec">Quickstart: Set up a Simple MCP Server and Use It with Claude Desktop</h2>
-<div class="outline-text-2" id="text-org1f783ec">
+<div id="outline-container-org2de325c" class="outline-2">
+<h2 id="org2de325c">Quickstart: Set up a Simple MCP Server and Use It with Claude Desktop</h2>
+<div class="outline-text-2" id="text-org2de325c">
 <p>
 To get started, we will set up an MCP server that exposes a single function, <code>get_secret_number</code>, that simply returns a "secret number" to the LLM. When you ask an LLM with this capability for the secret number, it will invoke the tool and return the "secret number," verifying that it successfully used the MCP server.
 </p>
@@ -142,9 +142,9 @@ To get started, we will set up an MCP server that exposes a single function, <co
 We will install this server to the Claude desktop app, allowing you to use the server without setting up a custom client.
 </p>
 </div>
-<div id="outline-container-orgc7fd0bf" class="outline-3">
-<h3 id="orgc7fd0bf">Setup</h3>
-<div class="outline-text-3" id="text-orgc7fd0bf">
+<div id="outline-container-org113db7b" class="outline-3">
+<h3 id="org113db7b">Setup</h3>
+<div class="outline-text-3" id="text-org113db7b">
 <p>
 We will create a new Python environment using <code>uv</code> before writing the server code. If you haven't already done so, first install uv by running the following shell script (on Mac/Linux): <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code>.
 </p>
@@ -165,9 +165,9 @@ Then install the <a href="https://github.com/modelcontextprotocol/python-sdk">MC
 </p>
 </div>
 </div>
-<div id="outline-container-orgb922e40" class="outline-3">
-<h3 id="orgb922e40">Define the MCP server</h3>
-<div class="outline-text-3" id="text-orgb922e40">
+<div id="outline-container-orgdd773d4" class="outline-3">
+<h3 id="orgdd773d4">Define the MCP server</h3>
+<div class="outline-text-3" id="text-orgdd773d4">
 <p>
 Next, create a file called <code>server.py</code> in your project directory with the following:
 </p>
@@ -213,16 +213,16 @@ And that's it. This is a complete, usable MCP server that exposes one function f
 </p>
 </div>
 </div>
-<div id="outline-container-org6d09e77" class="outline-3">
-<h3 id="org6d09e77">Add the server to Claude Desktop</h3>
-<div class="outline-text-3" id="text-org6d09e77">
+<div id="outline-container-orgd8fa621" class="outline-3">
+<h3 id="orgd8fa621">Add the server to Claude Desktop</h3>
+<div class="outline-text-3" id="text-orgd8fa621">
 <p>
 We can use the <code>mcp</code> command line tool to install our new server to the Claude Desktop app (install it <a href="https://claude.ai/download">here</a> if you haven't already).
 </p>
 </div>
-<div id="outline-container-org58ddc83" class="outline-4">
-<h4 id="org58ddc83">Install the MCP server</h4>
-<div class="outline-text-4" id="text-org58ddc83">
+<div id="outline-container-org64ad81c" class="outline-4">
+<h4 id="org64ad81c">Install the MCP server</h4>
+<div class="outline-text-4" id="text-org64ad81c">
 <p>
 Install the mcp server for use with Claude Desktop as follows:
 </p>
@@ -233,9 +233,9 @@ Install the mcp server for use with Claude Desktop as follows:
 </div>
 </div>
 </div>
-<div id="outline-container-orge40c74a" class="outline-4">
-<h4 id="orge40c74a">Configure the Claude Desktop app</h4>
-<div class="outline-text-4" id="text-orge40c74a">
+<div id="outline-container-org1f7459b" class="outline-4">
+<h4 id="org1f7459b">Configure the Claude Desktop app</h4>
+<div class="outline-text-4" id="text-org1f7459b">
 <p>
 I found that just installing the server as described above did not work without some manual adjustment of the configuration. In particular, I needed to modify the configuration to include the <i>whole path to <code>uv</code> executable on my system</i>. See <a href="https://github.com/orgs/modelcontextprotocol/discussions/20">this GitHub discussion</a> for details.
 </p>
@@ -245,7 +245,7 @@ To find the configuration, go to the settings menu in the Claude Desktop app, th
 </p>
 
 
-<figure id="org3db414f">
+<figure id="org7315ad5">
 <img src="./figures/20250412-mcp-1/1-claude-config.png" alt="1-claude-config.png">
 
 </figure>
@@ -279,15 +279,15 @@ If you ran into a similar issue with <code>uv</code>, replace <code>uv</code> in
 </div>
 </div>
 </div>
-<div id="outline-container-org3eab97b" class="outline-3">
-<h3 id="org3eab97b">Use the tool provided by the MCP Server</h3>
-<div class="outline-text-3" id="text-org3eab97b">
+<div id="outline-container-org218ef5e" class="outline-3">
+<h3 id="org218ef5e">Use the tool provided by the MCP Server</h3>
+<div class="outline-text-3" id="text-org218ef5e">
 <p>
 If you configured the MCP server correctly, you should now see two new icons in Claude desktop showing that Claude has access to the MCP server and to one or more tools from the server.
 </p>
 
 
-<figure id="org91010b5">
+<figure id="orgbe208aa">
 <img src="./figures/20250412-mcp-1/2-claude-icons.png" alt="2-claude-icons.png">
 
 </figure>
@@ -297,7 +297,7 @@ Clicking on the hammer icon will list the available tools and should show the se
 </p>
 
 
-<figure id="org7936fc6">
+<figure id="org925b4dc">
 <img src="./figures/20250412-mcp-1/3-claude-tools.png" alt="3-claude-tools.png">
 
 </figure>
@@ -311,7 +311,7 @@ Claude should know to use the function we created. A popup will appear asking fo
 </p>
 
 
-<figure id="org4922512">
+<figure id="org5c243c0">
 <img src="./figures/20250412-mcp-1/4-claude-permission.png" alt="4-claude-permission.png">
 
 </figure>
@@ -321,7 +321,7 @@ Now Claude can use the tool to retrieve the secret number.
 </p>
 
 
-<figure id="org30180e0">
+<figure id="orgdfbcf80">
 <img src="./figures/20250412-mcp-1/5-claude-answer.png" alt="5-claude-answer.png">
 
 </figure>
@@ -332,9 +332,9 @@ This demonstrates the basic pattern for setting up and MCP server and using it v
 </div>
 </div>
 </div>
-<div id="outline-container-orgac39811" class="outline-2">
-<h2 id="orgac39811">Recap and Next Steps</h2>
-<div class="outline-text-2" id="text-orgac39811">
+<div id="outline-container-orgb119ce5" class="outline-2">
+<h2 id="orgb119ce5">Recap and Next Steps</h2>
+<div class="outline-text-2" id="text-orgb119ce5">
 <p>
 To recap, in this post, we set up a very minimal MCP server using the <code>FastMCP</code> method from the Python MCP SDK package. We defined a single tool that returns a "secret number" when invoked. We then installed the server to the Claude desktop app and confirmed that Claude could successfully invoke the tool via the MCP server to retrieve the secret number.
 </p>
