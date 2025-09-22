@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 ;;; packages
 ;;;; Initialize the package system
 (require 'package)
@@ -318,7 +319,10 @@ https://ogbe.net/blog/blogging_with_org.html"
 (setq org-html-validation-link nil
       org-html-htmlize-output-type 'css
       org-html-style-default (file-contents "assets/head.html")
-      org-export-use-babel nil)
+      org-export-use-babel nil
+      ;; Keep publish timestamps inside the repo to avoid writing
+      ;; to user-level directories in sandboxed builds.
+      org-publish-timestamp-directory (expand-file-name ".org-timestamps/" my/org-site-root))
 
 (advice-add 'org-publish-file :around #'my/org-site--with-current-export)
 (add-hook 'org-export-before-processing-hook #'my/org-site--add-page-metadata)
