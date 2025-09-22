@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-04-16T00:00:00Z">
-<meta property="article:modified_time" content="2025-09-21T16:05:22Z">
+<meta property="article:modified_time" content="2025-09-22T13:13:47Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Troubleshooting Flash Attention Installation">
 <meta name="twitter:description" content="I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platfo...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Troubleshooting Flash Attention Installation","description":"I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platfo...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240416-torch-cuda-flash-attn.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-16T00:00:00Z","dateModified":"2025-09-21T16:05:22Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Troubleshooting Flash Attention Installation","description":"I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platfo...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240416-torch-cuda-flash-attn.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-16T00:00:00Z","dateModified":"2025-09-22T13:13:47Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -73,30 +73,30 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org74a4b4b">The Problem</a></li>
-<li><a href="#org9244977">Solution</a></li>
-<li><a href="#org9e6f819">What didn't work</a></li>
+<li><a href="#orga9e4227">The Problem</a></li>
+<li><a href="#org8a7af9a">Solution</a></li>
+<li><a href="#orgd999078">What didn't work</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgf290631">
+<div class="preview" id="org3b14977">
 <p>
 I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platform I tend to be working on (Databricks). This note is a quick summary.
 </p>
 
 </div>
-<div id="outline-container-org74a4b4b" class="outline-2">
-<h2 id="org74a4b4b">The Problem</h2>
-<div class="outline-text-2" id="text-org74a4b4b">
+<div id="outline-container-orga9e4227" class="outline-2">
+<h2 id="orga9e4227">The Problem</h2>
+<div class="outline-text-2" id="text-orga9e4227">
 <p>
 I kept getting an "undefined symbol" error like <a href="https://github.com/Dao-AILab/flash-attention/issues/667">this</a> when trying to load a model with flash attention (or even just when importing the flash attention library).
 </p>
 </div>
 </div>
 
-<div id="outline-container-org9244977" class="outline-2">
-<h2 id="org9244977">Solution</h2>
-<div class="outline-text-2" id="text-org9244977">
+<div id="outline-container-org8a7af9a" class="outline-2">
+<h2 id="org8a7af9a">Solution</h2>
+<div class="outline-text-2" id="text-org8a7af9a">
 <p>
 The following approach worked.
 </p>
@@ -153,9 +153,9 @@ We can then make sure everything works (without needing to take extra time to lo
 </div>
 </div>
 
-<div id="outline-container-org9e6f819" class="outline-2">
-<h2 id="org9e6f819">What didn't work</h2>
-<div class="outline-text-2" id="text-org9e6f819">
+<div id="outline-container-orgd999078" class="outline-2">
+<h2 id="orgd999078">What didn't work</h2>
+<div class="outline-text-2" id="text-orgd999078">
 <p>
 I wasn't able to get any variety of <code>pip install flash-attn</code> working. This was regardless of the no build isolation flag; specific versions; etc.
 </p>

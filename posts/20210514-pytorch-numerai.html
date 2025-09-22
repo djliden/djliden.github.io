@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2021-05-14T00:00:00Z">
-<meta property="article:modified_time" content="2025-09-21T16:05:22Z">
+<meta property="article:modified_time" content="2025-09-22T13:13:47Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="A Simple PyTorch Model for the Numerai Tournament">
 <meta name="twitter:description" content="/This is another one from the archives. It covers how to train a basic PyTorch model for use in the Numerai tournament, at least as it was in May 2021. See the original post [[https://pensive-wing-...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"A Simple PyTorch Model for the Numerai Tournament","description":"/This is another one from the archives. It covers how to train a basic PyTorch model for use in the Numerai tournament, at least as it was in May 2021. See the original post [[https://pensive-wing-...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20210514-pytorch-numerai.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2021-05-14T00:00:00Z","dateModified":"2025-09-21T16:05:22Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"A Simple PyTorch Model for the Numerai Tournament","description":"/This is another one from the archives. It covers how to train a basic PyTorch model for use in the Numerai tournament, at least as it was in May 2021. See the original post [[https://pensive-wing-...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20210514-pytorch-numerai.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2021-05-14T00:00:00Z","dateModified":"2025-09-22T13:13:47Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -73,32 +73,32 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4176929">Background</a>
+<li><a href="#orge85cb0c">Background</a>
 <ul>
-<li><a href="#org15e2a49">Problem Setting</a></li>
+<li><a href="#org73496bf">Problem Setting</a></li>
 </ul>
 </li>
-<li><a href="#org960e6f5">Original <code>fastai</code> model</a>
+<li><a href="#org217bda1">Original <code>fastai</code> model</a>
 <ul>
-<li><a href="#org75414e3">Data Setup</a></li>
-<li><a href="#orge17961b">Model Setup</a></li>
-<li><a href="#org4150cd7">Training Loop</a></li>
-<li><a href="#org1cf7fd3">Summary</a></li>
+<li><a href="#orgeb9ab1c">Data Setup</a></li>
+<li><a href="#org0c009f3">Model Setup</a></li>
+<li><a href="#org4a6d3a7">Training Loop</a></li>
+<li><a href="#org3c5d1bc">Summary</a></li>
 </ul>
 </li>
-<li><a href="#orgb674a0a">A Simple PyTorch Model</a>
+<li><a href="#org3b29b91">A Simple PyTorch Model</a>
 <ul>
-<li><a href="#orga97ebd2">Data Setup</a></li>
-<li><a href="#org61ac1fc">The Model</a></li>
-<li><a href="#orgba07504">The Training Loop</a></li>
-<li><a href="#orge96d665">Train the Model</a></li>
+<li><a href="#orgdaa20af">Data Setup</a></li>
+<li><a href="#orge3f6c30">The Model</a></li>
+<li><a href="#org9101e37">The Training Loop</a></li>
+<li><a href="#org2d9ae82">Train the Model</a></li>
 </ul>
 </li>
-<li><a href="#org42b5f0f">Summary</a></li>
+<li><a href="#org73c1cd9">Summary</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org9aca2a6">
+<div class="preview" id="org074e68a">
 <p>
 <i>This is another one from the archives. It covers how to train a basic PyTorch
 model for use in the Numerai tournament, at least as it was in May 2021. See the original post <a href="https://pensive-wing-19c199.netlify.app/post/mlp-numerai-05082021/">here.</a></i>
@@ -106,9 +106,9 @@ model for use in the Numerai tournament, at least as it was in May 2021. See the
 
 </div>
 
-<div id="outline-container-org4176929" class="outline-2">
-<h2 id="org4176929">Background</h2>
-<div class="outline-text-2" id="text-org4176929">
+<div id="outline-container-orge85cb0c" class="outline-2">
+<h2 id="orge85cb0c">Background</h2>
+<div class="outline-text-2" id="text-orge85cb0c">
 <p>
 This short write up is in pursuit of a personal goal to put more of my work and thoughts to
 paper. I'm sure the topic will still be useful to others, but it's not yet fully developed. It's a
@@ -161,9 +161,9 @@ In this post, I will first briefly show the <code>fastai</code> model I was prev
 a (simpler) model written in PyTorch. I will conclude with some reflections on the process.
 </p>
 </div>
-<div id="outline-container-org15e2a49" class="outline-3">
-<h3 id="org15e2a49">Problem Setting</h3>
-<div class="outline-text-3" id="text-org15e2a49">
+<div id="outline-container-org73496bf" class="outline-3">
+<h3 id="org73496bf">Problem Setting</h3>
+<div class="outline-text-3" id="text-org73496bf">
 <p>
 I won't go into much detail about the Numerai tournament itself &#x2013; the interested reader can learn
 more about it <a href="https://docs.numer.ai/tournament/learn">here</a>. This isn't intended as an introduction to the tournament and I'm not reproducing
@@ -206,7 +206,7 @@ coefficient was 0.859 (the highest possible is 1).
 </p>
 <div class="org-center">
 
-<figure id="org50fd4d7">
+<figure id="orgbb67e22">
 <img src="./figures/20210514-pytorch-numerai/spearman-sim.png" alt="spearman-sim.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>Even when predictions were shuffled within "blocks," high Spearman correlation coefficients were obtained when those blocks were placed in order.</figcaption>
@@ -221,17 +221,17 @@ ordered correctly relative to each other, the Spearman correlation coefficients 
 </div>
 </div>
 
-<div id="outline-container-org960e6f5" class="outline-2">
-<h2 id="org960e6f5">Original <code>fastai</code> model</h2>
-<div class="outline-text-2" id="text-org960e6f5">
+<div id="outline-container-org217bda1" class="outline-2">
+<h2 id="org217bda1">Original <code>fastai</code> model</h2>
+<div class="outline-text-2" id="text-org217bda1">
 <p>
 My original <code>fastai</code> implementation does not differ appreciably from the implementation detailed in
 the official <a href="https://docs.fast.ai/tutorial.tabular.html">fastai Tabular Training tutorial</a>. The components are, briefly:
 </p>
 </div>
-<div id="outline-container-org75414e3" class="outline-3">
-<h3 id="org75414e3">Data Setup</h3>
-<div class="outline-text-3" id="text-org75414e3">
+<div id="outline-container-orgeb9ab1c" class="outline-3">
+<h3 id="orgeb9ab1c">Data Setup</h3>
+<div class="outline-text-3" id="text-orgeb9ab1c">
 <p>
 First, we use the <a href="https://docs.fast.ai/tabular.core.html#TabularPandas">TabularPandas</a> helper to load the data and to generate our <code>DataLoaders</code>. <code>DataLoaders</code>
 provide a convenient wrapper around the training and validation data and facilitate passing batches
@@ -256,9 +256,9 @@ validation examples.
 </div>
 </div>
 
-<div id="outline-container-orge17961b" class="outline-3">
-<h3 id="orge17961b">Model Setup</h3>
-<div class="outline-text-3" id="text-orge17961b">
+<div id="outline-container-org0c009f3" class="outline-3">
+<h3 id="org0c009f3">Model Setup</h3>
+<div class="outline-text-3" id="text-org0c009f3">
 <p>
 We will use a <code>fastai</code> <a href="https://docs.fast.ai/tabular.learner.html#tabular_learner">tabular<sub>learner</sub></a> without much modification and without adjusting many of the
 possible options. As noted above, we're using the MSE loss function. <code>fastai</code> also lets us directly
@@ -276,9 +276,9 @@ each epoch.
 </div>
 </div>
 
-<div id="outline-container-org4150cd7" class="outline-3">
-<h3 id="org4150cd7">Training Loop</h3>
-<div class="outline-text-3" id="text-org4150cd7">
+<div id="outline-container-org4a6d3a7" class="outline-3">
+<h3 id="org4a6d3a7">Training Loop</h3>
+<div class="outline-text-3" id="text-org4a6d3a7">
 <p>
 <code>fastai</code> handles the training loop for us &#x2013; we don't need to write it out manually. Here we say to
 train the model for three epochs and to apply a weight decay (l2 penalty) of 0.1.
@@ -291,9 +291,9 @@ train the model for three epochs and to apply a weight decay (l2 penalty) of 0.1
 </div>
 </div>
 
-<div id="outline-container-org1cf7fd3" class="outline-3">
-<h3 id="org1cf7fd3">Summary</h3>
-<div class="outline-text-3" id="text-org1cf7fd3">
+<div id="outline-container-org3c5d1bc" class="outline-3">
+<h3 id="org3c5d1bc">Summary</h3>
+<div class="outline-text-3" id="text-org3c5d1bc">
 <p>
 Without going into too much detail &#x2013; this is, after all, supposed to be a post about PyTorch, which
 I've scarcely mentioned so far &#x2013; I want to highlight some of the key features and shortcomings of
@@ -320,9 +320,9 @@ lot of the details hidden.
 </div>
 </div>
 
-<div id="outline-container-orgb674a0a" class="outline-2">
-<h2 id="orgb674a0a">A Simple PyTorch Model</h2>
-<div class="outline-text-2" id="text-orgb674a0a">
+<div id="outline-container-org3b29b91" class="outline-2">
+<h2 id="org3b29b91">A Simple PyTorch Model</h2>
+<div class="outline-text-2" id="text-org3b29b91">
 <p>
 In an effort to learn some basic PyTorch, I set out to develop a very simple working model. It
 doesn't have all of the bells and whistles of the fastai model &#x2013; no batchnorm, no dropout, no
@@ -330,9 +330,9 @@ weight decay &#x2013; but it works and it is generally easy to understand what t
 provides a good foundation for further experimentation with more complex architectures.
 </p>
 </div>
-<div id="outline-container-orga97ebd2" class="outline-3">
-<h3 id="orga97ebd2">Data Setup</h3>
-<div class="outline-text-3" id="text-orga97ebd2">
+<div id="outline-container-orgdaa20af" class="outline-3">
+<h3 id="orgdaa20af">Data Setup</h3>
+<div class="outline-text-3" id="text-orgdaa20af">
 <p>
 A common theme throughout this section is that "It takes a bit more code to do <code>____</code> in PyTorch than
 in <code>fastai</code>. Setting up the data is no exception. I mostly followed <a href="https://pytorch.org/tutorials/beginner/basics/data_tutorial.html#preparing-your-data-for-training-with-dataloaders">this guide</a> for setting up the data
@@ -419,9 +419,9 @@ Now our data are ready to go and we can define the model.
 </p>
 </div>
 </div>
-<div id="outline-container-org61ac1fc" class="outline-3">
-<h3 id="org61ac1fc">The Model</h3>
-<div class="outline-text-3" id="text-org61ac1fc">
+<div id="outline-container-orge3f6c30" class="outline-3">
+<h3 id="orge3f6c30">The Model</h3>
+<div class="outline-text-3" id="text-orge3f6c30">
 <p>
 The model has a few separate components &#x2013; a fact that is easy to miss when working with
 <code>fastai</code>. We need to define:
@@ -462,9 +462,9 @@ optimizer can be found <a href="https://pytorch.org/docs/master/generated/torch.
 </p>
 </div>
 </div>
-<div id="outline-container-orgba07504" class="outline-3">
-<h3 id="orgba07504">The Training Loop</h3>
-<div class="outline-text-3" id="text-orgba07504">
+<div id="outline-container-org9101e37" class="outline-3">
+<h3 id="org9101e37">The Training Loop</h3>
+<div class="outline-text-3" id="text-org9101e37">
 <p>
 The training loop represents the part of the implementation where <code>fastai</code> provides the most help. In
 <code>fastai</code>, the whole process is largely automatic. We called <code>learn.fit_one_cycle()</code>, specified the number
@@ -572,9 +572,9 @@ memory constraints.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orge96d665" class="outline-3">
-<h3 id="orge96d665">Train the Model</h3>
-<div class="outline-text-3" id="text-orge96d665">
+<div id="outline-container-org2d9ae82" class="outline-3">
+<h3 id="org2d9ae82">Train the Model</h3>
+<div class="outline-text-3" id="text-org2d9ae82">
 <p>
 We can finally train the model! This part is a simple <code>for</code> loop.
 </p>
@@ -588,9 +588,9 @@ We can finally train the model! This part is a simple <code>for</code> loop.
 </div>
 </div>
 </div>
-<div id="outline-container-org42b5f0f" class="outline-2">
-<h2 id="org42b5f0f">Summary</h2>
-<div class="outline-text-2" id="text-org42b5f0f">
+<div id="outline-container-org73c1cd9" class="outline-2">
+<h2 id="org73c1cd9">Summary</h2>
+<div class="outline-text-2" id="text-org73c1cd9">
 <p>
 I wrote a lot more code to implement a comparatively-simple PyTorch model than to implement the
 <code>fastai</code> model. The PyTorch model forces us to better understand the structure of the model and the
