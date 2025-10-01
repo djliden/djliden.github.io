@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-04-18T00:00:00Z">
-<meta property="article:modified_time" content="2025-09-22T13:13:47Z">
+<meta property="article:modified_time" content="2025-10-01T22:46:52Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Asynchronous Instructor">
 <meta name="twitter:description" content="In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts. I used the Anthropic Haiku model. Using the instructor library with the asynchr...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Asynchronous Instructor","description":"In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts. I used the Anthropic Haiku model. Using the instructor library with the asynchr...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240418-instructor-async.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-18T00:00:00Z","dateModified":"2025-09-22T13:13:47Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Asynchronous Instructor","description":"In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts. I used the Anthropic Haiku model. Using the instructor library with the asynchr...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240418-instructor-async.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-18T00:00:00Z","dateModified":"2025-10-01T22:46:52Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -73,20 +73,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga609a51">Asynchronous usage pattern for Instructor</a>
+<li><a href="#orga0b6670">Asynchronous usage pattern for Instructor</a>
 <ul>
-<li><a href="#org7343a93">Setup</a></li>
-<li><a href="#orgda74a53">Iterate throught the objects</a></li>
+<li><a href="#org2a8ba6a">Setup</a></li>
+<li><a href="#org8bf289b">Iterate throught the objects</a></li>
 </ul>
 </li>
-<li><a href="#orgf24dc87">Related Notes</a></li>
+<li><a href="#orgcd6ae50">Related Notes</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orga609a51" class="outline-2">
-<h2 id="orga609a51">Asynchronous usage pattern for Instructor</h2>
-<div class="outline-text-2" id="text-orga609a51">
-<div class="preview" id="orga5f5123">
+<div id="outline-container-orga0b6670" class="outline-2">
+<h2 id="orga0b6670">Asynchronous usage pattern for Instructor</h2>
+<div class="outline-text-2" id="text-orga0b6670">
+<div class="preview" id="org21d7a7c">
 <p>
 In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts.
 </p>
@@ -105,9 +105,9 @@ Using the instructor library with the asynchronous Anthropic client makes it muc
 </p>
 </div>
 
-<div id="outline-container-org7343a93" class="outline-3">
-<h3 id="org7343a93">Setup</h3>
-<div class="outline-text-3" id="text-org7343a93">
+<div id="outline-container-org2a8ba6a" class="outline-3">
+<h3 id="org2a8ba6a">Setup</h3>
+<div class="outline-text-3" id="text-org2a8ba6a">
 <p>
 First, we set up the Anthropic async client with Instructor. We also set up the Pydantic schema we'll be using for structured extraction.
 </p>
@@ -143,9 +143,9 @@ First, we set up the Anthropic async client with Instructor. We also set up the 
 </div>
 </div>
 </div>
-<div id="outline-container-orgda74a53" class="outline-3">
-<h3 id="orgda74a53">Iterate throught the objects</h3>
-<div class="outline-text-3" id="text-orgda74a53">
+<div id="outline-container-org8bf289b" class="outline-3">
+<h3 id="org8bf289b">Iterate throught the objects</h3>
+<div class="outline-text-3" id="text-org8bf289b">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> asyncio
 <span class="org-keyword">import</span> time
@@ -236,9 +236,9 @@ In this code, we:
 </div>
 </div>
 </div>
-<div id="outline-container-orgf24dc87" class="outline-2">
-<h2 id="orgf24dc87">Related Notes</h2>
-<div class="outline-text-2" id="text-orgf24dc87">
+<div id="outline-container-orgcd6ae50" class="outline-2">
+<h2 id="orgcd6ae50">Related Notes</h2>
+<div class="outline-text-2" id="text-orgcd6ae50">
 <ul class="org-ul">
 <li><a href="20240403-dbrx-instructor.html">Use Instructor with DBRX</a></li>
 </ul>

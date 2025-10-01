@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Using MLflow's MCP Server for Conversational Trace Analysis</title>
+<meta name="description" content="A hands-on exploration of MLflow's new Model Context Protocol server that enables AI assistants to interact with MLflow traces, with setup tips for virtual environments and examples in both Claude Desktop and Claude Code." />
+<meta name="keywords" content="mlflow, model context protocol, mcp server, mlflow traces, claude desktop, claude code, ai observability" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
+<script src="/admonitions.js" defer></script>
+<link rel="canonical" href="https://danliden.com/posts/20251001-mlflow-mcp-server.html">
+<meta name="author" content="Daniel Liden">
+<meta property="og:url" content="https://danliden.com/posts/20251001-mlflow-mcp-server.html">
+<meta property="og:title" content="Using MLflow&#39;s MCP Server for Conversational Trace Analysis">
+<meta property="og:description" content="A hands-on exploration of MLflow&#39;s new Model Context Protocol server that enables AI assistants to interact with MLflow traces, with setup tips for virtual environments and examples in both Claude ...">
+<meta property="og:site_name" content="Daniel Liden">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-10-01T00:00:00Z">
+<meta property="article:modified_time" content="2025-10-01T22:46:52Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Using MLflow&#39;s MCP Server for Conversational Trace Analysis">
+<meta name="twitter:description" content="A hands-on exploration of MLflow&#39;s new Model Context Protocol server that enables AI assistants to interact with MLflow traces, with setup tips for virtual environments and examples in both Claude ...">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using MLflow's MCP Server for Conversational Trace Analysis","description":"A hands-on exploration of MLflow's new Model Context Protocol server that enables AI assistants to interact with MLflow traces, with setup tips for virtual environments and examples in both Claude ...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20251001-mlflow-mcp-server.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-10-01T00:00:00Z","dateModified":"2025-10-01T22:46:52Z","keywords":"mlflow, model context protocol, mcp server, mlflow traces, claude desktop, claude code, ai observability"}</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<hr class="topnav-rule">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <nav class="topnav-links" aria-label="Primary">
+    <a href="/archive.html">Blog</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/about.html">About Me</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/photos.html">Photos</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notebooks/">Notebooks</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a href="/notes.html">Notes</a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
+      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
+        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
+        <circle cx="6" cy="18" r="2"/>
+      </svg>
+    </a>
+    <span class="topnav-divider" aria-hidden="true">/</span>
+    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+<hr class="topnav-rule">
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Using MLflow's MCP Server for Conversational Trace Analysis</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgc239905">Introduction: MCP Server for MLflow Traces</a></li>
+<li><a href="#org071f9f8">MLflow Tracing Setup</a>
+<ul>
+<li><a href="#org2d95fc3">Setting up MLflow</a></li>
+<li><a href="#org0960b19">Generating some Trace Data to Explore</a></li>
+</ul>
+</li>
+<li><a href="#orgebeca36">Using the MLflow MCP Server</a>
+<ul>
+<li><a href="#org7c83deb">Claude Desktop</a></li>
+<li><a href="#orga5a96c6">Claude Code</a></li>
+</ul>
+</li>
+<li><a href="#orgb9bb620">Next Steps and Observations</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview" id="org076c53d">
+<p>
+MLflow 3.4 introduced an official MCP server that lets AI assistants like Claude interact directly with your MLflow traces. This post explores how to set it up when MLflow is installed in a virtual environment, and demonstrates practical usage with both Claude Desktop and Claude Code for debugging and analyzing GenAI application traces.
+</p>
+
+</div>
+
+<div id="outline-container-orgc239905" class="outline-2">
+<h2 id="orgc239905">Introduction: MCP Server for MLflow Traces</h2>
+<div class="outline-text-2" id="text-orgc239905">
+<p>
+<a href="https://mlflow.org/docs/latest/genai/tracing/">MLflow tracing</a> is a powerful AI observability tool that enables you to capture all of the inputs, outputs, and metadata associated with every step of an AI model or Agent execution chain. It works with many different providers, such as OpenAI, Anthropic, LangChain, and LlamaIndex via a single line of code. Tracing provides granular insight into the entire execution chain of AI applications, including tool calls, retrievals, AI responses, any anything else you might want to include.
+</p>
+
+
+<figure id="org914778a">
+<img src="./figures/20251001-mlflow-mcp/1_trace.png" alt="1_trace.png">
+
+</figure>
+
+
+<p>
+But capturing the traces is just the first step: once we have all of the trace data, we need to <i>use</i> it to make our AI applications better. In addition to its existing sophisticated <a href="https://mlflow.org/docs/latest/genai/eval-monitor/">evaluation</a> functionality, which enables us to add human, AI, and programmatic assessments to traces, MLflow 3.4 introduced an <a href="https://mlflow.org/docs/latest/genai/mcp/">MLflow MCP server</a> to give AI applications like Claude Desktop and code assistants like Cursor the ability to interact with traces.
+</p>
+
+<div class="note" id="orgd30615e">
+<p>
+If you're just learning about MCP servers for the first time, take a look at my Getting Started with Model Context Protocol posts: <a href="https://www.danliden.com/posts/20250412-mcp-quickstart.html">part 1</a>, <a href="https://www.danliden.com/posts/20250921-mcp-prompts-resources.html">part 2</a>.
+</p>
+
+</div>
+
+<p>
+The MCP server lets these tools search and analyze trace data, log feedback, manage metadata, and delete traces and assessments.
+</p>
+
+<p>
+In the remainder of this post, we will see how to configure and use the MCP server.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org071f9f8" class="outline-2">
+<h2 id="org071f9f8">MLflow Tracing Setup</h2>
+<div class="outline-text-2" id="text-org071f9f8">
+</div>
+<div id="outline-container-org2d95fc3" class="outline-3">
+<h3 id="org2d95fc3">Setting up MLflow</h3>
+<div class="outline-text-3" id="text-org2d95fc3">
+<p>
+In this example, we will install MLflow with the <a href="https://astral.sh/blog/uv">uv</a> package manager. We will install it locally, in a virtual environment, and then use the MCP server to search and analyze traces saved to our local MLflow server.
+</p>
+
+<p>
+First, create a new directory for this example and install MLflow. We will also install a few additional project dependencies.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">uv add mlflow openai beautifulsoup4 requests python-dotenv <span class="org-string">'click&gt;=7.0,&lt;8.3.0'</span>
+</pre>
+</div>
+
+<div class="warning" id="org15910d9">
+<p>
+Currently, the MLflow MCP server does not work correctly with <code>click</code> version 8.3.0, so we need to manually specify a different version to use. This is a <a href="https://github.com/mlflow/mlflow/pull/17821">known issue</a> and will be resolved in a future MLflow release.
+</p>
+
+</div>
+
+<p>
+We will be querying OpenAI models to create some example trace data, so we need to make sure the OpenAI client can access our OpenAI API key. To do so, create a file called <code>.env</code> with the following:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-:name">#.env
+OPENAI_API_KEY=&lt;your_openai_key&gt;
+</pre>
+</div>
+
+<p>
+Now you can start the MLflow tracking server and access the UI, where we will view our traces, with <code>mlflow ui</code>. You can learn more about configuring the MLflow tracking server <a href="https://mlflow.org/docs/latest/ml/tracking/server/">here</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-org0960b19" class="outline-3">
+<h3 id="org0960b19">Generating some Trace Data to Explore</h3>
+<div class="outline-text-3" id="text-org0960b19">
+<div class="tip" id="org23cb62a">
+<p>
+If you already have trace data you want to explore, you can skip this section!
+</p>
+
+</div>
+
+<p>
+In order to demonstrate how the MLflow MCP server lets AI tools work with trace data, we first need to create some trace data. We will create three different example traces: one where a simple query to an OpenAI model fails, one where it succeeds, and one that includes an additional step: retrieving text from a web page.
+</p>
+
+<p>
+First, let's import our dependencies and handle a few other setup steps:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">import</span> mlflow
+<span class="org-keyword">from</span> openai <span class="org-keyword">import</span> OpenAI
+<span class="org-keyword">import</span> requests
+<span class="org-keyword">from</span> bs4 <span class="org-keyword">import</span> BeautifulSoup
+<span class="org-keyword">import</span> os
+<span class="org-keyword">from</span> dotenv <span class="org-keyword">import</span> load_dotenv
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Load environment variables
+</span>load_dotenv()
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Set up an MLflow experiment
+</span><span class="org-variable-name">experiment_name</span> <span class="org-operator">=</span> <span class="org-string">"mcp-server-demo"</span>
+mlflow.set_experiment(experiment_name)
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Enable OpenAI autologging to capture traces
+</span>mlflow.openai.autolog()
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Initialize OpenAI client
+</span><span class="org-variable-name">client</span> <span class="org-operator">=</span> OpenAI(api_key<span class="org-operator">=</span>os.getenv(<span class="org-string">"OPENAI_API_KEY"</span>))
+</pre>
+</div>
+
+<p>
+Running the code block above will create a new MLflow experiment called <code>mcp-server-demo</code> where our traces will be logged. It also loads the OpenAI API key from the <code>.env</code> file we created earlier and sets up the OpenAI client. We're now ready to query OpenAI models and log some traces!
+</p>
+
+<p>
+<b>Example trace 1: Failed API Call</b>
+</p>
+
+<p>
+MLflow tracing captures detailed error information that can be very useful for debugging AI application failures. Here, we'll attempt to call an OpenAI model that does not exist, resulting in an error:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">response</span> <span class="org-operator">=</span> client.chat.completions.create(
+    model<span class="org-operator">=</span><span class="org-string">"gpt-nonexistent-model"</span>,  <span class="org-comment-delimiter"># </span><span class="org-comment">Invalid model name
+</span>    messages<span class="org-operator">=</span>[{<span class="org-string">"role"</span>: <span class="org-string">"user"</span>, <span class="org-string">"content"</span>: <span class="org-string">"Hello, world!"</span>}],
+    max_tokens<span class="org-operator">=</span>50
+)
+</pre>
+</div>
+
+<p>
+<b>Example trace 2: Simple successful API call</b>
+</p>
+
+<p>
+Our second example will similarly be a single call to an OpenAI model—this time, to a model that actually exists.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">response</span> <span class="org-operator">=</span> client.chat.completions.create(
+    model<span class="org-operator">=</span><span class="org-string">"gpt-5"</span>,
+    messages<span class="org-operator">=</span>[{<span class="org-string">"role"</span>: <span class="org-string">"user"</span>, <span class="org-string">"content"</span>: <span class="org-string">"Explain what MLflow is in one sentence."</span>}]
+)
+</pre>
+</div>
+
+<p>
+<b>Example trace 3: multi-step retrieval process</b>
+</p>
+
+<p>
+Our third example is more substantial. We will create a small script defining a workflow that extracts the text from a webpage and passes it to GPT-5 for summarization. We use the <code>@mlflow.trace()</code> decorator to manually trace the webpage scraping function, and we wrap the whole process in a parent span so the traces for both the web scraping and the OpenAI completion are captured under one parent span.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-type">@mlflow.trace</span>(name<span class="org-operator">=</span><span class="org-string">"scrape_webpage"</span>, span_type<span class="org-operator">=</span><span class="org-string">"RETRIEVER"</span>)
+<span class="org-keyword">def</span> <span class="org-function-name">scrape_webpage</span>(url: <span class="org-builtin">str</span>) <span class="org-operator">-&gt;</span> <span class="org-builtin">dict</span>:
+    <span class="org-doc">"""Scrape content from a webpage - creates a nested span."""</span>
+    <span class="org-variable-name">response</span> <span class="org-operator">=</span> requests.get(url, timeout<span class="org-operator">=</span>10)
+    response.raise_for_status()
+    
+    <span class="org-variable-name">soup</span> <span class="org-operator">=</span> BeautifulSoup(response.content, <span class="org-string">'html.parser'</span>)
+    
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Extract title and paragraphs
+</span>    <span class="org-variable-name">title</span> <span class="org-operator">=</span> soup.find(<span class="org-string">'title'</span>)
+    <span class="org-variable-name">title_text</span> <span class="org-operator">=</span> title.get_text().strip() <span class="org-keyword">if</span> title <span class="org-keyword">else</span> <span class="org-string">"No title found"</span>
+    
+    <span class="org-variable-name">paragraphs</span> <span class="org-operator">=</span> soup.find_all(<span class="org-string">'p'</span>)
+    <span class="org-variable-name">content</span> <span class="org-operator">=</span> <span class="org-string">' '</span>.join([p.get_text().strip() <span class="org-keyword">for</span> p <span class="org-keyword">in</span> paragraphs[:5]])  <span class="org-comment-delimiter"># </span><span class="org-comment">First 5 paragraphs
+</span>    
+    <span class="org-keyword">return</span> {
+        <span class="org-string">"title"</span>: title_text,
+        <span class="org-string">"content"</span>: content[:1000],  <span class="org-comment-delimiter"># </span><span class="org-comment">Limit content length
+</span>        <span class="org-string">"url"</span>: url,
+        <span class="org-string">"status_code"</span>: response.status_code
+    }
+
+<span class="org-keyword">def</span> <span class="org-function-name">summarize_content</span>(content: <span class="org-builtin">str</span>) <span class="org-operator">-&gt;</span> <span class="org-builtin">str</span>:
+    <span class="org-doc">"""Summarize content using OpenAI - creates nested span within main trace."""</span>
+    <span class="org-variable-name">prompt</span> <span class="org-operator">=</span> f<span class="org-string">"Summarize the following content:</span><span class="org-constant">\n\n</span>{content}<span class="org-string">"</span>
+    
+    <span class="org-comment-delimiter"># </span><span class="org-comment">This OpenAI call will be automatically traced due to autologging
+</span>    <span class="org-variable-name">response</span> <span class="org-operator">=</span> client.chat.completions.create(
+        model<span class="org-operator">=</span><span class="org-string">"gpt-5"</span>,
+        messages<span class="org-operator">=</span>[{<span class="org-string">"role"</span>: <span class="org-string">"user"</span>, <span class="org-string">"content"</span>: prompt}],
+    )
+    
+    <span class="org-keyword">return</span> response.choices[0].message.content
+
+<span class="org-keyword">def</span> <span class="org-function-name">multi_step_retrieval_process</span>(url: <span class="org-builtin">str</span>) <span class="org-operator">-&gt;</span> <span class="org-builtin">dict</span>:
+    <span class="org-doc">"""Complete retrieval and summarization pipeline with nested spans."""</span>
+
+    <span class="org-keyword">with</span> mlflow.start_span(name<span class="org-operator">=</span><span class="org-string">"summarize_content"</span>, span_type<span class="org-operator">=</span><span class="org-string">"CHAIN"</span>) <span class="org-keyword">as</span> parent_span:
+        parent_span.set_inputs(url)
+        <span class="org-variable-name">scraped_data</span> <span class="org-operator">=</span> scrape_webpage(url)
+        <span class="org-variable-name">summary</span> <span class="org-operator">=</span> summarize_content(scraped_data[<span class="org-string">"content"</span>])
+        parent_span.set_outputs(summary)
+    
+    <span class="org-keyword">return</span> {
+        <span class="org-string">"url"</span>: url,
+        <span class="org-string">"title"</span>: scraped_data[<span class="org-string">"title"</span>],
+        <span class="org-string">"content_length"</span>: <span class="org-builtin">len</span>(scraped_data[<span class="org-string">"content"</span>]),
+        <span class="org-string">"summary"</span>: summary
+    }
+</pre>
+</div>
+
+<p>
+Now let's invoke this retrieval and summarization workflow:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-variable-name">url</span> <span class="org-operator">=</span> <span class="org-string">"https://mlflow.org/docs/latest/genai/mcp/"</span>
+<span class="org-variable-name">result</span> <span class="org-operator">=</span> multi_step_retrieval_process(url)
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Print experiment ID for use with Claude
+</span><span class="org-variable-name">experiment</span> <span class="org-operator">=</span> mlflow.get_experiment_by_name(experiment_name)
+<span class="org-builtin">print</span>(f<span class="org-string">"</span><span class="org-constant">\n</span><span class="org-string">Successfully generated traces in experiment: </span>{experiment.name}<span class="org-string">"</span>)
+<span class="org-builtin">print</span>(f<span class="org-string">"Use this Experiment ID with Claude: </span>{experiment.experiment_id}<span class="org-string">"</span>)
+</pre>
+</div>
+
+<p>
+Save all the Python code from this section into a file (e.g., <code>generate_traces.py</code>) and run it with <code>uv run python generate_traces.py</code>, or run the code cells in a Jupyter notebook. The script will print your experiment ID, which you'll need for the Claude examples below.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgebeca36" class="outline-2">
+<h2 id="orgebeca36">Using the MLflow MCP Server</h2>
+<div class="outline-text-2" id="text-orgebeca36">
+<p>
+Now that we have set up MLflow and generated some sample traces, let's explore them with the help of AI models! We will show how to do this with with Claude Desktop and Claude Code.
+</p>
+</div>
+<div id="outline-container-org7c83deb" class="outline-3">
+<h3 id="org7c83deb">Claude Desktop</h3>
+<div class="outline-text-3" id="text-org7c83deb">
+<p>
+You can connect the MLflow MCP server with Claude Desktop as follows:
+</p>
+
+<ol class="org-ol">
+<li><b><a href="https://claude.ai/download">Download and install the Claude Desktop app</a></b></li>
+<li><p>
+From the <b>Settings</b> menu, click <b>Developer</b> and then <b>Edit Config</b>:
+</p>
+
+
+<figure id="orgbb5a830">
+<img src="./figures/20251001-mlflow-mcp/2_claude_settings.png" alt="2_claude_settings.png">
+
+</figure>
+
+<p>
+This will open a directory with various Claude application and configuration files. Open (or create) the one called <code>claude_desktop_config.json</code>.
+</p></li>
+<li><p>
+<b>Copy the following</b> into <code>claude_desktop_config.json</code>,  replacing the project directory and tracking uri with those corresponding to your project:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-json">{
+    "mcpServers": {
+        "mlflow-mcp": {
+            "command": "uv",
+            "args": ["run", "--directory", "&lt;path-to-your-project-directory&gt;",
+                     "mlflow", "mcp", "run"],
+            "env": {
+                "MLFLOW_TRACKING_URI": "http://127.0.0.1:5000"
+            }
+        }
+    }
+}
+</pre>
+</div>
+
+<div class="caution" id="org6654785">
+<p>
+If the MCP server fails to connect, you may need to use the full path to the <code>uv</code> executable instead of just <code>"uv"</code> for the <code>command</code> value. The conditions when this is necessary vary by system configuration. To find the full path, run <code>which uv</code> in your terminal (e.g., <code>/Users/username/.cargo/bin/uv</code>).
+</p>
+
+</div>
+
+<p>
+There are a few things here worth calling out, including some key differences from the configuration in the <a href="https://mlflow.org/docs/latest/genai/mcp/">official docs</a>:
+</p>
+<ul class="org-ul">
+<li>Because we installed MLflow in a virtual environment with <code>uv</code>, we need to make sure to call the MLflow MCP server using the correct MLflow installation. We use the <code>--directory</code> flag to specify that <code>uv</code> should run the <code>mlflow</code> executable installed to the virtual environment in our project directory. If you have MLflow installed globally, you can refer to the configuration in the <a href="https://mlflow.org/docs/latest/genai/mcp/#set-up">official docs</a> instead.</li>
+<li>If your MLflow tracking URI is running on a non-default host/port, you will need to change the <code>MLFLOW_TRACKING_URI</code> value.</li>
+</ul></li>
+<li><p>
+<b>Restart Claude Desktop.</b> After restarting, you should see that <code>mlflow-mcp</code> appears in the Claude Desktop connections menu:
+</p>
+
+
+<figure id="orgc6ba5eb">
+<img src="./figures/20251001-mlflow-mcp/3_claude_connections.png" alt="3_claude_connections.png">
+
+</figure></li>
+<li><p>
+<b>Try it out!</b>
+</p>
+
+<p>
+Let's ask Claude to identify and diagnose traces with errors.
+</p>
+
+<div class="tip" id="orgc1d2767">
+<p>
+When asking Claude to work with traces, you will need to specify your experiment ID. Claude cannot infer the experiment ID. If you ran the trace generation code above, the experiment ID was printed to the console. You can also find it in the MLflow UI by navigating to the <code>experiments</code> tab, clicking the experiment to which you logged your traces, and then clicking the information icon (an <code>i</code> in a circle) next to the experiment name. Alternatively, you can add an <code>MLFLOW_EXPERIMENT_ID</code> environment variable to the MCP server configuration to specify a default experiment.
+</p>
+
+</div>
+
+<p>
+I asked the following:
+</p>
+
+<blockquote>
+<p>
+Please analyze and diagnose the most recent trace that resulted in an error in experiment 697822894089422973.
+</p>
+</blockquote>
+
+<p>
+Claude called the <code>Search traces</code> and <code>get trace</code> functions to identify the relevant trace, and then responded with a diagnosis of the issue and suggested next steps:
+</p>
+
+
+<figure id="orgf34cfb3">
+<img src="./figures/20251001-mlflow-mcp/4_claude_result.png" alt="4_claude_result.png">
+
+</figure></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orga5a96c6" class="outline-3">
+<h3 id="orga5a96c6">Claude Code</h3>
+<div class="outline-text-3" id="text-orga5a96c6">
+<p>
+Configuring the MLflow MCP server to work with Claude Code is almost identical to configuring it for Claude Desktop. We just need to add the JSON configuration to a different file (<code>.mcp.json</code> in your project root directory). You can follow these steps to get started:
+</p>
+<ol class="org-ol">
+<li><b><a href="https://www.claude.com/product/claude-code">Install Claude Code</a></b></li>
+<li><p>
+<b>Copy the configuration JSON snippet</b> from the prior section into <code>.mcp.json</code> in your project's root directory, creating the file if necessary.
+</p>
+
+<div class="tip" id="org3bc2bc3">
+<p>
+This is one of several different ways to add MCP servers to Claude Code. See the <a href="https://docs.claude.com/en/docs/claude-code/mcp">Claude Code docs</a> for more options.
+</p>
+
+</div></li>
+<li><b>Run Claude Code</b> by calling <code>claude</code> from your project's root directory.</li>
+<li><p>
+<b>Try it out!</b> Let's ask Claude to find the trace with a retrieval step and assess whether it worked.
+</p>
+
+<blockquote>
+<p>
+Look at the traces in experiment 697822894089422973. Find the most recent one that had a retrieval component and tell me what was retrieved and whether the retrieval was successful.
+</p>
+</blockquote></li>
+</ol>
+
+
+
+<figure id="org2d492f1">
+<img src="./figures/20251001-mlflow-mcp/5_claude_code_result.png" alt="5_claude_code_result.png">
+
+</figure>
+
+<p>
+Claude code was able to identify the relevant trace and answer the question using the tools available through the MCP server.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb9bb620" class="outline-2">
+<h2 id="orgb9bb620">Next Steps and Observations</h2>
+<div class="outline-text-2" id="text-orgb9bb620">
+<p>
+There's something satisfying about using AI to debug AI. The MLflow MCP server closes the loop between capturing traces and actually using them: your AI assistant can now help you understand why your other AI assistant failed.
+</p>
+
+<p>
+The <a href="https://mlflow.org/docs/latest/genai/mcp/#use-cases-and-examples">MLflow docs</a> suggest some use cases, but the real value comes from exploring your own patterns:
+</p>
+<ul class="org-ul">
+<li>Ask Claude to compare successful vs. failed traces to identify common failure modes</li>
+<li>Have it search for traces with specific token usage patterns when you're trying to optimize costs</li>
+<li>Use it to find traces where retrieval returned irrelevant content, then iterate on your chunking strategy</li>
+<li>Let it spot when certain model configurations consistently produce better results</li>
+<li>Give Claude Code access to both your agent code and its traces so it can review failures, suggest fixes, and help you iterate without leaving your editor</li>
+</ul>
+
+<p>
+The setup takes five minutes, but once configured, your trace data becomes something you can have a conversation with instead of handcrafting search queries or digging through the UI.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2025-10-01 Wed 00:00</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+</div>
+</body>
+</html>
