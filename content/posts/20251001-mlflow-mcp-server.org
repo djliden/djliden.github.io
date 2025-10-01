@@ -11,6 +11,7 @@ MLflow 3.4 introduced an official MCP server that lets AI assistants like Claude
 * Introduction: MCP Server for MLflow Traces
 [[https://mlflow.org/docs/latest/genai/tracing/][MLflow tracing]] is a powerful AI observability tool that enables you to capture all of the inputs, outputs, and metadata associated with every step of an AI model or Agent execution chain. It works with many different providers, such as OpenAI, Anthropic, LangChain, and LlamaIndex via a single line of code. Tracing provides granular insight into the entire execution chain of AI applications, including tool calls, retrievals, AI responses, any anything else you might want to include.
 
+#+CAPTION: Example MLflow trace showing nested spans in the MLflow UI
 [[./figures/20251001-mlflow-mcp/1_trace.png]]
 
 
@@ -182,7 +183,8 @@ You can connect the MLflow MCP server with Claude Desktop as follows:
 
 1. *[[https://claude.ai/download][Download and install the Claude Desktop app]]*
 2. From the *Settings* menu, click *Developer* and then *Edit Config*:
-   
+
+    #+CAPTION: Claude Desktop settings showing the Developer menu
     [[./figures/20251001-mlflow-mcp/2_claude_settings.png]]
 
     This will open a directory with various Claude application and configuration files. Open (or create) the one called ~claude_desktop_config.json~.
@@ -211,7 +213,8 @@ You can connect the MLflow MCP server with Claude Desktop as follows:
    - Because we installed MLflow in a virtual environment with ~uv~, we need to make sure to call the MLflow MCP server using the correct MLflow installation. We use the ~--directory~ flag to specify that ~uv~ should run the ~mlflow~ executable installed to the virtual environment in our project directory. If you have MLflow installed globally, you can refer to the configuration in the [[https://mlflow.org/docs/latest/genai/mcp/#set-up][official docs]] instead.
    - If your MLflow tracking URI is running on a non-default host/port, you will need to change the ~MLFLOW_TRACKING_URI~ value.
 4. *Restart Claude Desktop.* After restarting, you should see that ~mlflow-mcp~ appears in the Claude Desktop connections menu:
-     
+
+    #+CAPTION: MLflow MCP server appearing in Claude Desktop connections
     [[./figures/20251001-mlflow-mcp/3_claude_connections.png]]
 5. *Try it out!*
 
@@ -229,6 +232,7 @@ You can connect the MLflow MCP server with Claude Desktop as follows:
     
    Claude called the ~Search traces~ and ~get trace~ functions to identify the relevant trace, and then responded with a diagnosis of the issue and suggested next steps:
 
+    #+CAPTION: Claude Desktop analyzing a failed trace and providing diagnostic information
     [[./figures/20251001-mlflow-mcp/4_claude_result.png]]
 ** Claude Code
 Configuring the MLflow MCP server to work with Claude Code is almost identical to configuring it for Claude Desktop. We just need to add the JSON configuration to a different file (~.mcp.json~ in your project root directory). You can follow these steps to get started:
@@ -245,7 +249,7 @@ Configuring the MLflow MCP server to work with Claude Code is almost identical t
 Look at the traces in experiment 697822894089422973. Find the most recent one that had a retrieval component and tell me what was retrieved and whether the retrieval was successful.
    #+end_quote
 
-   
+    #+CAPTION: Claude Code analyzing a trace with retrieval and reporting results
     [[./figures/20251001-mlflow-mcp/5_claude_code_result.png]]
 
     Claude code was able to identify the relevant trace and answer the question using the tools available through the MCP server.
