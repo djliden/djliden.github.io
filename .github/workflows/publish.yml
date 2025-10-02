@@ -13,16 +13,23 @@ jobs:
       - name: Check out
         uses: actions/checkout@v1
 
-      - name: Build and Install Emacs
+      - name: Install Emacs
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libncurses-dev gnutls-bin
-          wget https://ftp.gnu.org/pub/gnu/emacs/emacs-29.3.tar.xz
-          tar xvf emacs-29.3.tar.xz
-          cd emacs-29.3
-          ./configure --without-x --with-modules --with-gnutls=ifavailable
-          make -j$(nproc)
-          sudo make install
+          sudo apt-get install -y emacs-nox
+
+      # OLD APPROACH: Build from source (takes 30+ minutes)
+      # Uncomment if emacs-nox version is incompatible
+      # - name: Build and Install Emacs
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y build-essential libncurses-dev gnutls-bin
+      #     wget https://ftp.gnu.org/pub/gnu/emacs/emacs-29.3.tar.xz
+      #     tar xvf emacs-29.3.tar.xz
+      #     cd emacs-29.3
+      #     ./configure --without-x --with-modules --with-gnutls=ifavailable
+      #     make -j$(nproc)
+      #     sudo make install
 
       - name: Build the site and Publish to GitHub Pages
         run: |
