@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-04-05T00:00:00Z">
-<meta property="article:modified_time" content="2025-10-01T22:57:21Z">
+<meta property="article:modified_time" content="2025-10-02T14:22:16Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Intro to QLoRA">
 <meta name="twitter:description" content="I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA a...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Intro to QLoRA","description":"I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA a...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240405-qlora-hf.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-05T00:00:00Z","dateModified":"2025-10-01T22:57:21Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Intro to QLoRA","description":"I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA a...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240405-qlora-hf.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-05T00:00:00Z","dateModified":"2025-10-02T14:22:16Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -73,18 +73,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgfbea5fc">1. Intro to Quantization</a>
+<li><a href="#orgfd2652c">1. Intro to Quantization</a>
 <ul>
-<li><a href="#org946d9a3">Common data types used in ML</a></li>
-<li><a href="#orge2b523c">Different types in training and inference</a></li>
-<li><a href="#org6b584ab">The FP8 Format</a></li>
+<li><a href="#org23e6546">Common data types used in ML</a></li>
+<li><a href="#org7762fde">Different types in training and inference</a></li>
+<li><a href="#orgeacaeba">The FP8 Format</a></li>
 </ul>
 </li>
-<li><a href="#org97315da">QLoRA Paper Overview</a></li>
+<li><a href="#org5f9d297">QLoRA Paper Overview</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgfc93980">
+<div class="preview" id="org817d231">
 <p>
 I have a basic understanding of what QLoRA is, but given its popularity and apparent success, I am not nearly familiar enough with it. These are my notes on the Hugging Face blog post about QLoRA and quantization. Later, I will also make a note with some examples.
 </p>
@@ -95,9 +95,9 @@ I have a basic understanding of what QLoRA is, but given its popularity and appa
 Link: <a href="https://huggingface.co/blog/4bit-transformers-bitsandbytes">Making LLMs even more accessible with bitsandbytes, 4-bit quantization and QLoRA</a>
 </p>
 
-<div id="outline-container-orgfbea5fc" class="outline-2">
-<h2 id="orgfbea5fc">1. Intro to Quantization</h2>
-<div class="outline-text-2" id="text-orgfbea5fc">
+<div id="outline-container-orgfd2652c" class="outline-2">
+<h2 id="orgfd2652c">1. Intro to Quantization</h2>
+<div class="outline-text-2" id="text-orgfd2652c">
 <p>
 The post recommends reading the intro to <a href="https://huggingface.co/blog/hf-bitsandbytes-integration">this post</a> first for some background on quantization. Key points:
 </p>
@@ -107,9 +107,9 @@ The post recommends reading the intro to <a href="https://huggingface.co/blog/hf
 <li>int8 inference doesn't appear to significantly degrade model performance.</li>
 </ul>
 </div>
-<div id="outline-container-org946d9a3" class="outline-3">
-<h3 id="org946d9a3">Common data types used in ML</h3>
-<div class="outline-text-3" id="text-org946d9a3">
+<div id="outline-container-org23e6546" class="outline-3">
+<h3 id="org23e6546">Common data types used in ML</h3>
+<div class="outline-text-3" id="text-org23e6546">
 <p>
 The size of a model is determined by the number of its parameters <i>and their precision</i>. Common types include:
 </p>
@@ -144,9 +144,9 @@ The size of a model is determined by the number of its parameters <i>and their p
 </ul>
 </div>
 </div>
-<div id="outline-container-orge2b523c" class="outline-3">
-<h3 id="orge2b523c">Different types in training and inference</h3>
-<div class="outline-text-3" id="text-orge2b523c">
+<div id="outline-container-org7762fde" class="outline-3">
+<h3 id="org7762fde">Different types in training and inference</h3>
+<div class="outline-text-3" id="text-org7762fde">
 <p>
 "Ideally" we should use FP32 for training and inference. But it is two times slower than half precision. So a mixed-precision approach is preferred. Weights are held in FP32 as a precise "main weights" reference. Computation in the forward/backward pass are done in fp16/bf16 to improve training speed. The fp16/bf16 gradients are used to update the fp32 weights.
 </p>
@@ -155,7 +155,7 @@ The size of a model is determined by the number of its parameters <i>and their p
 During inference, there's no real need for the full-precision weights.
 </p>
 
-<div class="question" id="orgac9a81e">
+<div class="question" id="org8dfeb78">
 <p>
 What happens when I load a model in bf16 and then train it? Is that still mixed precision? Or is bf16 the reference copy in that case?
 </p>
@@ -163,18 +163,18 @@ What happens when I load a model in bf16 and then train it? Is that still mixed 
 </div>
 </div>
 </div>
-<div id="outline-container-org6b584ab" class="outline-3">
-<h3 id="org6b584ab">The FP8 Format</h3>
-<div class="outline-text-3" id="text-org6b584ab">
+<div id="outline-container-orgeacaeba" class="outline-3">
+<h3 id="orgeacaeba">The FP8 Format</h3>
+<div class="outline-text-3" id="text-orgeacaeba">
 <p>
 The FP8 format has two formats: E4M3 and E5M2 (where E=exponent, M=mantissa). E4M3 (higher precision, smaller range) is best suited for the forward pass, while E5M2 (lower precision, higher range) is better suited for the backward pass.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org97315da" class="outline-2">
-<h2 id="org97315da">QLoRA Paper Overview</h2>
-<div class="outline-text-2" id="text-org97315da">
+<div id="outline-container-org5f9d297" class="outline-2">
+<h2 id="org5f9d297">QLoRA Paper Overview</h2>
+<div class="outline-text-2" id="text-org5f9d297">
 <p>
 QLoRA reduces the memory usage of LLM fine-tuning without appreciable loss of performance compared to half precision fine-tuning.
 </p>

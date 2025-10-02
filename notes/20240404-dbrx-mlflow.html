@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-04-04T00:00:00Z">
-<meta property="article:modified_time" content="2025-10-01T22:57:21Z">
+<meta property="article:modified_time" content="2025-10-02T14:22:16Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DBRX with MLflow">
 <meta name="twitter:description" content="This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"DBRX with MLflow","description":"This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240404-dbrx-mlflow.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-04T00:00:00Z","dateModified":"2025-10-01T22:57:21Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"DBRX with MLflow","description":"This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240404-dbrx-mlflow.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-04T00:00:00Z","dateModified":"2025-10-02T14:22:16Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -73,19 +73,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org727e110">DBRX and MLflow</a>
+<li><a href="#org492e117">DBRX and MLflow</a>
 <ul>
-<li><a href="#org8b903de">Via the MLflow Deployments Server</a></li>
-<li><a href="#orgd492927">Using the OpenAI Model Flavor</a></li>
+<li><a href="#orge64187a">Via the MLflow Deployments Server</a></li>
+<li><a href="#orgcf6474f">Using the OpenAI Model Flavor</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org727e110" class="outline-2">
-<h2 id="org727e110">DBRX and MLflow</h2>
-<div class="outline-text-2" id="text-org727e110">
-<div class="preview" id="orgcf09b64">
+<div id="outline-container-org492e117" class="outline-2">
+<h2 id="org492e117">DBRX and MLflow</h2>
+<div class="outline-text-2" id="text-org492e117">
+<div class="preview" id="org658109c">
 <p>
 This note shows how to access Databricks foundation model APIs via OSS MLflow deployments server and via the MLflow OpenAI model flavor.
 </p>
@@ -100,9 +100,9 @@ Here are two ways to use the DBRX model with MLflow. The following assumes that 
 <li><code>DATABRICKS_ENDPOINT</code>: your databricks workspace model serving endpoint. It will probably have the form <code>https://&lt;workspace_name&gt;.cloud.databricks.com/serving-endpoints</code>.</li>
 </ul>
 </div>
-<div id="outline-container-org8b903de" class="outline-3">
-<h3 id="org8b903de">Via the MLflow Deployments Server</h3>
-<div class="outline-text-3" id="text-org8b903de">
+<div id="outline-container-orge64187a" class="outline-3">
+<h3 id="orge64187a">Via the MLflow Deployments Server</h3>
+<div class="outline-text-3" id="text-orge64187a">
 <ol class="org-ol">
 <li>Configure the Deployments Server</li>
 </ol>
@@ -185,9 +185,9 @@ which will return
 </div>
 </div>
 
-<div id="outline-container-orgd492927" class="outline-3">
-<h3 id="orgd492927">Using the OpenAI Model Flavor</h3>
-<div class="outline-text-3" id="text-orgd492927">
+<div id="outline-container-orgcf6474f" class="outline-3">
+<h3 id="orgcf6474f">Using the OpenAI Model Flavor</h3>
+<div class="outline-text-3" id="text-orgcf6474f">
 <p>
 We can also log the model usign the OpenAI model flavor. We just need to be careful to set up the appropriate environment variables first.
 </p>
