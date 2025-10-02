@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2023-12-17T00:00:00Z">
-<meta property="article:modified_time" content="2025-10-02T14:22:16Z">
+<meta property="article:modified_time" content="2025-10-02T15:00:34Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Introduction to Emacs Hooks">
 <meta name="twitter:description" content="Today I was customizing the appearance of org files displayed with [[https://github.com/takaxp/org-tree-slide][org-tree-slide]]. In particular, I wanted to increase the font size and start [[https:...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Introduction to Emacs Hooks","description":"Today I was customizing the appearance of org files displayed with [[https://github.com/takaxp/org-tree-slide][org-tree-slide]]. In particular, I wanted to increase the font size and start [[https:...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20231217-emacs-hooks.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2023-12-17T00:00:00Z","dateModified":"2025-10-02T14:22:16Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Introduction to Emacs Hooks","description":"Today I was customizing the appearance of org files displayed with [[https://github.com/takaxp/org-tree-slide][org-tree-slide]]. In particular, I wanted to increase the font size and start [[https:...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20231217-emacs-hooks.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2023-12-17T00:00:00Z","dateModified":"2025-10-02T15:00:34Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -73,23 +73,23 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org337a6ef">Emacs Hooks</a></li>
-<li><a href="#org32d0b12">What do hooks do?</a></li>
-<li><a href="#org22d5db7">How do hooks work?</a>
+<li><a href="#org6763db5">Emacs Hooks</a></li>
+<li><a href="#org5841a5b">What do hooks do?</a></li>
+<li><a href="#org66b69eb">How do hooks work?</a>
 <ul>
-<li><a href="#org57f1f30">Hooks Example</a></li>
+<li><a href="#org2dfa584">Hooks Example</a></li>
 </ul>
 </li>
-<li><a href="#org082e2bf">Mode Hooks</a></li>
-<li><a href="#org096cbf1">Appendix: Hooks in use-package</a></li>
-<li><a href="#org9822275">Further Reading</a></li>
+<li><a href="#org6e51a7d">Mode Hooks</a></li>
+<li><a href="#org94b8af2">Appendix: Hooks in use-package</a></li>
+<li><a href="#orgf738064">Further Reading</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org337a6ef" class="outline-2">
-<h2 id="org337a6ef">Emacs Hooks</h2>
-<div class="outline-text-2" id="text-org337a6ef">
-<div class="preview" id="orgeee3ac9">
+<div id="outline-container-org6763db5" class="outline-2">
+<h2 id="org6763db5">Emacs Hooks</h2>
+<div class="outline-text-2" id="text-org6763db5">
+<div class="preview" id="org19fc301">
 <p>
 Today I was customizing the appearance of org files displayed with <a href="https://github.com/takaxp/org-tree-slide">org-tree-slide</a>. In particular, I wanted to increase the font size and start <a href="https://github.com/rnkn/olivetti">Olivetti mode</a> whenever I started <code>org-tree-slide-mode</code> and return everything to normal when I was done. This, I quickly discovered, required the use of <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">hooks</a>. Hooks are not especially complicated, but they are useful and worth taking a few minutes to understand. This post will cover the basics of working with hooks in emacs.
 </p>
@@ -97,9 +97,9 @@ Today I was customizing the appearance of org files displayed with <a href="http
 </div>
 </div>
 </div>
-<div id="outline-container-org32d0b12" class="outline-2">
-<h2 id="org32d0b12">What do hooks do?</h2>
-<div class="outline-text-2" id="text-org32d0b12">
+<div id="outline-container-org5841a5b" class="outline-2">
+<h2 id="org5841a5b">What do hooks do?</h2>
+<div class="outline-text-2" id="text-org5841a5b">
 <p>
 A <i>hook</i> is a list of functions that are run on specifically-defined occasions, triggered by calls to a <code>run-hooks</code> or <code>run-mode-hooks</code> function.
 </p>
@@ -115,7 +115,7 @@ For a specific example, <code>org-tree-slide-mode</code> defines the hooks <code
 
 <div class="org-center">
 
-<figure id="org78cbc69">
+<figure id="orgef3182d">
 <img src="./figures/20231217-emacs-hooks/hooks_screen_capture.gif" alt="hooks_screen_capture.gif">
 
 <figcaption><span class="figure-number">Figure 1: </span>Invoking <code>org-tree-slide-mode</code> runs <code>org-tree-slide-play-hook</code>, a list of functions meant to run when a slide show is started in <code>org-tree-slide-mode</code>. In this case, the hook makes the text larger and centered in the buffer.</figcaption>
@@ -123,9 +123,9 @@ For a specific example, <code>org-tree-slide-mode</code> defines the hooks <code
 </div>
 </div>
 </div>
-<div id="outline-container-org22d5db7" class="outline-2">
-<h2 id="org22d5db7">How do hooks work?</h2>
-<div class="outline-text-2" id="text-org22d5db7">
+<div id="outline-container-org66b69eb" class="outline-2">
+<h2 id="org66b69eb">How do hooks work?</h2>
+<div class="outline-text-2" id="text-org66b69eb">
 <p>
 First, a quick glossary of terms:
 </p>
@@ -139,9 +139,9 @@ First, a quick glossary of terms:
 Hooks are run when specific functions call them. Such functions are often called at specific points in the initialization or use of emacs modes, but they are not limited to those circumstances. Here is a minimal example.
 </p>
 </div>
-<div id="outline-container-org57f1f30" class="outline-3">
-<h3 id="org57f1f30">Hooks Example</h3>
-<div class="outline-text-3" id="text-org57f1f30">
+<div id="outline-container-org2dfa584" class="outline-3">
+<h3 id="org2dfa584">Hooks Example</h3>
+<div class="outline-text-3" id="text-org2dfa584">
 <p>
 First, we'll define the hook variable. This is the same as defining any other variable.
 </p>
@@ -212,7 +212,7 @@ There's nothing especially unique about any of these components. We assign the v
 
 <div class="org-center">
 
-<figure id="orgd126a4e">
+<figure id="org4a835b4">
 <img src="./figures/20231217-emacs-hooks/hooks-diagram-2.png" alt="hooks-diagram-2.png">
 
 <figcaption><span class="figure-number">Figure 2: </span>Diagram of the basic process of working with normal hooks</figcaption>
@@ -222,9 +222,9 @@ There's nothing especially unique about any of these components. We assign the v
 </div>
 </div>
 
-<div id="outline-container-org082e2bf" class="outline-2">
-<h2 id="org082e2bf">Mode Hooks</h2>
-<div class="outline-text-2" id="text-org082e2bf">
+<div id="outline-container-org6e51a7d" class="outline-2">
+<h2 id="org6e51a7d">Mode Hooks</h2>
+<div class="outline-text-2" id="text-org6e51a7d">
 <p>
 Hooks are most commonly encountered in the context of modes. Modes generally define hooks to which users can add functions that will be called at the end of the mode's initialization. For example, I wanted to display line numbers whenever I was in a buffer with code, so I have the following line in my config:
 </p>
@@ -264,9 +264,9 @@ and, indeed, when I open an e.g. Python buffer, line numbers appear as desired.
 </p>
 </div>
 </div>
-<div id="outline-container-org096cbf1" class="outline-2">
-<h2 id="org096cbf1">Appendix: Hooks in use-package</h2>
-<div class="outline-text-2" id="text-org096cbf1">
+<div id="outline-container-org94b8af2" class="outline-2">
+<h2 id="org94b8af2">Appendix: Hooks in use-package</h2>
+<div class="outline-text-2" id="text-org94b8af2">
 <p>
 I use <code>use-package</code> for managing my emacs packages. <code>use-package</code> declarations allow users to pass a <code>:hooks</code> option in the package declaration in order to add functions to hooks. Hooks can be configured in <code>use-package</code> by defining a cons cell as follows.
 </p>
@@ -284,9 +284,9 @@ Note that we do <i>not</i> refer to <code>mode-name-hook</code> in the hook conf
 </p>
 </div>
 </div>
-<div id="outline-container-org9822275" class="outline-2">
-<h2 id="org9822275">Further Reading</h2>
-<div class="outline-text-2" id="text-org9822275">
+<div id="outline-container-orgf738064" class="outline-2">
+<h2 id="orgf738064">Further Reading</h2>
+<div class="outline-text-2" id="text-orgf738064">
 <ul class="org-ul">
 <li><a href="https://gitlab.com/dliden/coffeemacs">My Emacs config</a>. This has not, admittedly, been structured for broad consumption, but with a little searching you can find how I've configured some hooks. In particular, <a href="https://gitlab.com/dliden/coffeemacs/-/blob/master/orgconfig.el?ref_type=heads#L219">here</a> is my <code>org-tree-slide</code> configuration, which I mentioned at the beginning.</li>
 <li><a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">Emacs Docs</a>, which go into some more detail on abnormal hooks among other topics.</li>
