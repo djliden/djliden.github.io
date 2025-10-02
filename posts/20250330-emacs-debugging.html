@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2025-03-23T00:00:00Z">
-<meta property="article:modified_time" content="2025-10-01T22:46:52Z">
+<meta property="article:modified_time" content="2025-10-01T22:57:21Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Emacs Introspection and Debugging">
 <meta name="twitter:description" content="If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless o...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Emacs Introspection and Debugging","description":"If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless o...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20250330-emacs-debugging.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-03-23T00:00:00Z","dateModified":"2025-10-01T22:46:52Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Emacs Introspection and Debugging","description":"If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless o...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20250330-emacs-debugging.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-03-23T00:00:00Z","dateModified":"2025-10-01T22:57:21Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -73,16 +73,16 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3363937">Introduction</a></li>
-<li><a href="#org0f14648">Finding Relevant Variables</a></li>
-<li><a href="#org3a396ed">Confirming the issue with error backtrace</a></li>
-<li><a href="#org797ff37">Quick fix—bandaid approach</a></li>
-<li><a href="#org857e94b">Finding the root of the problem</a></li>
-<li><a href="#org4ad5ee6">Conclusion—Emacs introspection</a></li>
+<li><a href="#orgc9a9557">Introduction</a></li>
+<li><a href="#org73a5bc4">Finding Relevant Variables</a></li>
+<li><a href="#org4a0d4f3">Confirming the issue with error backtrace</a></li>
+<li><a href="#org965a152">Quick fix—bandaid approach</a></li>
+<li><a href="#org181efc7">Finding the root of the problem</a></li>
+<li><a href="#org0a376ea">Conclusion—Emacs introspection</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgb315174">
+<div class="preview" id="orgb17646d">
 <p>
 If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless of the cause, Emacs provides many tools for identifying the causes of errors and learning how to address them.
 </p>
@@ -93,9 +93,9 @@ This post works through a recent issue I encountered with the <code>eglot</code>
 
 </div>
 
-<div id="outline-container-org3363937" class="outline-2">
-<h2 id="org3363937">Introduction</h2>
-<div class="outline-text-2" id="text-org3363937">
+<div id="outline-container-orgc9a9557" class="outline-2">
+<h2 id="orgc9a9557">Introduction</h2>
+<div class="outline-text-2" id="text-orgc9a9557">
 <p>
 For a while, whenever I used <a href="https://www.gnu.org/software/emacs/manual/html_mono/eglot.html">eglot</a> (mostly for Python projects) and then shut it down with e.g. <code>M-x eglot-shutdown</code>, all subsequent attempts to save any files in Emacs would return the following error: <code>(jsonrpc-error-message . "No current JSON-RPC connection")</code>. The save would generally succeed, so this was more annoying than anything. But it <i>was</i> annoying.
 </p>
@@ -117,9 +117,9 @@ Given this pattern, I started by looking for <a href="https://www.danliden.com/p
 </p>
 </div>
 </div>
-<div id="outline-container-org0f14648" class="outline-2">
-<h2 id="org0f14648">Finding Relevant Variables</h2>
-<div class="outline-text-2" id="text-org0f14648">
+<div id="outline-container-org73a5bc4" class="outline-2">
+<h2 id="org73a5bc4">Finding Relevant Variables</h2>
+<div class="outline-text-2" id="text-org73a5bc4">
 <p>
 I wasn't entirely sure what I was looking for. But I knew from previous reading that hooks are variables that, by convention, include the word <code>hook</code> in their names. This already provides plenty to work with.
 </p>
@@ -129,7 +129,7 @@ The <code>apropos-variable</code> function takes a pattern or a list of words an
 </p>
 
 
-<figure id="org37b90fc">
+<figure id="org5c1f428">
 <img src="./figures/20250323-emacs-debugging/1_apropos.png" alt="1_apropos.png">
 
 </figure>
@@ -148,9 +148,9 @@ This is already very useful and points toward some directions for fixing the iss
 </p>
 </div>
 </div>
-<div id="outline-container-org3a396ed" class="outline-2">
-<h2 id="org3a396ed">Confirming the issue with error backtrace</h2>
-<div class="outline-text-2" id="text-org3a396ed">
+<div id="outline-container-org4a0d4f3" class="outline-2">
+<h2 id="org4a0d4f3">Confirming the issue with error backtrace</h2>
+<div class="outline-text-2" id="text-org4a0d4f3">
 <p>
 I wanted to confirm that this hook was causing the issue so I used <code>M-x toggle-debug-on-error</code> to get a more detailed backtrace. In reality, this is where I should have started—the error trace provides much more specific and useful information than the short error message returned in the echo area. When I tried to save a file with debugging enabled, I received the following in a <b>Backtrace</b> buffer.
 </p>
@@ -182,9 +182,9 @@ Now that we have some understanding of what is happening, how do we fix it?
 </p>
 </div>
 </div>
-<div id="outline-container-org797ff37" class="outline-2">
-<h2 id="org797ff37">Quick fix—bandaid approach</h2>
-<div class="outline-text-2" id="text-org797ff37">
+<div id="outline-container-org965a152" class="outline-2">
+<h2 id="org965a152">Quick fix—bandaid approach</h2>
+<div class="outline-text-2" id="text-org965a152">
 <p>
 My initial fix for this issue was to write a simple cleanup script to remove the offending hook function from the <code>after-save-hook</code>.
 </p>
@@ -214,9 +214,9 @@ At this point, it was not yet clear to me how the hook was set in the first plac
 </div>
 </div>
 
-<div id="outline-container-org857e94b" class="outline-2">
-<h2 id="org857e94b">Finding the root of the problem</h2>
-<div class="outline-text-2" id="text-org857e94b">
+<div id="outline-container-org181efc7" class="outline-2">
+<h2 id="org181efc7">Finding the root of the problem</h2>
+<div class="outline-text-2" id="text-org181efc7">
 <p>
 My first thought was that, perhaps, the hook was being set when <code>eglot</code> was invoked. To check this, I:
 </p>
@@ -244,7 +244,7 @@ And it turns out, I set this hook myself!
 
 
 
-<figure id="orgc083bf6">
+<figure id="orga346da2">
 <img src="./figures/20250323-emacs-debugging/2_grep.png" alt="2_grep.png">
 
 </figure>
@@ -255,9 +255,9 @@ Once I deleted the <code>(add-hook 'after-save-hook ...)</code> call from my con
 </div>
 </div>
 
-<div id="outline-container-org4ad5ee6" class="outline-2">
-<h2 id="org4ad5ee6">Conclusion—Emacs introspection</h2>
-<div class="outline-text-2" id="text-org4ad5ee6">
+<div id="outline-container-org0a376ea" class="outline-2">
+<h2 id="org0a376ea">Conclusion—Emacs introspection</h2>
+<div class="outline-text-2" id="text-org0a376ea">
 <p>
 The approaches I used here are nowhere close to comprehensive. Emacs has countless introspection tools and a seemingly-inexhaustible collection of functions and variables that enable you to inspect everything going on in your Emacs setup. Furthermore, it provides a range of ways to search these variables and functions.
 </p>
@@ -281,7 +281,7 @@ Lastly—we're reaching a point where you don't have to do this yourself. You ca
 </p>
 
 
-<figure id="org87c4126">
+<figure id="org73f3934">
 <img src="./figures/20250323-emacs-debugging/3_gptel.png" alt="3_gptel.png">
 
 </figure>

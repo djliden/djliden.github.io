@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-04-01T00:00:00Z">
-<meta property="article:modified_time" content="2025-10-01T22:46:52Z">
+<meta property="article:modified_time" content="2025-10-01T22:57:21Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MLX Quickstart">
 <meta name="twitter:description" content="These are my notes on the [[https://ml-explore.github.io/mlx/build/html/usage/quick_start.html][MLX quick start guide and usage notes]]. It&#39;s a work in progress. Ultimately, I&#39;m interested in learn...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"MLX Quickstart","description":"These are my notes on the [[https://ml-explore.github.io/mlx/build/html/usage/quick_start.html][MLX quick start guide and usage notes]]. It's a work in progress. Ultimately, I'm interested in learn...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240401-mlx-quickstart.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-01T00:00:00Z","dateModified":"2025-10-01T22:46:52Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"MLX Quickstart","description":"These are my notes on the [[https://ml-explore.github.io/mlx/build/html/usage/quick_start.html][MLX quick start guide and usage notes]]. It's a work in progress. Ultimately, I'm interested in learn...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240401-mlx-quickstart.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-01T00:00:00Z","dateModified":"2025-10-01T22:57:21Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -73,41 +73,41 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org2edbf96">What is MLX?</a></li>
-<li><a href="#orga9ad9df">Quickstart Guide</a>
+<li><a href="#org59c1713">What is MLX?</a></li>
+<li><a href="#orgc6e9f59">Quickstart Guide</a>
 <ul>
-<li><a href="#orgf3026a3">Basics</a></li>
+<li><a href="#org79fd6c3">Basics</a></li>
 <li><a href="#h:897CC44C-7D56-4606-B154-EED7083479BE">Lazy Evaluation in More Detail</a>
 <ul>
-<li><a href="#orgcf296d4">When to evaluate</a></li>
+<li><a href="#org7ee797b">When to evaluate</a></li>
 </ul>
 </li>
-<li><a href="#orga4523a5">Unified Memory</a></li>
-<li><a href="#orga7e3a10">Indexing arrays</a></li>
-<li><a href="#org25a466b">Saving and Loading</a></li>
-<li><a href="#orga18adc1">Function transforms</a>
+<li><a href="#org333b9d5">Unified Memory</a></li>
+<li><a href="#org37c3db2">Indexing arrays</a></li>
+<li><a href="#org6e90a3b">Saving and Loading</a></li>
+<li><a href="#org02361d6">Function transforms</a>
 <ul>
-<li><a href="#org0cea343">Automatic Differentiation</a></li>
-<li><a href="#orged3b38a">Automatic Vectorization</a></li>
+<li><a href="#orgf1c7d19">Automatic Differentiation</a></li>
+<li><a href="#org18f9926">Automatic Vectorization</a></li>
 </ul>
 </li>
-<li><a href="#org432ed0d">Compilation</a></li>
-<li><a href="#org3a71c1f">Streams</a></li>
+<li><a href="#org12433c6">Compilation</a></li>
+<li><a href="#orgb8c1387">Streams</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org78dbef0">
+<div class="preview" id="org8726910">
 <p>
 These are my notes on the <a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">MLX quick start guide and usage notes</a>. It's a work in progress. Ultimately, I'm interested in learning what MLX will let me do with LLMs on my laptop. I might write something more substantial on that topic in the future. For now, you're probably better off consulting the docs yourself than looking at my notes on them.
 </p>
 
 </div>
 
-<div id="outline-container-org2edbf96" class="outline-2">
-<h2 id="org2edbf96">What is MLX?</h2>
-<div class="outline-text-2" id="text-org2edbf96">
+<div id="outline-container-org59c1713" class="outline-2">
+<h2 id="org59c1713">What is MLX?</h2>
+<div class="outline-text-2" id="text-org59c1713">
 <p>
 <a href="https://github.com/ml-explore/mlx">MLX</a> is an array framework from Apple ML Research. Its API follows NumPy. It has higher-level packages that follow PyTorch's API for building more complex models modularly. It features:
 </p>
@@ -119,9 +119,9 @@ These are my notes on the <a href="https://ml-explore.github.io/mlx/build/html/u
 </ul>
 </div>
 </div>
-<div id="outline-container-orga9ad9df" class="outline-2">
-<h2 id="orga9ad9df"><a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">Quickstart Guide</a></h2>
-<div class="outline-text-2" id="text-orga9ad9df">
+<div id="outline-container-orgc6e9f59" class="outline-2">
+<h2 id="orgc6e9f59"><a href="https://ml-explore.github.io/mlx/build/html/usage/quick_start.html">Quickstart Guide</a></h2>
+<div class="outline-text-2" id="text-orgc6e9f59">
 <p>
 First, install with <code>pip install mlx</code> or <code>conda install -c conda-forge mlx</code>.
 </p>
@@ -131,9 +131,9 @@ Next, we'll work through the basic features, as shown in the quickstart guide li
 </p>
 </div>
 
-<div id="outline-container-orgf3026a3" class="outline-3">
-<h3 id="orgf3026a3">Basics</h3>
-<div class="outline-text-3" id="text-orgf3026a3">
+<div id="outline-container-org79fd6c3" class="outline-3">
+<h3 id="org79fd6c3">Basics</h3>
+<div class="outline-text-3" id="text-org79fd6c3">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> mlx.core <span class="org-keyword">as</span> mx
 
@@ -221,9 +221,9 @@ It enables this pattern:
 </pre>
 </div>
 </div>
-<div id="outline-container-orgcf296d4" class="outline-4">
-<h4 id="orgcf296d4">When to evaluate</h4>
-<div class="outline-text-4" id="text-orgcf296d4">
+<div id="outline-container-org7ee797b" class="outline-4">
+<h4 id="org7ee797b">When to evaluate</h4>
+<div class="outline-text-4" id="text-org7ee797b">
 <p>
 It's a tradeoff between:
 </p>
@@ -282,9 +282,9 @@ Using arrays for control flow will trigger an eval.
 </div>
 </div>
 </div>
-<div id="outline-container-orga4523a5" class="outline-3">
-<h3 id="orga4523a5">Unified Memory</h3>
-<div class="outline-text-3" id="text-orga4523a5">
+<div id="outline-container-org333b9d5" class="outline-3">
+<h3 id="org333b9d5">Unified Memory</h3>
+<div class="outline-text-3" id="text-org333b9d5">
 <p>
 You do not need to specify the location of an MLX array in memory. CPU and GPU share memory.
 </p>
@@ -346,9 +346,9 @@ This can be useful if we e.g. send compute-dense operatios to GPU, smaller overh
 </p>
 </div>
 </div>
-<div id="outline-container-orga7e3a10" class="outline-3">
-<h3 id="orga7e3a10">Indexing arrays</h3>
-<div class="outline-text-3" id="text-orga7e3a10">
+<div id="outline-container-org37c3db2" class="outline-3">
+<h3 id="org37c3db2">Indexing arrays</h3>
+<div class="outline-text-3" id="text-org37c3db2">
 <ul class="org-ul">
 <li>Is the same as NumPy in most cases</li>
 <li>EXCEPT:
@@ -359,18 +359,18 @@ This can be useful if we e.g. send compute-dense operatios to GPU, smaller overh
 </ul>
 </div>
 </div>
-<div id="outline-container-org25a466b" class="outline-3">
-<h3 id="org25a466b">Saving and Loading</h3>
-<div class="outline-text-3" id="text-org25a466b">
+<div id="outline-container-org6e90a3b" class="outline-3">
+<h3 id="org6e90a3b">Saving and Loading</h3>
+<div class="outline-text-3" id="text-org6e90a3b">
 <p>
 Support for numpy, numpy archive, safetensors, gguf.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orga18adc1" class="outline-3">
-<h3 id="orga18adc1">Function transforms</h3>
-<div class="outline-text-3" id="text-orga18adc1">
+<div id="outline-container-org02361d6" class="outline-3">
+<h3 id="org02361d6">Function transforms</h3>
+<div class="outline-text-3" id="text-org02361d6">
 <p>
 MLX uses <i>composable function transformations</i> for autodiff, vectorization, graph optimization. Main idea: every transformation returns a function that can be further transformed. Here is an example.
 </p>
@@ -391,9 +391,9 @@ array(-1, dtype=float32)
 The output of <code>grad</code> on <code>sin</code> is another function: the gradient of the sine function. To get the second derivative, just do <code>mx.grad(mx.grad())</code>. You can compose any function transform in any order to any depth.
 </p>
 </div>
-<div id="outline-container-org0cea343" class="outline-4">
-<h4 id="org0cea343">Automatic Differentiation</h4>
-<div class="outline-text-4" id="text-org0cea343">
+<div id="outline-container-orgf1c7d19" class="outline-4">
+<h4 id="orgf1c7d19">Automatic Differentiation</h4>
+<div class="outline-text-4" id="text-orgf1c7d19">
 <p>
 Autodiff works on functions, not on implicit graphs. <i>This is a key difference from PyTorch</i>. In PyTorch, autodiff works on implicit graphs.
 </p>
@@ -465,9 +465,9 @@ You can use <code>stop_gradient()</code> to stop gradients from propagating thro
 </p>
 </div>
 </div>
-<div id="outline-container-orged3b38a" class="outline-4">
-<h4 id="orged3b38a">Automatic Vectorization</h4>
-<div class="outline-text-4" id="text-orged3b38a">
+<div id="outline-container-org18f9926" class="outline-4">
+<h4 id="org18f9926">Automatic Vectorization</h4>
+<div class="outline-text-4" id="text-org18f9926">
 <p>
 <code>vmap()</code> automatically vectorizes complex functions.
 </p>
@@ -490,9 +490,9 @@ None
 </div>
 </div>
 </div>
-<div id="outline-container-org432ed0d" class="outline-3">
-<h3 id="org432ed0d">Compilation</h3>
-<div class="outline-text-3" id="text-org432ed0d">
+<div id="outline-container-org12433c6" class="outline-3">
+<h3 id="org12433c6">Compilation</h3>
+<div class="outline-text-3" id="text-org12433c6">
 <p>
 MLX has a <code>compile</code> function for compiling computational graphs. What does compilation mean in this context? Compilation makes <i>smaller graphs</i> by merging common work and fusing common operations.
 </p>
@@ -523,9 +523,9 @@ Compiled functions should be pure. They should not have side effects. Review thi
 </p>
 </div>
 </div>
-<div id="outline-container-org3a71c1f" class="outline-3">
-<h3 id="org3a71c1f">Streams</h3>
-<div class="outline-text-3" id="text-org3a71c1f">
+<div id="outline-container-orgb8c1387" class="outline-3">
+<h3 id="orgb8c1387">Streams</h3>
+<div class="outline-text-3" id="text-orgb8c1387">
 <p>
 All operations take an optional <code>stream</code> keyword specifying which Stream the operation should run on. This is for specifying the device to run on.
 </p>

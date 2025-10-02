@@ -27,11 +27,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2025-10-01T00:00:00Z">
-<meta property="article:modified_time" content="2025-10-01T22:46:52Z">
+<meta property="article:modified_time" content="2025-10-01T22:57:21Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Using MLflow&#39;s MCP Server for Conversational Trace Analysis">
 <meta name="twitter:description" content="A hands-on exploration of MLflow&#39;s new Model Context Protocol server that enables AI assistants to interact with MLflow traces, with setup tips for virtual environments and examples in both Claude ...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using MLflow's MCP Server for Conversational Trace Analysis","description":"A hands-on exploration of MLflow's new Model Context Protocol server that enables AI assistants to interact with MLflow traces, with setup tips for virtual environments and examples in both Claude ...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20251001-mlflow-mcp-server.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-10-01T00:00:00Z","dateModified":"2025-10-01T22:46:52Z","keywords":"mlflow, model context protocol, mcp server, mlflow traces, claude desktop, claude code, ai observability"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using MLflow's MCP Server for Conversational Trace Analysis","description":"A hands-on exploration of MLflow's new Model Context Protocol server that enables AI assistants to interact with MLflow traces, with setup tips for virtual environments and examples in both Claude ...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20251001-mlflow-mcp-server.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-10-01T00:00:00Z","dateModified":"2025-10-01T22:57:21Z","keywords":"mlflow, model context protocol, mcp server, mlflow traces, claude desktop, claude code, ai observability"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -75,41 +75,42 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc239905">Introduction: MCP Server for MLflow Traces</a></li>
-<li><a href="#org071f9f8">MLflow Tracing Setup</a>
+<li><a href="#org93aabe4">Introduction: MCP Server for MLflow Traces</a></li>
+<li><a href="#org80a96cb">MLflow Tracing Setup</a>
 <ul>
-<li><a href="#org2d95fc3">Setting up MLflow</a></li>
-<li><a href="#org0960b19">Generating some Trace Data to Explore</a></li>
+<li><a href="#orgdaa9c6b">Setting up MLflow</a></li>
+<li><a href="#org5280a37">Generating some Trace Data to Explore</a></li>
 </ul>
 </li>
-<li><a href="#orgebeca36">Using the MLflow MCP Server</a>
+<li><a href="#org921cf94">Using the MLflow MCP Server</a>
 <ul>
-<li><a href="#org7c83deb">Claude Desktop</a></li>
-<li><a href="#orga5a96c6">Claude Code</a></li>
+<li><a href="#org142c24b">Claude Desktop</a></li>
+<li><a href="#org9e94448">Claude Code</a></li>
 </ul>
 </li>
-<li><a href="#orgb9bb620">Next Steps and Observations</a></li>
+<li><a href="#org964bc64">Next Steps and Observations</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org076c53d">
+<div class="preview" id="orgb0cc18b">
 <p>
 MLflow 3.4 introduced an official MCP server that lets AI assistants like Claude interact directly with your MLflow traces. This post explores how to set it up when MLflow is installed in a virtual environment, and demonstrates practical usage with both Claude Desktop and Claude Code for debugging and analyzing GenAI application traces.
 </p>
 
 </div>
 
-<div id="outline-container-orgc239905" class="outline-2">
-<h2 id="orgc239905">Introduction: MCP Server for MLflow Traces</h2>
-<div class="outline-text-2" id="text-orgc239905">
+<div id="outline-container-org93aabe4" class="outline-2">
+<h2 id="org93aabe4">Introduction: MCP Server for MLflow Traces</h2>
+<div class="outline-text-2" id="text-org93aabe4">
 <p>
 <a href="https://mlflow.org/docs/latest/genai/tracing/">MLflow tracing</a> is a powerful AI observability tool that enables you to capture all of the inputs, outputs, and metadata associated with every step of an AI model or Agent execution chain. It works with many different providers, such as OpenAI, Anthropic, LangChain, and LlamaIndex via a single line of code. Tracing provides granular insight into the entire execution chain of AI applications, including tool calls, retrievals, AI responses, any anything else you might want to include.
 </p>
 
 
-<figure id="org914778a">
+<figure id="org26612d1">
 <img src="./figures/20251001-mlflow-mcp/1_trace.png" alt="1_trace.png">
 
+<figcaption><span class="figure-number">Figure 1: </span>Example MLflow trace showing nested spans in the MLflow UI</figcaption>
 </figure>
 
 
@@ -117,7 +118,7 @@ MLflow 3.4 introduced an official MCP server that lets AI assistants like Claude
 But capturing the traces is just the first step: once we have all of the trace data, we need to <i>use</i> it to make our AI applications better. In addition to its existing sophisticated <a href="https://mlflow.org/docs/latest/genai/eval-monitor/">evaluation</a> functionality, which enables us to add human, AI, and programmatic assessments to traces, MLflow 3.4 introduced an <a href="https://mlflow.org/docs/latest/genai/mcp/">MLflow MCP server</a> to give AI applications like Claude Desktop and code assistants like Cursor the ability to interact with traces.
 </p>
 
-<div class="note" id="orgd30615e">
+<div class="note" id="org09986a0">
 <p>
 If you're just learning about MCP servers for the first time, take a look at my Getting Started with Model Context Protocol posts: <a href="https://www.danliden.com/posts/20250412-mcp-quickstart.html">part 1</a>, <a href="https://www.danliden.com/posts/20250921-mcp-prompts-resources.html">part 2</a>.
 </p>
@@ -134,13 +135,13 @@ In the remainder of this post, we will see how to configure and use the MCP serv
 </div>
 </div>
 
-<div id="outline-container-org071f9f8" class="outline-2">
-<h2 id="org071f9f8">MLflow Tracing Setup</h2>
-<div class="outline-text-2" id="text-org071f9f8">
+<div id="outline-container-org80a96cb" class="outline-2">
+<h2 id="org80a96cb">MLflow Tracing Setup</h2>
+<div class="outline-text-2" id="text-org80a96cb">
 </div>
-<div id="outline-container-org2d95fc3" class="outline-3">
-<h3 id="org2d95fc3">Setting up MLflow</h3>
-<div class="outline-text-3" id="text-org2d95fc3">
+<div id="outline-container-orgdaa9c6b" class="outline-3">
+<h3 id="orgdaa9c6b">Setting up MLflow</h3>
+<div class="outline-text-3" id="text-orgdaa9c6b">
 <p>
 In this example, we will install MLflow with the <a href="https://astral.sh/blog/uv">uv</a> package manager. We will install it locally, in a virtual environment, and then use the MCP server to search and analyze traces saved to our local MLflow server.
 </p>
@@ -154,7 +155,7 @@ First, create a new directory for this example and install MLflow. We will also 
 </pre>
 </div>
 
-<div class="warning" id="org15910d9">
+<div class="warning" id="orgcb20ee3">
 <p>
 Currently, the MLflow MCP server does not work correctly with <code>click</code> version 8.3.0, so we need to manually specify a different version to use. This is a <a href="https://github.com/mlflow/mlflow/pull/17821">known issue</a> and will be resolved in a future MLflow release.
 </p>
@@ -176,10 +177,10 @@ Now you can start the MLflow tracking server and access the UI, where we will vi
 </p>
 </div>
 </div>
-<div id="outline-container-org0960b19" class="outline-3">
-<h3 id="org0960b19">Generating some Trace Data to Explore</h3>
-<div class="outline-text-3" id="text-org0960b19">
-<div class="tip" id="org23cb62a">
+<div id="outline-container-org5280a37" class="outline-3">
+<h3 id="org5280a37">Generating some Trace Data to Explore</h3>
+<div class="outline-text-3" id="text-org5280a37">
+<div class="tip" id="org1a0fa8b">
 <p>
 If you already have trace data you want to explore, you can skip this section!
 </p>
@@ -337,16 +338,16 @@ Save all the Python code from this section into a file (e.g., <code>generate_tra
 </div>
 </div>
 
-<div id="outline-container-orgebeca36" class="outline-2">
-<h2 id="orgebeca36">Using the MLflow MCP Server</h2>
-<div class="outline-text-2" id="text-orgebeca36">
+<div id="outline-container-org921cf94" class="outline-2">
+<h2 id="org921cf94">Using the MLflow MCP Server</h2>
+<div class="outline-text-2" id="text-org921cf94">
 <p>
 Now that we have set up MLflow and generated some sample traces, let's explore them with the help of AI models! We will show how to do this with with Claude Desktop and Claude Code.
 </p>
 </div>
-<div id="outline-container-org7c83deb" class="outline-3">
-<h3 id="org7c83deb">Claude Desktop</h3>
-<div class="outline-text-3" id="text-org7c83deb">
+<div id="outline-container-org142c24b" class="outline-3">
+<h3 id="org142c24b">Claude Desktop</h3>
+<div class="outline-text-3" id="text-org142c24b">
 <p>
 You can connect the MLflow MCP server with Claude Desktop as follows:
 </p>
@@ -358,9 +359,10 @@ From the <b>Settings</b> menu, click <b>Developer</b> and then <b>Edit Config</b
 </p>
 
 
-<figure id="orgbb5a830">
+<figure id="orgcd5492b">
 <img src="./figures/20251001-mlflow-mcp/2_claude_settings.png" alt="2_claude_settings.png">
 
+<figcaption><span class="figure-number">Figure 2: </span>Claude Desktop settings showing the Developer menu</figcaption>
 </figure>
 
 <p>
@@ -386,7 +388,7 @@ This will open a directory with various Claude application and configuration fil
 </pre>
 </div>
 
-<div class="caution" id="org6654785">
+<div class="caution" id="orgdc9e366">
 <p>
 If the MCP server fails to connect, you may need to use the full path to the <code>uv</code> executable instead of just <code>"uv"</code> for the <code>command</code> value. The conditions when this is necessary vary by system configuration. To find the full path, run <code>which uv</code> in your terminal (e.g., <code>/Users/username/.cargo/bin/uv</code>).
 </p>
@@ -405,9 +407,10 @@ There are a few things here worth calling out, including some key differences fr
 </p>
 
 
-<figure id="orgc6ba5eb">
+<figure id="org5acb24b">
 <img src="./figures/20251001-mlflow-mcp/3_claude_connections.png" alt="3_claude_connections.png">
 
+<figcaption><span class="figure-number">Figure 3: </span>MLflow MCP server appearing in Claude Desktop connections</figcaption>
 </figure></li>
 <li><p>
 <b>Try it out!</b>
@@ -417,7 +420,7 @@ There are a few things here worth calling out, including some key differences fr
 Let's ask Claude to identify and diagnose traces with errors.
 </p>
 
-<div class="tip" id="orgc1d2767">
+<div class="tip" id="org4a77237">
 <p>
 When asking Claude to work with traces, you will need to specify your experiment ID. Claude cannot infer the experiment ID. If you ran the trace generation code above, the experiment ID was printed to the console. You can also find it in the MLflow UI by navigating to the <code>experiments</code> tab, clicking the experiment to which you logged your traces, and then clicking the information icon (an <code>i</code> in a circle) next to the experiment name. Alternatively, you can add an <code>MLFLOW_EXPERIMENT_ID</code> environment variable to the MCP server configuration to specify a default experiment.
 </p>
@@ -439,16 +442,17 @@ Claude called the <code>Search traces</code> and <code>get trace</code> function
 </p>
 
 
-<figure id="orgf34cfb3">
+<figure id="orgc1fdb19">
 <img src="./figures/20251001-mlflow-mcp/4_claude_result.png" alt="4_claude_result.png">
 
+<figcaption><span class="figure-number">Figure 4: </span>Claude Desktop analyzing a failed trace and providing diagnostic information</figcaption>
 </figure></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orga5a96c6" class="outline-3">
-<h3 id="orga5a96c6">Claude Code</h3>
-<div class="outline-text-3" id="text-orga5a96c6">
+<div id="outline-container-org9e94448" class="outline-3">
+<h3 id="org9e94448">Claude Code</h3>
+<div class="outline-text-3" id="text-org9e94448">
 <p>
 Configuring the MLflow MCP server to work with Claude Code is almost identical to configuring it for Claude Desktop. We just need to add the JSON configuration to a different file (<code>.mcp.json</code> in your project root directory). You can follow these steps to get started:
 </p>
@@ -458,7 +462,7 @@ Configuring the MLflow MCP server to work with Claude Code is almost identical t
 <b>Copy the configuration JSON snippet</b> from the prior section into <code>.mcp.json</code> in your project's root directory, creating the file if necessary.
 </p>
 
-<div class="tip" id="org3bc2bc3">
+<div class="tip" id="org8ab5ce9">
 <p>
 This is one of several different ways to add MCP servers to Claude Code. See the <a href="https://docs.claude.com/en/docs/claude-code/mcp">Claude Code docs</a> for more options.
 </p>
@@ -473,26 +477,26 @@ This is one of several different ways to add MCP servers to Claude Code. See the
 <p>
 Look at the traces in experiment 697822894089422973. Find the most recent one that had a retrieval component and tell me what was retrieved and whether the retrieval was successful.
 </p>
-</blockquote></li>
-</ol>
+</blockquote>
 
 
-
-<figure id="org2d492f1">
+<figure id="org38ed5c9">
 <img src="./figures/20251001-mlflow-mcp/5_claude_code_result.png" alt="5_claude_code_result.png">
 
+<figcaption><span class="figure-number">Figure 5: </span>Claude Code analyzing a trace with retrieval and reporting results</figcaption>
 </figure>
 
 <p>
 Claude code was able to identify the relevant trace and answer the question using the tools available through the MCP server.
-</p>
+</p></li>
+</ol>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgb9bb620" class="outline-2">
-<h2 id="orgb9bb620">Next Steps and Observations</h2>
-<div class="outline-text-2" id="text-orgb9bb620">
+<div id="outline-container-org964bc64" class="outline-2">
+<h2 id="org964bc64">Next Steps and Observations</h2>
+<div class="outline-text-2" id="text-org964bc64">
 <p>
 There's something satisfying about using AI to debug AI. The MLflow MCP server closes the loop between capturing traces and actually using them: your AI assistant can now help you understand why your other AI assistant failed.
 </p>
