@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2022-09-18T00:00:00Z">
-<meta property="article:modified_time" content="2025-10-02T15:00:34Z">
+<meta property="article:modified_time" content="2025-11-22T17:16:13Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Processing a JSON API Response with jq">
 <meta name="twitter:description" content="There are countless ways of processing JSON data and converting it to different formats. Historically, I&#39;ve used Python and loaded the data into a Pandas Dataframe for processing. This isn&#39;t really...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Processing a JSON API Response with jq","description":"There are countless ways of processing JSON data and converting it to different formats. Historically, I've used Python and loaded the data into a Pandas Dataframe for processing. This isn't really...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220918-jq-example.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2022-09-18T00:00:00Z","dateModified":"2025-10-02T15:00:34Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Processing a JSON API Response with jq","description":"There are countless ways of processing JSON data and converting it to different formats. Historically, I've used Python and loaded the data into a Pandas Dataframe for processing. This isn't really...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220918-jq-example.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2022-09-18T00:00:00Z","dateModified":"2025-11-22T17:16:13Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -73,24 +73,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org930fc34">Introduction</a></li>
-<li><a href="#org4faf471">Download the Data</a></li>
-<li><a href="#orgcfffa9d">Processing the Data with <code>jq</code></a>
+<li><a href="#orgf2361c0">Introduction</a></li>
+<li><a href="#orgd2afa6c">Download the Data</a></li>
+<li><a href="#org9732cd3">Processing the Data with <code>jq</code></a>
 <ul>
-<li><a href="#orgab0e0bd"><code>jq</code> with no further arguments</a></li>
-<li><a href="#orga9043bf">Constructing a Header Row</a></li>
-<li><a href="#orgde85a4d">Extracting Data Values</a></li>
-<li><a href="#orga37908a">Converting the Results to CSV</a></li>
+<li><a href="#org3819234"><code>jq</code> with no further arguments</a></li>
+<li><a href="#org2d37d00">Constructing a Header Row</a></li>
+<li><a href="#org9f4a45e">Extracting Data Values</a></li>
+<li><a href="#org66113bc">Converting the Results to CSV</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org930fc34" class="outline-2">
-<h2 id="org930fc34">Introduction</h2>
-<div class="outline-text-2" id="text-org930fc34">
-<div class="preview" id="orgd4c8a7f">
+<div id="outline-container-orgf2361c0" class="outline-2">
+<h2 id="orgf2361c0">Introduction</h2>
+<div class="outline-text-2" id="text-orgf2361c0">
+<div class="preview" id="orgde58fe5">
 <p>
 There are countless ways of processing JSON data and converting it to different
 formats. Historically, I've used Python and loaded the data into a Pandas
@@ -130,9 +130,9 @@ To follow along, begin by <a href="https://stedolan.github.io/jq/download/">inst
 </div>
 </div>
 
-<div id="outline-container-org4faf471" class="outline-2">
-<h2 id="org4faf471">Download the Data</h2>
-<div class="outline-text-2" id="text-org4faf471">
+<div id="outline-container-orgd2afa6c" class="outline-2">
+<h2 id="orgd2afa6c">Download the Data</h2>
+<div class="outline-text-2" id="text-orgd2afa6c">
 <p>
 As noted above, we use <code>curl</code> to make a <code>POST</code> request agains the BLS API. We're
 downloading Consumer Price Index data since the start of 2022. We're downloading
@@ -147,7 +147,7 @@ unadjusted data.
 </pre>
 </div>
 
-<pre class="example" id="orgc7f9dc1">
+<pre class="example" id="org14ab0c4">
 | status":"REQUEST_SUCCEEDED","responseTime":171,"message":[],"Results               |
 | series                                                                            |
 | seriesID":"CUUR0000SA0","data":[{"year":"2022","period":"M08","periodName":"August", "latest":"true","value":"296.171","footnotes":[{}]},{"year":"2022","period":"M07","periodName":"July","value":"296.276","footnotes":[{}]},{"year":"2022","period":"M06","periodName":"June","value":"296.311","footnotes":[{}]},{"year":"2022","period":"M05","periodName":"May","value":"292.296","footnotes":[{}]},{"year":"2022","period":"M04","periodName":"April","value":"289.109","footnotes":[{}]},{"year":"2022","period":"M03","periodName":"March","value":"287.504","footnotes":[{}]},{"year":"2022","period":"M02","periodName":"February","value":"283.716","footnotes":[{}]},{"year":"2022","period":"M01","periodName":"January","value":"281.148","footnotes |
@@ -160,9 +160,9 @@ This is technically readable, but not very nice.
 </p>
 </div>
 </div>
-<div id="outline-container-orgcfffa9d" class="outline-2">
-<h2 id="orgcfffa9d">Processing the Data with <code>jq</code></h2>
-<div class="outline-text-2" id="text-orgcfffa9d">
+<div id="outline-container-org9732cd3" class="outline-2">
+<h2 id="org9732cd3">Processing the Data with <code>jq</code></h2>
+<div class="outline-text-2" id="text-org9732cd3">
 <p>
 For most use cases, the data aren't particularly usable in this format. They're
 hard to read; they include metadata about the API response; and the hierarchical
@@ -171,9 +171,9 @@ proceed step by step to show how we can use <code>jq</code> to extract specific 
 API results.
 </p>
 </div>
-<div id="outline-container-orgab0e0bd" class="outline-3">
-<h3 id="orgab0e0bd"><code>jq</code> with no further arguments</h3>
-<div class="outline-text-3" id="text-orgab0e0bd">
+<div id="outline-container-org3819234" class="outline-3">
+<h3 id="org3819234"><code>jq</code> with no further arguments</h3>
+<div class="outline-text-3" id="text-org3819234">
 <p>
 What happens if we pass the results of the API call to <code>jq</code> with no further arguments?
 </p>
@@ -184,7 +184,7 @@ What happens if we pass the results of the API call to <code>jq</code> with no f
 </pre>
 </div>
 
-<pre class="example" id="org05f2cee">
+<pre class="example" id="orga05fa35">
 {
   "status": "REQUEST_SUCCEEDED",
   "responseTime": 169,
@@ -364,9 +364,9 @@ the <code>data</code> values as rows in our resulting table.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orga9043bf" class="outline-3">
-<h3 id="orga9043bf">Constructing a Header Row</h3>
-<div class="outline-text-3" id="text-orga9043bf">
+<div id="outline-container-org2d37d00" class="outline-3">
+<h3 id="org2d37d00">Constructing a Header Row</h3>
+<div class="outline-text-3" id="text-org2d37d00">
 <p>
 We want our resulting table to have a header row. The process of making this row
 provides a lot of insight into how <code>jq</code> works.
@@ -444,9 +444,9 @@ section, we'll see how to extract data from multiple sections.
 </p>
 </div>
 </div>
-<div id="outline-container-orgde85a4d" class="outline-3">
-<h3 id="orgde85a4d">Extracting Data Values</h3>
-<div class="outline-text-3" id="text-orgde85a4d">
+<div id="outline-container-org9f4a45e" class="outline-3">
+<h3 id="org9f4a45e">Extracting Data Values</h3>
+<div class="outline-text-3" id="text-org9f4a45e">
 <p>
 Based on the header rows, we need to extract, for each data entry, the series
 ID, footnotes, period, period name, year, value, and whether it's the latest
@@ -459,7 +459,7 @@ headers, though, for two key reasons:
 level than the other values we need.</li>
 </ul>
 
-<pre class="example" id="orga0732e1">
+<pre class="example" id="org5659035">
 "series": [
     {
         "seriesID": "CUUR0000SA0",
@@ -491,7 +491,7 @@ Here's how we might start to approach this.
 </pre>
 </div>
 
-<pre class="example" id="orgd7f6f93">
+<pre class="example" id="org55970d9">
 [
   "CUUR0000SA0",
   "2022",
@@ -565,7 +565,7 @@ converted directly to the CSV format. So we have a little more work to do.
 </pre>
 </div>
 
-<pre class="example" id="org63ca0d3">
+<pre class="example" id="org98f6a76">
 [
   "CUUR0000SA0",
   "2022",
@@ -621,9 +621,9 @@ without issue.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orga37908a" class="outline-3">
-<h3 id="orga37908a">Converting the Results to CSV</h3>
-<div class="outline-text-3" id="text-orga37908a">
+<div id="outline-container-org66113bc" class="outline-3">
+<h3 id="org66113bc">Converting the Results to CSV</h3>
+<div class="outline-text-3" id="text-org66113bc">
 <p>
 Lastly, we convert the transformed results to a CSV using the <code>@csv</code> formatter.
 </p>
@@ -638,7 +638,7 @@ Lastly, we convert the transformed results to a CSV using the <code>@csv</code> 
 </pre>
 </div>
 
-<pre class="example" id="org1a34e12">
+<pre class="example" id="org56149c0">
 "seriesID","year","period","periodName","latest","value","footnotes"
 "CUUR0000SA0","2022","M08","August","true","296.171",""
 "CUUR0000SA0","2022","M07","July","296.276",""
