@@ -1,12 +1,12 @@
 (function () {
   const TYPES = {
-    note: { label: 'Note', tone: 'info', icon: '📝' },
-    tip: { label: 'Tip', tone: 'info', icon: '💡' },
-    info: { label: 'Info', tone: 'info', icon: 'ℹ️' },
-    important: { label: 'Important', tone: 'warn', icon: '⚠️' },
-    warning: { label: 'Warning', tone: 'warn', icon: '⚠️' },
-    caution: { label: 'Caution', tone: 'warn', icon: '⚠️' },
-    attention: { label: 'Attention', tone: 'warn', icon: '⚠️' }
+    note: { label: 'Note', tone: 'info' },
+    tip: { label: 'Tip', tone: 'info' },
+    info: { label: 'Info', tone: 'info' },
+    important: { label: 'Important', tone: 'warn' },
+    warning: { label: 'Warning', tone: 'warn' },
+    caution: { label: 'Caution', tone: 'warn' },
+    attention: { label: 'Attention', tone: 'warn' }
   };
 
   function escapeForRegex(value) {

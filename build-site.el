@@ -213,7 +213,15 @@
                      (let ((jsonld (my/org-site--build-jsonld normalized-title desc canonical
                                                              published-iso modified-iso keywords abs-image)))
                        (format "<script type=\"application/ld+json\">%s</script>" jsonld))))))
-      (my/org-site--insert-head-extra meta-lines))))
+      (my/org-site--insert-head-extra meta-lines)
+      (when (and published-time source (string-match-p "/posts/" source)
+                 (not (my/org-site--collect-keyword "SUBTITLE")))
+        (save-excursion
+          (goto-char (point-min))
+          (while (looking-at "^#\\+")
+            (forward-line 1))
+          (insert (format "#+SUBTITLE: %s\n"
+                          (format-time-string "%B %-d, %Y" published-time))))))))
 
 ;;; Sitemap preprocessing
 ;;;; Get Preview
@@ -247,11 +255,11 @@ https://ogbe.net/blog/blogging_with_org.html"
          (let* ((full-path (concat "content/" entry))
                 (preview (or (my/get-preview full-path)
                              "(No preview)")))
-         (format "[[file:%s][(%s) %s]]\n%s"
+         (format "[[file:%s][%s]]\n\n%s\n\n%s"
                  entry
-                 (format-time-string "%Y-%m-%d"
-                                     (org-publish-find-date entry project))
                  (org-publish-find-title entry project)
+                 (format-time-string "%B %-d, %Y"
+                                     (org-publish-find-date entry project))
                  preview)))
         ((eq style 'tree)
          ;; Return only last subdir.
@@ -281,6 +289,7 @@ https://ogbe.net/blog/blogging_with_org.html"
              :publishing-directory "./public"
              :publishing-function 'org-html-publish-to-html
              :html-preamble (file-contents "assets/html_preamble.html")
+             :html-postamble "<div class=\"site-footer\"><span class=\"creator\">%c</span> <span class=\"topnav-divider\" aria-hidden=\"true\">&middot;</span> <a href=\"/rss.xml\">RSS</a></div>"
              :with-author nil
              :with-creator t
              :with-toc t
@@ -308,7 +317,7 @@ https://ogbe.net/blog/blogging_with_org.html"
              )
        (list "org-site:assets"
              :base-directory "./assets/"
-             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|ico"
+             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|ico\\|woff2"
              :publishing-directory "./public/"
              :recursive t
              :publishing-function 'org-publish-attachment)
