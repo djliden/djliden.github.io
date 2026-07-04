@@ -7,9 +7,6 @@
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
@@ -25,46 +22,32 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-04-03T00:00:00Z">
-<meta property="article:modified_time" content="2026-03-07T22:13:26Z">
+<meta property="article:modified_time" content="2026-07-04T15:15:07Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Using the DBRX Model with Instructor">
 <meta name="twitter:description" content="This note briefly demonstrates how to use the [[https://github.com/jxnl/instructor][Instructor]] library with the Databricks [[https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-ll...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the DBRX Model with Instructor","description":"This note briefly demonstrates how to use the [[https://github.com/jxnl/instructor][Instructor]] library with the Databricks [[https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-ll...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240403-dbrx-instructor.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-03T00:00:00Z","dateModified":"2026-03-07T22:13:26Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the DBRX Model with Instructor","description":"This note briefly demonstrates how to use the [[https://github.com/jxnl/instructor][Instructor]] library with the Databricks [[https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-ll...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240403-dbrx-instructor.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-04-03T00:00:00Z","dateModified":"2026-07-04T15:15:07Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr class="topnav-rule">
 <header class="site-header">
   <a href="/index.html" class="site-header__brand">
     <h2>Daniel Liden</h2>
   </a>
-  <nav class="topnav-links" aria-label="Primary">
-    <a href="/archive.html">Blog</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/about.html">About Me</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/photos.html">Photos</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notebooks/">Notebooks</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notes.html">Notes</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
-      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
-        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
-        <circle cx="6" cy="18" r="2"/>
-      </svg>
-    </a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+  <div class="site-header__right">
+    <nav class="topnav-links" aria-label="Primary">
+      <a href="/archive.html">Blog</a>
+      <a href="/about.html">About Me</a>
+      <a href="/notes.html">Notes</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+    <button id="theme-toggle" class="nav-theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
       <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
       </svg>
     </button>
-  </nav>
+  </div>
 </header>
-<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -73,43 +56,43 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgb44b784">Instructor</a></li>
-<li><a href="#orge702de8">Using it with DBRX/Databricks</a>
+<li><a href="#orge0bb4f3">Instructor</a></li>
+<li><a href="#org21e5b81">Using it with DBRX/Databricks</a>
 <ul>
-<li><a href="#org0ebab14">Set up the client</a></li>
-<li><a href="#orgd830059">Simple example</a></li>
-<li><a href="#orgd3b7175">A slightly more involved example</a></li>
+<li><a href="#orgc66a31b">Set up the client</a></li>
+<li><a href="#org4942dcf">Simple example</a></li>
+<li><a href="#org12ff819">A slightly more involved example</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org132597a">
+<div class="preview" id="org90225b3">
 <p>
 This note briefly demonstrates how to use the <a href="https://github.com/jxnl/instructor">Instructor</a> library with the Databricks <a href="https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm">DBRX</a> model via the Databricks Foundation Models API.
 </p>
 
 </div>
 
-<div id="outline-container-orgb44b784" class="outline-2">
-<h2 id="orgb44b784">Instructor</h2>
-<div class="outline-text-2" id="text-orgb44b784">
+<div id="outline-container-orge0bb4f3" class="outline-2">
+<h2 id="orge0bb4f3">Instructor</h2>
+<div class="outline-text-2" id="text-orge0bb4f3">
 <p>
 The instructor library provides structured output from LLMs. The user specifies a Pydantic model to define the structure of outputs.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orge702de8" class="outline-2">
-<h2 id="orge702de8">Using it with DBRX/Databricks</h2>
-<div class="outline-text-2" id="text-orge702de8">
+<div id="outline-container-org21e5b81" class="outline-2">
+<h2 id="org21e5b81">Using it with DBRX/Databricks</h2>
+<div class="outline-text-2" id="text-org21e5b81">
 <p>
 Instructor works with DBRX/with the databricks foundation model API. Here's how.
 </p>
 </div>
-<div id="outline-container-org0ebab14" class="outline-3">
-<h3 id="org0ebab14">Set up the client</h3>
-<div class="outline-text-3" id="text-org0ebab14">
+<div id="outline-container-orgc66a31b" class="outline-3">
+<h3 id="orgc66a31b">Set up the client</h3>
+<div class="outline-text-3" id="text-orgc66a31b">
 <p>
 We need to define the environment variables <code>OPENAI_API_KEY</code> and <code>OPENAI_BASE_URL</code>. In this example, they are saved in a <code>.env</code> file. We'll start by loading them.
 </p>
@@ -126,9 +109,9 @@ True
 </div>
 </div>
 
-<div id="outline-container-orgd830059" class="outline-3">
-<h3 id="orgd830059">Simple example</h3>
-<div class="outline-text-3" id="text-orgd830059">
+<div id="outline-container-org4942dcf" class="outline-3">
+<h3 id="org4942dcf">Simple example</h3>
+<div class="outline-text-3" id="text-org4942dcf">
 <p>
 Next, we'll run the example from the Instructor docs to make sure everything is working. In this example, we define a schema fro data about users: we expect name and age. We then prompt the model with a sentence about a user. The model will return the Pydantic object with the user's information.
 </p>
@@ -187,9 +170,9 @@ There are a few things to pay attention to here.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd3b7175" class="outline-3">
-<h3 id="orgd3b7175">A slightly more involved example</h3>
-<div class="outline-text-3" id="text-orgd3b7175">
+<div id="outline-container-org12ff819" class="outline-3">
+<h3 id="org12ff819">A slightly more involved example</h3>
+<div class="outline-text-3" id="text-org12ff819">
 <p>
 Let's look at an example of generating an arbitrary number of question/answer pairs from a text, e.g. for evaluating a RAG application.
 </p>
@@ -264,7 +247,7 @@ And how we'll test this on our example text.
 </pre>
 </div>
 
-<pre class="example" id="orgf274079">
+<pre class="example" id="org14ddca9">
 EvalQAs(
     evalqas=[
         EvalQA(
@@ -289,8 +272,7 @@ last steps of initialization, making it easy for a user to customize the behavio
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: 2024-04-03 Wed 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+<div class="site-footer"><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</span> <span class="topnav-divider" aria-hidden="true">&middot;</span> <a href="/rss.xml">RSS</a></div>
 </div>
 </body>
 </html>

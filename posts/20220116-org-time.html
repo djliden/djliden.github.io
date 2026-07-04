@@ -7,9 +7,6 @@
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
@@ -25,76 +22,63 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2022-01-29T00:00:00Z">
-<meta property="article:modified_time" content="2026-03-07T22:13:26Z">
+<meta property="article:modified_time" content="2026-07-04T15:15:07Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Task Repeaters in Org Mode">
 <meta name="twitter:description" content="I recently started using org-mode to keep track of a few habits (morning meditation, getting some sunlight and exercise before my morning coffee, etc.) and needed to make use of org-mode&#39;s calendar...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Task Repeaters in Org Mode","description":"I recently started using org-mode to keep track of a few habits (morning meditation, getting some sunlight and exercise before my morning coffee, etc.) and needed to make use of org-mode's calendar...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220116-org-time.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2022-01-29T00:00:00Z","dateModified":"2026-03-07T22:13:26Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Task Repeaters in Org Mode","description":"I recently started using org-mode to keep track of a few habits (morning meditation, getting some sunlight and exercise before my morning coffee, etc.) and needed to make use of org-mode's calendar...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220116-org-time.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2022-01-29T00:00:00Z","dateModified":"2026-07-04T15:15:07Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr class="topnav-rule">
 <header class="site-header">
   <a href="/index.html" class="site-header__brand">
     <h2>Daniel Liden</h2>
   </a>
-  <nav class="topnav-links" aria-label="Primary">
-    <a href="/archive.html">Blog</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/about.html">About Me</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/photos.html">Photos</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notebooks/">Notebooks</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notes.html">Notes</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
-      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
-        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
-        <circle cx="6" cy="18" r="2"/>
-      </svg>
-    </a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+  <div class="site-header__right">
+    <nav class="topnav-links" aria-label="Primary">
+      <a href="/archive.html">Blog</a>
+      <a href="/about.html">About Me</a>
+      <a href="/notes.html">Notes</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+    <button id="theme-toggle" class="nav-theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
       <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
       </svg>
     </button>
-  </nav>
+  </div>
 </header>
-<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Task Repeaters in Org Mode</h1>
+<p class="subtitle" role="doc-subtitle">January 29, 2022</p>
 </header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org214a194">Background</a></li>
-<li><a href="#orgd2678c0">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</a></li>
-<li><a href="#orgc150501">Repeat Intervals</a>
+<li><a href="#org444f622">Background</a></li>
+<li><a href="#org9a81c0e">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</a></li>
+<li><a href="#org6262d76">Repeat Intervals</a>
 <ul>
-<li><a href="#org3bfcdd6">Different Types of Repeat Intervals</a>
+<li><a href="#org43db5ef">Different Types of Repeat Intervals</a>
 <ul>
-<li><a href="#org1f7f8b5">The <code>.+</code> Repeater</a></li>
-<li><a href="#org19a652b">The <code>++</code> Repeater</a></li>
+<li><a href="#org3293f80">The <code>.+</code> Repeater</a></li>
+<li><a href="#orgbf558e7">The <code>++</code> Repeater</a></li>
 </ul>
 </li>
-<li><a href="#orga2e476d">Marking Tasks with Repeaters <code>DONE</code> (For Good)</a></li>
+<li><a href="#orge626f88">Marking Tasks with Repeaters <code>DONE</code> (For Good)</a></li>
 </ul>
 </li>
-<li><a href="#org6809e1b">Further Reading</a></li>
+<li><a href="#org6445433">Further Reading</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org214a194" class="outline-2">
-<h2 id="org214a194">Background</h2>
-<div class="outline-text-2" id="text-org214a194">
-<div class="PREVIEW" id="orgc20eed9">
+<div id="outline-container-org444f622" class="outline-2">
+<h2 id="org444f622">Background</h2>
+<div class="outline-text-2" id="text-org444f622">
+<div class="PREVIEW" id="org2fba537">
 <p>
 I recently started using org-mode to keep track of a few habits (morning
 meditation, getting some sunlight and exercise before my morning coffee, etc.)
@@ -109,9 +93,9 @@ complete a task after the scheduled date.
 </div>
 </div>
 </div>
-<div id="outline-container-orgd2678c0" class="outline-2">
-<h2 id="orgd2678c0">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</h2>
-<div class="outline-text-2" id="text-orgd2678c0">
+<div id="outline-container-org9a81c0e" class="outline-2">
+<h2 id="org9a81c0e">Review: Dates, Schedules, and Deadlines in Emacs Org-Mode</h2>
+<div class="outline-text-2" id="text-org9a81c0e">
 <p>
 The <a href="https://orgmode.org/manual/Dates-and-Times.html">org-mode manual</a> provides plenty of details on the basics of dates and
 times. Here's a quick review:
@@ -159,9 +143,9 @@ appointment) that occurs <i>on</i> a given date.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc150501" class="outline-2">
-<h2 id="orgc150501">Repeat Intervals</h2>
-<div class="outline-text-2" id="text-orgc150501">
+<div id="outline-container-org6262d76" class="outline-2">
+<h2 id="org6262d76">Repeat Intervals</h2>
+<div class="outline-text-2" id="text-org6262d76">
 <p>
 Org-mode makes it possible to schedule recurring events without manually
 specifying each repetition date. There are three key formats for repeated
@@ -181,9 +165,9 @@ When specifying repeat intervals, <code>y</code> means "yearly", <code>m</code> 
 <code>+&lt;number&gt;</code> tells how often the event should be repeated.
 </p>
 </div>
-<div id="outline-container-org3bfcdd6" class="outline-3">
-<h3 id="org3bfcdd6">Different Types of Repeat Intervals</h3>
-<div class="outline-text-3" id="text-org3bfcdd6">
+<div id="outline-container-org43db5ef" class="outline-3">
+<h3 id="org43db5ef">Different Types of Repeat Intervals</h3>
+<div class="outline-text-3" id="text-org43db5ef">
 <p>
 Here's where I ran into trouble. I scheduled some events as daily "habits." For
 example, I wanted to take a walk each morning, so I included the following in my
@@ -242,9 +226,9 @@ and I plan to complete the task again <i>tomorrow</i>.
 There are two special repeaters for situations like this.
 </p>
 </div>
-<div id="outline-container-org1f7f8b5" class="outline-4">
-<h4 id="org1f7f8b5">The <code>.+</code> Repeater</h4>
-<div class="outline-text-4" id="text-org1f7f8b5">
+<div id="outline-container-org3293f80" class="outline-4">
+<h4 id="org3293f80">The <code>.+</code> Repeater</h4>
+<div class="outline-text-4" id="text-org3293f80">
 <p>
 Instead of scheduling with <code>+1d</code>, we can use <code>.+1d</code> to specify that, after we mark a
 task <code>DONE</code> it should advance by exactly one day from the date (and time, if the
@@ -285,9 +269,9 @@ one week from when it was marked <code>DONE</code>, a Saturday.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org19a652b" class="outline-4">
-<h4 id="org19a652b">The <code>++</code> Repeater</h4>
-<div class="outline-text-4" id="text-org19a652b">
+<div id="outline-container-orgbf558e7" class="outline-4">
+<h4 id="orgbf558e7">The <code>++</code> Repeater</h4>
+<div class="outline-text-4" id="text-orgbf558e7">
 <p>
 The <code>++</code> repeater is very similar to the <code>.+</code> repeater insofar as it will also
 advance the scheduled date into the future. However, it will <i>also</i> match the
@@ -334,9 +318,9 @@ Sunday, only four days later.
 </div>
 </div>
 </div>
-<div id="outline-container-orga2e476d" class="outline-3">
-<h3 id="orga2e476d">Marking Tasks with Repeaters <code>DONE</code> (For Good)</h3>
-<div class="outline-text-3" id="text-orga2e476d">
+<div id="outline-container-orge626f88" class="outline-3">
+<h3 id="orge626f88">Marking Tasks with Repeaters <code>DONE</code> (For Good)</h3>
+<div class="outline-text-3" id="text-orge626f88">
 <p>
 You may want to end a repeated task—stop it from appearing in your agenda and
 mark it <code>DONE</code> —without entirely deleting the task. Maybe you want to maintain the
@@ -361,9 +345,9 @@ to square brackets, indicating an inactive timestamp.</li>
 </div>
 </div>
 </div>
-<div id="outline-container-org6809e1b" class="outline-2">
-<h2 id="org6809e1b">Further Reading</h2>
-<div class="outline-text-2" id="text-org6809e1b">
+<div id="outline-container-org6445433" class="outline-2">
+<h2 id="org6445433">Further Reading</h2>
+<div class="outline-text-2" id="text-org6445433">
 <p>
 The org-mode manual is the best place to learn more about timestamps, schedules,
 and deadlines in general and repeated tasks in particular. Here are some places
@@ -378,8 +362,7 @@ to start:
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: 2022-01-29 Sat 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+<div class="site-footer"><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</span> <span class="topnav-divider" aria-hidden="true">&middot;</span> <a href="/rss.xml">RSS</a></div>
 </div>
 </body>
 </html>

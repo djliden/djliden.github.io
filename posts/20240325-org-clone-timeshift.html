@@ -7,9 +7,6 @@
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
@@ -25,70 +22,57 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-03-25T00:00:00Z">
-<meta property="article:modified_time" content="2026-03-07T22:13:26Z">
+<meta property="article:modified_time" content="2026-07-04T15:15:07Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Making headings for recurring tasks in org mode">
 <meta name="twitter:description" content="This short post shows how to use the ~org-clone-subtree-with-time-shift~ command to make org headings for recurring tasks. I was recently trying to add a five-week class to my org agenda and I didn...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Making headings for recurring tasks in org mode","description":"This short post shows how to use the ~org-clone-subtree-with-time-shift~ command to make org headings for recurring tasks. I was recently trying to add a five-week class to my org agenda and I didn...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20240325-org-clone-timeshift.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-03-25T00:00:00Z","dateModified":"2026-03-07T22:13:26Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Making headings for recurring tasks in org mode","description":"This short post shows how to use the ~org-clone-subtree-with-time-shift~ command to make org headings for recurring tasks. I was recently trying to add a five-week class to my org agenda and I didn...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20240325-org-clone-timeshift.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-03-25T00:00:00Z","dateModified":"2026-07-04T15:15:07Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr class="topnav-rule">
 <header class="site-header">
   <a href="/index.html" class="site-header__brand">
     <h2>Daniel Liden</h2>
   </a>
-  <nav class="topnav-links" aria-label="Primary">
-    <a href="/archive.html">Blog</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/about.html">About Me</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/photos.html">Photos</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notebooks/">Notebooks</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notes.html">Notes</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
-      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
-        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
-        <circle cx="6" cy="18" r="2"/>
-      </svg>
-    </a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+  <div class="site-header__right">
+    <nav class="topnav-links" aria-label="Primary">
+      <a href="/archive.html">Blog</a>
+      <a href="/about.html">About Me</a>
+      <a href="/notes.html">Notes</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+    <button id="theme-toggle" class="nav-theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
       <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
       </svg>
     </button>
-  </nav>
+  </div>
 </header>
-<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Making headings for recurring tasks in org mode</h1>
+<p class="subtitle" role="doc-subtitle">March 25, 2024</p>
 </header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org22663f6">How it works</a></li>
-<li><a href="#org6b64226">Limitations</a></li>
-<li><a href="#org4387784">Further reading</a></li>
+<li><a href="#orgc0ec42d">How it works</a></li>
+<li><a href="#org9d30930">Limitations</a></li>
+<li><a href="#org4481de4">Further reading</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org78a6a6e">
+<div class="preview" id="org4cded8f">
 <p>
 This short post shows how to use the <code>org-clone-subtree-with-time-shift</code> command to make org headings for recurring tasks. I was recently trying to add a five-week class to my org agenda and I didn't want to manually create each heading and add or modify the timestamp. This approach made it very easy.
 </p>
 
 </div>
 
-<div id="outline-container-org22663f6" class="outline-2">
-<h2 id="org22663f6">How it works</h2>
-<div class="outline-text-2" id="text-org22663f6">
+<div id="outline-container-orgc0ec42d" class="outline-2">
+<h2 id="orgc0ec42d">How it works</h2>
+<div class="outline-text-2" id="text-orgc0ec42d">
 <p>
 Suppose I have an org mode heading representing a scheduled event, like a class:
 </p>
@@ -123,18 +107,18 @@ When we invoke this function with the cursor on the first heading, we will be pr
 </div>
 </div>
 
-<div id="outline-container-org6b64226" class="outline-2">
-<h2 id="org6b64226">Limitations</h2>
-<div class="outline-text-2" id="text-org6b64226">
+<div id="outline-container-org9d30930" class="outline-2">
+<h2 id="org9d30930">Limitations</h2>
+<div class="outline-text-2" id="text-org9d30930">
 <p>
 In some cases, you may want to change the names of the headers somewhat (such as by adding a counter; class 1, class 2, etc.). There are many different approaches to handle this programmatically, but it's beyond the scope of this short post. In this case, it takes just a few seconds to add a class number to each heading manually.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org4387784" class="outline-2">
-<h2 id="org4387784">Further reading</h2>
-<div class="outline-text-2" id="text-org4387784">
+<div id="outline-container-org4481de4" class="outline-2">
+<h2 id="org4481de4">Further reading</h2>
+<div class="outline-text-2" id="text-org4481de4">
 <p>
 Most helpfully, here is the documenation from <code>C-h f org-clone-subtree-with-time-shift</code>:
 </p>
@@ -217,8 +201,7 @@ For more, you can also consult:
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: 2024-03-25 Mon 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+<div class="site-footer"><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</span> <span class="topnav-divider" aria-hidden="true">&middot;</span> <a href="/rss.xml">RSS</a></div>
 </div>
 </body>
 </html>

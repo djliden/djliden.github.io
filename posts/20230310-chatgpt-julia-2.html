@@ -7,9 +7,6 @@
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
@@ -25,62 +22,49 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2023-03-10T00:00:00Z">
-<meta property="article:modified_time" content="2026-03-07T22:13:26Z">
+<meta property="article:modified_time" content="2026-07-04T15:15:07Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Using the ChatGPT API with Julia Part 2: Defining a Chat Struct">
 <meta name="twitter:description" content="One of the things that makes working with the ChatGPT API a little different from working with, e.g., the ~davinci-text-003~ model api is the need to maintain the history of a given chat session. A...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the ChatGPT API with Julia Part 2: Defining a Chat Struct","description":"One of the things that makes working with the ChatGPT API a little different from working with, e.g., the ~davinci-text-003~ model api is the need to maintain the history of a given chat session. A...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230310-chatgpt-julia-2.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2023-03-10T00:00:00Z","dateModified":"2026-03-07T22:13:26Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the ChatGPT API with Julia Part 2: Defining a Chat Struct","description":"One of the things that makes working with the ChatGPT API a little different from working with, e.g., the ~davinci-text-003~ model api is the need to maintain the history of a given chat session. A...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230310-chatgpt-julia-2.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2023-03-10T00:00:00Z","dateModified":"2026-07-04T15:15:07Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr class="topnav-rule">
 <header class="site-header">
   <a href="/index.html" class="site-header__brand">
     <h2>Daniel Liden</h2>
   </a>
-  <nav class="topnav-links" aria-label="Primary">
-    <a href="/archive.html">Blog</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/about.html">About Me</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/photos.html">Photos</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notebooks/">Notebooks</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notes.html">Notes</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
-      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
-        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
-        <circle cx="6" cy="18" r="2"/>
-      </svg>
-    </a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+  <div class="site-header__right">
+    <nav class="topnav-links" aria-label="Primary">
+      <a href="/archive.html">Blog</a>
+      <a href="/about.html">About Me</a>
+      <a href="/notes.html">Notes</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+    <button id="theme-toggle" class="nav-theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
       <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
       </svg>
     </button>
-  </nav>
+  </div>
 </header>
-<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Using the ChatGPT API with Julia Part 2: Defining a Chat Struct</h1>
+<p class="subtitle" role="doc-subtitle">March 10, 2023</p>
 </header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc4d313b">Defining the Struct</a></li>
-<li><a href="#org3208f7b">Defining the function</a></li>
-<li><a href="#orgd942f72">Giving it a Try</a></li>
-<li><a href="#orgcf08129">What's next?</a></li>
+<li><a href="#org2bbbd96">Defining the Struct</a></li>
+<li><a href="#org9dd5eda">Defining the function</a></li>
+<li><a href="#org3ea06fd">Giving it a Try</a></li>
+<li><a href="#org2dc9822">What's next?</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org9e2d861">
+<div class="preview" id="org253ecb9">
 <p>
 One of the things that makes working with the ChatGPT API a little different
 from working with, e.g., the <code>davinci-text-003</code> model api is the need to maintain
@@ -95,9 +79,9 @@ For the basics of working with the ChatGPT API, check out <a href="20230303-chat
 
 </div>
 
-<div id="outline-container-orgc4d313b" class="outline-2">
-<h2 id="orgc4d313b">Defining the Struct</h2>
-<div class="outline-text-2" id="text-orgc4d313b">
+<div id="outline-container-org2bbbd96" class="outline-2">
+<h2 id="org2bbbd96">Defining the Struct</h2>
+<div class="outline-text-2" id="text-org2bbbd96">
 <p>
 A <code>struct</code>, also referred to as a <a href="https://docs.julialang.org/en/v1/manual/types/#Composite-Types">composite type</a>, is "a collection of named
 fields, an instance of which can be treated as a single value." By default,
@@ -190,9 +174,9 @@ able to act on it. For that, we'll define a function.
 </div>
 </div>
 
-<div id="outline-container-org3208f7b" class="outline-2">
-<h2 id="org3208f7b">Defining the function</h2>
-<div class="outline-text-2" id="text-org3208f7b">
+<div id="outline-container-org9dd5eda" class="outline-2">
+<h2 id="org9dd5eda">Defining the function</h2>
+<div class="outline-text-2" id="text-org9dd5eda">
 <p>
 The purpose of this function is to:
 </p>
@@ -283,9 +267,9 @@ list. The <code>chat</code> function follows both of these conventions.
 </p>
 </div>
 </div>
-<div id="outline-container-orgd942f72" class="outline-2">
-<h2 id="orgd942f72">Giving it a Try</h2>
-<div class="outline-text-2" id="text-orgd942f72">
+<div id="outline-container-org3ea06fd" class="outline-2">
+<h2 id="org3ea06fd">Giving it a Try</h2>
+<div class="outline-text-2" id="text-org3ea06fd">
 <p>
 So, does it work? Let's try it out.
 </p>
@@ -321,9 +305,9 @@ the message history in the second API request.
 </p>
 </div>
 </div>
-<div id="outline-container-orgcf08129" class="outline-2">
-<h2 id="orgcf08129">What's next?</h2>
-<div class="outline-text-2" id="text-orgcf08129">
+<div id="outline-container-org2dc9822" class="outline-2">
+<h2 id="org2dc9822">What's next?</h2>
+<div class="outline-text-2" id="text-org2dc9822">
 <p>
 There are a few additional avenues I want to explore, in no particular order:
 </p>
@@ -342,8 +326,7 @@ interesting project.</li>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: 2023-03-10 Fri 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+<div class="site-footer"><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</span> <span class="topnav-divider" aria-hidden="true">&middot;</span> <a href="/rss.xml">RSS</a></div>
 </div>
 </body>
 </html>

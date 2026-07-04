@@ -1,32 +1,152 @@
 @charset "UTF-8";
 
-/* Header navigation */
-.topnav-rule {
-    border: 0;
-    border-top: 1px solid var(--nav-border-color);
-    margin: 0;
+/* ============================================================
+   Daniel Liden design system — "two-ink Pelican"
+   Mid-century paperback x plaintext/terminal. Cool grounds,
+   two inks (orange leads, blue sorts), Archivo + Iosevka-for-code,
+   square corners, no shadows, sentence case, no icon set/emoji.
+   ============================================================ */
+
+/* Fonts — self-hosted, latin subset */
+@font-face {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url("/fonts/archivo-variable.woff2") format("woff2");
 }
 
+@font-face {
+    font-family: 'Iosevka';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/fonts/iosevka-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: 'Iosevka';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("/fonts/iosevka-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: 'Iosevka';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/fonts/iosevka-latin-700-normal.woff2") format("woff2");
+}
+
+/* Tokens — light (default) */
+:root, [data-theme="light"] {
+    --dl-paper: #FAFAF8;
+    --dl-inset: #F1F1ED;
+    --dl-ink:   #1A1A1A;
+
+    --dl-text:  #333330;
+    --dl-quiet: #5C5C5C;
+    --dl-faint: #767672;
+
+    --dl-orange: #E5402A;
+    --dl-blue:   #2A4A8C;
+
+    --dl-accent:   var(--dl-orange);
+    --dl-link:     var(--dl-blue);
+
+    --dl-rule:        rgba(0, 0, 0, 0.12);
+    --dl-rule-strong: #1A1A1A;
+    --dl-rule-accent: var(--dl-orange);
+
+    --dl-shadow-window: 0 8px 22px rgba(0, 0, 0, 0.1);
+
+    --dl-font-sans: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --dl-font-mono: 'Iosevka', 'SF Mono', Menlo, monospace;
+
+    --dl-radius-sm: 3px;
+    --dl-radius-md: 5px;
+
+    /* legacy variable names kept as aliases so nothing else has to change */
+    --bg-color: var(--dl-paper);
+    --text-color: var(--dl-text);
+    --link-color: var(--dl-link);
+    --link-hover-color: var(--dl-orange);
+    --border-color: var(--dl-rule);
+    --nav-border-color: var(--dl-rule);
+    --nav-divider-color: var(--dl-rule);
+    --code-bg: var(--dl-inset);
+    --header-color: var(--dl-ink);
+}
+
+/* Tokens — dark */
+[data-theme="dark"] {
+    --dl-paper: #191B1F;
+    --dl-inset: #23262B;
+    --dl-ink:   #E7E9ED;
+
+    --dl-text:  #C4C8CF;
+    --dl-quiet: #9BA0A8;
+    --dl-faint: #82868E;
+
+    --dl-orange: #ED5836;
+    --dl-blue:   #88A8EE;
+
+    --dl-accent:   var(--dl-orange);
+    --dl-link:     var(--dl-blue);
+
+    --dl-rule:        rgba(231, 233, 237, 0.12);
+    --dl-rule-strong: #E7E9ED;
+    --dl-rule-accent: var(--dl-orange);
+
+    --dl-shadow-window: 0 8px 22px rgba(0, 0, 0, 0.4);
+
+    --bg-color: var(--dl-paper);
+    --text-color: var(--dl-text);
+    --link-color: var(--dl-link);
+    --link-hover-color: var(--dl-orange);
+    --border-color: var(--dl-rule);
+    --nav-border-color: var(--dl-rule);
+    --nav-divider-color: var(--dl-rule);
+    --code-bg: var(--dl-inset);
+    --header-color: var(--dl-ink);
+}
+
+/* ============================================================
+   Header navigation
+   ============================================================ */
 .site-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1.5rem;
-    padding: 0.6rem 0;
+    padding: 1.8rem 0 0.9rem;
+    margin-bottom: 1.2rem;
+}
+
+/* Pages with their own page title (posts, about, notes) carry the accent
+   rule under that title/date instead — only pages without one (the
+   homepage, the archive) get the rule directly under the nav. */
+#preamble:not(:has(~ #content .title)) .site-header {
+    border-bottom: 2px solid var(--dl-rule-accent);
+    margin-bottom: 2rem;
 }
 
 .site-header__brand {
     display: inline-flex;
     align-items: center;
     text-decoration: none;
-    color: inherit;
+    color: var(--dl-ink);
 }
 
 .site-header__brand h2 {
     margin: 0;
-    font-size: 1.65rem;
-    font-weight: 650;
-    letter-spacing: 0.005em;
+    font-family: var(--dl-font-sans);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--dl-ink);
 }
 
 .site-header__brand:hover {
@@ -35,35 +155,36 @@
 }
 
 .site-header__brand:focus-visible {
-    outline: 2px solid var(--link-color);
+    outline: 2px solid var(--dl-link);
     outline-offset: 3px;
 }
 
+.site-header__right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
 
 .topnav-links {
     display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 1.5rem;
+    font-family: var(--dl-font-sans);
     font-weight: 600;
+    font-size: 0.95rem;
     font-style: normal;
-    letter-spacing: 0.01em;
+    letter-spacing: normal;
 }
 
 .topnav-links a {
+    color: var(--dl-quiet);
     text-decoration: none;
 }
 
 .topnav-divider {
-    color: var(--nav-divider-color);
+    color: var(--dl-faint);
     font-style: normal;
-}
-
-.topnav-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-color);
 }
 
 .topnav-links a {
@@ -73,20 +194,14 @@
 
 .topnav-links a:hover,
 .topnav-links a:focus-visible {
-    color: var(--link-hover-color);
+    color: var(--dl-orange);
     text-decoration: none;
     border-bottom: none;
 }
 
-.rss-icon,
 .nav-theme-toggle svg {
-    width: 20px;
-    height: 20px;
-}
-
-.rss-icon {
-    fill: none;
-    stroke: currentColor;
+    width: 18px;
+    height: 18px;
 }
 
 .nav-theme-toggle {
@@ -97,127 +212,32 @@
     margin: 0;
     display: inline-flex;
     align-items: center;
-    opacity: 0.85;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    color: var(--text-color);
+    color: var(--dl-quiet);
+    opacity: 1;
+    transition: color 0.18s ease;
 }
 
 .nav-theme-toggle:hover {
-    opacity: 1;
-    transform: scale(1.05);
+    color: var(--dl-orange);
 }
 
 .nav-theme-toggle:focus-visible {
-    outline: 2px solid var(--link-color);
+    outline: 2px solid var(--dl-link);
     outline-offset: 2px;
 }
 
-/* Light mode (default) */
-:root {
-    --bg-color: #fdfaf7;
-    --text-color: #333;
-    --link-color: #3a869b;
-    --link-hover-color: #2f6f81;
-    --border-color: #e1e5e9;
-    --nav-border-color: #d2d6da;
-    --nav-divider-color: #cbd0d4;
-    --code-bg: #f8f9fa;
-    --header-color: #b45c3c;
-    --admonition-info-border: #3a869b;
-    --admonition-info-bg: rgba(58, 134, 155, 0.09);
-    --admonition-warn-border: #b45c3c;
-    --admonition-warn-bg: rgba(180, 92, 60, 0.12);
-    /* Syntax highlighting - Light mode */
-    --syntax-comment: #6a737d;
-    --syntax-keyword: #d73a49;
-    --syntax-string: #032f62;
-    --syntax-function: #6f42c1;
-    --syntax-variable: #e36209;
-    --syntax-number: #005cc5;
-}
-
-/* Dark mode */
-[data-theme="dark"] {
-    --bg-color: #0d1117;
-    --text-color: #c9d1d9;
-    --link-color: #86d7eb;
-    --link-hover-color: #b4ecff;
-    --border-color: #30363d;
-    --nav-border-color: #3d4854;
-    --nav-divider-color: #4b545f;
-    --code-bg: #161b22;
-    --header-color: #f29c74;
-    --admonition-info-border: #86d7eb;
-    --admonition-info-bg: rgba(134, 215, 235, 0.12);
-    --admonition-warn-border: #f29c74;
-    --admonition-warn-bg: rgba(242, 156, 116, 0.18);
-    /* Syntax highlighting - Dark mode */
-    --syntax-comment: #8b949e;
-    --syntax-keyword: #ff7b72;
-    --syntax-string: #a5d6ff;
-    --syntax-function: #d2a8ff;
-    --syntax-variable: #ffa657;
-    --syntax-number: #79c0ff;
-}
-
-/* Override hardcoded colors in org-base.css for dark mode */
-[data-theme="dark"] body {
-    color: var(--text-color) !important;
-}
-
-[data-theme="dark"] .title {
-    color: var(--header-color) !important;
-}
-
-[data-theme="dark"] h1,
-[data-theme="dark"] h2,
-[data-theme="dark"] h3,
-[data-theme="dark"] h4,
-[data-theme="dark"] h5,
-[data-theme="dark"] h6 {
-    color: var(--header-color) !important;
-}
-
-[data-theme="dark"] a {
-    color: var(--link-color) !important;
-}
-
-[data-theme="dark"] a:hover {
-    color: var(--link-hover-color) !important;
-}
-
-[data-theme="dark"] :not(pre)>code {
-    background-color: var(--code-bg) !important;
-    color: var(--text-color) !important;
-    border-color: var(--border-color) !important;
-}
-
-[data-theme="dark"] blockquote {
-    background-color: var(--code-bg) !important;
-    border-left-color: var(--header-color) !important;
-    color: var(--text-color) !important;
-}
-
-[data-theme="dark"] table,
-[data-theme="dark"] table th,
-[data-theme="dark"] table td {
-    background-color: var(--bg-color) !important;
-    border-color: var(--border-color) !important;
-    color: var(--text-color) !important;
-}
-
-[data-theme="dark"] table th {
-    background-color: var(--code-bg) !important;
-}
-
+/* ============================================================
+   Base
+   ============================================================ */
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'IBM Plex Sans', 'Atkinson Hyperlegible', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', sans-serif;
+    background-color: var(--dl-paper);
+    color: var(--dl-text);
+    font-family: var(--dl-font-sans);
     font-size: 16px;
-    line-height: 1.5;
-    transition: background-color 0.3s ease, color 0.3s ease;
-} 
+    font-weight: 400;
+    line-height: 1.55;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
 
 @media screen and (min-width: 600px) {
     body {
@@ -234,16 +254,33 @@ body {
 
 .title {
     text-align: left;
-    margin: 0.8em auto;
-    color: black;
+    margin: 0.6em auto 0.5em;
+    font-family: var(--dl-font-sans);
+    font-weight: 800;
+    font-size: 1.9em;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--dl-ink);
+    padding-bottom: 0.5em;
+    border-bottom: 2px solid var(--dl-rule-accent);
+}
+
+/* When a subtitle (post date) follows the title, the accent rule moves
+   down to sit under the date instead of directly under the title */
+.title:has(+ .subtitle) {
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 .subtitle {
     text-align: left;
-    font-size: 1.1em;
+    font-size: 0.9em;
     line-height: 1.4;
-    font-weight: bold;
-    margin: 1em auto;
+    font-weight: 500;
+    color: var(--dl-quiet);
+    margin: -0.3em auto 0;
+    padding-bottom: 1em;
+    border-bottom: 2px solid var(--dl-rule-accent);
 }
 
 h1,
@@ -252,39 +289,40 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Ubuntu', 'Roboto', sans-serif;
-    font-weight: 650;
-    color: var(--header-color);
+    font-family: var(--dl-font-sans);
+    font-weight: 700;
+    color: var(--dl-ink);
     margin-top: 0.9em;
     margin-bottom: 0.35em;
     letter-spacing: -0.015em;
 }
 
 h1 {
-    font-size: 2.1em;
+    font-size: 1.7em;
 }
 
 h2 {
-    font-size: 1.6em;
+    font-size: 1.4em;
 }
 
 h3 {
-    font-size: 1.25em;
-    font-style: italic;
+    font-size: 1.15em;
+    font-style: normal;
 }
 
 h4 {
-    font-size: 1.05em;
-    font-style: italic;
+    font-size: 1.02em;
+    font-style: normal;
 }
 
 h5 {
-    font-size: 0.98em;
+    font-size: 0.96em;
 }
 
 h6 {
-    font-size: 0.92em;
-    text-transform: uppercase;
+    font-size: 0.9em;
+    text-transform: none;
+    color: var(--dl-quiet);
 }
 
 p,
@@ -297,24 +335,20 @@ blockquote {
 }
 
 a {
-    color: var(--link-color);
+    color: var(--dl-link);
     text-decoration: none;
 }
 
-p a {
-    color: var(--link-color);
-    text-decoration: none;
-}
-
+p a,
 li a {
-    color: var(--link-color);
+    color: var(--dl-link);
     text-decoration: none;
 }
 
 a:hover,
 p a:hover,
 li a:hover {
-    color: var(--link-hover-color);
+    color: var(--dl-orange);
     text-decoration: underline;
     text-decoration-style: solid;
     text-decoration-thickness: 0.08em;
@@ -322,73 +356,65 @@ li a:hover {
     border-bottom: none;
 }
 
-#text-table-of-contents a {
-    color: var(--link-color);
-    text-decoration: none;
+/* ============================================================
+   Table of contents — flat inset well, no colored left border
+   ============================================================ */
+#table-of-contents > h2 {
+    font-size: 1em;
+    font-weight: 700;
+    margin: 1.4em 0 0.4em;
 }
 
 #text-table-of-contents {
-    border-left: 3px solid var(--link-color);
-    background: rgba(58, 134, 155, 0.08);
-    padding: 0.45em 0.8em;
-    border-radius: 6px;
-    margin: 0.8em 0;
+    margin: 0 0 1.2em;
 }
 
 #text-table-of-contents ul {
-    margin-left: 0.85em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#text-table-of-contents ul ul {
+    margin-left: 1.1em;
 }
 
 #text-table-of-contents li {
-    margin: 0.12em 0;
-    list-style: disc;
+    margin: 0.2em 0;
 }
 
-[data-theme="dark"] #text-table-of-contents {
-    background: rgba(134, 215, 235, 0.12);
-    border-left-color: var(--link-color);
+#text-table-of-contents a {
+    color: var(--dl-link);
+    text-decoration: none;
 }
 
-[data-theme="dark"] #text-table-of-contents a {
-    color: var(--link-color);
+#text-table-of-contents a:hover {
+    color: var(--dl-orange);
+    text-decoration: underline;
 }
 
+/* ============================================================
+   Admonitions / callouts — inset ground, no left bar, orange
+   run-in label, sentence case (never tracked all-caps)
+   ============================================================ */
 .admonition {
-    border-left: 4px solid var(--admonition-info-border);
-    background: var(--admonition-info-bg);
-    border-radius: 6px;
-    padding: 0.85em 1em;
+    background: var(--dl-inset);
+    border-radius: var(--dl-radius-md);
+    padding: 0.85em 1.1em;
     margin: 1.2em 0;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
-}
-
-.admonition--warn {
-    border-left-color: var(--admonition-warn-border);
-    background: var(--admonition-warn-bg);
 }
 
 .admonition__title {
-    font-size: 0.75em;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
+    font-size: 0.95em;
     font-weight: 700;
-    color: var(--admonition-info-border);
-    margin-bottom: 0.5em;
+    color: var(--dl-orange);
+    margin-bottom: 0.3em;
     display: inline-flex;
     align-items: center;
-    gap: 0.35em;
 }
 
 .admonition--warn .admonition__title {
-    color: var(--admonition-warn-border);
-}
-
-.admonition__icon {
-    width: 0.85em;
-    height: 0.85em;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    color: var(--dl-orange);
 }
 
 .admonition__body > *:first-child {
@@ -411,280 +437,230 @@ li a:hover {
     margin-top: 0.8em;
 }
 
-/* Modern code blocks - simplified */
+/* ============================================================
+   Code blocks — flat inset well, restrained highlighting
+   ============================================================ */
 .org-src-container {
-    background-color: var(--code-bg) !important;
-    border: none !important;
-    border-left: none !important;
-    border-right: none !important;
-    border-top: none !important;
-    border-bottom: none !important;
-    border-radius: 8px !important;
+    background-color: var(--dl-inset) !important;
+    border: 1px solid var(--dl-rule) !important;
+    border-radius: var(--dl-radius-md) !important;
+    box-shadow: none !important;
     margin: 1.5em 0 !important;
     position: relative !important;
-    transition: all 0.3s ease;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.08) !important;
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.08) !important;
-    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.08) !important;
-}
-
-.org-src-container:hover {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.12) !important;
 }
 
 .org-src-container > pre {
     margin: 0 !important;
     padding: 1.25em 1.5em !important;
-    padding-top: 2.5em !important;
+    padding-top: 2.1em !important;
     overflow-x: auto;
-    font-family: 'Iosevka', 'Iosevka Term', 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace !important;
-    font-size: 14px !important;
-    line-height: 1.6 !important;
-    background-color: var(--code-bg) !important;
-    color: var(--text-color) !important;
-    border-radius: 8px !important;
+    font-family: var(--dl-font-mono) !important;
+    font-size: 13px !important;
+    line-height: 1.65 !important;
+    background-color: transparent !important;
+    color: var(--dl-ink) !important;
+    border-radius: var(--dl-radius-md) !important;
     border: none !important;
-    border-left: none !important;
-    border-right: none !important;
-    border-top: none !important;
-    border-bottom: none !important;
 }
 
-/* Language labels - specific for each language */
-.org-src-container > pre.src-bash:before {
-    content: "BASH" !important;
-}
-.org-src-container > pre.src-python:before {
-    content: "PYTHON" !important;
-}
-.org-src-container > pre.src-json:before {
-    content: "JSON" !important;
-}
-.org-src-container > pre.src-text:before {
-    content: "TEXT" !important;
-}
-.org-src-container > pre.src-sh:before {
-    content: "SHELL" !important;
-}
-.org-src-container > pre.src-javascript:before {
-    content: "JS" !important;
-}
-.org-src-container > pre.src-emacs-lisp:before {
-    content: "ELISP" !important;
-}
-.org-src-container > pre.src-org:before {
-    content: "ORG" !important;
-}
-.org-src-container > pre.src-yaml:before {
-    content: "YAML" !important;
-}
-.org-src-container > pre.src-xml:before {
-    content: "XML" !important;
-}
-.org-src-container > pre.src-sql:before {
-    content: "SQL" !important;
-}
-.org-src-container > pre.src-css:before {
-    content: "CSS" !important;
-}
-.org-src-container > pre.src-html:before {
-    content: "HTML" !important;
-}
-.org-src-container > pre.src-java:before {
-    content: "JAVA" !important;
-}
-.org-src-container > pre.src-c:before {
-    content: "C" !important;
-}
-.org-src-container > pre.src-cpp:before {
-    content: "C++" !important;
-}
-.org-src-container > pre.src-rust:before {
-    content: "RUST" !important;
-}
-.org-src-container > pre.src-go:before {
-    content: "GO" !important;
-}
-.org-src-container > pre.src-ruby:before {
-    content: "RUBY" !important;
-}
-.org-src-container > pre.src-php:before {
-    content: "PHP" !important;
-}
-.org-src-container > pre.src-julia:before {
-    content: "JULIA" !important;
-}
-.org-src-container > pre.src-r:before {
-    content: "R" !important;
-}
-.org-src-container > pre.src-R:before {
-    content: "R" !important;
-}
-.org-src-container > pre.src-lisp:before {
-    content: "LISP" !important;
-}
-.org-src-container > pre.src-scheme:before {
-    content: "SCHEME" !important;
-}
-.org-src-container > pre.src-latex:before {
-    content: "LATEX" !important;
-}
-.org-src-container > pre.src-markdown:before {
-    content: "MD" !important;
-}
+/* Language labels — lowercase mono chip, hairline border, no fill
+   (tracked all-caps pills are a banned tell in this system) */
+.org-src-container > pre.src-bash:before { content: "bash" !important; }
+.org-src-container > pre.src-python:before { content: "python" !important; }
+.org-src-container > pre.src-json:before { content: "json" !important; }
+.org-src-container > pre.src-text:before { content: "text" !important; }
+.org-src-container > pre.src-sh:before { content: "shell" !important; }
+.org-src-container > pre.src-javascript:before { content: "js" !important; }
+.org-src-container > pre.src-emacs-lisp:before { content: "elisp" !important; }
+.org-src-container > pre.src-org:before { content: "org" !important; }
+.org-src-container > pre.src-yaml:before { content: "yaml" !important; }
+.org-src-container > pre.src-xml:before { content: "xml" !important; }
+.org-src-container > pre.src-sql:before { content: "sql" !important; }
+.org-src-container > pre.src-css:before { content: "css" !important; }
+.org-src-container > pre.src-html:before { content: "html" !important; }
+.org-src-container > pre.src-java:before { content: "java" !important; }
+.org-src-container > pre.src-c:before { content: "c" !important; }
+.org-src-container > pre.src-cpp:before { content: "c++" !important; }
+.org-src-container > pre.src-rust:before { content: "rust" !important; }
+.org-src-container > pre.src-go:before { content: "go" !important; }
+.org-src-container > pre.src-ruby:before { content: "ruby" !important; }
+.org-src-container > pre.src-php:before { content: "php" !important; }
+.org-src-container > pre.src-julia:before { content: "julia" !important; }
+.org-src-container > pre.src-r:before { content: "r" !important; }
+.org-src-container > pre.src-R:before { content: "r" !important; }
+.org-src-container > pre.src-lisp:before { content: "lisp" !important; }
+.org-src-container > pre.src-scheme:before { content: "scheme" !important; }
+.org-src-container > pre.src-latex:before { content: "latex" !important; }
+.org-src-container > pre.src-markdown:before { content: "md" !important; }
+.org-src-container > pre.src-shell:before { content: "shell" !important; }
+.org-src-container > pre.src-js:before { content: "js" !important; }
+.org-src-container > pre.src-jupyter-julia:before { content: "julia" !important; }
+.org-src-container > pre.src-jupyter-R:before { content: "r" !important; }
 
-/* Fallback for unspecified or generic code blocks */
+/* Fallback for unspecified or generic code blocks (includes src-nil,
+   src-:name, src-raw_org and any other language org doesn't recognize) */
 .org-src-container > pre:not([class*="src-"]):before,
-.org-src-container > pre.src:not([class*="src-"]):before {
-    content: "CODE" !important;
+.org-src-container > pre.src:not([class*="src-"]):before,
+.org-src-container > pre.src-nil:before,
+.org-src-container > pre[class*="src-:"]:before,
+.org-src-container > pre.src-raw_org:before {
+    content: "code" !important;
 }
 
-/* Language label styling */
+/* Language label — plain small mono text, top right, no box */
 .org-src-container > pre:before {
     position: absolute !important;
-    top: 10px !important;
-    left: 16px !important;
-    max-width: calc(100% - 80px) !important; /* Reserve space for copy button */
-    background: rgba(0,0,0,0.08) !important;
-    color: var(--text-color) !important;
-    font-size: 10px !important;
-    padding: 3px 6px !important;
-    border-radius: 4px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.5px !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    top: 12px !important;
+    right: 46px !important;
+    left: auto !important;
+    max-width: calc(100% - 100px) !important;
+    background: transparent !important;
+    border: none !important;
+    color: var(--dl-faint) !important;
+    font-family: var(--dl-font-mono) !important;
+    font-size: 12px !important;
+    padding-left: 3px !important;
+    font-weight: 400 !important;
+    letter-spacing: normal !important;
     z-index: 10 !important;
-    opacity: 0.7;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
     white-space: nowrap !important;
 }
 
-/* Copy button */
+/* Copy button — flat, ink-colored, darkens on hover (no shadow, no pill) */
 .copy-code-button {
     position: absolute;
-    top: 10px;
-    right: 16px;
+    top: 8px;
+    right: 12px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--dl-radius-sm);
     border: 1px solid transparent;
-    background-color: rgba(0, 0, 0, 0.05);
-    color: var(--text-color);
+    background-color: transparent;
+    color: var(--dl-quiet);
     cursor: pointer;
     padding: 0;
-    opacity: 0.75;
-    transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+    transition: color 0.15s ease, background-color 0.15s ease;
     z-index: 5;
 }
 
 .copy-code-button svg {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
     pointer-events: none;
 }
 
 .copy-code-button:hover,
 .copy-code-button:focus-visible {
-    opacity: 1;
-    background-color: rgba(0, 0, 0, 0.12);
+    color: var(--dl-orange);
+    background-color: var(--dl-rule);
 }
 
 .copy-code-button:focus-visible {
-    outline: 2px solid var(--link-color);
+    outline: 2px solid var(--dl-link);
     outline-offset: 2px;
 }
 
 .copy-code-button.is-copied {
-    background-color: rgba(34, 197, 94, 0.2);
-    color: #22c55e;
-    opacity: 1;
+    color: var(--dl-orange);
 }
 
-[data-theme="dark"] .copy-code-button {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.12);
-}
-
-[data-theme="dark"] .copy-code-button:hover,
-[data-theme="dark"] .copy-code-button:focus-visible {
-    background-color: rgba(255, 255, 255, 0.18);
-}
-
-/* Inline code */
-code:not(.src) {
-    background-color: var(--code-bg);
-    color: var(--text-color);
+/* Inline code — excludes the <code> inside .org-src-container blocks,
+   whose "src" class lives on the parent <pre>, not on <code> itself */
+:not(pre) > code {
+    background-color: var(--dl-inset);
+    color: var(--dl-ink);
     padding: 0.2em 0.4em;
-    border-radius: 3px;
-    font-family: 'Iosevka', 'Iosevka Term', 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
+    border-radius: var(--dl-radius-sm);
+    font-family: var(--dl-font-mono);
     font-size: 0.9em;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--dl-rule);
 }
 
-/* Blockquotes */
+/* Blockquotes — traditional left bar, flat and square (no rounded
+   "AI card" background pill) */
 blockquote {
-    border-left: 4px solid var(--header-color);
-    background: var(--code-bg);
+    background: none;
+    border: none;
+    border-left: 3px solid var(--dl-ink);
+    border-radius: 0;
     margin: 1em 0;
-    padding: 1em;
-    font-style: italic;
+    padding: 0.2em 0 0.2em 1.1em;
+    font-style: normal;
+    color: var(--dl-text);
 }
 
 /* Tables */
 table {
     border-collapse: collapse;
+    border-top: none;
     margin: 1em auto;
-    background: var(--bg-color);
+    background: var(--dl-paper);
+}
+
+table thead {
+    border-bottom: none;
+}
+
+table tr {
+    border-top: none;
 }
 
 table th, table td {
-    border: 1px solid var(--border-color);
-    padding: 0.5em;
+    border: 1px solid var(--dl-rule);
+    padding: 0.5em 0.7em;
 }
 
 table th {
-    background: var(--code-bg);
-    font-weight: bold;
+    background: var(--dl-inset);
+    font-weight: 700;
+    color: var(--dl-ink);
 }
 
-/* Syntax highlighting for all themes */
+::selection {
+    background: color-mix(in srgb, var(--dl-orange) 25%, transparent);
+}
+
+/* ============================================================
+   Syntax highlighting — restrained two-ink system:
+   faint comments, bold blue keywords, ink text, one orange accent
+   on function calls. Never a full rainbow theme.
+   ============================================================ */
 .org-comment,
 .org-comment-delimiter {
-    color: var(--syntax-comment) !important;
-    font-style: italic;
+    color: var(--dl-faint) !important;
+    font-style: normal;
 }
 
 .org-keyword,
 .org-builtin {
-    color: var(--syntax-keyword) !important;
-    font-weight: 600;
+    color: var(--dl-blue) !important;
+    font-weight: 700;
 }
 
 .org-string {
-    color: var(--syntax-string) !important;
+    color: var(--dl-text) !important;
 }
 
 .org-function-name {
-    color: var(--syntax-function) !important;
+    color: var(--dl-orange) !important;
     font-weight: 600;
 }
 
 .org-variable-name,
 .org-type {
-    color: var(--syntax-variable) !important;
+    color: var(--dl-text) !important;
 }
 
 .org-constant,
 .org-number {
-    color: var(--syntax-number) !important;
+    color: var(--dl-text) !important;
 }
 
 .org-operator {
-    color: var(--syntax-keyword) !important;
+    color: var(--dl-blue) !important;
 }
 
 /* Figures */
@@ -692,79 +668,133 @@ table th {
     display: none;
 }
 
-/* Better code appearance */
+/* Geometry accent — the system's rotating-square flourish.
+   Appears once per page, small, flush right at the content margin. */
+h2:has(.dl-geometry) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    padding-bottom: 0.6em;
+    border-bottom: 1px solid var(--dl-rule);
+}
+
+.dl-geometry {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+
+.dl-geometry span {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    box-sizing: border-box;
+    background: var(--dl-orange);
+}
+
+.dl-geometry span:nth-child(1) {
+    transform: rotate(0deg);
+}
+
+.dl-geometry span:nth-child(2) {
+    transform: rotate(20deg);
+}
+
+.dl-geometry span:nth-child(3) {
+    transform: rotate(45deg);
+}
+
+.dl-geometry span:nth-child(4) {
+    transform: rotate(65deg);
+}
+
+/* Post-list entries (recent posts / archive) — title in ink (not link-blue),
+   plain written-out date below, hairline divider between entries.
+   Both index.org ("Recent posts") and archive.org ("Posts archive") use
+   the same pattern: a heading carrying the .dl-geometry marker, with
+   sitemap entries nested as outline-3 siblings right after it — so a
+   single sibling-combinator selector scopes both without touching
+   unrelated headings elsewhere on the site. */
+h2:has(.dl-geometry) ~ .outline-3 {
+    border-bottom: 1px solid var(--dl-rule);
+    padding-bottom: 1.1em;
+    margin-bottom: 1.1em;
+}
+
+h2:has(.dl-geometry) ~ .outline-3:last-child {
+    border-bottom: none;
+}
+
+h2:has(.dl-geometry) ~ .outline-3 > h3 a {
+    color: var(--dl-ink);
+    text-decoration: none;
+}
+
+h2:has(.dl-geometry) ~ .outline-3 > h3 a:hover {
+    color: var(--dl-orange);
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.2em;
+}
+
+h2:has(.dl-geometry) ~ .outline-3 > .outline-text-3 > p:first-child {
+    font-family: var(--dl-font-sans);
+    font-size: 0.85em;
+    font-weight: 500;
+    color: var(--dl-quiet);
+    margin: -0.2em 0 0.5em;
+}
+
+/* "All posts" is its own level-1 heading purely so it gets a real section
+   boundary (otherwise a trailing #+HTML paragraph gets absorbed into the
+   last sitemap entry's body) — neutralize the h2 styling so it reads as
+   a plain link line, not a heading. */
+h2:has(> a.all-posts-link) {
+    font-family: var(--dl-font-sans);
+    font-size: 1em;
+    font-weight: 400;
+    letter-spacing: normal;
+    margin: 0.6em 0 0.5em;
+    color: inherit;
+}
+
+.all-posts-link {
+    color: var(--dl-orange);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.all-posts-link:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+.site-footer {
+    margin-top: 1em;
+    padding-top: 1.2em;
+    border-top: 1px solid var(--dl-rule);
+    font-size: 0.85em;
+    color: var(--dl-faint);
+}
+
+.site-footer a {
+    color: var(--dl-faint);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.site-footer a:hover {
+    color: var(--dl-orange);
+}
+
+.site-footer .creator a {
+    color: var(--dl-faint);
+}
+
 .org-src-container pre {
-    /* Remove any text shadows */
     text-shadow: none !important;
-    /* Better text rendering */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
-/* Ensure navigation and headers work in dark mode */
-[data-theme="dark"] .topnav h2 {
-    color: var(--header-color) !important;
-}
-
-[data-theme="dark"] .topnav a {
-    color: var(--link-color) !important;
-}
-
-/* pre { */
-/*   font-family: monospace, monospace; */
-/*   font-size: 1em; } */
-
-/* b { */
-/*   font-weight: bolder; } */
-
-/* code, */
-/* kbd, */
-/* samp { */
-/*   font-family: monospace, monospace; */
-/*   font-size: 1em; } */
-
-/* small { */
-/*   font-size: 80%; } */
-
-/* sub, */
-/* sup { */
-/*   font-size: 75%; */
-/*   line-height: 0; */
-/*   position: relative; */
-/*   vertical-align: baseline; } */
-
-/* sub { */
-/*   bottom: -0.25em; } */
-
-/* sup { */
-/*   top: -0.5em; } */
-
-/* button, */
-/* input, */
-/* optgroup, */
-/* select, */
-/* textarea { */
-/*   font-family: inherit; */
-/*   font-size: 100%; */
-/*   line-height: 1.15; */
-/*   margin: 0; } */
-
-/* button, */
-/* select { */
-/*   text-transform: none; } */
-
-/* button { */
-/*   -webkit-appearance: button; } */
-
-/* button::-moz-focus-inner { */
-/*   border-style: none; */
-/*   padding: 0; } */
-
-/* button:-moz-focusring { */
-/*   outline: 1px dotted ButtonText; } */
-
-/* details { */
-/*   display: block; } */
-
-/* summary { */
-/*   display: list-item; } */

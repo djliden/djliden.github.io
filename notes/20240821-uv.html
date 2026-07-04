@@ -7,9 +7,6 @@
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
@@ -25,46 +22,32 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-08-21T00:00:00Z">
-<meta property="article:modified_time" content="2026-03-07T22:13:26Z">
+<meta property="article:modified_time" content="2026-07-04T15:15:07Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python Package Management with uv">
 <meta name="twitter:description" content="Yesterday (&lt;2024-08-20 Tue&gt;), Astral released [[https://astral.sh/blog/uv-unified-python-packaging][a bunch of updates]] to [[https://github.com/astral-sh/uv][uv]], their Python package/project man...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Python Package Management with uv","description":"Yesterday (<2024-08-20 Tue>), Astral released [[https://astral.sh/blog/uv-unified-python-packaging][a bunch of updates]] to [[https://github.com/astral-sh/uv][uv]], their Python package/project man...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240821-uv.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-08-21T00:00:00Z","dateModified":"2026-03-07T22:13:26Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Python Package Management with uv","description":"Yesterday (<2024-08-20 Tue>), Astral released [[https://astral.sh/blog/uv-unified-python-packaging][a bunch of updates]] to [[https://github.com/astral-sh/uv][uv]], their Python package/project man...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240821-uv.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2024-08-21T00:00:00Z","dateModified":"2026-07-04T15:15:07Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr class="topnav-rule">
 <header class="site-header">
   <a href="/index.html" class="site-header__brand">
     <h2>Daniel Liden</h2>
   </a>
-  <nav class="topnav-links" aria-label="Primary">
-    <a href="/archive.html">Blog</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/about.html">About Me</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/photos.html">Photos</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notebooks/">Notebooks</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notes.html">Notes</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
-      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
-        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
-        <circle cx="6" cy="18" r="2"/>
-      </svg>
-    </a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+  <div class="site-header__right">
+    <nav class="topnav-links" aria-label="Primary">
+      <a href="/archive.html">Blog</a>
+      <a href="/about.html">About Me</a>
+      <a href="/notes.html">Notes</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+    <button id="theme-toggle" class="nav-theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
       <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
       </svg>
     </button>
-  </nav>
+  </div>
 </header>
-<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
@@ -73,18 +56,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org96bfe6f">Introduction</a>
+<li><a href="#orgec4b955">Introduction</a>
 <ul>
-<li><a href="#orgda5f87c">Projects</a></li>
+<li><a href="#org22183b0">Projects</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org96bfe6f" class="outline-2">
-<h2 id="org96bfe6f">Introduction</h2>
-<div class="outline-text-2" id="text-org96bfe6f">
-<div class="preview" id="org8c5691e">
+<div id="outline-container-orgec4b955" class="outline-2">
+<h2 id="orgec4b955">Introduction</h2>
+<div class="outline-text-2" id="text-orgec4b955">
+<div class="preview" id="org6e0c54c">
 <p>
 Yesterday (<span class="timestamp-wrapper"><span class="timestamp">&lt;2024-08-20 Tue&gt;</span></span>), Astral released <a href="https://astral.sh/blog/uv-unified-python-packaging">a bunch of updates</a> to <a href="https://github.com/astral-sh/uv">uv</a>, their Python package/project manager, written in Rust. I've been using uv for the past month or two, mostly as a very fast drop-in replacement for venv and pip.
 </p>
@@ -99,9 +82,9 @@ This post will very briefly explore the workflow I am most interested in—setti
 
 </div>
 </div>
-<div id="outline-container-orgda5f87c" class="outline-3">
-<h3 id="orgda5f87c">Projects</h3>
-<div class="outline-text-3" id="text-orgda5f87c">
+<div id="outline-container-org22183b0" class="outline-3">
+<h3 id="org22183b0">Projects</h3>
+<div class="outline-text-3" id="text-org22183b0">
 <p>
 I've been exploring <a href="20240818-answer-ai.html">FastHTML</a> over the past few days. Let's use uv to set up a project which I can use for my FastHTML experiments. I'll start by navigating to the directory I've already been working from.
 </p>
@@ -129,7 +112,7 @@ This created a <code>pyproject.toml</code>:
 </pre>
 </div>
 
-<pre class="example" id="org21ae215">
+<pre class="example" id="org9fb6efc">
 [project]
 name = "fhtml-ex"
 version = "0.1.0"
@@ -152,7 +135,7 @@ Now let's add FastHTML to the project.
 </pre>
 </div>
 
-<pre class="example" id="org3749a77">
+<pre class="example" id="org12cfc92">
 Using Python 3.12.4 interpreter at: /opt/homebrew/opt/python@3.12/bin/python3.12
 Creating virtualenv at: .venv
 Resolved 30 packages in 408ms
@@ -206,7 +189,7 @@ We can use uv to run a command in the project's environment without explicitly a
 and get:
 </p>
 
-<pre class="example" id="orgdc9c772">
+<pre class="example" id="orgc517f0d">
 Link: http://localhost:5001
 INFO:     Will watch for changes in these directories: ['/Users/dliden/projects/fhtml_ex/todo']
 INFO:     Uvicorn running on http://0.0.0.0:5001 (Press CTRL+C to quit)
@@ -225,8 +208,7 @@ See the <a href="https://docs.astral.sh/uv/">documentation</a> for more details.
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: 2024-08-21 Wed 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+<div class="site-footer"><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</span> <span class="topnav-divider" aria-hidden="true">&middot;</span> <a href="/rss.xml">RSS</a></div>
 </div>
 </body>
 </html>

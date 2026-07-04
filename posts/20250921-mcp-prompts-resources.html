@@ -9,9 +9,6 @@
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="me" href="https://emacs.ch/@dliden">
@@ -27,80 +24,67 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2025-09-21T00:00:00Z">
-<meta property="article:modified_time" content="2026-03-07T22:13:26Z">
+<meta property="article:modified_time" content="2026-07-04T15:15:07Z">
 <meta property="og:image" content="https://danliden.com/posts/figures/20250921-mcp-2/1_attach_resource.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Getting Started with Model Context Protocol Part 2: Prompts and Resources">
 <meta name="twitter:description" content="Build on the MCP quickstart by adding resources and prompts, exposing richer data to Claude Desktop and wiring reusable workflows into FastMCP.">
 <meta name="twitter:image" content="https://danliden.com/posts/figures/20250921-mcp-2/1_attach_resource.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Getting Started with Model Context Protocol Part 2: Prompts and Resources","description":"Build on the MCP quickstart by adding resources and prompts, exposing richer data to Claude Desktop and wiring reusable workflows into FastMCP.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20250921-mcp-prompts-resources.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-09-21T00:00:00Z","dateModified":"2026-03-07T22:13:26Z","keywords":"model context protocol, mcp resources, mcp prompts, fastmcp, claude desktop workflows","image":"https://danliden.com/posts/figures/20250921-mcp-2/1_attach_resource.png"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Getting Started with Model Context Protocol Part 2: Prompts and Resources","description":"Build on the MCP quickstart by adding resources and prompts, exposing richer data to Claude Desktop and wiring reusable workflows into FastMCP.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20250921-mcp-prompts-resources.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-09-21T00:00:00Z","dateModified":"2026-07-04T15:15:07Z","keywords":"model context protocol, mcp resources, mcp prompts, fastmcp, claude desktop workflows","image":"https://danliden.com/posts/figures/20250921-mcp-2/1_attach_resource.png"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<hr class="topnav-rule">
 <header class="site-header">
   <a href="/index.html" class="site-header__brand">
     <h2>Daniel Liden</h2>
   </a>
-  <nav class="topnav-links" aria-label="Primary">
-    <a href="/archive.html">Blog</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/about.html">About Me</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/photos.html">Photos</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notebooks/">Notebooks</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a href="/notes.html">Notes</a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <a class="topnav-icon" href="/rss.xml" aria-label="RSS feed">
-      <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 4h1a14 14 0 0 1 14 14v1"/>
-        <path d="M5 11h1a7 7 0 0 1 7 7v1"/>
-        <circle cx="6" cy="18" r="2"/>
-      </svg>
-    </a>
-    <span class="topnav-divider" aria-hidden="true">/</span>
-    <button id="theme-toggle" class="nav-theme-toggle topnav-icon" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+  <div class="site-header__right">
+    <nav class="topnav-links" aria-label="Primary">
+      <a href="/archive.html">Blog</a>
+      <a href="/about.html">About Me</a>
+      <a href="/notes.html">Notes</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+    <button id="theme-toggle" class="nav-theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
       <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
       </svg>
     </button>
-  </nav>
+  </div>
 </header>
-<hr class="topnav-rule">
 </div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Getting Started with Model Context Protocol Part 2: Prompts and Resources</h1>
+<p class="subtitle" role="doc-subtitle">September 21, 2025</p>
 </header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf06b9ac">Review of Part 1</a></li>
-<li><a href="#orgcf8dd06">Resources: Expose data to your LLMs</a>
+<li><a href="#org2073f10">Review of Part 1</a></li>
+<li><a href="#org8e9b6ac">Resources: Expose data to your LLMs</a>
 <ul>
-<li><a href="#orga6ab942">Accessing Resource with Claude Desktop</a></li>
+<li><a href="#org4f9b386">Accessing Resource with Claude Desktop</a></li>
 </ul>
 </li>
-<li><a href="#org52f6463">Prompts: Reusable prompt templates</a>
+<li><a href="#orgfef11b5">Prompts: Reusable prompt templates</a>
 <ul>
-<li><a href="#org4b36a80">Using prompts with Claude Desktop</a></li>
+<li><a href="#orgacb9ef3">Using prompts with Claude Desktop</a></li>
 </ul>
 </li>
-<li><a href="#orgd8876eb">Conclusion, Observations, and Next Steps</a></li>
+<li><a href="#org823c080">Conclusion, Observations, and Next Steps</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org5c55871">
+<div class="preview" id="org39eb503">
 <p>
 In the first part of this series on Anthropic's Model Context Protocol, I showed how to define a very simple MCP server with one tool and install it to Claude Desktop. In this post, we will look at two more MCP concepts and learn how to use them: <b>resources</b>, which expose data and other content to models, and <b>prompts</b>, which are intended to allow users to select reusable prompt templates suited for certain tasks or workflows.
 </p>
 
 </div>
-<div id="outline-container-orgf06b9ac" class="outline-2">
-<h2 id="orgf06b9ac">Review of Part 1</h2>
-<div class="outline-text-2" id="text-orgf06b9ac">
+<div id="outline-container-org2073f10" class="outline-2">
+<h2 id="org2073f10">Review of Part 1</h2>
+<div class="outline-text-2" id="text-org2073f10">
 <p>
 In the <a href="https://www.danliden.com/posts/20250412-mcp-quickstart.html">first post</a> in this series, we learned (1) what an MCP server is, (2) how to define a simple MCP server with a single tool, and (3) how to install that server to Claude Desktop. Let's briefly recap these points.
 </p>
@@ -137,9 +121,9 @@ This was an example of defining and using a <a href="https://modelcontextprotoco
 </p>
 </div>
 </div>
-<div id="outline-container-orgcf8dd06" class="outline-2">
-<h2 id="orgcf8dd06">Resources: Expose data to your LLMs</h2>
-<div class="outline-text-2" id="text-orgcf8dd06">
+<div id="outline-container-org8e9b6ac" class="outline-2">
+<h2 id="org8e9b6ac">Resources: Expose data to your LLMs</h2>
+<div class="outline-text-2" id="text-org8e9b6ac">
 <p>
 <i>Resources</i> provide a way to give your LLMs access to data. The data can include database records, file contents, API responses, images, and more. Getting data from a resource in an MCP server is like making an HTTP GET request. The expectation is that it will return data without any side effects.
 </p>
@@ -152,7 +136,7 @@ In fact, the secret number method we defined previously would be a perfect candi
 We can expand our MCP server with this new resource as follows:
 </p>
 
-<div class="tip" id="org5d2a9f5">
+<div class="tip" id="org34878b4">
 <p>
 Refer to the <a href="https://www.danliden.com/posts/20250412-mcp-quickstart.html#setup">Setup section of the previous post</a> for details on setting up your project. We will be testing our MCP server with Claude Desktop.
 </p>
@@ -185,15 +169,15 @@ Refer to the <a href="https://www.danliden.com/posts/20250412-mcp-quickstart.htm
 The <code>@mcp.resource</code> decorator takes the resource's unique URI as an argument. Clients use this URI to request data.
 </p>
 </div>
-<div id="outline-container-orga6ab942" class="outline-3">
-<h3 id="orga6ab942">Accessing Resource with Claude Desktop</h3>
-<div class="outline-text-3" id="text-orga6ab942">
+<div id="outline-container-org4f9b386" class="outline-3">
+<h3 id="org4f9b386">Accessing Resource with Claude Desktop</h3>
+<div class="outline-text-3" id="text-org4f9b386">
 <p>
 We have a couple of different options for how to give Claude Desktop access to these resources. First, we can directly attach it to a chat message via the <code>+</code> menu, where we can select <code>add from SecretServer</code> (the name of our server). This will essentially attach the resource as a document Claude can refer to.
 </p>
 
 
-<figure id="org24ccd18">
+<figure id="org4d2f6bf">
 <img src="./figures/20250921-mcp-2/1_attach_resource.png" alt="1_attach_resource.png">
 
 </figure>
@@ -233,7 +217,7 @@ Now, if we re-install the server with <code>mcp install server.py</code>, Claude
 </p>
 
 
-<figure id="orgf0ebc2e">
+<figure id="orgf67ef89">
 <img src="./figures/20250921-mcp-2/2_secret_letter_via_tool.png" alt="2_secret_letter_via_tool.png">
 
 </figure>
@@ -244,9 +228,9 @@ For a more in-depth guide on using resources, check out the <a href="https://gof
 </div>
 </div>
 </div>
-<div id="outline-container-org52f6463" class="outline-2">
-<h2 id="org52f6463">Prompts: Reusable prompt templates</h2>
-<div class="outline-text-2" id="text-org52f6463">
+<div id="outline-container-orgfef11b5" class="outline-2">
+<h2 id="orgfef11b5">Prompts: Reusable prompt templates</h2>
+<div class="outline-text-2" id="text-orgfef11b5">
 <p>
 MCP prompts let you set up parameterized prompt templates. Just like with tools and resources, we use the <code>@mcp.prompt()</code> decorator to define prompts with the Python SDK. Let's update our server with a simple prompt that can generate a haiku on a topic.
 </p>
@@ -282,15 +266,15 @@ MCP prompts let you set up parameterized prompt templates. Just like with tools 
 </div>
 </div>
 
-<div id="outline-container-org4b36a80" class="outline-3">
-<h3 id="org4b36a80">Using prompts with Claude Desktop</h3>
-<div class="outline-text-3" id="text-org4b36a80">
+<div id="outline-container-orgacb9ef3" class="outline-3">
+<h3 id="orgacb9ef3">Using prompts with Claude Desktop</h3>
+<div class="outline-text-3" id="text-orgacb9ef3">
 <p>
 Using MCP prompts with Claude Desktop is similar to using resources: you can send a custom prompt along with a message using the <code>+</code> menu. If the prompt accepts an argument (like ours does), you will be prompted for it when adding.
 </p>
 
 
-<figure id="orgfcb409c">
+<figure id="org745a256">
 <img src="./figures/20250921-mcp-2/3_attach_prompt.png" alt="3_attach_prompt.png">
 
 </figure>
@@ -300,7 +284,7 @@ This will result in a text file containing the filled-in prompt. You can send th
 </p>
 
 
-<figure id="orgc5c551d">
+<figure id="org48997f2">
 <img src="./figures/20250921-mcp-2/4_prompt_response.png" alt="4_prompt_response.png">
 
 </figure>
@@ -312,9 +296,9 @@ To learn more, check out the <a href="https://gofastmcp.com/servers/prompts">Pro
 </div>
 </div>
 </div>
-<div id="outline-container-orgd8876eb" class="outline-2">
-<h2 id="orgd8876eb">Conclusion, Observations, and Next Steps</h2>
-<div class="outline-text-2" id="text-orgd8876eb">
+<div id="outline-container-org823c080" class="outline-2">
+<h2 id="org823c080">Conclusion, Observations, and Next Steps</h2>
+<div class="outline-text-2" id="text-org823c080">
 <p>
 In this two-part series, we have seen how to set up an MCP server for use with Claude Desktop and how to define tools, resources, and prompts on that server. This should have given you what you need to take your first steps into the world of MCP servers.
 </p>
@@ -330,8 +314,7 @@ While this introduction only scratches the surface, MCP's real power comes when 
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: 2025-09-21 Sun 00:00</p>
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
+<div class="site-footer"><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</span> <span class="topnav-divider" aria-hidden="true">&middot;</span> <a href="/rss.xml">RSS</a></div>
 </div>
 </body>
 </html>
