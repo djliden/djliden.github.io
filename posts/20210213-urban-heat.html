@@ -22,11 +22,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2021-02-13T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-05T21:40:10Z">
+<meta property="article:modified_time" content="2026-07-16T17:22:50Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mapping Urban Heat by Census Tract in R">
 <meta name="twitter:description" content="/Another one from the archives--this is one of my projects from my time at the Guinn Center, and something I very much wish I could have developed further: an analysis of urban heat in Las Vegas./">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Mapping Urban Heat by Census Tract in R","description":"/Another one from the archives--this is one of my projects from my time at the Guinn Center, and something I very much wish I could have developed further: an analysis of urban heat in Las Vegas./","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20210213-urban-heat.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2021-02-13T00:00:00Z","dateModified":"2026-07-05T21:40:10Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Mapping Urban Heat by Census Tract in R","description":"/Another one from the archives--this is one of my projects from my time at the Guinn Center, and something I very much wish I could have developed further: an analysis of urban heat in Las Vegas./","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20210213-urban-heat.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2021-02-13T00:00:00Z","dateModified":"2026-07-16T17:22:50Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -57,28 +57,28 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org36eedaf">Background</a></li>
-<li><a href="#org33fdddd">Getting the Data</a>
+<li><a href="#orgc580d49">Background</a></li>
+<li><a href="#org77e432d">Getting the Data</a>
 <ul>
-<li><a href="#org75485aa">Unpacking and Visualizing the Raw Data</a></li>
+<li><a href="#orga3f7e82">Unpacking and Visualizing the Raw Data</a></li>
 </ul>
 </li>
-<li><a href="#org0a17327">Mapping Heat by Census Tract</a></li>
-<li><a href="#org2e059ac">Final Maps</a></li>
-<li><a href="#org3b55f1e">Resources</a></li>
+<li><a href="#orgddb64b7">Mapping Heat by Census Tract</a></li>
+<li><a href="#orgba0ced7">Final Maps</a></li>
+<li><a href="#orgaccaaad">Resources</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org73311e5">
+<div class="preview" id="org0b86e3e">
 <p>
 <i>Another one from the archives&#x2013;this is one of my projects from my time at the Guinn Center, and something I very much wish I could have developed further: an analysis of urban heat in Las Vegas.</i>
 </p>
 
 </div>
 
-<div id="outline-container-org36eedaf" class="outline-2">
-<h2 id="org36eedaf">Background</h2>
-<div class="outline-text-2" id="text-org36eedaf">
+<div id="outline-container-orgc580d49" class="outline-2">
+<h2 id="orgc580d49">Background</h2>
+<div class="outline-text-2" id="text-orgc580d49">
 <p>
 For the past several months, I have been working on an analysis on the effects
 of urban heat on vulnerable populations, particularly during a public health
@@ -135,9 +135,9 @@ polygon boundaries (census tracts).
 </div>
 </div>
 
-<div id="outline-container-org33fdddd" class="outline-2">
-<h2 id="org33fdddd">Getting the Data</h2>
-<div class="outline-text-2" id="text-org33fdddd">
+<div id="outline-container-org77e432d" class="outline-2">
+<h2 id="org77e432d">Getting the Data</h2>
+<div class="outline-text-2" id="text-org77e432d">
 <p>
 I obtained surface temperature satellite data from the NASA/USGS Landsat 8
 satellite. The data can be obtained through an API, though for this example, I
@@ -162,9 +162,9 @@ in the map is associated with a surface temperature value.
 </p>
 </div>
 
-<div id="outline-container-org75485aa" class="outline-3">
-<h3 id="org75485aa">Unpacking and Visualizing the Raw Data</h3>
-<div class="outline-text-3" id="text-org75485aa">
+<div id="outline-container-orga3f7e82" class="outline-3">
+<h3 id="orga3f7e82">Unpacking and Visualizing the Raw Data</h3>
+<div class="outline-text-3" id="text-orga3f7e82">
 <p>
 This section requires the <code>raster</code> and <code>sf</code> packages. Below, we untar the map and
 extract the map of interest.
@@ -189,7 +189,7 @@ dev.off()
 
 <div class="org-center">
 
-<figure id="orgf967469">
+<figure id="org7da73f1">
 <img src="./figures/20210213-urban-heat/st_map.png" alt="st_map.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>Raw raster map of surface temperatures around Las Vegas area</figcaption>
@@ -206,9 +206,9 @@ at the census tract level.
 </div>
 </div>
 
-<div id="outline-container-org0a17327" class="outline-2">
-<h2 id="org0a17327">Mapping Heat by Census Tract</h2>
-<div class="outline-text-2" id="text-org0a17327">
+<div id="outline-container-orgddb64b7" class="outline-2">
+<h2 id="orgddb64b7">Mapping Heat by Census Tract</h2>
+<div class="outline-text-2" id="text-orgddb64b7">
 <p>
 First, we'll use the <code>tigris</code> package to download the census tract boundaries in
 Nevada and crop to the Las Vegas area.
@@ -260,7 +260,7 @@ plot(out[<span class="org-string">"st_map"</span>])                       <span 
 
 <div class="org-center">
 
-<figure id="org7440456">
+<figure id="orgfe63137">
 <img src="./figures/20210213-urban-heat/heatmaptest.png" alt="heatmaptest.png">
 
 <figcaption><span class="figure-number">Figure 2: </span>Average Surface Temperatures by Census Tract in Las Vegas, Nevada (tenths of a degree Kelvin)</figcaption>
@@ -284,7 +284,7 @@ dev.off()
 
 <div class="org-center">
 
-<figure id="org2ddcc4a">
+<figure id="org4c2cd71">
 <img src="./figures/20210213-urban-heat/tract_repro.png" alt="tract_repro.png">
 
 <figcaption><span class="figure-number">Figure 3: </span>Re-projected Map of Surface Temperatures by Census Tract</figcaption>
@@ -293,9 +293,9 @@ dev.off()
 </div>
 </div>
 
-<div id="outline-container-org2e059ac" class="outline-2">
-<h2 id="org2e059ac">Final Maps</h2>
-<div class="outline-text-2" id="text-org2e059ac">
+<div id="outline-container-orgba0ced7" class="outline-2">
+<h2 id="orgba0ced7">Final Maps</h2>
+<div class="outline-text-2" id="text-orgba0ced7">
 <p>
 Lastly, we can apply some formatting to make it more interpretable. I used
 <code>ggplot2</code> for all of the visual tweaks (details not shown).
@@ -303,7 +303,7 @@ Lastly, we can apply some formatting to make it more interpretable. I used
 
 <div class="org-center">
 
-<figure id="org2a433aa">
+<figure id="org50e6eb4">
 <img src="./figures/20210213-urban-heat/ST_LV.png" alt="ST_LV.png">
 
 <figcaption><span class="figure-number">Figure 4: </span>Visualizing Urban Heat by Census Tract in Las Vegas, Nevada</figcaption>
@@ -317,7 +317,7 @@ urban heat map. For example, we can look at poverty by census tract:
 
 <div class="org-center">
 
-<figure id="org3c797bb">
+<figure id="org9107127">
 <img src="./figures/20210213-urban-heat/poverty.png" alt="poverty.png">
 
 <figcaption><span class="figure-number">Figure 5: </span>Poverty by Census Tract in Las Vegas, Nevada</figcaption>
@@ -344,9 +344,9 @@ data above &#x2013; is an important first step to conducting these analyses.
 </div>
 </div>
 
-<div id="outline-container-org3b55f1e" class="outline-2">
-<h2 id="org3b55f1e">Resources</h2>
-<div class="outline-text-2" id="text-org3b55f1e">
+<div id="outline-container-orgaccaaad" class="outline-2">
+<h2 id="orgaccaaad">Resources</h2>
+<div class="outline-text-2" id="text-orgaccaaad">
 <ul class="org-ul">
 <li><a href="https://cran.r-project.org/web/views/Spatial.html">CRAN Task View: Analysis
 of Spatial Data</a>: A CRAN hub explaining the <code>R</code> ecosystem of spatial data

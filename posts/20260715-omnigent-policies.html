@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Allow, ask, deny: contextual policies in Omnigent</title>
+<meta name="description" content="An introduction to Omnigent policies: contextual ALLOW/ASK/DENY guardrails for AI agents, with built-in, custom Python, and CEL examples." />
+<meta name="keywords" content="omnigent, agents, policies, guardrails, ai" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="/org-base.css"/>
+<link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="me" href="https://emacs.ch/@dliden">
+<link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/dark-mode.js" defer></script>
+<script src="/admonitions.js" defer></script>
+<link rel="canonical" href="https://danliden.com/posts/20260715-omnigent-policies.html">
+<meta name="author" content="Daniel Liden">
+<meta property="og:url" content="https://danliden.com/posts/20260715-omnigent-policies.html">
+<meta property="og:title" content="Allow, ask, deny: contextual policies in Omnigent">
+<meta property="og:description" content="An introduction to Omnigent policies: contextual ALLOW/ASK/DENY guardrails for AI agents, with built-in, custom Python, and CEL examples.">
+<meta property="og:site_name" content="Daniel Liden">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-07-15T00:00:00Z">
+<meta property="article:modified_time" content="2026-07-16T17:22:50Z">
+<meta property="og:image" content="https://danliden.com/posts/figures/20260715-omnigent-policies/social_image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Allow, ask, deny: contextual policies in Omnigent">
+<meta name="twitter:description" content="An introduction to Omnigent policies: contextual ALLOW/ASK/DENY guardrails for AI agents, with built-in, custom Python, and CEL examples.">
+<meta name="twitter:image" content="https://danliden.com/posts/figures/20260715-omnigent-policies/social_image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Allow, ask, deny: contextual policies in Omnigent","description":"An introduction to Omnigent policies: contextual ALLOW/ASK/DENY guardrails for AI agents, with built-in, custom Python, and CEL examples.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20260715-omnigent-policies.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2026-07-15T00:00:00Z","dateModified":"2026-07-16T17:22:50Z","keywords":"omnigent, agents, policies, guardrails, ai","image":"https://danliden.com/posts/figures/20260715-omnigent-policies/social_image.png"}</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header class="site-header">
+  <a href="/index.html" class="site-header__brand">
+    <h2>Daniel Liden</h2>
+  </a>
+  <div class="site-header__right">
+    <nav class="topnav-links" aria-label="Primary">
+      <a href="/archive.html">Blog</a>
+      <a href="/about.html">About Me</a>
+      <a href="/notes.html">Notes</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+    <button id="theme-toggle" class="nav-theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+      </svg>
+    </button>
+  </div>
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Allow, ask, deny: contextual policies in Omnigent</h1>
+<p class="subtitle" role="doc-subtitle">July 15, 2026</p>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org70efa0f">Example 1: Ask Before File and Shell Operations</a></li>
+<li><a href="#orgab524ea">Example 2: A Custom Policy in Python</a></li>
+<li><a href="#org6e01053">Example 3: An Inline Policy in CEL</a></li>
+<li><a href="#org20b4132">Conclusion</a></li>
+</ul>
+</div>
+</nav>
+<div class="preview" id="org63a12dd">
+<p>
+After working with Omnigent for a few weeks, I found myself wanting a better understanding of Policies, so I implemented a few to understand how they work. First off: what is a policy? If you've worked with coding agents before, you've seen them pause and ask before editing files or reading the contents of certain directories. In Omnigent, these events are governed by <i>policies</i>. A <a href="https://omnigent.ai/docs/policies/overview">policy</a> is a rule that runs at specified points in a session, such as when the user sends a request to the agent, when the agent replies, or when the agent attempts to use a tool, and returns one of three decisions.
+</p>
+
+</div>
+
+<ul class="org-ul">
+<li><code>ALLOW</code>: let the action proceed</li>
+<li><code>ASK</code>: pause and ask the user to approve or reject it</li>
+<li><code>DENY</code>: block the action</li>
+</ul>
+
+<p>
+Suppose, for example, an agent is about to use a web fetch tool on a certain site. A policy might check if that site is on an allowed list of domains before allowing the tool call to proceed.
+</p>
+
+<p>
+Omnigent policies are <i>contextual</i>. Each policy maintains its own state throughout a session and can make decisions based on prior events and information from the whole session. For instance, a policy might block certain actions if personally identifiable information (PII) has been introduced to the chat at some point, but permit them otherwise. Or a policy might restrict access to expensive models after a session passes a set budget threshold.
+</p>
+
+<p>
+The best way to learn how policies work is to try a few of them out. Omnigent has a selection of built-in policies and lets you define your own custom policies. We'll explore both usage patterns. Policies can apply to a single session, to an agent, or across the whole server; see <a href="https://omnigent.ai/docs/policies/overview#adding-a-policy">adding a policy</a>. By the end of this post you should understand what a policy is and how to think about implementing policies in your projects. This post is not comprehensive: consult the documentation for specific guidance on creating your own policies.
+</p>
+
+<div id="outline-container-org70efa0f" class="outline-2">
+<h2 id="org70efa0f">Example 1: Ask Before File and Shell Operations</h2>
+<div class="outline-text-2" id="text-org70efa0f">
+<p>
+Suppose we want our agent to help with local development, but do not want it running shell commands or editing files without explicit permission. There is a built-in policy we can add to ask the user for approval before allowing the agent to execute any file or shell operations.
+</p>
+
+<p>
+You can add the policy to your current session from the Omnigent web app or desktop app by selecting the info button (ⓘ) in the top-right corner, clicking <code>+</code> next to <code>policies</code>, and selecting "Require Approval for File &amp; Shell Operations."
+</p>
+
+
+<figure id="org31ce115">
+<img src="./figures/20260715-omnigent-policies/1_add_policy_dialog.png" alt="1_add_policy_dialog.png">
+
+<figcaption><span class="figure-number">Figure 1: </span>The Add Policy dialog, with "Require Approval for File &amp; Shell Operations" in the list</figcaption>
+</figure>
+
+<p>
+You can also simply ask the agent to add the policy to your session—Omnigent supplies coding agents with the tools they need to add policies themselves.
+</p>
+
+<p>
+Now, whenever the agent attempts a file or shell operation, it will first ask the user for permission.
+</p>
+
+
+<figure id="orga76a8a7">
+<img src="./figures/20260715-omnigent-policies/2_file_write_ask.png" alt="2_file_write_ask.png">
+
+<figcaption><span class="figure-number">Figure 2: </span>Omnigent pausing for approval before a file write, with Approve and Reject buttons</figcaption>
+</figure>
+</div>
+</div>
+
+<div id="outline-container-orgab524ea" class="outline-2">
+<h2 id="orgab524ea">Example 2: A Custom Policy in Python</h2>
+<div class="outline-text-2" id="text-orgab524ea">
+<p>
+You may want to implement a policy over actions or session states that are not covered by built-in policies. Maybe you want to limit the use of a specific tool, or block an action once sensitive data has entered the session. With Omnigent, you can define <a href="https://omnigent.ai/docs/policies/custom">custom policies</a> to meet your specific needs.
+</p>
+
+<p>
+Fundamentally, a custom policy is a Python function that receives a <code>PolicyEvent</code> and returns a <code>PolicyResponse</code> (<code>ALLOW</code>, <code>ASK</code>, or <code>DENY</code>).
+</p>
+
+<p>
+A <code>PolicyEvent</code> describes something that just happened or is about to happen, such as a message arriving, the agent about to call a tool, a tool returning a result, or the agent about to reply. In our Python code, we can match on <code>event["type"]</code> to pick out the event we care about, and read <code>event["session_state"]</code> to see what has already happened this session. The example below gives the agent a budget of free shell calls, then asks for approval on every one after that.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span class="org-keyword">from</span> omnigent.policies.schema <span class="org-keyword">import</span> PolicyEvent, PolicyResponse
+
+<span class="org-variable-name">FREE_SHELL_CALLS</span> <span class="org-operator">=</span> 3
+
+<span class="org-keyword">def</span> <span class="org-function-name">budget_shell_calls</span>(event: PolicyEvent) <span class="org-operator">-&gt;</span> PolicyResponse <span class="org-operator">|</span> <span class="org-constant">None</span>:
+    <span class="org-keyword">if</span> event.get(<span class="org-string">"type"</span>) <span class="org-operator">!=</span> <span class="org-string">"tool_call"</span>:
+        <span class="org-keyword">return</span> <span class="org-constant">None</span>
+    <span class="org-keyword">if</span> (event.get(<span class="org-string">"data"</span>) <span class="org-keyword">or</span> {}).get(<span class="org-string">"name"</span>) <span class="org-operator">!=</span> <span class="org-string">"sys_os_shell"</span>:
+        <span class="org-keyword">return</span> <span class="org-constant">None</span>
+
+    <span class="org-variable-name">used</span> <span class="org-operator">=</span> (event.get(<span class="org-string">"session_state"</span>) <span class="org-keyword">or</span> {}).get(<span class="org-string">"shell_calls_used"</span>, 0)
+    <span class="org-keyword">if</span> used <span class="org-operator">&gt;=</span> FREE_SHELL_CALLS:
+        <span class="org-keyword">return</span> {
+            <span class="org-string">"result"</span>: <span class="org-string">"ASK"</span>,
+            <span class="org-string">"reason"</span>: f<span class="org-string">"That's shell call #</span>{used <span class="org-operator">+</span> 1}<span class="org-string"> this session &#8212; approve it?"</span>,
+        }
+
+    <span class="org-keyword">return</span> {
+        <span class="org-string">"result"</span>: <span class="org-string">"ALLOW"</span>,
+        <span class="org-string">"state_updates"</span>: [
+            {<span class="org-string">"key"</span>: <span class="org-string">"shell_calls_used"</span>, <span class="org-string">"action"</span>: <span class="org-string">"increment"</span>, <span class="org-string">"value"</span>: 1}
+        ],
+    }
+</pre>
+</div>
+
+<p>
+This policy is <i>stateful</i>. It reads a counter out of <code>event["session_state"]</code> and returns a <code>state_updates</code> list to bump that counter each time it allows a call. Omnigent persists the counter across the session, so the same <code>echo</code> command is allowed the first three times and paused the fourth—nothing changed but the history. See <a href="https://www.databricks.com/blog/contextual-policies-omnigent-using-session-state-better-govern-ai-agents">Contextual Policies in Omnigent</a> for deeper examples, like a running cost total.
+</p>
+
+<p>
+You can attach this custom policy directly to your <a href="https://omnigent.ai/docs/use/custom-agents">agent config</a>, the YAML file <code>omni run</code> reads:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-yaml">guardrails:
+  policies:
+    budget_shell_calls:
+      type: function
+      on: [tool_call]
+      function:
+        path: myorg_policies.budget_shell_calls
+</pre>
+</div>
+
+<p>
+To use the policy, save the function in a file next to the agent config. Stop the running server if you have one, then start the agent:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">omni stop
+omni run agent.yaml
+</pre>
+</div>
+
+<p>
+Run this from the directory where both files are located. <code>omni run</code> resolves your module against the directory you launch from.
+</p>
+
+
+<figure id="org9eb788f">
+<img src="./figures/20260715-omnigent-policies/3_shell_budget_ask.png" alt="3_shell_budget_ask.png">
+
+<figcaption><span class="figure-number">Figure 3: </span>The budget policy pausing for approval on the fourth shell call</figcaption>
+</figure>
+
+<p>
+You can also register it on the server, which makes it selectable from the UI for everyone on that server. Add your module to the <code>policy_modules:</code> list in the server config and export a <code>POLICY_REGISTRY</code> list from it; the server scans that list at startup. See the <a href="https://omnigent.ai/docs/policies/custom#2-register-on-the-server">docs</a> for the entry format.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6e01053" class="outline-2">
+<h2 id="org6e01053">Example 3: An Inline Policy in CEL</h2>
+<div class="outline-text-2" id="text-org6e01053">
+<p>
+Not every policy needs a Python file. For simple, stateless checks you can write the whole policy as a single <a href="https://cel.dev/overview/cel-overview">Common Expression Language (CEL)</a> expression, right in the agent config. Here's a policy that denies any shell command containing <code>rm -rf</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-yaml">guardrails:
+  policies:
+    block_rm_rf:
+      type: function
+      on: [tool_call]
+      function:
+        path: omnigent.policies.builtins.cel.cel_policy
+        arguments:
+          expression: &gt;-
+            event.type == "tool_call" &amp;&amp; event.target == "sys_os_shell"
+              &amp;&amp; event.data.arguments.command.contains("rm -rf")
+              ? {"result": "DENY", "reason": "Recursive delete is blocked."}
+              : {"result": "ALLOW"}
+</pre>
+</div>
+
+<p>
+Only <code>sys_os_shell</code> calls get checked: the tool-name test comes first, so calls to other tools—which have no <code>command</code> field to read—pass through without erroring. And unlike the Python policy above, a CEL policy is just an expression with nothing to load, so the agent can add one to a live session immediately, no restart needed.
+</p>
+
+
+<figure id="org318d3b6">
+<img src="./figures/20260715-omnigent-policies/4_rm_rf_deny.png" alt="4_rm_rf_deny.png">
+
+<figcaption><span class="figure-number">Figure 4: </span>The custom policy denying an rm -rf shell command with "Denied by policy: Recursive delete is blocked."</figcaption>
+</figure>
+</div>
+</div>
+
+<div id="outline-container-org20b4132" class="outline-2">
+<h2 id="org20b4132">Conclusion</h2>
+<div class="outline-text-2" id="text-org20b4132">
+<p>
+Policies look at distinct events, and optionally at tracked state, and return <code>ALLOW</code>, <code>ASK</code>, or <code>DENY</code>. Omnigent ships with built-in policies for common needs like safety and cost control, and you can write your own for boundaries specific to your tools, data, and risk tolerance.
+</p>
+
+<p>
+Try it yourself: add one to a live session and watch what happens when it's triggered. Next, think about what actions you don't want your agents to take unsupervised, and make it <code>ASK</code> first.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div class="site-footer"><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.3 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</span> <span class="topnav-divider" aria-hidden="true">&middot;</span> <a href="/rss.xml">RSS</a></div>
+</div>
+</body>
+</html>
