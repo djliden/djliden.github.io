@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2023-03-04T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:05:32Z">
+<meta property="article:modified_time" content="2026-07-17T21:16:59Z">
 <meta property="og:image" content="https://danliden.com/default-og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Using the ChatGPT API with Julia Part 1: the HTTP.jl Library">
 <meta name="twitter:description" content="The basics of calling the OpenAI ChatGPT API from Julia using the HTTP.jl library, with a minimal example to get started.">
 <meta name="twitter:image" content="https://danliden.com/default-og-image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the ChatGPT API with Julia Part 1: the HTTP.jl Library","description":"The basics of calling the OpenAI ChatGPT API from Julia using the HTTP.jl library, with a minimal example to get started.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230303-chatgpt-julia.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2023-03-04T00:00:00Z","dateModified":"2026-07-17T21:05:32Z","keywords":"Julia, ChatGPT, OpenAI API, HTTP.jl","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the ChatGPT API with Julia Part 1: the HTTP.jl Library","description":"The basics of calling the OpenAI ChatGPT API from Julia using the HTTP.jl library, with a minimal example to get started.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230303-chatgpt-julia.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2023-03-04T00:00:00Z","dateModified":"2026-07-17T21:16:59Z","keywords":"Julia, ChatGPT, OpenAI API, HTTP.jl","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -62,19 +62,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga04acb5">Introduction</a></li>
-<li><a href="#org4bd5a79">curl Example</a></li>
-<li><a href="#org4f48e2f">Julia example</a></li>
-<li><a href="#orga7e2fd4">A little more detail about sending messages</a></li>
-<li><a href="#orgfa40497">Next Up&#x2026;</a></li>
+<li><a href="#orgcf31a51">Introduction</a></li>
+<li><a href="#orgd96a59a">curl Example</a></li>
+<li><a href="#orge028d4f">Julia example</a></li>
+<li><a href="#org72dd193">A little more detail about sending messages</a></li>
+<li><a href="#orga1fc935">Next Up&#x2026;</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orga04acb5" class="outline-2">
-<h2 id="orga04acb5">Introduction</h2>
-<div class="outline-text-2" id="text-orga04acb5">
-<div class="preview" id="org941edfd">
+<div id="outline-container-orgcf31a51" class="outline-2">
+<h2 id="orgcf31a51">Introduction</h2>
+<div class="outline-text-2" id="text-orgcf31a51">
+<div class="preview" id="org4a312a2">
 <p>
 This brief post shows the basics of using the Julia <code>HTTP</code> library to interact
 with the OpenAI ChatGPT API, which was made public a few days ago. This post
@@ -86,9 +86,9 @@ histories and engage more interactively with the API.
 </div>
 </div>
 </div>
-<div id="outline-container-org4bd5a79" class="outline-2">
-<h2 id="org4bd5a79">curl Example</h2>
-<div class="outline-text-2" id="text-org4bd5a79">
+<div id="outline-container-orgd96a59a" class="outline-2">
+<h2 id="orgd96a59a">curl Example</h2>
+<div class="outline-text-2" id="text-orgd96a59a">
 <p>
 <a href="https://platform.openai.com/docs/api-reference/chat/create">Here</a> is the API documentation on OpenAI's website. An example request with <code>curl</code>
 looks like this:
@@ -107,9 +107,9 @@ looks like this:
 </div>
 </div>
 
-<div id="outline-container-org4f48e2f" class="outline-2">
-<h2 id="org4f48e2f">Julia example</h2>
-<div class="outline-text-2" id="text-org4f48e2f">
+<div id="outline-container-orge028d4f" class="outline-2">
+<h2 id="orge028d4f">Julia example</h2>
+<div class="outline-text-2" id="text-orge028d4f">
 <p>
 And here's how we can re-create this with the Julia HTTP library:
 </p>
@@ -167,9 +167,9 @@ chat_response[1][<span class="org-string">"message"</span>][<span class="org-str
 </pre>
 </div>
 </div>
-<div id="outline-container-orga7e2fd4" class="outline-2">
-<h2 id="orga7e2fd4">A little more detail about sending messages</h2>
-<div class="outline-text-2" id="text-orga7e2fd4">
+<div id="outline-container-org72dd193" class="outline-2">
+<h2 id="org72dd193">A little more detail about sending messages</h2>
+<div class="outline-text-2" id="text-org72dd193">
 <p>
 One of the things that makes ChatGPT useful is its ability to "remember" past
 parts of a conversation. We can send whole conversations to the API using the
@@ -209,7 +209,7 @@ print(result[<span class="org-string">"choices"</span>][1][<span class="org-stri
 </pre>
 </div>
 
-<pre class="example" id="orgcdef0b1">
+<pre class="example" id="org188c89c">
 
 ```julia
 using HTTP
@@ -299,7 +299,7 @@ print(result[<span class="org-string">"choices"</span>][1][<span class="org-stri
 </pre>
 </div>
 
-<pre class="example" id="orgddd6c60">
+<pre class="example" id="orgc8d8b0a">
 Sure, here's a simpler example:
 
 ```julia
@@ -315,9 +315,9 @@ In this example, we are sending a POST request with form data rather than JSON d
 </pre>
 </div>
 </div>
-<div id="outline-container-orgfa40497" class="outline-2">
-<h2 id="orgfa40497">Next Up&#x2026;</h2>
-<div class="outline-text-2" id="text-orgfa40497">
+<div id="outline-container-orga1fc935" class="outline-2">
+<h2 id="orga1fc935">Next Up&#x2026;</h2>
+<div class="outline-text-2" id="text-orga1fc935">
 <p>
 This post showed basic usage of the ChatGPT API with Julia. In the next post,
 I'll show how to make this more modular and useful. We'll create a <code>Struct</code> for

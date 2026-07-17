@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2022-02-08T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:05:32Z">
+<meta property="article:modified_time" content="2026-07-17T21:16:59Z">
 <meta property="og:image" content="https://danliden.com/default-og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Org Mode Headlines in Org Source Blocks">
 <meta name="twitter:description" content="How to show Org headlines inside Org source blocks by prepending them with a comma so they aren&#39;t parsed and exported as real headings.">
 <meta name="twitter:image" content="https://danliden.com/default-og-image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Org Mode Headlines in Org Source Blocks","description":"How to show Org headlines inside Org source blocks by prepending them with a comma so they aren't parsed and exported as real headings.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220208-org-source.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2022-02-08T00:00:00Z","dateModified":"2026-07-17T21:05:32Z","keywords":"Emacs, Org-mode, Org Babel, source blocks","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Org Mode Headlines in Org Source Blocks","description":"How to show Org headlines inside Org source blocks by prepending them with a comma so they aren't parsed and exported as real headings.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220208-org-source.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2022-02-08T00:00:00Z","dateModified":"2026-07-17T21:16:59Z","keywords":"Emacs, Org-mode, Org Babel, source blocks","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -62,10 +62,10 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3ed8158">The Problem</a></li>
-<li><a href="#org4f41eeb">This Headline Is in an Org Source Block</a></li>
-<li><a href="#orgbfcf5f9">Prepend Headlines in Source Blocks with Commas</a></li>
-<li><a href="#org935821c">An Easier Way</a></li>
+<li><a href="#orgbf82903">The Problem</a></li>
+<li><a href="#org0bd4f97">This Headline Is in an Org Source Block</a></li>
+<li><a href="#org890159d">Prepend Headlines in Source Blocks with Commas</a></li>
+<li><a href="#org3ec016b">An Easier Way</a></li>
 </ul>
 </div>
 </nav>
@@ -74,10 +74,10 @@
 low-contrast. I will update this soon.</i>
 </p>
 
-<div id="outline-container-org3ed8158" class="outline-2">
-<h2 id="org3ed8158">The Problem</h2>
-<div class="outline-text-2" id="text-org3ed8158">
-<div class="PREVIEW" id="org43be898">
+<div id="outline-container-orgbf82903" class="outline-2">
+<h2 id="orgbf82903">The Problem</h2>
+<div class="outline-text-2" id="text-orgbf82903">
+<div class="PREVIEW" id="orgbea248e">
 <p>
 When writing about org mode, one often wants to show what particular org
 headline look like in terms of formatting, properties, tags, options,
@@ -100,9 +100,9 @@ a comma before the headline.
 </p>
 </div>
 </div>
-<div id="outline-container-org4f41eeb" class="outline-2">
-<h2 id="org4f41eeb">This Headline Is in an Org Source Block</h2>
-<div class="outline-text-2" id="text-org4f41eeb">
+<div id="outline-container-org0bd4f97" class="outline-2">
+<h2 id="org0bd4f97">This Headline Is in an Org Source Block</h2>
+<div class="outline-text-2" id="text-org0bd4f97">
 <p>
 And it is still parsed and exported as a headline, not as an example.
 #+end<sub>src</sub>
@@ -113,9 +113,9 @@ Clearly, this isn't what we want.
 </p>
 </div>
 </div>
-<div id="outline-container-orgbfcf5f9" class="outline-2">
-<h2 id="orgbfcf5f9">Prepend Headlines in Source Blocks with Commas</h2>
-<div class="outline-text-2" id="text-orgbfcf5f9">
+<div id="outline-container-org890159d" class="outline-2">
+<h2 id="org890159d">Prepend Headlines in Source Blocks with Commas</h2>
+<div class="outline-text-2" id="text-org890159d">
 <p>
 This issue is easily resolved: just insert a comma before the headline in the
 source block (e.g. <code>,* Headline</code>). This results in the following:
@@ -171,9 +171,9 @@ This headline is also prepended with a comma!
 </div>
 </div>
 </div>
-<div id="outline-container-org935821c" class="outline-2">
-<h2 id="org935821c">An Easier Way</h2>
-<div class="outline-text-2" id="text-org935821c">
+<div id="outline-container-org3ec016b" class="outline-2">
+<h2 id="org3ec016b">An Easier Way</h2>
+<div class="outline-text-2" id="text-org3ec016b">
 <p>
 We can use the <code>org-edit-special</code> command (<code>C-c '</code>) within an org source block to
 open a separate editing environment (in this case, another org buffer). We can

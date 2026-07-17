@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-08-18T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:05:32Z">
+<meta property="article:modified_time" content="2026-07-17T21:16:59Z">
 <meta property="og:image" content="https://danliden.com/default-og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Answer.ai, Claudette, and FastHTML">
 <meta name="twitter:description" content="I just listened to the latest episode of the [[https://www.latent.space/p/answerai][Latent Space podcast]], which featured Jeremy Howard of [[https://www.fast.ai/][fast.ai]] fame. Fast.ai was my in...">
 <meta name="twitter:image" content="https://danliden.com/default-og-image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Answer.ai, Claudette, and FastHTML","description":"I just listened to the latest episode of the [[https://www.latent.space/p/answerai][Latent Space podcast]], which featured Jeremy Howard of [[https://www.fast.ai/][fast.ai]] fame. Fast.ai was my in...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240818-answer-ai.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-08-18T00:00:00Z","dateModified":"2026-07-17T21:05:32Z","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Answer.ai, Claudette, and FastHTML","description":"I just listened to the latest episode of the [[https://www.latent.space/p/answerai][Latent Space podcast]], which featured Jeremy Howard of [[https://www.fast.ai/][fast.ai]] fame. Fast.ai was my in...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240818-answer-ai.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-08-18T00:00:00Z","dateModified":"2026-07-17T21:16:59Z","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -59,26 +59,26 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc8d0707">Introduction</a></li>
-<li><a href="#org9092a1e">Claudette</a>
+<li><a href="#orga08fd8c">Introduction</a></li>
+<li><a href="#orgb2ff3d7">Claudette</a>
 <ul>
-<li><a href="#orgae164ee">Setup</a></li>
-<li><a href="#orgb9c824a">The <code>Chat</code> class</a></li>
-<li><a href="#org92814de">Tools</a></li>
+<li><a href="#org3a952a3">Setup</a></li>
+<li><a href="#orga693ea9">The <code>Chat</code> class</a></li>
+<li><a href="#org38adfe6">Tools</a></li>
 </ul>
 </li>
-<li><a href="#org3a497f9">FastHTML</a>
+<li><a href="#org6b6c52e">FastHTML</a>
 <ul>
-<li><a href="#orgf57d502">FastHTML Tutorials</a></li>
+<li><a href="#orgdab3dda">FastHTML Tutorials</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgc8d0707" class="outline-2">
-<h2 id="orgc8d0707">Introduction</h2>
-<div class="outline-text-2" id="text-orgc8d0707">
-<div class="preview" id="org62bbffb">
+<div id="outline-container-orga08fd8c" class="outline-2">
+<h2 id="orga08fd8c">Introduction</h2>
+<div class="outline-text-2" id="text-orga08fd8c">
+<div class="preview" id="org52d7c6c">
 <p>
 I just listened to the latest episode of the <a href="https://www.latent.space/p/answerai">Latent Space podcast</a>, which featured Jeremy Howard of <a href="https://www.fast.ai/">fast.ai</a> fame. Fast.ai was my introduction to deep learning—or at least re-introduction following a brief and theory-oriented treatment of the topic in grad school—and the course and book remain among the best learning resources I have ever encountered. The podcast was a good reminder to look into the projects Howard and his team have been working on at <a href="https://www.answer.ai/">answer.ai</a>, "a new kind of AI R&amp;D lab which creates practical end-user products based on foundational research breakthroughs."
 </p>
@@ -98,13 +98,13 @@ In the rest of this note, I am going to explore some of the major features of th
 </p>
 </div>
 </div>
-<div id="outline-container-org9092a1e" class="outline-2">
-<h2 id="org9092a1e">Claudette</h2>
-<div class="outline-text-2" id="text-org9092a1e">
+<div id="outline-container-orgb2ff3d7" class="outline-2">
+<h2 id="orgb2ff3d7">Claudette</h2>
+<div class="outline-text-2" id="text-orgb2ff3d7">
 </div>
-<div id="outline-container-orgae164ee" class="outline-3">
-<h3 id="orgae164ee">Setup</h3>
-<div class="outline-text-3" id="text-orgae164ee">
+<div id="outline-container-org3a952a3" class="outline-3">
+<h3 id="org3a952a3">Setup</h3>
+<div class="outline-text-3" id="text-org3a952a3">
 <p>
 We start by installing the library with <code>pip install claudette</code>. This also installs Anthropic's SDK. We can then import claudette.
 </p>
@@ -125,9 +125,9 @@ We start by installing the library with <code>pip install claudette</code>. This
 </pre>
 </div>
 </div>
-<div id="outline-container-orgb9c824a" class="outline-3">
-<h3 id="orgb9c824a">The <code>Chat</code> class</h3>
-<div class="outline-text-3" id="text-orgb9c824a">
+<div id="outline-container-orga693ea9" class="outline-3">
+<h3 id="orga693ea9">The <code>Chat</code> class</h3>
+<div class="outline-text-3" id="text-orga693ea9">
 <p>
 The <code>Chat</code> class is the main interface to Claudette. It is a nice convenient chat manager that maintains state. Note that, for this to work, we need to have <code>ANTHROPIC_API_KEY</code> in our environment.
 </p>
@@ -157,7 +157,7 @@ Now we can start using the <code>Chat</code> class.
 </pre>
 </div>
 
-<pre class="example" id="org16cd5b8">
+<pre class="example" id="org14a736b">
 Message(
     id='msg_016RqYbsX6ULEYPX3CPGeFz3',
     content=[
@@ -188,7 +188,7 @@ We can easily include a <code>prefill</code> argument to specify how the assista
 </pre>
 </div>
 
-<pre class="example" id="orge977120">
+<pre class="example" id="org8f3897e">
 Message(
     id='msg_01WMzMzhu7AxfSWEuHtaXZ6s',
     content=[
@@ -220,9 +220,9 @@ How does this all compare to the Anthropic SDK? The biggest difference I see is 
 </p>
 </div>
 </div>
-<div id="outline-container-org92814de" class="outline-3">
-<h3 id="org92814de">Tools</h3>
-<div class="outline-text-3" id="text-org92814de">
+<div id="outline-container-org38adfe6" class="outline-3">
+<h3 id="org38adfe6">Tools</h3>
+<div class="outline-text-3" id="text-org38adfe6">
 <p>
 Though they have been around for a while now, I really haven't experimented much with tool calling. <code>claudette</code> actually implements the tool loop, making it straightforward to prompt claude to actually call on a tool and do something with the results. With the Anthropic SDK, you would need to implement this yourself—the SDK would return a tool call, which you'd pass to the tool, get the results, and return it in another API call.
 </p>
@@ -263,7 +263,7 @@ Claudette automates pretty much everything that can be automated, whilst providi
 </pre>
 </div>
 
-<pre class="example" id="org6cc70a4">
+<pre class="example" id="org9f809ad">
 Message(
     id='msg_019skDwHaHQZRhzwDRvystqa',
     content=[
@@ -302,7 +302,7 @@ Now if we call the chat object again, it will be executed.
 </pre>
 </div>
 
-<pre class="example" id="org3c86547">
+<pre class="example" id="org85540be">
 Message(
     id='msg_012aEzN2o8977ULFXDviJVnw',
     content=[
@@ -335,9 +335,9 @@ Claudette also supports <a href="https://claudette.answer.ai/#images">images</a>
 </div>
 </div>
 
-<div id="outline-container-org3a497f9" class="outline-2">
-<h2 id="org3a497f9">FastHTML</h2>
-<div class="outline-text-2" id="text-org3a497f9">
+<div id="outline-container-org6b6c52e" class="outline-2">
+<h2 id="org6b6c52e">FastHTML</h2>
+<div class="outline-text-2" id="text-org6b6c52e">
 <p>
 I am interested in FastHTML because I've realized that many of my AI-related project ideas require more work on the interface than on the actual AI parts. I can write the prompts and AI logic pretty easily, but (for me) there's a lot of friction in building out a decent frontend. If FastHTML can make that even a little bit easier, it'll be huge for me.
 </p>
@@ -362,9 +362,9 @@ It is making me realize that the parts I find challenging are problably due to g
 Anyway, I had just started learning some basic web development skills before FastHTML was released. And I would rather continue that via FastHTML than via learning Javascript. So I'll spend some time on that, and write about it as I go.
 </p>
 </div>
-<div id="outline-container-orgf57d502" class="outline-3">
-<h3 id="orgf57d502">FastHTML Tutorials</h3>
-<div class="outline-text-3" id="text-orgf57d502">
+<div id="outline-container-orgdab3dda" class="outline-3">
+<h3 id="orgdab3dda">FastHTML Tutorials</h3>
+<div class="outline-text-3" id="text-orgdab3dda">
 <p>
 I have been working on a few short tutorials with the purpose of teaching myself the basics of FastHTML. The ones completed so far are:
 </p>

@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2025-09-20T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:05:32Z">
+<meta property="article:modified_time" content="2026-07-17T21:16:59Z">
 <meta property="og:image" content="https://danliden.com/default-og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Styling Org Callouts for the Site">
 <meta name="twitter:description" content="Quick walkthrough of the site’s new callout styling and how to use it.">
 <meta name="twitter:image" content="https://danliden.com/default-og-image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Styling Org Callouts for the Site","description":"Quick walkthrough of the site’s new callout styling and how to use it.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20250425-admonition-demo.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2025-09-20T00:00:00Z","dateModified":"2026-07-17T21:05:32Z","keywords":"org-mode, admonitions, emacs site, publishing workflow","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Styling Org Callouts for the Site","description":"Quick walkthrough of the site’s new callout styling and how to use it.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20250425-admonition-demo.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2025-09-20T00:00:00Z","dateModified":"2026-07-17T21:16:59Z","keywords":"org-mode, admonitions, emacs site, publishing workflow","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -61,46 +61,46 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga80f072">Why</a></li>
-<li><a href="#orgefa84ce">Examples</a>
+<li><a href="#orgb8d290d">Why</a></li>
+<li><a href="#orgf7e30e8">Examples</a>
 <ul>
-<li><a href="#org0d9e89e">Note</a></li>
-<li><a href="#org02eb1d0">Tip</a></li>
-<li><a href="#org8391ae2">Warning</a></li>
+<li><a href="#org877088e">Note</a></li>
+<li><a href="#orgf916d3b">Tip</a></li>
+<li><a href="#org3066c19">Warning</a></li>
 </ul>
 </li>
-<li><a href="#org6af509d">How it Works</a></li>
-<li><a href="#orgbd9fd6a">Using It</a></li>
+<li><a href="#org8d77228">How it Works</a></li>
+<li><a href="#org4d76496">Using It</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgc8e0212">
+<div class="preview" id="org583bb62">
 <p>
 Quick walkthrough of the site’s new callout styling for Org blocks: see the raw markup, the rendered result, and the tiny bit of CSS/JS that makes it work.
 </p>
 
 </div>
 
-<div id="outline-container-orga80f072" class="outline-2">
-<h2 id="orga80f072">Why</h2>
-<div class="outline-text-2" id="text-orga80f072">
+<div id="outline-container-orgb8d290d" class="outline-2">
+<h2 id="orgb8d290d">Why</h2>
+<div class="outline-text-2" id="text-orgb8d290d">
 <p>
 I keep reaching for Org special blocks (<code>#+begin_note</code>, <code>#+begin_warning</code>, etc.) when I want callouts. This update gives them a consistent look across light and dark themes without much effort.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgefa84ce" class="outline-2">
-<h2 id="orgefa84ce">Examples</h2>
-<div class="outline-text-2" id="text-orgefa84ce">
+<div id="outline-container-orgf7e30e8" class="outline-2">
+<h2 id="orgf7e30e8">Examples</h2>
+<div class="outline-text-2" id="text-orgf7e30e8">
 <p>
 Each example shows the Org snippet first, followed by how it renders after export.
 </p>
 </div>
 
-<div id="outline-container-org0d9e89e" class="outline-3">
-<h3 id="org0d9e89e">Note</h3>
-<div class="outline-text-3" id="text-org0d9e89e">
+<div id="outline-container-org877088e" class="outline-3">
+<h3 id="org877088e">Note</h3>
+<div class="outline-text-3" id="text-org877088e">
 <div class="org-src-container">
 <pre class="src src-org"><span class="org-org-block-begin-line">#+begin_note
 </span>Use notes for context or references that amplify the main text.
@@ -108,7 +108,7 @@ Each example shows the Org snippet first, followed by how it renders after expor
 </pre>
 </div>
 
-<div class="note" id="org6c7fee2">
+<div class="note" id="org16b761d">
 <p>
 Use notes for context or references that amplify the main text.
 </p>
@@ -117,9 +117,9 @@ Use notes for context or references that amplify the main text.
 </div>
 </div>
 
-<div id="outline-container-org02eb1d0" class="outline-3">
-<h3 id="org02eb1d0">Tip</h3>
-<div class="outline-text-3" id="text-org02eb1d0">
+<div id="outline-container-orgf916d3b" class="outline-3">
+<h3 id="orgf916d3b">Tip</h3>
+<div class="outline-text-3" id="text-orgf916d3b">
 <div class="org-src-container">
 <pre class="src src-org"><span class="org-org-block-begin-line">#+begin_tip
 </span>Tips are great for quick wins, shortcuts, or &#8220;you might not know&#8221; details.
@@ -127,7 +127,7 @@ Use notes for context or references that amplify the main text.
 </pre>
 </div>
 
-<div class="tip" id="org93b9078">
+<div class="tip" id="orgab5e600">
 <p>
 Tips are great for quick wins, shortcuts, or “you might not know” details.
 </p>
@@ -136,9 +136,9 @@ Tips are great for quick wins, shortcuts, or “you might not know” details.
 </div>
 </div>
 
-<div id="outline-container-org8391ae2" class="outline-3">
-<h3 id="org8391ae2">Warning</h3>
-<div class="outline-text-3" id="text-org8391ae2">
+<div id="outline-container-org3066c19" class="outline-3">
+<h3 id="org3066c19">Warning</h3>
+<div class="outline-text-3" id="text-org3066c19">
 <div class="org-src-container">
 <pre class="src src-org"><span class="org-org-block-begin-line">#+begin_warning
 </span>Warnings (and <span class="org-org-code">~#+begin_caution~</span> / <span class="org-org-code">~#+begin_important~</span>) announce risky steps or footguns.
@@ -146,7 +146,7 @@ Tips are great for quick wins, shortcuts, or “you might not know” details.
 </pre>
 </div>
 
-<div class="warning" id="orgde115c5">
+<div class="warning" id="org85a0d37">
 <p>
 Warnings (and <code>#+begin_caution</code> / <code>#+begin_important</code>) announce risky steps or footguns.
 </p>
@@ -156,9 +156,9 @@ Warnings (and <code>#+begin_caution</code> / <code>#+begin_important</code>) ann
 </div>
 </div>
 
-<div id="outline-container-org6af509d" class="outline-2">
-<h2 id="org6af509d">How it Works</h2>
-<div class="outline-text-2" id="text-org6af509d">
+<div id="outline-container-org8d77228" class="outline-2">
+<h2 id="org8d77228">How it Works</h2>
+<div class="outline-text-2" id="text-org8d77228">
 <ul class="org-ul">
 <li>Styling lives in <code>assets/orgstyle.css</code> (<code>.admonition</code>, <code>.admonition--warn</code>, etc.).</li>
 <li>A tiny helper script <code>assets/admonitions.js</code> looks for exported <code>&lt;div class="note"&gt;</code> style blocks and wraps them with a title, icon, and proper roles.</li>
@@ -167,9 +167,9 @@ Warnings (and <code>#+begin_caution</code> / <code>#+begin_important</code>) ann
 </div>
 </div>
 
-<div id="outline-container-orgbd9fd6a" class="outline-2">
-<h2 id="orgbd9fd6a">Using It</h2>
-<div class="outline-text-2" id="text-orgbd9fd6a">
+<div id="outline-container-org4d76496" class="outline-2">
+<h2 id="org4d76496">Using It</h2>
+<div class="outline-text-2" id="text-org4d76496">
 <ol class="org-ol">
 <li>Add a special block to your Org file, e.g. <code>#+begin_tip</code> … <code>#+end_tip</code>.</li>
 <li>Run <code>./build.sh</code> so the helper script and CSS land in the generated HTML.</li>

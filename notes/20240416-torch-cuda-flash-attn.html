@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-04-16T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:05:32Z">
+<meta property="article:modified_time" content="2026-07-17T21:16:59Z">
 <meta property="og:image" content="https://danliden.com/default-og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Troubleshooting Flash Attention Installation">
 <meta name="twitter:description" content="I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platfo...">
 <meta name="twitter:image" content="https://danliden.com/default-og-image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Troubleshooting Flash Attention Installation","description":"I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platfo...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240416-torch-cuda-flash-attn.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-04-16T00:00:00Z","dateModified":"2026-07-17T21:05:32Z","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Troubleshooting Flash Attention Installation","description":"I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platfo...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240416-torch-cuda-flash-attn.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-04-16T00:00:00Z","dateModified":"2026-07-17T21:16:59Z","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -59,30 +59,30 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgfe110ff">The Problem</a></li>
-<li><a href="#org952db63">Solution</a></li>
-<li><a href="#org2df82b5">What didn't work</a></li>
+<li><a href="#orgff01957">The Problem</a></li>
+<li><a href="#org58b0b61">Solution</a></li>
+<li><a href="#orgd0cd1b2">What didn't work</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgbad06ac">
+<div class="preview" id="org14d63b0">
 <p>
 I have repeatedly run into issues getting flash-attention working correctly with whatever version of PyTorch and CUDA I happen to be working with. I found a working pattern, at least for the platform I tend to be working on (Databricks). This note is a quick summary.
 </p>
 
 </div>
-<div id="outline-container-orgfe110ff" class="outline-2">
-<h2 id="orgfe110ff">The Problem</h2>
-<div class="outline-text-2" id="text-orgfe110ff">
+<div id="outline-container-orgff01957" class="outline-2">
+<h2 id="orgff01957">The Problem</h2>
+<div class="outline-text-2" id="text-orgff01957">
 <p>
 I kept getting an "undefined symbol" error like <a href="https://github.com/Dao-AILab/flash-attention/issues/667">this</a> when trying to load a model with flash attention (or even just when importing the flash attention library).
 </p>
 </div>
 </div>
 
-<div id="outline-container-org952db63" class="outline-2">
-<h2 id="org952db63">Solution</h2>
-<div class="outline-text-2" id="text-org952db63">
+<div id="outline-container-org58b0b61" class="outline-2">
+<h2 id="org58b0b61">Solution</h2>
+<div class="outline-text-2" id="text-org58b0b61">
 <p>
 The following approach worked.
 </p>
@@ -139,9 +139,9 @@ We can then make sure everything works (without needing to take extra time to lo
 </div>
 </div>
 
-<div id="outline-container-org2df82b5" class="outline-2">
-<h2 id="org2df82b5">What didn't work</h2>
-<div class="outline-text-2" id="text-org2df82b5">
+<div id="outline-container-orgd0cd1b2" class="outline-2">
+<h2 id="orgd0cd1b2">What didn't work</h2>
+<div class="outline-text-2" id="text-orgd0cd1b2">
 <p>
 I wasn't able to get any variety of <code>pip install flash-attn</code> working. This was regardless of the no build isolation flag; specific versions; etc.
 </p>
