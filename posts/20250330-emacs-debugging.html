@@ -9,9 +9,8 @@
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-<link rel="me" href="https://emacs.ch/@dliden">
+<link rel="me" href="https://fosstodon.org/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
 <script src="/admonitions.js" defer></script>
 <script data-goatcounter="https://danliden.goatcounter.com/count"
@@ -24,11 +23,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2025-03-23T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T15:04:02Z">
+<meta property="article:modified_time" content="2026-07-17T20:52:46Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Emacs Introspection and Debugging">
 <meta name="twitter:description" content="If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless o...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Emacs Introspection and Debugging","description":"If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless o...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20250330-emacs-debugging.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-03-23T00:00:00Z","dateModified":"2026-07-17T15:04:02Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Emacs Introspection and Debugging","description":"If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless o...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20250330-emacs-debugging.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2025-03-23T00:00:00Z","dateModified":"2026-07-17T20:52:46Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -59,16 +58,16 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org85a59dd">Introduction</a></li>
-<li><a href="#org5e783c3">Finding Relevant Variables</a></li>
-<li><a href="#orgad180d9">Confirming the issue with error backtrace</a></li>
-<li><a href="#org6b0bcda">Quick fix—bandaid approach</a></li>
-<li><a href="#org5296409">Finding the root of the problem</a></li>
-<li><a href="#orgc6bcd51">Conclusion—Emacs introspection</a></li>
+<li><a href="#orgf21d0f7">Introduction</a></li>
+<li><a href="#org28ffbf7">Finding Relevant Variables</a></li>
+<li><a href="#org7b2695e">Confirming the issue with error backtrace</a></li>
+<li><a href="#org73d8b13">Quick fix—bandaid approach</a></li>
+<li><a href="#org801c235">Finding the root of the problem</a></li>
+<li><a href="#org0169475">Conclusion—Emacs introspection</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org983c2ea">
+<div class="preview" id="org41e10a0">
 <p>
 If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless of the cause, Emacs provides many tools for identifying the causes of errors and learning how to address them.
 </p>
@@ -79,9 +78,9 @@ This post works through a recent issue I encountered with the <code>eglot</code>
 
 </div>
 
-<div id="outline-container-org85a59dd" class="outline-2">
-<h2 id="org85a59dd">Introduction</h2>
-<div class="outline-text-2" id="text-org85a59dd">
+<div id="outline-container-orgf21d0f7" class="outline-2">
+<h2 id="orgf21d0f7">Introduction</h2>
+<div class="outline-text-2" id="text-orgf21d0f7">
 <p>
 For a while, whenever I used <a href="https://www.gnu.org/software/emacs/manual/html_mono/eglot.html">eglot</a> (mostly for Python projects) and then shut it down with e.g. <code>M-x eglot-shutdown</code>, all subsequent attempts to save any files in Emacs would return the following error: <code>(jsonrpc-error-message . "No current JSON-RPC connection")</code>. The save would generally succeed, so this was more annoying than anything. But it <i>was</i> annoying.
 </p>
@@ -103,9 +102,9 @@ Given this pattern, I started by looking for <a href="https://www.danliden.com/p
 </p>
 </div>
 </div>
-<div id="outline-container-org5e783c3" class="outline-2">
-<h2 id="org5e783c3">Finding Relevant Variables</h2>
-<div class="outline-text-2" id="text-org5e783c3">
+<div id="outline-container-org28ffbf7" class="outline-2">
+<h2 id="org28ffbf7">Finding Relevant Variables</h2>
+<div class="outline-text-2" id="text-org28ffbf7">
 <p>
 I wasn't entirely sure what I was looking for. But I knew from previous reading that hooks are variables that, by convention, include the word <code>hook</code> in their names. This already provides plenty to work with.
 </p>
@@ -115,7 +114,7 @@ The <code>apropos-variable</code> function takes a pattern or a list of words an
 </p>
 
 
-<figure id="org07b0995">
+<figure id="org571aafe">
 <img src="./figures/20250323-emacs-debugging/1_apropos.png" alt="1_apropos.png">
 
 </figure>
@@ -134,9 +133,9 @@ This is already very useful and points toward some directions for fixing the iss
 </p>
 </div>
 </div>
-<div id="outline-container-orgad180d9" class="outline-2">
-<h2 id="orgad180d9">Confirming the issue with error backtrace</h2>
-<div class="outline-text-2" id="text-orgad180d9">
+<div id="outline-container-org7b2695e" class="outline-2">
+<h2 id="org7b2695e">Confirming the issue with error backtrace</h2>
+<div class="outline-text-2" id="text-org7b2695e">
 <p>
 I wanted to confirm that this hook was causing the issue so I used <code>M-x toggle-debug-on-error</code> to get a more detailed backtrace. In reality, this is where I should have started—the error trace provides much more specific and useful information than the short error message returned in the echo area. When I tried to save a file with debugging enabled, I received the following in a <b>Backtrace</b> buffer.
 </p>
@@ -168,9 +167,9 @@ Now that we have some understanding of what is happening, how do we fix it?
 </p>
 </div>
 </div>
-<div id="outline-container-org6b0bcda" class="outline-2">
-<h2 id="org6b0bcda">Quick fix—bandaid approach</h2>
-<div class="outline-text-2" id="text-org6b0bcda">
+<div id="outline-container-org73d8b13" class="outline-2">
+<h2 id="org73d8b13">Quick fix—bandaid approach</h2>
+<div class="outline-text-2" id="text-org73d8b13">
 <p>
 My initial fix for this issue was to write a simple cleanup script to remove the offending hook function from the <code>after-save-hook</code>.
 </p>
@@ -200,9 +199,9 @@ At this point, it was not yet clear to me how the hook was set in the first plac
 </div>
 </div>
 
-<div id="outline-container-org5296409" class="outline-2">
-<h2 id="org5296409">Finding the root of the problem</h2>
-<div class="outline-text-2" id="text-org5296409">
+<div id="outline-container-org801c235" class="outline-2">
+<h2 id="org801c235">Finding the root of the problem</h2>
+<div class="outline-text-2" id="text-org801c235">
 <p>
 My first thought was that, perhaps, the hook was being set when <code>eglot</code> was invoked. To check this, I:
 </p>
@@ -230,7 +229,7 @@ And it turns out, I set this hook myself!
 
 
 
-<figure id="org9f9b8a9">
+<figure id="org5d1e557">
 <img src="./figures/20250323-emacs-debugging/2_grep.png" alt="2_grep.png">
 
 </figure>
@@ -241,9 +240,9 @@ Once I deleted the <code>(add-hook 'after-save-hook ...)</code> call from my con
 </div>
 </div>
 
-<div id="outline-container-orgc6bcd51" class="outline-2">
-<h2 id="orgc6bcd51">Conclusion—Emacs introspection</h2>
-<div class="outline-text-2" id="text-orgc6bcd51">
+<div id="outline-container-org0169475" class="outline-2">
+<h2 id="org0169475">Conclusion—Emacs introspection</h2>
+<div class="outline-text-2" id="text-org0169475">
 <p>
 The approaches I used here are nowhere close to comprehensive. Emacs has countless introspection tools and a seemingly-inexhaustible collection of functions and variables that enable you to inspect everything going on in your Emacs setup. Furthermore, it provides a range of ways to search these variables and functions.
 </p>
@@ -267,7 +266,7 @@ Lastly—we're reaching a point where you don't have to do this yourself. You ca
 </p>
 
 
-<figure id="org7ad0933">
+<figure id="orge5f91e5">
 <img src="./figures/20250323-emacs-debugging/3_gptel.png" alt="3_gptel.png">
 
 </figure>

@@ -9,9 +9,8 @@
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-<link rel="me" href="https://emacs.ch/@dliden">
+<link rel="me" href="https://fosstodon.org/@dliden">
 <link rel="alternate" type="application/rss+xml" title="Daniel Liden's Blog" href="/rss.xml">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
 <script src="/admonitions.js" defer></script>
 <script data-goatcounter="https://danliden.goatcounter.com/count"
@@ -24,11 +23,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2023-03-10T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T15:04:02Z">
+<meta property="article:modified_time" content="2026-07-17T20:52:46Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Using the ChatGPT API with Julia Part 2: Defining a Chat Struct">
 <meta name="twitter:description" content="One of the things that makes working with the ChatGPT API a little different from working with, e.g., the ~davinci-text-003~ model api is the need to maintain the history of a given chat session. A...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the ChatGPT API with Julia Part 2: Defining a Chat Struct","description":"One of the things that makes working with the ChatGPT API a little different from working with, e.g., the ~davinci-text-003~ model api is the need to maintain the history of a given chat session. A...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230310-chatgpt-julia-2.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2023-03-10T00:00:00Z","dateModified":"2026-07-17T15:04:02Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the ChatGPT API with Julia Part 2: Defining a Chat Struct","description":"One of the things that makes working with the ChatGPT API a little different from working with, e.g., the ~davinci-text-003~ model api is the need to maintain the history of a given chat session. A...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230310-chatgpt-julia-2.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2023-03-10T00:00:00Z","dateModified":"2026-07-17T20:52:46Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -59,14 +58,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga64ba89">Defining the Struct</a></li>
-<li><a href="#org912a3f6">Defining the function</a></li>
-<li><a href="#org9ec9dbd">Giving it a Try</a></li>
-<li><a href="#org9b4294d">What's next?</a></li>
+<li><a href="#org496cd0e">Defining the Struct</a></li>
+<li><a href="#org673311a">Defining the function</a></li>
+<li><a href="#org76f281a">Giving it a Try</a></li>
+<li><a href="#orgd9406a1">What's next?</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org30f54c9">
+<div class="preview" id="org9d4f010">
 <p>
 One of the things that makes working with the ChatGPT API a little different
 from working with, e.g., the <code>davinci-text-003</code> model api is the need to maintain
@@ -81,9 +80,9 @@ For the basics of working with the ChatGPT API, check out <a href="20230303-chat
 
 </div>
 
-<div id="outline-container-orga64ba89" class="outline-2">
-<h2 id="orga64ba89">Defining the Struct</h2>
-<div class="outline-text-2" id="text-orga64ba89">
+<div id="outline-container-org496cd0e" class="outline-2">
+<h2 id="org496cd0e">Defining the Struct</h2>
+<div class="outline-text-2" id="text-org496cd0e">
 <p>
 A <code>struct</code>, also referred to as a <a href="https://docs.julialang.org/en/v1/manual/types/#Composite-Types">composite type</a>, is "a collection of named
 fields, an instance of which can be treated as a single value." By default,
@@ -176,9 +175,9 @@ able to act on it. For that, we'll define a function.
 </div>
 </div>
 
-<div id="outline-container-org912a3f6" class="outline-2">
-<h2 id="org912a3f6">Defining the function</h2>
-<div class="outline-text-2" id="text-org912a3f6">
+<div id="outline-container-org673311a" class="outline-2">
+<h2 id="org673311a">Defining the function</h2>
+<div class="outline-text-2" id="text-org673311a">
 <p>
 The purpose of this function is to:
 </p>
@@ -269,9 +268,9 @@ list. The <code>chat</code> function follows both of these conventions.
 </p>
 </div>
 </div>
-<div id="outline-container-org9ec9dbd" class="outline-2">
-<h2 id="org9ec9dbd">Giving it a Try</h2>
-<div class="outline-text-2" id="text-org9ec9dbd">
+<div id="outline-container-org76f281a" class="outline-2">
+<h2 id="org76f281a">Giving it a Try</h2>
+<div class="outline-text-2" id="text-org76f281a">
 <p>
 So, does it work? Let's try it out.
 </p>
@@ -307,9 +306,9 @@ the message history in the second API request.
 </p>
 </div>
 </div>
-<div id="outline-container-org9b4294d" class="outline-2">
-<h2 id="org9b4294d">What's next?</h2>
-<div class="outline-text-2" id="text-org9b4294d">
+<div id="outline-container-orgd9406a1" class="outline-2">
+<h2 id="orgd9406a1">What's next?</h2>
+<div class="outline-text-2" id="text-orgd9406a1">
 <p>
 There are a few additional avenues I want to explore, in no particular order:
 </p>
