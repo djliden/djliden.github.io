@@ -395,11 +395,13 @@ https://ogbe.net/blog/blogging_with_org.html"
 ;;;; https://codeberg.org/SystemCrafters/systemcrafters-site/src/commit/ce3717201ab727f709f9e739842b209d10c8c51a/publish.el#L411
 ;;;; https://codeberg.org/SystemCrafters/systemcrafters-site/src/commit/ce3717201ab727f709f9e739842b209d10c8c51a/publish.el#L418
 (defun dw/rss-extract-date (html-file)
-  "Extract the post date from an HTML file, falling back gracefully if missing."
+  "Extract the post date from an HTML file, falling back gracefully if missing.
+The date is rendered into the subtitle element (e.g. \"December 3, 2021\")
+by the metadata hook; fall back to the file mtime if it cannot be parsed."
   (with-temp-buffer
     (insert-file-contents html-file)
     (let* ((dom (libxml-parse-html-region (point-min) (point-max)))
-           (date-node (car (dom-by-class dom "date")))
+           (date-node (car (dom-by-class dom "subtitle")))
            (date-string (when date-node (dom-text date-node))))
       (if (and date-string (not (string= "" date-string)))
           (let* ((parsed-date (parse-time-string date-string))
