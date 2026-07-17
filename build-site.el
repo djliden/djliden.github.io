@@ -296,7 +296,7 @@ https://ogbe.net/blog/blogging_with_org.html"
              :section-numbers nil
              :time-stamp-file nil
              :auto-sitemap t
-             :sitemap-title nil;"Daniel Liden's Blog"
+             :sitemap-title "Posts Archive"
              :sitemap-format-entry 'my/org-publish-org-sitemap-format
              :sitemap-function 'my/org-publish-org-sitemap
              :sitemap-sort-files 'anti-chronologically
@@ -379,6 +379,57 @@ https://ogbe.net/blog/blogging_with_org.html"
                  :title "Daniel Liden's Blog"
                  :description "Data, AI, and other writing from Daniel Liden"
                  :author "Daniel Liden")
+
+
+;;; build sitemap.xml, robots.txt, CNAME
+
+(defun my/org-site--sitemap-entries ()
+  "Return a list of (URL . LASTMOD) for every published content page.
+LASTMOD is the source Org file's modification date, which reflects when
+the content actually changed rather than the build time."
+  (let ((files (directory-files-recursively my/org-site-content-root "\\.org\\'"))
+        entries)
+    (dolist (file (sort files #'string<))
+      (let ((rel (file-relative-name file my/org-site-content-root)))
+        (unless (or (string-match-p "/drafts/" rel)
+                    (string= rel "sitemap.org"))
+          (let ((url (my/org-site--canonical-from-file file))
+                (mtime (file-attribute-modification-time (file-attributes file))))
+            (when url
+              (push (cons url (format-time-string "%Y-%m-%d" mtime t)) entries))))))
+    (nreverse entries)))
+
+(defun my/org-site--write-sitemap-xml ()
+  "Write public/sitemap.xml following the sitemaps.org protocol."
+  (let ((entries (my/org-site--sitemap-entries))
+        (out (expand-file-name "public/sitemap.xml" my/org-site-root)))
+    (with-temp-file out
+      (insert "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
+      (insert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n")
+      (dolist (entry entries)
+        (insert (format "  <url>\n    <loc>%s</loc>\n    <lastmod>%s</lastmod>\n  </url>\n"
+                        (my/org-site--escape-html (car entry))
+                        (cdr entry))))
+      (insert "</urlset>\n"))
+    (message "Wrote sitemap.xml (%d urls)" (length entries))))
+
+(defun my/org-site--write-robots-txt ()
+  "Write public/robots.txt: allow all crawlers and point to the sitemap."
+  (let ((base (string-remove-suffix "/" my/org-site-base-url)))
+    (with-temp-file (expand-file-name "public/robots.txt" my/org-site-root)
+      (insert "User-agent: *\n")
+      (insert "Allow: /\n\n")
+      (insert (format "Sitemap: %s/sitemap.xml\n" base)))))
+
+(defun my/org-site--write-cname ()
+  "Write public/CNAME so the custom domain survives each deploy."
+  (let ((host (replace-regexp-in-string "\\`https?://" "" my/org-site-base-url)))
+    (with-temp-file (expand-file-name "public/CNAME" my/org-site-root)
+      (insert host "\n"))))
+
+(my/org-site--write-sitemap-xml)
+(my/org-site--write-robots-txt)
+(my/org-site--write-cname)
 
 
 (message "Build Complete!")
