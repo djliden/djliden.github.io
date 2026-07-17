@@ -44,6 +44,9 @@
   "Canonical profile URLs that identify the author as one entity.
 Add the LinkedIn profile URL here once available.")
 
+(defconst my/org-site-default-image "/default-og-image.png"
+  "Site-wide fallback social image used when a page sets no #+IMAGE.")
+
 (defconst my/org-site-root
   (file-name-directory (file-truename (or load-file-name default-directory)))
   "Root directory of the org-site repository while building.")
@@ -208,7 +211,7 @@ Add the LinkedIn profile URL here once available.")
                             (file-attribute-modification-time (file-attributes source))))
            (published-iso (my/org-site--format-iso8601 published-time))
            (modified-iso (my/org-site--format-iso8601 modified-time))
-           (abs-image (my/org-site--abs-url image))
+           (abs-image (my/org-site--abs-url (or image my/org-site-default-image)))
            (site-name "Daniel Liden")
            (normalized-title (or title canonical))
            (meta-lines nil))
