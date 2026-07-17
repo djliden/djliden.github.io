@@ -4,6 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Figures and Captions Don't Appear as Expected with Default Export Options</title>
+<meta name="description" content="Why figures and captions export incorrectly from Org mode by default, and how setting org-html-doctype to html5 fixes it." />
+<meta name="keywords" content="Emacs, Org-mode, HTML export, html5, ox-html" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
@@ -19,15 +21,15 @@
 <meta name="author" content="Daniel Liden">
 <meta property="og:url" content="https://danliden.com/posts/20220724-html5.html">
 <meta property="og:title" content="Figures and Captions Don&#39;t Appear as Expected with Default Export Options">
-<meta property="og:description" content="I noticed that some of the formatting on this site was a little off and some of the org-mode components weren&#39;t being translated to HTML in quite the way I expected. Fixing this was simple, but /fi...">
+<meta property="og:description" content="Why figures and captions export incorrectly from Org mode by default, and how setting org-html-doctype to html5 fixes it.">
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2022-07-24T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T20:54:49Z">
+<meta property="article:modified_time" content="2026-07-17T21:03:47Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Figures and Captions Don&#39;t Appear as Expected with Default Export Options">
-<meta name="twitter:description" content="I noticed that some of the formatting on this site was a little off and some of the org-mode components weren&#39;t being translated to HTML in quite the way I expected. Fixing this was simple, but /fi...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Figures and Captions Don't Appear as Expected with Default Export Options","description":"I noticed that some of the formatting on this site was a little off and some of the org-mode components weren't being translated to HTML in quite the way I expected. Fixing this was simple, but /fi...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220724-html5.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2022-07-24T00:00:00Z","dateModified":"2026-07-17T20:54:49Z"}</script>
+<meta name="twitter:description" content="Why figures and captions export incorrectly from Org mode by default, and how setting org-html-doctype to html5 fixes it.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Figures and Captions Don't Appear as Expected with Default Export Options","description":"Why figures and captions export incorrectly from Org mode by default, and how setting org-html-doctype to html5 fixes it.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220724-html5.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2022-07-24T00:00:00Z","dateModified":"2026-07-17T21:03:47Z","keywords":"Emacs, Org-mode, HTML export, html5, ox-html"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -58,13 +60,13 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org91e4ad0">The Problem</a></li>
-<li><a href="#org70c7729">Changes to the Site Config</a></li>
-<li><a href="#orga994363">The Results</a></li>
+<li><a href="#org16ca73f">The Problem</a></li>
+<li><a href="#org00a4ae3">Changes to the Site Config</a></li>
+<li><a href="#orgf8b3735">The Results</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgb2c7081">
+<div class="preview" id="org8dd5781">
 <p>
 I noticed that some of the formatting on this site was a little off and some of
 the org-mode components weren't being translated to HTML in quite the way I
@@ -82,9 +84,9 @@ While that brief introduction should capture the necessary changes, we can get
 into more specifics.
 </p>
 
-<div id="outline-container-org91e4ad0" class="outline-2">
-<h2 id="org91e4ad0">The Problem</h2>
-<div class="outline-text-2" id="text-org91e4ad0">
+<div id="outline-container-org16ca73f" class="outline-2">
+<h2 id="org16ca73f">The Problem</h2>
+<div class="outline-text-2" id="text-org16ca73f">
 <p>
 If we use the default settings, figures aren't wrapped in <code>&lt;figure&gt;</code> blocks and
 captions aren't wrapped in <code>&lt;figcaption&gt;</code> blocks, so none of the formatting we
@@ -112,9 +114,9 @@ The image and caption appear left-aligned on the page. Here's the html:
 </div>
 </div>
 
-<div id="outline-container-org70c7729" class="outline-2">
-<h2 id="org70c7729">Changes to the Site Config</h2>
-<div class="outline-text-2" id="text-org70c7729">
+<div id="outline-container-org00a4ae3" class="outline-2">
+<h2 id="org00a4ae3">Changes to the Site Config</h2>
+<div class="outline-text-2" id="text-org00a4ae3">
 <p>
 To address this, we need to change the <code>org-html-doctype</code> and <code>org-html-html5-fancy</code>
 variables. We can do this in the export configuration's
@@ -163,15 +165,15 @@ key changes.
 </div>
 </div>
 </div>
-<div id="outline-container-orga994363" class="outline-2">
-<h2 id="orga994363">The Results</h2>
-<div class="outline-text-2" id="text-orga994363">
+<div id="outline-container-orgf8b3735" class="outline-2">
+<h2 id="orgf8b3735">The Results</h2>
+<div class="outline-text-2" id="text-orgf8b3735">
 <p>
 With these changes, our images and captions are now centered:
 </p>
 
 
-<figure id="orga5422ab">
+<figure id="org40a83c5">
 <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px">
 
 <figcaption><span class="figure-number">Figure 1: </span>This caption is now centered and wrapped in a <code>&lt;figcaption&gt;</code> tag!</figcaption>

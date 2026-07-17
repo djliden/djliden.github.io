@@ -4,6 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Persistent Elements in Daily Journals with Org Agenda</title>
+<meta name="description" content="Using org-agenda-custom-commands to build a custom view that surfaces tagged notes across many Denote daily journal files." />
+<meta name="keywords" content="Emacs, Org-mode, org-agenda, Denote, journaling" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
@@ -19,15 +21,15 @@
 <meta name="author" content="Daniel Liden">
 <meta property="og:url" content="https://danliden.com/posts/20240505-journal-persist.html">
 <meta property="og:title" content="Persistent Elements in Daily Journals with Org Agenda">
-<meta property="og:description" content="I use denote&#39;s [[https://protesilaos.com/emacs/denote#h:4a6d92dd-19eb-4fcc-a7b5-05ce04da3a92][journaling features]] to keep a daily project log, where I record whatever I&#39;m working on, stray bits o...">
+<meta property="og:description" content="Using org-agenda-custom-commands to build a custom view that surfaces tagged notes across many Denote daily journal files.">
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-05-05T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T20:54:49Z">
+<meta property="article:modified_time" content="2026-07-17T21:03:47Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Persistent Elements in Daily Journals with Org Agenda">
-<meta name="twitter:description" content="I use denote&#39;s [[https://protesilaos.com/emacs/denote#h:4a6d92dd-19eb-4fcc-a7b5-05ce04da3a92][journaling features]] to keep a daily project log, where I record whatever I&#39;m working on, stray bits o...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Persistent Elements in Daily Journals with Org Agenda","description":"I use denote's [[https://protesilaos.com/emacs/denote#h:4a6d92dd-19eb-4fcc-a7b5-05ce04da3a92][journaling features]] to keep a daily project log, where I record whatever I'm working on, stray bits o...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20240505-journal-persist.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-05-05T00:00:00Z","dateModified":"2026-07-17T20:54:49Z"}</script>
+<meta name="twitter:description" content="Using org-agenda-custom-commands to build a custom view that surfaces tagged notes across many Denote daily journal files.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Persistent Elements in Daily Journals with Org Agenda","description":"Using org-agenda-custom-commands to build a custom view that surfaces tagged notes across many Denote daily journal files.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20240505-journal-persist.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-05-05T00:00:00Z","dateModified":"2026-07-17T21:03:47Z","keywords":"Emacs, Org-mode, org-agenda, Denote, journaling"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -58,24 +60,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org600cbf3">A different way of thinking about the org agenda</a></li>
-<li><a href="#org1bbeaba">org-agenda-custom-commands</a></li>
-<li><a href="#orgce0b28b">Next Steps</a>
+<li><a href="#org234922f">A different way of thinking about the org agenda</a></li>
+<li><a href="#org8942c2a">org-agenda-custom-commands</a></li>
+<li><a href="#org4e953fa">Next Steps</a>
 <ul>
-<li><a href="#org6f1a24d"><span class="done DONE">DONE</span> Add TODO entries</a>
+<li><a href="#org94bb796"><span class="done DONE">DONE</span> Add TODO entries</a>
 <ul>
-<li><a href="#org5edecdd">UPDATE <span class="timestamp-wrapper"><span class="timestamp">&lt;2024-05-06 Mon&gt;</span></span></a></li>
+<li><a href="#org6a366c7">UPDATE <span class="timestamp-wrapper"><span class="timestamp">&lt;2024-05-06 Mon&gt;</span></span></a></li>
 </ul>
 </li>
-<li><a href="#org336e636"><span class="todo TODO">TODO</span> Limit the number of files searched</a></li>
-<li><a href="#org48f53fd"><span class="todo TODO">TODO</span> Add and organize tags</a></li>
-<li><a href="#org0b59f3d"><span class="todo TODO">TODO</span> Other</a></li>
+<li><a href="#orgfbc24bb"><span class="todo TODO">TODO</span> Limit the number of files searched</a></li>
+<li><a href="#org4b95788"><span class="todo TODO">TODO</span> Add and organize tags</a></li>
+<li><a href="#org8fe051d"><span class="todo TODO">TODO</span> Other</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org3669c91">
+<div class="preview" id="orgedf5073">
 <p>
 I use denote's <a href="https://protesilaos.com/emacs/denote#h:4a6d92dd-19eb-4fcc-a7b5-05ce04da3a92">journaling features</a> to keep a daily project log, where I record whatever I'm working on, stray bits of knowledge, some TODOs, fleeting thoughts, etc.
 </p>
@@ -90,9 +92,9 @@ This post shows a quick solution to this issue using <a href="https://orgmode.or
 
 </div>
 
-<div id="outline-container-org600cbf3" class="outline-2">
-<h2 id="org600cbf3">A different way of thinking about the org agenda</h2>
-<div class="outline-text-2" id="text-org600cbf3">
+<div id="outline-container-org234922f" class="outline-2">
+<h2 id="org234922f">A different way of thinking about the org agenda</h2>
+<div class="outline-text-2" id="text-org234922f">
 <p>
 I've mostly thought of the org agenda as, well, an agenda. It's for managing todos, dates, deadlines. It's a very versatile tool for that purpose, and can pull those elements out of a bunch of different org files. This is great.
 </p>
@@ -123,9 +125,9 @@ With the org agenda, I can remedy this as follows:
 </ul>
 </div>
 </div>
-<div id="outline-container-org1bbeaba" class="outline-2">
-<h2 id="org1bbeaba">org-agenda-custom-commands</h2>
-<div class="outline-text-2" id="text-org1bbeaba">
+<div id="outline-container-org8942c2a" class="outline-2">
+<h2 id="org8942c2a">org-agenda-custom-commands</h2>
+<div class="outline-text-2" id="text-org8942c2a">
 <p>
 I did this with <a href="https://orgmode.org/worg/org-tutorials/org-custom-agenda-commands.html">org-agenda-custom-commands</a>. It looks like this in my config:
 </p>
@@ -144,23 +146,23 @@ This creates a custom view called "journals" that I can select with the "j" comm
 </p>
 </div>
 </div>
-<div id="outline-container-orgce0b28b" class="outline-2">
-<h2 id="orgce0b28b">Next Steps</h2>
-<div class="outline-text-2" id="text-orgce0b28b">
+<div id="outline-container-org4e953fa" class="outline-2">
+<h2 id="org4e953fa">Next Steps</h2>
+<div class="outline-text-2" id="text-org4e953fa">
 <p>
 This is a very simple agenda view. There are a few improvements I intend to make in the near future (I will update this post accordingly).
 </p>
 </div>
-<div id="outline-container-org6f1a24d" class="outline-3">
-<h3 id="org6f1a24d"><span class="done DONE">DONE</span> Add TODO entries</h3>
-<div class="outline-text-3" id="text-org6f1a24d">
+<div id="outline-container-org94bb796" class="outline-3">
+<h3 id="org94bb796"><span class="done DONE">DONE</span> Add TODO entries</h3>
+<div class="outline-text-3" id="text-org94bb796">
 <p>
 I want to add TODO entries to the custom view. Any outstanding TODOs from the daily journals should either be closed out or migrated somewhere more permanent.
 </p>
 </div>
-<div id="outline-container-org5edecdd" class="outline-4">
-<h4 id="org5edecdd">UPDATE <span class="timestamp-wrapper"><span class="timestamp">&lt;2024-05-06 Mon&gt;</span></span></h4>
-<div class="outline-text-4" id="text-org5edecdd">
+<div id="outline-container-org6a366c7" class="outline-4">
+<h4 id="org6a366c7">UPDATE <span class="timestamp-wrapper"><span class="timestamp">&lt;2024-05-06 Mon&gt;</span></span></h4>
+<div class="outline-text-4" id="text-org6a366c7">
 <p>
 This required only very minor changes:
 </p>
@@ -172,25 +174,25 @@ This required only very minor changes:
 </div>
 </div>
 
-<div id="outline-container-org336e636" class="outline-3">
-<h3 id="org336e636"><span class="todo TODO">TODO</span> Limit the number of files searched</h3>
-<div class="outline-text-3" id="text-org336e636">
+<div id="outline-container-orgfbc24bb" class="outline-3">
+<h3 id="orgfbc24bb"><span class="todo TODO">TODO</span> Limit the number of files searched</h3>
+<div class="outline-text-3" id="text-orgfbc24bb">
 <p>
 I am not yet entirely sure how to do this one. Org agenda is notorious for slowing down when dealing with a lot of files. The number of daily journal entries will increase in an obvious way. There are some ways to <a href="https://orgmode.org/manual/Filtering_002flimiting-agenda-items.html">filter and limit</a> the results but I'm not sure if they will prevent the agenda from reading more files than it needs to. Something to investigate.
 </p>
 </div>
 </div>
-<div id="outline-container-org48f53fd" class="outline-3">
-<h3 id="org48f53fd"><span class="todo TODO">TODO</span> Add and organize tags</h3>
-<div class="outline-text-3" id="text-org48f53fd">
+<div id="outline-container-org4b95788" class="outline-3">
+<h3 id="org4b95788"><span class="todo TODO">TODO</span> Add and organize tags</h3>
+<div class="outline-text-3" id="text-org4b95788">
 <p>
 I don't just want a catch-all tag. I'd like to have specific tags for e.g. reading lists, project ideas, recommendations, work notes to follow up on, etc.
 </p>
 </div>
 </div>
-<div id="outline-container-org0b59f3d" class="outline-3">
-<h3 id="org0b59f3d"><span class="todo TODO">TODO</span> Other</h3>
-<div class="outline-text-3" id="text-org0b59f3d">
+<div id="outline-container-org8fe051d" class="outline-3">
+<h3 id="org8fe051d"><span class="todo TODO">TODO</span> Other</h3>
+<div class="outline-text-3" id="text-org8fe051d">
 <p>
 column view settings, nice date display for each entry, etc.
 </p>

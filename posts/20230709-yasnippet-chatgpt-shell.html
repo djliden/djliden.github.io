@@ -4,6 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>YASnippet for Prompt Templates for Chatgpt-Shell</title>
+<meta name="description" content="How to use YASnippet to build reusable prompt templates with placeholders for the chatgpt-shell package in Emacs." />
+<meta name="keywords" content="Emacs, YASnippet, chatgpt-shell, ChatGPT, prompt templates" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="/org-base.css"/>
 <link rel="stylesheet" type="text/css" href="/orgstyle.css"/>
@@ -19,15 +21,15 @@
 <meta name="author" content="Daniel Liden">
 <meta property="og:url" content="https://danliden.com/posts/20230709-yasnippet-chatgpt-shell.html">
 <meta property="og:title" content="YASnippet for Prompt Templates for Chatgpt-Shell">
-<meta property="og:description" content="The wonderful [[https://github.com/xenodium/chatgpt-shell][chatgpt-shell]] package by [[https://github.com/xenodium][Xenodium]] lets you interact with the gpt-3.5 and gpt-4 APIs in emacs via a hand...">
+<meta property="og:description" content="How to use YASnippet to build reusable prompt templates with placeholders for the chatgpt-shell package in Emacs.">
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2023-07-09T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T20:54:49Z">
+<meta property="article:modified_time" content="2026-07-17T21:03:47Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="YASnippet for Prompt Templates for Chatgpt-Shell">
-<meta name="twitter:description" content="The wonderful [[https://github.com/xenodium/chatgpt-shell][chatgpt-shell]] package by [[https://github.com/xenodium][Xenodium]] lets you interact with the gpt-3.5 and gpt-4 APIs in emacs via a hand...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"YASnippet for Prompt Templates for Chatgpt-Shell","description":"The wonderful [[https://github.com/xenodium/chatgpt-shell][chatgpt-shell]] package by [[https://github.com/xenodium][Xenodium]] lets you interact with the gpt-3.5 and gpt-4 APIs in emacs via a hand...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230709-yasnippet-chatgpt-shell.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2023-07-09T00:00:00Z","dateModified":"2026-07-17T20:54:49Z"}</script>
+<meta name="twitter:description" content="How to use YASnippet to build reusable prompt templates with placeholders for the chatgpt-shell package in Emacs.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"YASnippet for Prompt Templates for Chatgpt-Shell","description":"How to use YASnippet to build reusable prompt templates with placeholders for the chatgpt-shell package in Emacs.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230709-yasnippet-chatgpt-shell.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2023-07-09T00:00:00Z","dateModified":"2026-07-17T21:03:47Z","keywords":"Emacs, YASnippet, chatgpt-shell, ChatGPT, prompt templates"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -58,23 +60,23 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org1cd55b3">Introduction</a></li>
-<li><a href="#org93f9e79">Setting up ChatGPT Shell</a></li>
-<li><a href="#org4f3b66f">YASnippet</a>
+<li><a href="#org0eb7fe3">Introduction</a></li>
+<li><a href="#orgd29c421">Setting up ChatGPT Shell</a></li>
+<li><a href="#orga34c5bd">YASnippet</a>
 <ul>
-<li><a href="#org2b1e8f8">Defining a Snippet</a></li>
-<li><a href="#orgd05ba71">Using a Snippet</a></li>
-<li><a href="#org761b0b9">Inserting the Last Item in the Kill Ring</a></li>
+<li><a href="#org0d132b3">Defining a Snippet</a></li>
+<li><a href="#orgdd9cb8b">Using a Snippet</a></li>
+<li><a href="#org814d753">Inserting the Last Item in the Kill Ring</a></li>
 </ul>
 </li>
-<li><a href="#orgbed1f1f">Next Steps</a></li>
+<li><a href="#orgee2404a">Next Steps</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org1cd55b3" class="outline-2">
-<h2 id="org1cd55b3">Introduction</h2>
-<div class="outline-text-2" id="text-org1cd55b3">
-<div class="preview" id="orgd0a3ce7">
+<div id="outline-container-org0eb7fe3" class="outline-2">
+<h2 id="org0eb7fe3">Introduction</h2>
+<div class="outline-text-2" id="text-org0eb7fe3">
+<div class="preview" id="org2f225e4">
 <p>
 The wonderful <a href="https://github.com/xenodium/chatgpt-shell">chatgpt-shell</a> package by <a href="https://github.com/xenodium">Xenodium</a> lets you interact with the gpt-3.5 and gpt-4
 APIs in emacs via a handy shell built on top of <code>comint-mode</code>. It also integrates
@@ -93,9 +95,9 @@ describes how to start using Yasnippet for prompt templates for use with
 </div>
 </div>
 </div>
-<div id="outline-container-org93f9e79" class="outline-2">
-<h2 id="org93f9e79">Setting up ChatGPT Shell</h2>
-<div class="outline-text-2" id="text-org93f9e79">
+<div id="outline-container-orgd29c421" class="outline-2">
+<h2 id="orgd29c421">Setting up ChatGPT Shell</h2>
+<div class="outline-text-2" id="text-orgd29c421">
 <p>
 First of all, if you haven't already tried <code>chatgpt-shell</code>, it's worth taking a
 few minutes to set up and try out. If you live in emacs, you'll probably prefer
@@ -136,9 +138,9 @@ service (local or cloud)." <code>ob-chatgpt-shell</code> provides a way to inter
 </p>
 </div>
 </div>
-<div id="outline-container-org4f3b66f" class="outline-2">
-<h2 id="org4f3b66f">YASnippet</h2>
-<div class="outline-text-2" id="text-org4f3b66f">
+<div id="outline-container-orga34c5bd" class="outline-2">
+<h2 id="orga34c5bd">YASnippet</h2>
+<div class="outline-text-2" id="text-orga34c5bd">
 <p>
 <a href="https://github.com/joaotavora/yasnippet">YASnippet</a> is a template system for emacs. It is very powerful, and I'm only
 familiar with a small fraction of its capabilities. But when I work with
@@ -205,9 +207,9 @@ YASnippet provides an easy way for us to define and populate templates for use
 in <code>chatgpt-shell</code> buffers.
 </p>
 </div>
-<div id="outline-container-org2b1e8f8" class="outline-3">
-<h3 id="org2b1e8f8">Defining a Snippet</h3>
-<div class="outline-text-3" id="text-org2b1e8f8">
+<div id="outline-container-org0d132b3" class="outline-3">
+<h3 id="org0d132b3">Defining a Snippet</h3>
+<div class="outline-text-3" id="text-org0d132b3">
 <p>
 First, you'll need to <a href="https://github.com/joaotavora/yasnippet/blob/master/README.mdown#installation">install YASnippet</a>.
 </p>
@@ -219,7 +221,7 @@ buffer for defining out snippet.
 
 <div class="org-center">
 
-<figure id="org08c9e95">
+<figure id="org52b082e">
 <img src="./figures/20230709-yasnippet-chatgpt-shell/yas-new-snippet.png" alt="yas-new-snippet.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>YASnippet new snippet interface</figcaption>
@@ -303,9 +305,9 @@ go through the saving dialogue with <code>C-c C-c</code>.
 </div>
 </div>
 
-<div id="outline-container-orgd05ba71" class="outline-3">
-<h3 id="orgd05ba71">Using a Snippet</h3>
-<div class="outline-text-3" id="text-orgd05ba71">
+<div id="outline-container-orgdd9cb8b" class="outline-3">
+<h3 id="orgdd9cb8b">Using a Snippet</h3>
+<div class="outline-text-3" id="text-orgdd9cb8b">
 <p>
 Note that, in the example snippets above, I've defined a <code>key</code>: this is for
 <a href="https://joaotavora.github.io/yasnippet/snippet-expansion.html">snippet expansion</a> (follow the link for more details). With my configuration, in
@@ -323,7 +325,7 @@ position at the end of the prompt.
 
 <div class="org-center">
 
-<figure id="org2e65854">
+<figure id="org70d577f">
 <img src="./figures/20230709-yasnippet-chatgpt-shell/text_summarize_snippet.gif" alt="text_summarize_snippet.gif">
 
 <figcaption><span class="figure-number">Figure 2: </span>Inserting a Snippet</figcaption>
@@ -337,9 +339,9 @@ text. <code>S-TAB</code> enables you to move backward through the tab stops.
 </p>
 </div>
 </div>
-<div id="outline-container-org761b0b9" class="outline-3">
-<h3 id="org761b0b9">Inserting the Last Item in the Kill Ring</h3>
-<div class="outline-text-3" id="text-org761b0b9">
+<div id="outline-container-org814d753" class="outline-3">
+<h3 id="org814d753">Inserting the Last Item in the Kill Ring</h3>
+<div class="outline-text-3" id="text-org814d753">
 <p>
 We're unlike to ever need to summarize text that we manually type into a
 <code>chatgpt-shell</code>. But we might want to copy some text to the kill ring and ask for
@@ -383,7 +385,7 @@ part will automatically be replaced by the copied code.
 
 <div class="org-center">
 
-<figure id="org7a97e97">
+<figure id="orgb7c5ad0">
 <img src="./figures/20230709-yasnippet-chatgpt-shell/code_explain.gif" alt="code_explain.gif">
 
 <figcaption><span class="figure-number">Figure 3: </span>Inserting from the Kill Ring</figcaption>
@@ -392,9 +394,9 @@ part will automatically be replaced by the copied code.
 </div>
 </div>
 </div>
-<div id="outline-container-orgbed1f1f" class="outline-2">
-<h2 id="orgbed1f1f">Next Steps</h2>
-<div class="outline-text-2" id="text-orgbed1f1f">
+<div id="outline-container-orgee2404a" class="outline-2">
+<h2 id="orgee2404a">Next Steps</h2>
+<div class="outline-text-2" id="text-orgee2404a">
 <p>
 There's a lot more to explore here. YASnippet is a very powerful templating
 system, and I've only scratched the surface of the ways to use it for developing

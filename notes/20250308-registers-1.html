@@ -23,11 +23,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2025-03-08T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T20:54:49Z">
+<meta property="article:modified_time" content="2026-07-17T21:03:47Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Navigating between points with registers">
 <meta name="twitter:description" content="Registers provide a very easy way to navigate between different points in Emacs. This note briefly describes how to use them.">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Navigating between points with registers","description":"Registers provide a very easy way to navigate between different points in Emacs. This note briefly describes how to use them.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20250308-registers-1.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2025-03-08T00:00:00Z","dateModified":"2026-07-17T20:54:49Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Navigating between points with registers","description":"Registers provide a very easy way to navigate between different points in Emacs. This note briefly describes how to use them.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20250308-registers-1.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2025-03-08T00:00:00Z","dateModified":"2026-07-17T21:03:47Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -57,18 +57,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd39611b">Introduction</a></li>
-<li><a href="#org6da3f12">Registering a Point</a></li>
-<li><a href="#org30fc273">Navigating to a registered point</a></li>
-<li><a href="#orgd6a838f">Returning to the point you jumped from</a></li>
-<li><a href="#org064bcce">Conclusion</a></li>
+<li><a href="#orgf11bea6">Introduction</a></li>
+<li><a href="#org8a74a19">Registering a Point</a></li>
+<li><a href="#org81a3303">Navigating to a registered point</a></li>
+<li><a href="#orge3632c4">Returning to the point you jumped from</a></li>
+<li><a href="#org9deab51">Conclusion</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgd39611b" class="outline-2">
-<h2 id="orgd39611b">Introduction</h2>
-<div class="outline-text-2" id="text-orgd39611b">
-<div class="preview" id="orgc9610c4">
+<div id="outline-container-orgf11bea6" class="outline-2">
+<h2 id="orgf11bea6">Introduction</h2>
+<div class="outline-text-2" id="text-orgf11bea6">
+<div class="preview" id="orgfd59e8b">
 <p>
 Registers provide a very easy way to navigate between different points in Emacs. This note briefly describes how to use them.
 </p>
@@ -80,31 +80,31 @@ Broadly speaking, <a href="https://www.gnu.org/software/emacs/manual/html_node/e
 </p>
 </div>
 </div>
-<div id="outline-container-org6da3f12" class="outline-2">
-<h2 id="org6da3f12">Registering a Point</h2>
-<div class="outline-text-2" id="text-org6da3f12">
+<div id="outline-container-org8a74a19" class="outline-2">
+<h2 id="org8a74a19">Registering a Point</h2>
+<div class="outline-text-2" id="text-org8a74a19">
 <p>
 You can store the current location of <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Point.html">point</a> (usually the location of the cursor, or the position just before the character on which the cursor is located) with the command <code>point-to-register</code>, assigned by default to <code>C-x r SPC</code>. This will prompt you for the register in which to store the point (a single character).
 </p>
 
 
-<figure id="org88261e3">
+<figure id="org9c72820">
 <img src="img/1_register_point.png" alt="1_register_point.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org30fc273" class="outline-2">
-<h2 id="org30fc273">Navigating to a registered point</h2>
-<div class="outline-text-2" id="text-org30fc273">
+<div id="outline-container-org81a3303" class="outline-2">
+<h2 id="org81a3303">Navigating to a registered point</h2>
+<div class="outline-text-2" id="text-org81a3303">
 <p>
 You can navigate to a point you have saved in the registry with <code>jump-to-register</code>, assigned by default to <code>C-x r j</code>. This will bring up a small preview buffer listing the candidate points to which you can jump. You can navigate through these with <code>C-n</code> and <code>C-p</code> or, if you know it, just type the character of the register you're trying to access. It may be helpful to use mnemonics in assigning register names. For example, I could register a point in the introduction of the org file used to generate this post under the name <code>I</code> and then return to it from anywhere in Emacs with <code>C-x r j I</code>.
 </p>
 </div>
 </div>
-<div id="outline-container-orgd6a838f" class="outline-2">
-<h2 id="orgd6a838f">Returning to the point you jumped from</h2>
-<div class="outline-text-2" id="text-orgd6a838f">
+<div id="outline-container-orge3632c4" class="outline-2">
+<h2 id="orge3632c4">Returning to the point you jumped from</h2>
+<div class="outline-text-2" id="text-orge3632c4">
 <p>
 You will likely find that you want to navigate back to the point from which you jumped. Perhaps, for example, in writing this section, I am reminded of something I need to add to the introduction. I jump to the introduction with <code>C-x r j I</code>. But then I want to resume where I left off.
 </p>
@@ -114,9 +114,9 @@ This is easily accomplished by invoking the <code>set-mark-command</code> comman
 </p>
 </div>
 </div>
-<div id="outline-container-org064bcce" class="outline-2">
-<h2 id="org064bcce">Conclusion</h2>
-<div class="outline-text-2" id="text-org064bcce">
+<div id="outline-container-org9deab51" class="outline-2">
+<h2 id="org9deab51">Conclusion</h2>
+<div class="outline-text-2" id="text-org9deab51">
 <p>
 I've been using Emacs for a long time. I haven't spent much time using registers. But I was working with a larger code repository the other day and found myself needing better ways to navigate between points. This works well!
 </p>
