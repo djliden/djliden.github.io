@@ -38,6 +38,7 @@
 
 (defconst my/org-site-author-sameas
   '("https://github.com/djliden"
+    "https://www.linkedin.com/in/danielliden/"
     "https://fosstodon.org/@dliden"
     "https://bsky.app/profile/danliden.com"
     "https://x.com/danjliden")
