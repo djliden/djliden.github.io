@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-03-31T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:16:59Z">
+<meta property="article:modified_time" content="2026-07-17T21:21:12Z">
 <meta property="og:image" content="https://danliden.com/default-og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PyTorch Review">
 <meta name="twitter:description" content="This is a quick run through the appendix on PyTorch from Sebastian Raschka&#39;s [[https://www.manning.com/books/build-a-large-language-model-from-scratch][Build a Large Language Model (From Scratch)]]...">
 <meta name="twitter:image" content="https://danliden.com/default-og-image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PyTorch Review","description":"This is a quick run through the appendix on PyTorch from Sebastian Raschka's [[https://www.manning.com/books/build-a-large-language-model-from-scratch][Build a Large Language Model (From Scratch)]]...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240330-raschka-torch-notes.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-03-31T00:00:00Z","dateModified":"2026-07-17T21:16:59Z","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PyTorch Review","description":"This is a quick run through the appendix on PyTorch from Sebastian Raschka's [[https://www.manning.com/books/build-a-large-language-model-from-scratch][Build a Large Language Model (From Scratch)]]...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240330-raschka-torch-notes.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-03-31T00:00:00Z","dateModified":"2026-07-17T21:21:12Z","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 <script>
   window.MathJax = {
     tex: {
@@ -91,40 +91,40 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0324703">A.1 PyTorch</a></li>
-<li><a href="#org6642cc5">A.2 Understanding tensors</a>
+<li><a href="#org7da5b9e">A.1 PyTorch</a></li>
+<li><a href="#orgdc166de">A.2 Understanding tensors</a>
 <ul>
-<li><a href="#org6dc8fa8">Creating tensors</a></li>
-<li><a href="#org6ce19e2">Tensor data types</a></li>
-<li><a href="#org4557f7b">Common tensor operations</a></li>
+<li><a href="#orgce874e6">Creating tensors</a></li>
+<li><a href="#org0559ab6">Tensor data types</a></li>
+<li><a href="#org4f306ce">Common tensor operations</a></li>
 </ul>
 </li>
-<li><a href="#org51298cd">A.3 Models as Computational Graphs</a></li>
-<li><a href="#orgab19b62">A.4 Automatic Differentiation</a></li>
-<li><a href="#org655d723">A.5 Implementing multilayer neural networks</a></li>
-<li><a href="#orgc62aa67">A.6 Setting up efficient data loaders</a></li>
-<li><a href="#org228bf63">A.7 A typical training loop</a></li>
-<li><a href="#orgacfcfa0">A.8 Saving and Loading Models</a></li>
-<li><a href="#orgef1a442">A.9 Optimizing training performance with GPUs</a>
+<li><a href="#orgb5ec611">A.3 Models as Computational Graphs</a></li>
+<li><a href="#org9775d06">A.4 Automatic Differentiation</a></li>
+<li><a href="#org697c981">A.5 Implementing multilayer neural networks</a></li>
+<li><a href="#org0640f3b">A.6 Setting up efficient data loaders</a></li>
+<li><a href="#org2136e61">A.7 A typical training loop</a></li>
+<li><a href="#orgcfaeb1e">A.8 Saving and Loading Models</a></li>
+<li><a href="#org07689ae">A.9 Optimizing training performance with GPUs</a>
 <ul>
-<li><a href="#orgf502393">Computations on GPUs</a></li>
-<li><a href="#org22b3af2">Single-GPU Training</a></li>
-<li><a href="#org8a74073">Multi-GPU Training</a></li>
+<li><a href="#org6942a27">Computations on GPUs</a></li>
+<li><a href="#orgf5a92d0">Single-GPU Training</a></li>
+<li><a href="#org58707ce">Multi-GPU Training</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orge74385c">
+<div class="preview" id="orge35b204">
 <p>
 This is a quick run through the appendix on PyTorch from Sebastian Raschka's <a href="https://www.manning.com/books/build-a-large-language-model-from-scratch">Build a Large Language Model (From Scratch)</a> book, currently available via Manning's MEAP. I haven't spent an enormous amount of time with PyTorch in the last year or so, so it seemed worth the effort to work through it.
 </p>
 
 </div>
 
-<div id="outline-container-org0324703" class="outline-2">
-<h2 id="org0324703">A.1 PyTorch</h2>
-<div class="outline-text-2" id="text-org0324703">
+<div id="outline-container-org7da5b9e" class="outline-2">
+<h2 id="org7da5b9e">A.1 PyTorch</h2>
+<div class="outline-text-2" id="text-org7da5b9e">
 <p>
 There are three broad components to PyTorch:
 </p>
@@ -169,9 +169,9 @@ Great.
 </p>
 </div>
 </div>
-<div id="outline-container-org6642cc5" class="outline-2">
-<h2 id="org6642cc5">A.2 Understanding tensors</h2>
-<div class="outline-text-2" id="text-org6642cc5">
+<div id="outline-container-orgdc166de" class="outline-2">
+<h2 id="orgdc166de">A.2 Understanding tensors</h2>
+<div class="outline-text-2" id="text-orgdc166de">
 <p>
 Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors are similar to NumPy arrays but have have several additional features:
 </p>
@@ -183,9 +183,9 @@ Tensors generalize vectors and matrices to arbitrary dimensions. PyTorch tensors
 Still, it has a numpy-like API.
 </p>
 </div>
-<div id="outline-container-org6dc8fa8" class="outline-3">
-<h3 id="org6dc8fa8">Creating tensors</h3>
-<div class="outline-text-3" id="text-org6dc8fa8">
+<div id="outline-container-orgce874e6" class="outline-3">
+<h3 id="orgce874e6">Creating tensors</h3>
+<div class="outline-text-3" id="text-orgce874e6">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">0d tensor (scalar)
 </span><span class="org-builtin">print</span>(torch.tensor(1))
@@ -214,9 +214,9 @@ tensor([[[1, 2],
 </pre>
 </div>
 </div>
-<div id="outline-container-org6ce19e2" class="outline-3">
-<h3 id="org6ce19e2">Tensor data types</h3>
-<div class="outline-text-3" id="text-org6ce19e2">
+<div id="outline-container-org0559ab6" class="outline-3">
+<h3 id="org0559ab6">Tensor data types</h3>
+<div class="outline-text-3" id="text-org0559ab6">
 <p>
 These are important to pay attention to! So let's pay attention to them. The default (from above) is the 64-bit integer.
 </p>
@@ -270,9 +270,9 @@ torch.float32
 </pre>
 </div>
 </div>
-<div id="outline-container-org4557f7b" class="outline-3">
-<h3 id="org4557f7b">Common tensor operations</h3>
-<div class="outline-text-3" id="text-org4557f7b">
+<div id="outline-container-org4f306ce" class="outline-3">
+<h3 id="org4f306ce">Common tensor operations</h3>
+<div class="outline-text-3" id="text-org4f306ce">
 <ul class="org-ul">
 <li>brief survey of the most common tensor operations prior to getting into the computational graphs concept.</li>
 </ul>
@@ -359,9 +359,9 @@ tensor([[14, 32],
 </div>
 </div>
 </div>
-<div id="outline-container-org51298cd" class="outline-2">
-<h2 id="org51298cd">A.3 Models as Computational Graphs</h2>
-<div class="outline-text-2" id="text-org51298cd">
+<div id="outline-container-orgb5ec611" class="outline-2">
+<h2 id="orgb5ec611">A.3 Models as Computational Graphs</h2>
+<div class="outline-text-2" id="text-orgb5ec611">
 <p>
 The previous section covered PyTorch's tensor library. This section gets into its automatic differentiation engine (autograd). Autograd provides functions for automatically computing gradients in dynamic computational graphs.
 </p>
@@ -394,9 +394,9 @@ Input and weight -&gt; (u = w<sub>1</sub> * x<sub>1</sub>) -&gt; +b -&gt; (z = u
 </p>
 </div>
 </div>
-<div id="outline-container-orgab19b62" class="outline-2">
-<h2 id="orgab19b62">A.4 Automatic Differentiation</h2>
-<div class="outline-text-2" id="text-orgab19b62">
+<div id="outline-container-org9775d06" class="outline-2">
+<h2 id="org9775d06">A.4 Automatic Differentiation</h2>
+<div class="outline-text-2" id="text-org9775d06">
 <p>
 PyTorch will automatically build such a graph if one of its terminal nodes has the <code>requires_grad</code> attribute set to True. This enables us to train neural nets via backpropagation. Working backward from the above:
 </p>
@@ -471,9 +471,9 @@ tensor([-0.0817])
 </pre>
 </div>
 </div>
-<div id="outline-container-org655d723" class="outline-2">
-<h2 id="org655d723">A.5 Implementing multilayer neural networks</h2>
-<div class="outline-text-2" id="text-org655d723">
+<div id="outline-container-org697c981" class="outline-2">
+<h2 id="org697c981">A.5 Implementing multilayer neural networks</h2>
+<div class="outline-text-2" id="text-org697c981">
 <p>
 Now we get to the third major component of Pytorch: its library for implementing deep neural networks.
 </p>
@@ -651,9 +651,9 @@ tensor([[0.3645, 0.3403, 0.2952]])
 </div>
 </div>
 
-<div id="outline-container-orgc62aa67" class="outline-2">
-<h2 id="orgc62aa67">A.6 Setting up efficient data loaders</h2>
-<div class="outline-text-2" id="text-orgc62aa67">
+<div id="outline-container-org0640f3b" class="outline-2">
+<h2 id="org0640f3b">A.6 Setting up efficient data loaders</h2>
+<div class="outline-text-2" id="text-org0640f3b">
 <p>
 A <code>DataSet</code> is a class that defines how individual records are loaded. A <code>DataLoader</code> class handles dataset shuffling and assembling data records into batches.
 </p>
@@ -779,9 +779,9 @@ The <code>num_workers</code> argument relates to parallelizing data loading/proc
 </div>
 </div>
 
-<div id="outline-container-org228bf63" class="outline-2">
-<h2 id="org228bf63">A.7 A typical training loop</h2>
-<div class="outline-text-2" id="text-org228bf63">
+<div id="outline-container-org2136e61" class="outline-2">
+<h2 id="org2136e61">A.7 A typical training loop</h2>
+<div class="outline-text-2" id="text-org2136e61">
 <p>
 In this section, we combine many of the techniques from above to show a complete training loop.
 </p>
@@ -949,9 +949,9 @@ tensor(1.)
 </div>
 
 
-<div id="outline-container-orgacfcfa0" class="outline-2">
-<h2 id="orgacfcfa0">A.8 Saving and Loading Models</h2>
-<div class="outline-text-2" id="text-orgacfcfa0">
+<div id="outline-container-orgcfaeb1e" class="outline-2">
+<h2 id="orgcfaeb1e">A.8 Saving and Loading Models</h2>
+<div class="outline-text-2" id="text-orgcfaeb1e">
 <p>
 We can save a model as follows:
 </p>
@@ -980,14 +980,14 @@ It is necessary to have an instance of the model in memory in order to load the 
 </p>
 </div>
 </div>
-<div id="outline-container-orgef1a442" class="outline-2">
-<h2 id="orgef1a442">A.9 Optimizing training performance with GPUs</h2>
-<div class="outline-text-2" id="text-orgef1a442">
+<div id="outline-container-org07689ae" class="outline-2">
+<h2 id="org07689ae">A.9 Optimizing training performance with GPUs</h2>
+<div class="outline-text-2" id="text-org07689ae">
 </div>
 
-<div id="outline-container-orgf502393" class="outline-3">
-<h3 id="orgf502393">Computations on GPUs</h3>
-<div class="outline-text-3" id="text-orgf502393">
+<div id="outline-container-org6942a27" class="outline-3">
+<h3 id="org6942a27">Computations on GPUs</h3>
+<div class="outline-text-3" id="text-org6942a27">
 <ul class="org-ul">
 <li>Modifying training runs to use GPU in PyTorch is easy</li>
 <li>In PyTorch, a <code>device</code> is where computations occur and data resides. A pytorch tensor lives on a device and its operations are executed on that device.</li>
@@ -1062,9 +1062,9 @@ RuntimeError: Expected all tensors to be on the same device, but found at least 
 </pre>
 </div>
 </div>
-<div id="outline-container-org22b3af2" class="outline-3">
-<h3 id="org22b3af2">Single-GPU Training</h3>
-<div class="outline-text-3" id="text-org22b3af2">
+<div id="outline-container-orgf5a92d0" class="outline-3">
+<h3 id="orgf5a92d0">Single-GPU Training</h3>
+<div class="outline-text-3" id="text-orgf5a92d0">
 <p>
 All we need to do to train on a single GPU is:
 </p>
@@ -1084,9 +1084,9 @@ This is usually considered the best practice:
 </div>
 </div>
 </div>
-<div id="outline-container-org8a74073" class="outline-3">
-<h3 id="org8a74073">Multi-GPU Training</h3>
-<div class="outline-text-3" id="text-org8a74073">
+<div id="outline-container-org58707ce" class="outline-3">
+<h3 id="org58707ce">Multi-GPU Training</h3>
+<div class="outline-text-3" id="text-org58707ce">
 <p>
 This section introduces the idea of <i>distributed training</i>.
 </p>
@@ -1104,7 +1104,7 @@ The most basic approach uses PyTorch's <code>DistributedDataParallel</code> stra
 DDP offers enhanced training speed.
 </p>
 
-<div class="notice" id="org3b4f554">
+<div class="notice" id="org43f08b2">
 <p>
 DDP does not function properly in interactive environments like Jupyter notebooks. DDP code must be run as a script, not within a notebook interface.
 </p>

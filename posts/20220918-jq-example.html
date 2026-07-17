@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2022-09-18T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:16:59Z">
+<meta property="article:modified_time" content="2026-07-17T21:21:12Z">
 <meta property="og:image" content="https://danliden.com/default-og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Processing a JSON API Response with jq">
 <meta name="twitter:description" content="A walkthrough of using jq to download JSON from an API, extract fields based on conditions, and convert the results to CSV.">
 <meta name="twitter:image" content="https://danliden.com/default-og-image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Processing a JSON API Response with jq","description":"A walkthrough of using jq to download JSON from an API, extract fields based on conditions, and convert the results to CSV.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220918-jq-example.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2022-09-18T00:00:00Z","dateModified":"2026-07-17T21:16:59Z","keywords":"jq, JSON, command line, CSV, API, data processing","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Processing a JSON API Response with jq","description":"A walkthrough of using jq to download JSON from an API, extract fields based on conditions, and convert the results to CSV.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220918-jq-example.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2022-09-18T00:00:00Z","dateModified":"2026-07-17T21:21:12Z","keywords":"jq, JSON, command line, CSV, API, data processing","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -62,24 +62,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgcc927b4">Introduction</a></li>
-<li><a href="#org920767e">Download the Data</a></li>
-<li><a href="#org9203041">Processing the Data with <code>jq</code></a>
+<li><a href="#orgd77d0ab">Introduction</a></li>
+<li><a href="#orgb901421">Download the Data</a></li>
+<li><a href="#org747be8b">Processing the Data with <code>jq</code></a>
 <ul>
-<li><a href="#org6aec61f"><code>jq</code> with no further arguments</a></li>
-<li><a href="#orgae4104f">Constructing a Header Row</a></li>
-<li><a href="#orgef2b09c">Extracting Data Values</a></li>
-<li><a href="#orga0a1587">Converting the Results to CSV</a></li>
+<li><a href="#org8c2682f"><code>jq</code> with no further arguments</a></li>
+<li><a href="#org47f3b89">Constructing a Header Row</a></li>
+<li><a href="#org907c89d">Extracting Data Values</a></li>
+<li><a href="#org35d4e30">Converting the Results to CSV</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orgcc927b4" class="outline-2">
-<h2 id="orgcc927b4">Introduction</h2>
-<div class="outline-text-2" id="text-orgcc927b4">
-<div class="preview" id="orgffd3ae4">
+<div id="outline-container-orgd77d0ab" class="outline-2">
+<h2 id="orgd77d0ab">Introduction</h2>
+<div class="outline-text-2" id="text-orgd77d0ab">
+<div class="preview" id="orgb53ae06">
 <p>
 There are countless ways of processing JSON data and converting it to different
 formats. Historically, I've used Python and loaded the data into a Pandas
@@ -119,9 +119,9 @@ To follow along, begin by <a href="https://stedolan.github.io/jq/download/">inst
 </div>
 </div>
 
-<div id="outline-container-org920767e" class="outline-2">
-<h2 id="org920767e">Download the Data</h2>
-<div class="outline-text-2" id="text-org920767e">
+<div id="outline-container-orgb901421" class="outline-2">
+<h2 id="orgb901421">Download the Data</h2>
+<div class="outline-text-2" id="text-orgb901421">
 <p>
 As noted above, we use <code>curl</code> to make a <code>POST</code> request agains the BLS API. We're
 downloading Consumer Price Index data since the start of 2022. We're downloading
@@ -136,7 +136,7 @@ unadjusted data.
 </pre>
 </div>
 
-<pre class="example" id="org176c6e2">
+<pre class="example" id="org0525c9b">
 | status":"REQUEST_SUCCEEDED","responseTime":171,"message":[],"Results               |
 | series                                                                            |
 | seriesID":"CUUR0000SA0","data":[{"year":"2022","period":"M08","periodName":"August", "latest":"true","value":"296.171","footnotes":[{}]},{"year":"2022","period":"M07","periodName":"July","value":"296.276","footnotes":[{}]},{"year":"2022","period":"M06","periodName":"June","value":"296.311","footnotes":[{}]},{"year":"2022","period":"M05","periodName":"May","value":"292.296","footnotes":[{}]},{"year":"2022","period":"M04","periodName":"April","value":"289.109","footnotes":[{}]},{"year":"2022","period":"M03","periodName":"March","value":"287.504","footnotes":[{}]},{"year":"2022","period":"M02","periodName":"February","value":"283.716","footnotes":[{}]},{"year":"2022","period":"M01","periodName":"January","value":"281.148","footnotes |
@@ -149,9 +149,9 @@ This is technically readable, but not very nice.
 </p>
 </div>
 </div>
-<div id="outline-container-org9203041" class="outline-2">
-<h2 id="org9203041">Processing the Data with <code>jq</code></h2>
-<div class="outline-text-2" id="text-org9203041">
+<div id="outline-container-org747be8b" class="outline-2">
+<h2 id="org747be8b">Processing the Data with <code>jq</code></h2>
+<div class="outline-text-2" id="text-org747be8b">
 <p>
 For most use cases, the data aren't particularly usable in this format. They're
 hard to read; they include metadata about the API response; and the hierarchical
@@ -160,9 +160,9 @@ proceed step by step to show how we can use <code>jq</code> to extract specific 
 API results.
 </p>
 </div>
-<div id="outline-container-org6aec61f" class="outline-3">
-<h3 id="org6aec61f"><code>jq</code> with no further arguments</h3>
-<div class="outline-text-3" id="text-org6aec61f">
+<div id="outline-container-org8c2682f" class="outline-3">
+<h3 id="org8c2682f"><code>jq</code> with no further arguments</h3>
+<div class="outline-text-3" id="text-org8c2682f">
 <p>
 What happens if we pass the results of the API call to <code>jq</code> with no further arguments?
 </p>
@@ -173,7 +173,7 @@ What happens if we pass the results of the API call to <code>jq</code> with no f
 </pre>
 </div>
 
-<pre class="example" id="org8d8daca">
+<pre class="example" id="orge81546e">
 {
   "status": "REQUEST_SUCCEEDED",
   "responseTime": 169,
@@ -353,9 +353,9 @@ the <code>data</code> values as rows in our resulting table.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgae4104f" class="outline-3">
-<h3 id="orgae4104f">Constructing a Header Row</h3>
-<div class="outline-text-3" id="text-orgae4104f">
+<div id="outline-container-org47f3b89" class="outline-3">
+<h3 id="org47f3b89">Constructing a Header Row</h3>
+<div class="outline-text-3" id="text-org47f3b89">
 <p>
 We want our resulting table to have a header row. The process of making this row
 provides a lot of insight into how <code>jq</code> works.
@@ -433,9 +433,9 @@ section, we'll see how to extract data from multiple sections.
 </p>
 </div>
 </div>
-<div id="outline-container-orgef2b09c" class="outline-3">
-<h3 id="orgef2b09c">Extracting Data Values</h3>
-<div class="outline-text-3" id="text-orgef2b09c">
+<div id="outline-container-org907c89d" class="outline-3">
+<h3 id="org907c89d">Extracting Data Values</h3>
+<div class="outline-text-3" id="text-org907c89d">
 <p>
 Based on the header rows, we need to extract, for each data entry, the series
 ID, footnotes, period, period name, year, value, and whether it's the latest
@@ -448,7 +448,7 @@ headers, though, for two key reasons:
 level than the other values we need.</li>
 </ul>
 
-<pre class="example" id="org0de4b5b">
+<pre class="example" id="orge6236be">
 "series": [
     {
         "seriesID": "CUUR0000SA0",
@@ -480,7 +480,7 @@ Here's how we might start to approach this.
 </pre>
 </div>
 
-<pre class="example" id="orga9ff0e1">
+<pre class="example" id="org3ed9efa">
 [
   "CUUR0000SA0",
   "2022",
@@ -554,7 +554,7 @@ converted directly to the CSV format. So we have a little more work to do.
 </pre>
 </div>
 
-<pre class="example" id="orgfbf885c">
+<pre class="example" id="org5b3570d">
 [
   "CUUR0000SA0",
   "2022",
@@ -610,9 +610,9 @@ without issue.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orga0a1587" class="outline-3">
-<h3 id="orga0a1587">Converting the Results to CSV</h3>
-<div class="outline-text-3" id="text-orga0a1587">
+<div id="outline-container-org35d4e30" class="outline-3">
+<h3 id="org35d4e30">Converting the Results to CSV</h3>
+<div class="outline-text-3" id="text-org35d4e30">
 <p>
 Lastly, we convert the transformed results to a CSV using the <code>@csv</code> formatter.
 </p>
@@ -627,7 +627,7 @@ Lastly, we convert the transformed results to a CSV using the <code>@csv</code> 
 </pre>
 </div>
 
-<pre class="example" id="orgba3e3ca">
+<pre class="example" id="org7d1071a">
 "seriesID","year","period","periodName","latest","value","footnotes"
 "CUUR0000SA0","2022","M08","August","true","296.171",""
 "CUUR0000SA0","2022","M07","July","296.276",""

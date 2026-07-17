@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2025-11-22T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:16:59Z">
+<meta property="article:modified_time" content="2026-07-17T21:21:12Z">
 <meta property="og:image" content="https://danliden.com/posts/figures/20251122-emacs-window-configs/social_preview.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Saving and Restoring Window Configurations in Emacs">
 <meta name="twitter:description" content="This post talks about registers and desktop-save-mode for restoring window configs in emacs.">
 <meta name="twitter:image" content="https://danliden.com/posts/figures/20251122-emacs-window-configs/social_preview.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Saving and Restoring Window Configurations in Emacs","description":"This post talks about registers and desktop-save-mode for restoring window configs in emacs.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20251122-emacs-window-configs.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2025-11-22T00:00:00Z","dateModified":"2026-07-17T21:16:59Z","keywords":"emacs, org mode, gnu","image":{"@type":"ImageObject","url":"https://danliden.com/posts/figures/20251122-emacs-window-configs/social_preview.png"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Saving and Restoring Window Configurations in Emacs","description":"This post talks about registers and desktop-save-mode for restoring window configs in emacs.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20251122-emacs-window-configs.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2025-11-22T00:00:00Z","dateModified":"2026-07-17T21:21:12Z","keywords":"emacs, org mode, gnu","image":{"@type":"ImageObject","url":"https://danliden.com/posts/figures/20251122-emacs-window-configs/social_preview.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -62,21 +62,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4f56ac2">The Problem</a></li>
-<li><a href="#orgb53e876">Window Registers</a></li>
-<li><a href="#org92d8166">Persisting across Sessions</a></li>
-<li><a href="#orge79267c">Try out window registers</a></li>
+<li><a href="#org9489e25">The Problem</a></li>
+<li><a href="#orgffdc4af">Window Registers</a></li>
+<li><a href="#orgc9a9053">Persisting across Sessions</a></li>
+<li><a href="#org81336f8">Try out window registers</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org140c61b">
+<div class="preview" id="org82402e2">
 <p>
 When working in emacs, I often switch between different combinations of windows with different splits. For example, I might have one configuration with an org mode buffer with some notes alongside org-agenda, and another with a Python source file and a Python REPL. Before, I was switching between them by changing buffers and splits each time, which was cumbersome. Registers make it much simpler, and <code>desktop-save-mode</code> lets you persist window configurations across sessions.
 </p>
 
 </div>
 
-<div class="note" id="org243f946">
+<div class="note" id="orgeb8fcaa">
 <p>
 The definition of a "window" in emacs is not the same as a window in a graphical desktop environment. A <i>window</i> in emacs is a part of a <i>frame</i> that can display a <i>buffer</i>. One <i>frame</i> (closer to the desktop environment usage of "window") can display multiple <i>windows</i> at once, by splitting the frame into sections.
 </p>
@@ -87,9 +87,9 @@ For more, read <a href="https://www.gnu.org/software/emacs/manual/html_node/elis
 
 </div>
 
-<div id="outline-container-org4f56ac2" class="outline-2">
-<h2 id="org4f56ac2">The Problem</h2>
-<div class="outline-text-2" id="text-org4f56ac2">
+<div id="outline-container-org9489e25" class="outline-2">
+<h2 id="org9489e25">The Problem</h2>
+<div class="outline-text-2" id="text-org9489e25">
 <p>
 Suppose I have the following window configurations open. When I say "window configuration," I mean "a set of visible windows in a particular arrangement."
 </p>
@@ -100,8 +100,8 @@ My <code>init.el</code> file along with a docs page on <code>desktop-save-mode</
 </p>
 
 
-<figure id="org63fb608">
-<img src="./figures/20251122-emacs-window-configs/1_init_desktop_config.png" alt="1_init_desktop_config.png">
+<figure id="org67a3f0d">
+<img src="./figures/20251122-emacs-window-configs/1_init_desktop_config.png" alt="Emacs frame split in two: init.el config on the left, desktop-save-mode help docs on the right">
 
 <figcaption><span class="figure-number">Figure 1: </span>My init.el next to the desktop-save-mode docs</figcaption>
 </figure></li>
@@ -111,8 +111,8 @@ The org file for the blog I am working on now, a scratch buffer, and my blog's b
 </p>
 
 
-<figure id="org459820d">
-<img src="./figures/20251122-emacs-window-configs/2_blog_scratch_build_config.png" alt="2_blog_scratch_build_config.png">
+<figure id="orgd7bb76d">
+<img src="./figures/20251122-emacs-window-configs/2_blog_scratch_build_config.png" alt="Emacs frame: blog post Org draft on the left; build-site.el over an empty scratch buffer on the right">
 
 <figcaption><span class="figure-number">Figure 2: </span>Blog post on the left, scratch buffer and build script on the right</figcaption>
 </figure></li>
@@ -127,9 +127,9 @@ This is a pain.
 </p>
 </div>
 </div>
-<div id="outline-container-orgb53e876" class="outline-2">
-<h2 id="orgb53e876">Window Registers</h2>
-<div class="outline-text-2" id="text-orgb53e876">
+<div id="outline-container-orgffdc4af" class="outline-2">
+<h2 id="orgffdc4af">Window Registers</h2>
+<div class="outline-text-2" id="text-orgffdc4af">
 <p>
 I previously wrote about <a href="https://www.danliden.com/notes/20250308-registers-1.html">navigating between points with registers</a>. You can register a point with <code>&lt;C-x r SPC&gt;</code> and then return to it with <code>&lt;C-x r j&gt;</code>.
 </p>
@@ -145,8 +145,8 @@ Select a register. Any single character (including non-alphanumeric characters s
 </p>
 
 
-<figure id="org18957cb">
-<img src="./figures/20251122-emacs-window-configs/3_save_window_config.png" alt="3_save_window_config.png">
+<figure id="orgb67c47c">
+<img src="./figures/20251122-emacs-window-configs/3_save_window_config.png" alt="Emacs Register Preview list with minibuffer prompt 'Window configuration to register: a'">
 
 <figcaption><span class="figure-number">Figure 3: </span>Saving the current setup to a register</figcaption>
 </figure></li>
@@ -156,8 +156,8 @@ Navigate away from your saved window configuration. When you want to get back to
 </p>
 
 
-<figure id="org6d3275e">
-<img src="./figures/20251122-emacs-window-configs/4_restore_window_config.png" alt="4_restore_window_config.png">
+<figure id="org4516deb">
+<img src="./figures/20251122-emacs-window-configs/4_restore_window_config.png" alt="Emacs Register Preview listing saved window configurations with minibuffer prompt 'Jump to register: a'">
 
 <figcaption><span class="figure-number">Figure 4: </span>Jumping back to a saved configuration from the Register Preview menu</figcaption>
 </figure>
@@ -172,16 +172,16 @@ Once we register a couple of different window configurations, it becomes very ea
 </p>
 
 
-<figure id="orgd7b854f">
-<img src="./figures/20251122-emacs-window-configs/5_switching_configs.gif" alt="5_switching_configs.gif"> 
+<figure id="orgaf2ab6e">
+<img src="./figures/20251122-emacs-window-configs/5_switching_configs.gif" alt="Animated demo of swapping between saved Emacs window configurations via registers"> 
 
 <figcaption><span class="figure-number">Figure 5: </span>Swapping between saved configurations</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org92d8166" class="outline-2">
-<h2 id="org92d8166">Persisting across Sessions</h2>
-<div class="outline-text-2" id="text-org92d8166">
+<div id="outline-container-orgc9a9053" class="outline-2">
+<h2 id="orgc9a9053">Persisting across Sessions</h2>
+<div class="outline-text-2" id="text-orgc9a9053">
 <p>
 Registers do not persist across emacs sessions—when you restart emacs, your registers are gone.
 </p>
@@ -195,8 +195,8 @@ In my limited testing, this approach is imperfect. Some buffers are not restored
 </p>
 
 
-<figure id="orgf478497">
-<img src="./figures/20251122-emacs-window-configs/6_corrupted_registers.png" alt="6_corrupted_registers.png">
+<figure id="org4b89dad">
+<img src="./figures/20251122-emacs-window-configs/6_corrupted_registers.png" alt="Emacs Register Preview showing window-config registers restored as 'rectangle starting with Unprintable entity'">
 
 <figcaption><span class="figure-number">Figure 6: </span>The saved window registers look a bit mangled</figcaption>
 </figure>
@@ -210,9 +210,9 @@ For me, this is not much of a problem. I don't often exit emacs.
 </p>
 </div>
 </div>
-<div id="outline-container-orge79267c" class="outline-2">
-<h2 id="orge79267c">Try out window registers</h2>
-<div class="outline-text-2" id="text-orge79267c">
+<div id="outline-container-org81336f8" class="outline-2">
+<h2 id="org81336f8">Try out window registers</h2>
+<div class="outline-text-2" id="text-org81336f8">
 <p>
 It's simple:
 </p>

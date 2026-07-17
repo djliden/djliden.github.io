@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2023-03-10T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:16:59Z">
+<meta property="article:modified_time" content="2026-07-17T21:21:12Z">
 <meta property="og:image" content="https://danliden.com/default-og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Using the ChatGPT API with Julia Part 2: Defining a Chat Struct">
 <meta name="twitter:description" content="Using a Julia struct and a function to maintain conversation history when working interactively with the ChatGPT API.">
 <meta name="twitter:image" content="https://danliden.com/default-og-image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the ChatGPT API with Julia Part 2: Defining a Chat Struct","description":"Using a Julia struct and a function to maintain conversation history when working interactively with the ChatGPT API.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230310-chatgpt-julia-2.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2023-03-10T00:00:00Z","dateModified":"2026-07-17T21:16:59Z","keywords":"Julia, ChatGPT, OpenAI API, structs","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using the ChatGPT API with Julia Part 2: Defining a Chat Struct","description":"Using a Julia struct and a function to maintain conversation history when working interactively with the ChatGPT API.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20230310-chatgpt-julia-2.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://www.linkedin.com/in/danielliden/","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2023-03-10T00:00:00Z","dateModified":"2026-07-17T21:21:12Z","keywords":"Julia, ChatGPT, OpenAI API, structs","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -62,14 +62,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf28a911">Defining the Struct</a></li>
-<li><a href="#org3f6acbe">Defining the function</a></li>
-<li><a href="#org2f8188f">Giving it a Try</a></li>
-<li><a href="#orga09fb8a">What's next?</a></li>
+<li><a href="#org99696e5">Defining the Struct</a></li>
+<li><a href="#orga804fa1">Defining the function</a></li>
+<li><a href="#orgaae08bb">Giving it a Try</a></li>
+<li><a href="#org8459b16">What's next?</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org2bdf23a">
+<div class="preview" id="org7e1d0f0">
 <p>
 One of the things that makes working with the ChatGPT API a little different
 from working with, e.g., the <code>davinci-text-003</code> model api is the need to maintain
@@ -84,9 +84,9 @@ For the basics of working with the ChatGPT API, check out <a href="20230303-chat
 
 </div>
 
-<div id="outline-container-orgf28a911" class="outline-2">
-<h2 id="orgf28a911">Defining the Struct</h2>
-<div class="outline-text-2" id="text-orgf28a911">
+<div id="outline-container-org99696e5" class="outline-2">
+<h2 id="org99696e5">Defining the Struct</h2>
+<div class="outline-text-2" id="text-org99696e5">
 <p>
 A <code>struct</code>, also referred to as a <a href="https://docs.julialang.org/en/v1/manual/types/#Composite-Types">composite type</a>, is "a collection of named
 fields, an instance of which can be treated as a single value." By default,
@@ -179,9 +179,9 @@ able to act on it. For that, we'll define a function.
 </div>
 </div>
 
-<div id="outline-container-org3f6acbe" class="outline-2">
-<h2 id="org3f6acbe">Defining the function</h2>
-<div class="outline-text-2" id="text-org3f6acbe">
+<div id="outline-container-orga804fa1" class="outline-2">
+<h2 id="orga804fa1">Defining the function</h2>
+<div class="outline-text-2" id="text-orga804fa1">
 <p>
 The purpose of this function is to:
 </p>
@@ -272,9 +272,9 @@ list. The <code>chat</code> function follows both of these conventions.
 </p>
 </div>
 </div>
-<div id="outline-container-org2f8188f" class="outline-2">
-<h2 id="org2f8188f">Giving it a Try</h2>
-<div class="outline-text-2" id="text-org2f8188f">
+<div id="outline-container-orgaae08bb" class="outline-2">
+<h2 id="orgaae08bb">Giving it a Try</h2>
+<div class="outline-text-2" id="text-orgaae08bb">
 <p>
 So, does it work? Let's try it out.
 </p>
@@ -310,9 +310,9 @@ the message history in the second API request.
 </p>
 </div>
 </div>
-<div id="outline-container-orga09fb8a" class="outline-2">
-<h2 id="orga09fb8a">What's next?</h2>
-<div class="outline-text-2" id="text-orga09fb8a">
+<div id="outline-container-org8459b16" class="outline-2">
+<h2 id="org8459b16">What's next?</h2>
+<div class="outline-text-2" id="text-org8459b16">
 <p>
 There are a few additional avenues I want to explore, in no particular order:
 </p>
