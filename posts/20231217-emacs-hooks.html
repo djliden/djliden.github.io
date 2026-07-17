@@ -25,11 +25,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2023-12-17T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:03:47Z">
-<meta name="twitter:card" content="summary">
+<meta property="article:modified_time" content="2026-07-17T21:05:32Z">
+<meta property="og:image" content="https://danliden.com/default-og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Introduction to Emacs Hooks">
 <meta name="twitter:description" content="An introduction to Emacs hooks: what they do, how they work, and how to use mode hooks and use-package to run code at the right time.">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Introduction to Emacs Hooks","description":"An introduction to Emacs hooks: what they do, how they work, and how to use mode hooks and use-package to run code at the right time.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20231217-emacs-hooks.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2023-12-17T00:00:00Z","dateModified":"2026-07-17T21:03:47Z","keywords":"Emacs, hooks, Emacs Lisp, use-package, configuration"}</script>
+<meta name="twitter:image" content="https://danliden.com/default-og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Introduction to Emacs Hooks","description":"An introduction to Emacs hooks: what they do, how they work, and how to use mode hooks and use-package to run code at the right time.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20231217-emacs-hooks.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2023-12-17T00:00:00Z","dateModified":"2026-07-17T21:05:32Z","keywords":"Emacs, hooks, Emacs Lisp, use-package, configuration","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -60,23 +62,23 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge05874f">Emacs Hooks</a></li>
-<li><a href="#orgfc43d9b">What do hooks do?</a></li>
-<li><a href="#org1106758">How do hooks work?</a>
+<li><a href="#orge48dbf4">Emacs Hooks</a></li>
+<li><a href="#orgc6deea0">What do hooks do?</a></li>
+<li><a href="#org5cf77ac">How do hooks work?</a>
 <ul>
-<li><a href="#org74ba6b8">Hooks Example</a></li>
+<li><a href="#org39f6533">Hooks Example</a></li>
 </ul>
 </li>
-<li><a href="#orge0ae7f1">Mode Hooks</a></li>
-<li><a href="#org64ce88b">Appendix: Hooks in use-package</a></li>
-<li><a href="#org2a0d225">Further Reading</a></li>
+<li><a href="#org6ca911c">Mode Hooks</a></li>
+<li><a href="#org8f1e1d1">Appendix: Hooks in use-package</a></li>
+<li><a href="#orgd9e1b40">Further Reading</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orge05874f" class="outline-2">
-<h2 id="orge05874f">Emacs Hooks</h2>
-<div class="outline-text-2" id="text-orge05874f">
-<div class="preview" id="org6f59de0">
+<div id="outline-container-orge48dbf4" class="outline-2">
+<h2 id="orge48dbf4">Emacs Hooks</h2>
+<div class="outline-text-2" id="text-orge48dbf4">
+<div class="preview" id="orgd0c7216">
 <p>
 Today I was customizing the appearance of org files displayed with <a href="https://github.com/takaxp/org-tree-slide">org-tree-slide</a>. In particular, I wanted to increase the font size and start <a href="https://github.com/rnkn/olivetti">Olivetti mode</a> whenever I started <code>org-tree-slide-mode</code> and return everything to normal when I was done. This, I quickly discovered, required the use of <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">hooks</a>. Hooks are not especially complicated, but they are useful and worth taking a few minutes to understand. This post will cover the basics of working with hooks in emacs.
 </p>
@@ -84,9 +86,9 @@ Today I was customizing the appearance of org files displayed with <a href="http
 </div>
 </div>
 </div>
-<div id="outline-container-orgfc43d9b" class="outline-2">
-<h2 id="orgfc43d9b">What do hooks do?</h2>
-<div class="outline-text-2" id="text-orgfc43d9b">
+<div id="outline-container-orgc6deea0" class="outline-2">
+<h2 id="orgc6deea0">What do hooks do?</h2>
+<div class="outline-text-2" id="text-orgc6deea0">
 <p>
 A <i>hook</i> is a list of functions that are run on specifically-defined occasions, triggered by calls to a <code>run-hooks</code> or <code>run-mode-hooks</code> function.
 </p>
@@ -102,7 +104,7 @@ For a specific example, <code>org-tree-slide-mode</code> defines the hooks <code
 
 <div class="org-center">
 
-<figure id="org30b1f71">
+<figure id="org21be1b2">
 <img src="./figures/20231217-emacs-hooks/hooks_screen_capture.gif" alt="hooks_screen_capture.gif">
 
 <figcaption><span class="figure-number">Figure 1: </span>Invoking <code>org-tree-slide-mode</code> runs <code>org-tree-slide-play-hook</code>, a list of functions meant to run when a slide show is started in <code>org-tree-slide-mode</code>. In this case, the hook makes the text larger and centered in the buffer.</figcaption>
@@ -110,9 +112,9 @@ For a specific example, <code>org-tree-slide-mode</code> defines the hooks <code
 </div>
 </div>
 </div>
-<div id="outline-container-org1106758" class="outline-2">
-<h2 id="org1106758">How do hooks work?</h2>
-<div class="outline-text-2" id="text-org1106758">
+<div id="outline-container-org5cf77ac" class="outline-2">
+<h2 id="org5cf77ac">How do hooks work?</h2>
+<div class="outline-text-2" id="text-org5cf77ac">
 <p>
 First, a quick glossary of terms:
 </p>
@@ -126,9 +128,9 @@ First, a quick glossary of terms:
 Hooks are run when specific functions call them. Such functions are often called at specific points in the initialization or use of emacs modes, but they are not limited to those circumstances. Here is a minimal example.
 </p>
 </div>
-<div id="outline-container-org74ba6b8" class="outline-3">
-<h3 id="org74ba6b8">Hooks Example</h3>
-<div class="outline-text-3" id="text-org74ba6b8">
+<div id="outline-container-org39f6533" class="outline-3">
+<h3 id="org39f6533">Hooks Example</h3>
+<div class="outline-text-3" id="text-org39f6533">
 <p>
 First, we'll define the hook variable. This is the same as defining any other variable.
 </p>
@@ -199,7 +201,7 @@ There's nothing especially unique about any of these components. We assign the v
 
 <div class="org-center">
 
-<figure id="org9b45816">
+<figure id="org81e8a60">
 <img src="./figures/20231217-emacs-hooks/hooks-diagram-2.png" alt="hooks-diagram-2.png">
 
 <figcaption><span class="figure-number">Figure 2: </span>Diagram of the basic process of working with normal hooks</figcaption>
@@ -209,9 +211,9 @@ There's nothing especially unique about any of these components. We assign the v
 </div>
 </div>
 
-<div id="outline-container-orge0ae7f1" class="outline-2">
-<h2 id="orge0ae7f1">Mode Hooks</h2>
-<div class="outline-text-2" id="text-orge0ae7f1">
+<div id="outline-container-org6ca911c" class="outline-2">
+<h2 id="org6ca911c">Mode Hooks</h2>
+<div class="outline-text-2" id="text-org6ca911c">
 <p>
 Hooks are most commonly encountered in the context of modes. Modes generally define hooks to which users can add functions that will be called at the end of the mode's initialization. For example, I wanted to display line numbers whenever I was in a buffer with code, so I have the following line in my config:
 </p>
@@ -251,9 +253,9 @@ and, indeed, when I open an e.g. Python buffer, line numbers appear as desired.
 </p>
 </div>
 </div>
-<div id="outline-container-org64ce88b" class="outline-2">
-<h2 id="org64ce88b">Appendix: Hooks in use-package</h2>
-<div class="outline-text-2" id="text-org64ce88b">
+<div id="outline-container-org8f1e1d1" class="outline-2">
+<h2 id="org8f1e1d1">Appendix: Hooks in use-package</h2>
+<div class="outline-text-2" id="text-org8f1e1d1">
 <p>
 I use <code>use-package</code> for managing my emacs packages. <code>use-package</code> declarations allow users to pass a <code>:hooks</code> option in the package declaration in order to add functions to hooks. Hooks can be configured in <code>use-package</code> by defining a cons cell as follows.
 </p>
@@ -271,9 +273,9 @@ Note that we do <i>not</i> refer to <code>mode-name-hook</code> in the hook conf
 </p>
 </div>
 </div>
-<div id="outline-container-org2a0d225" class="outline-2">
-<h2 id="org2a0d225">Further Reading</h2>
-<div class="outline-text-2" id="text-org2a0d225">
+<div id="outline-container-orgd9e1b40" class="outline-2">
+<h2 id="orgd9e1b40">Further Reading</h2>
+<div class="outline-text-2" id="text-orgd9e1b40">
 <ul class="org-ul">
 <li><a href="https://gitlab.com/dliden/coffeemacs">My Emacs config</a>. This has not, admittedly, been structured for broad consumption, but with a little searching you can find how I've configured some hooks. In particular, <a href="https://gitlab.com/dliden/coffeemacs/-/blob/master/orgconfig.el?ref_type=heads#L219">here</a> is my <code>org-tree-slide</code> configuration, which I mentioned at the beginning.</li>
 <li><a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html">Emacs Docs</a>, which go into some more detail on abnormal hooks among other topics.</li>

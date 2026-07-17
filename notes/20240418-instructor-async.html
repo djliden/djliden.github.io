@@ -23,11 +23,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-04-18T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:03:47Z">
-<meta name="twitter:card" content="summary">
+<meta property="article:modified_time" content="2026-07-17T21:05:32Z">
+<meta property="og:image" content="https://danliden.com/default-og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Asynchronous Instructor">
 <meta name="twitter:description" content="In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts. I used the Anthropic Haiku model. Using the instructor library with the asynchr...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Asynchronous Instructor","description":"In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts. I used the Anthropic Haiku model. Using the instructor library with the asynchr...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240418-instructor-async.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-04-18T00:00:00Z","dateModified":"2026-07-17T21:03:47Z"}</script>
+<meta name="twitter:image" content="https://danliden.com/default-og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Asynchronous Instructor","description":"In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts. I used the Anthropic Haiku model. Using the instructor library with the asynchr...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240418-instructor-async.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-04-18T00:00:00Z","dateModified":"2026-07-17T21:05:32Z","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -57,20 +59,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org643a807">Asynchronous usage pattern for Instructor</a>
+<li><a href="#org8870892">Asynchronous usage pattern for Instructor</a>
 <ul>
-<li><a href="#org2292717">Setup</a></li>
-<li><a href="#org09dd6b1">Iterate throught the objects</a></li>
+<li><a href="#org88b9291">Setup</a></li>
+<li><a href="#org901ce56">Iterate throught the objects</a></li>
 </ul>
 </li>
-<li><a href="#org7c1918e">Related Notes</a></li>
+<li><a href="#org04ebfed">Related Notes</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org643a807" class="outline-2">
-<h2 id="org643a807">Asynchronous usage pattern for Instructor</h2>
-<div class="outline-text-2" id="text-org643a807">
-<div class="preview" id="org8f7c4ab">
+<div id="outline-container-org8870892" class="outline-2">
+<h2 id="org8870892">Asynchronous usage pattern for Instructor</h2>
+<div class="outline-text-2" id="text-org8870892">
+<div class="preview" id="org11a8568">
 <p>
 In this example, I was extracting a list of topics from a list of 1000 JSON objects loaded as a list of Python dicts.
 </p>
@@ -89,9 +91,9 @@ Using the instructor library with the asynchronous Anthropic client makes it muc
 </p>
 </div>
 
-<div id="outline-container-org2292717" class="outline-3">
-<h3 id="org2292717">Setup</h3>
-<div class="outline-text-3" id="text-org2292717">
+<div id="outline-container-org88b9291" class="outline-3">
+<h3 id="org88b9291">Setup</h3>
+<div class="outline-text-3" id="text-org88b9291">
 <p>
 First, we set up the Anthropic async client with Instructor. We also set up the Pydantic schema we'll be using for structured extraction.
 </p>
@@ -127,9 +129,9 @@ First, we set up the Anthropic async client with Instructor. We also set up the 
 </div>
 </div>
 </div>
-<div id="outline-container-org09dd6b1" class="outline-3">
-<h3 id="org09dd6b1">Iterate throught the objects</h3>
-<div class="outline-text-3" id="text-org09dd6b1">
+<div id="outline-container-org901ce56" class="outline-3">
+<h3 id="org901ce56">Iterate throught the objects</h3>
+<div class="outline-text-3" id="text-org901ce56">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> asyncio
 <span class="org-keyword">import</span> time
@@ -220,9 +222,9 @@ In this code, we:
 </div>
 </div>
 </div>
-<div id="outline-container-org7c1918e" class="outline-2">
-<h2 id="org7c1918e">Related Notes</h2>
-<div class="outline-text-2" id="text-org7c1918e">
+<div id="outline-container-org04ebfed" class="outline-2">
+<h2 id="org04ebfed">Related Notes</h2>
+<div class="outline-text-2" id="text-org04ebfed">
 <ul class="org-ul">
 <li><a href="20240403-dbrx-instructor.html">Use Instructor with DBRX</a></li>
 </ul>

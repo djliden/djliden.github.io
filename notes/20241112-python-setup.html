@@ -23,11 +23,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-11-12T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:03:47Z">
-<meta name="twitter:card" content="summary">
+<meta property="article:modified_time" content="2026-07-17T21:05:32Z">
+<meta property="og:image" content="https://danliden.com/default-og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Using Python in Emacs">
 <meta name="twitter:description" content="I will keep this note up to date with details on how I use emacs for Python development.">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using Python in Emacs","description":"I will keep this note up to date with details on how I use emacs for Python development.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20241112-python-setup.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-11-12T00:00:00Z","dateModified":"2026-07-17T21:03:47Z"}</script>
+<meta name="twitter:image" content="https://danliden.com/default-og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Using Python in Emacs","description":"I will keep this note up to date with details on how I use emacs for Python development.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20241112-python-setup.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-11-12T00:00:00Z","dateModified":"2026-07-17T21:05:32Z","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -57,25 +59,25 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7245237">Introduction</a></li>
-<li><a href="#orga469ef4">Setting up a Python project</a>
+<li><a href="#orgd1f36cc">Introduction</a></li>
+<li><a href="#orgf24527c">Setting up a Python project</a>
 <ul>
-<li><a href="#org45251f4">Using multiple language servers with eglot</a></li>
+<li><a href="#org31366bf">Using multiple language servers with eglot</a></li>
 </ul>
 </li>
-<li><a href="#org76d877e">IN PROGRESS Writing and Executing Python Code</a>
+<li><a href="#org3c7bbdc">IN PROGRESS Writing and Executing Python Code</a>
 <ul>
-<li><a href="#orgc6127d2">Writing + Code with Org Babel</a></li>
-<li><a href="#org237f6c6">IN PROGRESS Source files + REPL approach</a></li>
+<li><a href="#org063952f">Writing + Code with Org Babel</a></li>
+<li><a href="#org9d50abc">IN PROGRESS Source files + REPL approach</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org7245237" class="outline-2">
-<h2 id="org7245237">Introduction</h2>
-<div class="outline-text-2" id="text-org7245237">
-<div class="preview" id="org1756377">
+<div id="outline-container-orgd1f36cc" class="outline-2">
+<h2 id="orgd1f36cc">Introduction</h2>
+<div class="outline-text-2" id="text-orgd1f36cc">
+<div class="preview" id="orgfb1f096">
 <p>
 I will keep this note up to date with details on how I use emacs for Python development.
 </p>
@@ -83,9 +85,9 @@ I will keep this note up to date with details on how I use emacs for Python deve
 </div>
 </div>
 </div>
-<div id="outline-container-orga469ef4" class="outline-2">
-<h2 id="orga469ef4">Setting up a Python project</h2>
-<div class="outline-text-2" id="text-orga469ef4">
+<div id="outline-container-orgf24527c" class="outline-2">
+<h2 id="orgf24527c">Setting up a Python project</h2>
+<div class="outline-text-2" id="text-orgf24527c">
 <p>
 There are a few things I want when setting up a Python project:
 </p>
@@ -107,9 +109,9 @@ To that end, when setting up a project, I follow these steps:
 <li>Create/open a python buffer and start eglot with <code>M-x eglot</code>.</li>
 </ol>
 </div>
-<div id="outline-container-org45251f4" class="outline-3">
-<h3 id="org45251f4">Using multiple language servers with eglot</h3>
-<div class="outline-text-3" id="text-org45251f4">
+<div id="outline-container-org31366bf" class="outline-3">
+<h3 id="org31366bf">Using multiple language servers with eglot</h3>
+<div class="outline-text-3" id="text-org31366bf">
 <p>
 For some reason, I recall this working without additional configuration before. But it's now, so I might as well document how to get it working. My best guess is that I overrode the defaults as the eglot docs note that "Eglot comes with a fairly complete set of associations of major-modes to popular language servers predefined." 
 </p>
@@ -132,16 +134,16 @@ Suppose you have installed two different options for a Python LSP. Follow the in
 </div>
 </div>
 </div>
-<div id="outline-container-org76d877e" class="outline-2">
-<h2 id="org76d877e">IN PROGRESS Writing and Executing Python Code</h2>
-<div class="outline-text-2" id="text-org76d877e">
+<div id="outline-container-org3c7bbdc" class="outline-2">
+<h2 id="org3c7bbdc">IN PROGRESS Writing and Executing Python Code</h2>
+<div class="outline-text-2" id="text-org3c7bbdc">
 <p>
 After setting up the Python project as described above, I tend to follow one of two approaches:
 </p>
 </div>
-<div id="outline-container-orgc6127d2" class="outline-3">
-<h3 id="orgc6127d2">Writing + Code with Org Babel</h3>
-<div class="outline-text-3" id="text-orgc6127d2">
+<div id="outline-container-org063952f" class="outline-3">
+<h3 id="org063952f">Writing + Code with Org Babel</h3>
+<div class="outline-text-3" id="text-org063952f">
 <p>
 I often write and execute code blocks in org mode using <a href="https://orgmode.org/worg/org-contrib/babel/intro.html">babel</a>. A lot of my coding work occurs in the context of writing examples and demos (I am a developer advocate) so demonstrating and writing about code segments is often more important to me than working on projects/source files.
 </p>
@@ -218,9 +220,9 @@ With this snippet, you can simply type <code>p</code> and then <code>yas-expand<
 </ul>
 </div>
 </div>
-<div id="outline-container-org237f6c6" class="outline-3">
-<h3 id="org237f6c6">IN PROGRESS Source files + REPL approach</h3>
-<div class="outline-text-3" id="text-org237f6c6">
+<div id="outline-container-org9d50abc" class="outline-3">
+<h3 id="org9d50abc">IN PROGRESS Source files + REPL approach</h3>
+<div class="outline-text-3" id="text-org9d50abc">
 <p>
 When working on a Python project, I use a source file + REPL approach. Setting this up in a basic way is simple. First, make sure you have the appropriate Python virtual environment set up (with e.g. <code>pyvenv-activate</code>). Then, with a <code>.py</code> file open, call <code>M-x run-python</code> to start a Python REPL. When you want to run a code snippet, or all the code in a given file, you can use one of the various <code>python-shell-send-*</code> commands to run the code from your source file in the REPL. Some of my most used ones are:
 </p>

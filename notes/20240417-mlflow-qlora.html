@@ -23,11 +23,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-04-17T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:03:47Z">
-<meta name="twitter:card" content="summary">
+<meta property="article:modified_time" content="2026-07-17T21:05:32Z">
+<meta property="og:image" content="https://danliden.com/default-og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Logging and Loading a QLoRA Model with MLflow">
 <meta name="twitter:description" content="This is a minimal example of how to log an MLflow qlora model. It does not show any actual model training or data processing, just the basic process of saving the model.">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Logging and Loading a QLoRA Model with MLflow","description":"This is a minimal example of how to log an MLflow qlora model. It does not show any actual model training or data processing, just the basic process of saving the model.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240417-mlflow-qlora.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-04-17T00:00:00Z","dateModified":"2026-07-17T21:03:47Z"}</script>
+<meta name="twitter:image" content="https://danliden.com/default-og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Logging and Loading a QLoRA Model with MLflow","description":"This is a minimal example of how to log an MLflow qlora model. It does not show any actual model training or data processing, just the basic process of saving the model.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240417-mlflow-qlora.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-04-17T00:00:00Z","dateModified":"2026-07-17T21:05:32Z","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -57,34 +59,34 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3b141a4">Install Dependencies</a></li>
-<li><a href="#orgaff8220">Set up assets/cache directories</a></li>
-<li><a href="#org78a00e9">Skip Data Processing</a></li>
-<li><a href="#org36abcff">Load the model, tokenizer, etc.</a>
+<li><a href="#org09780a0">Install Dependencies</a></li>
+<li><a href="#org997aa4b">Set up assets/cache directories</a></li>
+<li><a href="#orgff0493c">Skip Data Processing</a></li>
+<li><a href="#orgb1a1023">Load the model, tokenizer, etc.</a>
 <ul>
-<li><a href="#org12dd165">Tokenizer</a></li>
-<li><a href="#org2456f30">LoRA config</a></li>
-<li><a href="#org9099b8a">Model</a></li>
-<li><a href="#orga62aaf8">Set up the peft model</a></li>
+<li><a href="#orgc9db66e">Tokenizer</a></li>
+<li><a href="#orge67c546">LoRA config</a></li>
+<li><a href="#org33312e7">Model</a></li>
+<li><a href="#orgf5a48a2">Set up the peft model</a></li>
 </ul>
 </li>
-<li><a href="#org4c4d979">Skip Training</a></li>
-<li><a href="#orge70bbcd">Log to MLflow</a></li>
-<li><a href="#org9d34bf0">Load the MLflow model</a></li>
-<li><a href="#orgdb722f6">Summary</a></li>
+<li><a href="#org6c70083">Skip Training</a></li>
+<li><a href="#org93cfd39">Log to MLflow</a></li>
+<li><a href="#org8b903d2">Load the MLflow model</a></li>
+<li><a href="#org073bbcf">Summary</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgbbe48b8">
+<div class="preview" id="orgf80d3c8">
 <p>
 This is a minimal example of how to log an MLflow qlora model. It does not show any actual model training or data processing, just the basic process of saving the model.
 </p>
 
 </div>
 
-<div id="outline-container-org3b141a4" class="outline-2">
-<h2 id="org3b141a4">Install Dependencies</h2>
-<div class="outline-text-2" id="text-org3b141a4">
+<div id="outline-container-org09780a0" class="outline-2">
+<h2 id="org09780a0">Install Dependencies</h2>
+<div class="outline-text-2" id="text-org09780a0">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-operator">%</span>pip install <span class="org-operator">--</span>upgrade torch
 <span class="org-operator">%</span>pip install <span class="org-operator">--</span>upgrade transformers accelerate peft bitsandbytes mlflow pynvml packaging ninja
@@ -105,9 +107,9 @@ pip install . <span class="org-operator">--</span>no<span class="org-operator">-
 </p>
 </div>
 </div>
-<div id="outline-container-orgaff8220" class="outline-2">
-<h2 id="orgaff8220">Set up assets/cache directories</h2>
-<div class="outline-text-2" id="text-orgaff8220">
+<div id="outline-container-org997aa4b" class="outline-2">
+<h2 id="org997aa4b">Set up assets/cache directories</h2>
+<div class="outline-text-2" id="text-org997aa4b">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-comment-delimiter"># </span><span class="org-comment">Some Environment Setup
 </span><span class="org-variable-name">ASSETS_DIR</span> <span class="org-operator">=</span> <span class="org-string">"&lt;assets_dir&gt;"</span>
@@ -118,21 +120,21 @@ pip install . <span class="org-operator">--</span>no<span class="org-operator">-
 </div>
 </div>
 </div>
-<div id="outline-container-org78a00e9" class="outline-2">
-<h2 id="org78a00e9">Skip Data Processing</h2>
-<div class="outline-text-2" id="text-org78a00e9">
+<div id="outline-container-orgff0493c" class="outline-2">
+<h2 id="orgff0493c">Skip Data Processing</h2>
+<div class="outline-text-2" id="text-orgff0493c">
 <p>
 We are not preparing or using any training data in this example. We are skipping the training part.
 </p>
 </div>
 </div>
-<div id="outline-container-org36abcff" class="outline-2">
-<h2 id="org36abcff">Load the model, tokenizer, etc.</h2>
-<div class="outline-text-2" id="text-org36abcff">
+<div id="outline-container-orgb1a1023" class="outline-2">
+<h2 id="orgb1a1023">Load the model, tokenizer, etc.</h2>
+<div class="outline-text-2" id="text-orgb1a1023">
 </div>
-<div id="outline-container-org12dd165" class="outline-3">
-<h3 id="org12dd165">Tokenizer</h3>
-<div class="outline-text-3" id="text-org12dd165">
+<div id="outline-container-orgc9db66e" class="outline-3">
+<h3 id="orgc9db66e">Tokenizer</h3>
+<div class="outline-text-3" id="text-orgc9db66e">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> transformers <span class="org-keyword">import</span> AutoTokenizer
 <span class="org-variable-name">tokenizer</span> <span class="org-operator">=</span> AutoTokenizer.from_pretrained(<span class="org-string">"mistralai/Mistral-7B-v0.1"</span>)
@@ -140,9 +142,9 @@ We are not preparing or using any training data in this example. We are skipping
 </div>
 </div>
 </div>
-<div id="outline-container-org2456f30" class="outline-3">
-<h3 id="org2456f30">LoRA config</h3>
-<div class="outline-text-3" id="text-org2456f30">
+<div id="outline-container-orge67c546" class="outline-3">
+<h3 id="orge67c546">LoRA config</h3>
+<div class="outline-text-3" id="text-orge67c546">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> peft <span class="org-keyword">import</span> LoraConfig, TaskType
 
@@ -157,9 +159,9 @@ We are not preparing or using any training data in this example. We are skipping
 </div>
 </div>
 </div>
-<div id="outline-container-org9099b8a" class="outline-3">
-<h3 id="org9099b8a">Model</h3>
-<div class="outline-text-3" id="text-org9099b8a">
+<div id="outline-container-org33312e7" class="outline-3">
+<h3 id="org33312e7">Model</h3>
+<div class="outline-text-3" id="text-org33312e7">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> transformers <span class="org-keyword">import</span> AutoModelForCausalLM, BitsAndBytesConfig
 <span class="org-keyword">import</span> torch
@@ -180,9 +182,9 @@ We are not preparing or using any training data in this example. We are skipping
 </div>
 </div>
 </div>
-<div id="outline-container-orga62aaf8" class="outline-3">
-<h3 id="orga62aaf8">Set up the peft model</h3>
-<div class="outline-text-3" id="text-orga62aaf8">
+<div id="outline-container-orgf5a48a2" class="outline-3">
+<h3 id="orgf5a48a2">Set up the peft model</h3>
+<div class="outline-text-3" id="text-orgf5a48a2">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">from</span> peft <span class="org-keyword">import</span> get_peft_model
 
@@ -329,17 +331,17 @@ Though the <code>add_adapter</code> approach does, in fact, add the adapter, it 
 </div>
 </div>
 </div>
-<div id="outline-container-org4c4d979" class="outline-2">
-<h2 id="org4c4d979">Skip Training</h2>
-<div class="outline-text-2" id="text-org4c4d979">
+<div id="outline-container-org6c70083" class="outline-2">
+<h2 id="org6c70083">Skip Training</h2>
+<div class="outline-text-2" id="text-org6c70083">
 <p>
 Again, we are not actually training the model.
 </p>
 </div>
 </div>
-<div id="outline-container-orge70bbcd" class="outline-2">
-<h2 id="orge70bbcd">Log to MLflow</h2>
-<div class="outline-text-2" id="text-orge70bbcd">
+<div id="outline-container-org93cfd39" class="outline-2">
+<h2 id="org93cfd39">Log to MLflow</h2>
+<div class="outline-text-2" id="text-org93cfd39">
 <p>
 (Not all of this is necessary)
 </p>
@@ -426,9 +428,9 @@ This is
 </p>
 </div>
 </div>
-<div id="outline-container-org9d34bf0" class="outline-2">
-<h2 id="org9d34bf0">Load the MLflow model</h2>
-<div class="outline-text-2" id="text-org9d34bf0">
+<div id="outline-container-org8b903d2" class="outline-2">
+<h2 id="org8b903d2">Load the MLflow model</h2>
+<div class="outline-text-2" id="text-org8b903d2">
 <div class="org-src-container">
 <pre class="src src-python"><span class="org-keyword">import</span> mlflow
 
@@ -460,9 +462,9 @@ because we did not actually fine-tune the model to follow any of our instruction
 </div>
 </div>
 
-<div id="outline-container-orgdb722f6" class="outline-2">
-<h2 id="orgdb722f6">Summary</h2>
-<div class="outline-text-2" id="text-orgdb722f6">
+<div id="outline-container-org073bbcf" class="outline-2">
+<h2 id="org073bbcf">Summary</h2>
+<div class="outline-text-2" id="text-org073bbcf">
 <p>
 This note showed the basics of how to log and load a peft model with MLflow.
 </p>

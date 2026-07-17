@@ -23,11 +23,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-08-21T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:03:47Z">
-<meta name="twitter:card" content="summary">
+<meta property="article:modified_time" content="2026-07-17T21:05:32Z">
+<meta property="og:image" content="https://danliden.com/default-og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Python Package Management with uv">
 <meta name="twitter:description" content="Yesterday (&lt;2024-08-20 Tue&gt;), Astral released [[https://astral.sh/blog/uv-unified-python-packaging][a bunch of updates]] to [[https://github.com/astral-sh/uv][uv]], their Python package/project man...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Python Package Management with uv","description":"Yesterday (<2024-08-20 Tue>), Astral released [[https://astral.sh/blog/uv-unified-python-packaging][a bunch of updates]] to [[https://github.com/astral-sh/uv][uv]], their Python package/project man...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240821-uv.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-08-21T00:00:00Z","dateModified":"2026-07-17T21:03:47Z"}</script>
+<meta name="twitter:image" content="https://danliden.com/default-og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Python Package Management with uv","description":"Yesterday (<2024-08-20 Tue>), Astral released [[https://astral.sh/blog/uv-unified-python-packaging][a bunch of updates]] to [[https://github.com/astral-sh/uv][uv]], their Python package/project man...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/notes/20240821-uv.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2024-08-21T00:00:00Z","dateModified":"2026-07-17T21:05:32Z","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -57,18 +59,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd012793">Introduction</a>
+<li><a href="#org0f0518b">Introduction</a>
 <ul>
-<li><a href="#org4addb55">Projects</a></li>
+<li><a href="#org15d7dce">Projects</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgd012793" class="outline-2">
-<h2 id="orgd012793">Introduction</h2>
-<div class="outline-text-2" id="text-orgd012793">
-<div class="preview" id="org1598be6">
+<div id="outline-container-org0f0518b" class="outline-2">
+<h2 id="org0f0518b">Introduction</h2>
+<div class="outline-text-2" id="text-org0f0518b">
+<div class="preview" id="org7b27f46">
 <p>
 Yesterday (<span class="timestamp-wrapper"><span class="timestamp">&lt;2024-08-20 Tue&gt;</span></span>), Astral released <a href="https://astral.sh/blog/uv-unified-python-packaging">a bunch of updates</a> to <a href="https://github.com/astral-sh/uv">uv</a>, their Python package/project manager, written in Rust. I've been using uv for the past month or two, mostly as a very fast drop-in replacement for venv and pip.
 </p>
@@ -83,9 +85,9 @@ This post will very briefly explore the workflow I am most interested in—setti
 
 </div>
 </div>
-<div id="outline-container-org4addb55" class="outline-3">
-<h3 id="org4addb55">Projects</h3>
-<div class="outline-text-3" id="text-org4addb55">
+<div id="outline-container-org15d7dce" class="outline-3">
+<h3 id="org15d7dce">Projects</h3>
+<div class="outline-text-3" id="text-org15d7dce">
 <p>
 I've been exploring <a href="20240818-answer-ai.html">FastHTML</a> over the past few days. Let's use uv to set up a project which I can use for my FastHTML experiments. I'll start by navigating to the directory I've already been working from.
 </p>
@@ -113,7 +115,7 @@ This created a <code>pyproject.toml</code>:
 </pre>
 </div>
 
-<pre class="example" id="orga5365de">
+<pre class="example" id="org264a4c9">
 [project]
 name = "fhtml-ex"
 version = "0.1.0"
@@ -136,7 +138,7 @@ Now let's add FastHTML to the project.
 </pre>
 </div>
 
-<pre class="example" id="org5b435eb">
+<pre class="example" id="org1f48d95">
 Using Python 3.12.4 interpreter at: /opt/homebrew/opt/python@3.12/bin/python3.12
 Creating virtualenv at: .venv
 Resolved 30 packages in 408ms
@@ -190,7 +192,7 @@ We can use uv to run a command in the project's environment without explicitly a
 and get:
 </p>
 
-<pre class="example" id="org5070779">
+<pre class="example" id="org5646052">
 Link: http://localhost:5001
 INFO:     Will watch for changes in these directories: ['/Users/dliden/projects/fhtml_ex/todo']
 INFO:     Uvicorn running on http://0.0.0.0:5001 (Press CTRL+C to quit)

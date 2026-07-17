@@ -25,11 +25,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2025-03-23T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T21:03:47Z">
-<meta name="twitter:card" content="summary">
+<meta property="article:modified_time" content="2026-07-17T21:05:32Z">
+<meta property="og:image" content="https://danliden.com/default-og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Emacs Introspection and Debugging">
 <meta name="twitter:description" content="Using Emacs&#39;s built-in introspection and debugging tools to diagnose and fix errors, worked through with a real eglot issue.">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Emacs Introspection and Debugging","description":"Using Emacs's built-in introspection and debugging tools to diagnose and fix errors, worked through with a real eglot issue.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20250330-emacs-debugging.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2025-03-23T00:00:00Z","dateModified":"2026-07-17T21:03:47Z","keywords":"Emacs, debugging, introspection, eglot, Emacs Lisp"}</script>
+<meta name="twitter:image" content="https://danliden.com/default-og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Emacs Introspection and Debugging","description":"Using Emacs's built-in introspection and debugging tools to diagnose and fix errors, worked through with a real eglot issue.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20250330-emacs-debugging.html"},"author":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"publisher":{"@type":"Person","name":"Daniel Liden","url":"https://danliden.com/about.html","sameAs":["https://github.com/djliden","https://fosstodon.org/@dliden","https://bsky.app/profile/danliden.com","https://x.com/danjliden"]},"datePublished":"2025-03-23T00:00:00Z","dateModified":"2026-07-17T21:05:32Z","keywords":"Emacs, debugging, introspection, eglot, Emacs Lisp","image":{"@type":"ImageObject","url":"https://danliden.com/default-og-image.png"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -60,16 +62,16 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga710426">Introduction</a></li>
-<li><a href="#orgbc7aa34">Finding Relevant Variables</a></li>
-<li><a href="#org084e3d6">Confirming the issue with error backtrace</a></li>
-<li><a href="#orgb635233">Quick fix—bandaid approach</a></li>
-<li><a href="#orgfa46ff9">Finding the root of the problem</a></li>
-<li><a href="#org88c6d31">Conclusion—Emacs introspection</a></li>
+<li><a href="#orgc4a065c">Introduction</a></li>
+<li><a href="#orgc3592ca">Finding Relevant Variables</a></li>
+<li><a href="#orgc9f4930">Confirming the issue with error backtrace</a></li>
+<li><a href="#org57a5918">Quick fix—bandaid approach</a></li>
+<li><a href="#org86720d4">Finding the root of the problem</a></li>
+<li><a href="#org116cd87">Conclusion—Emacs introspection</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org626fdd5">
+<div class="preview" id="orge91c3e8">
 <p>
 If you use Emacs, you will eventually run into errors. Maybe a recent package update introduced some new issues with your system. Or some custom elisp you wrote runs into an edge case. Regardless of the cause, Emacs provides many tools for identifying the causes of errors and learning how to address them.
 </p>
@@ -80,9 +82,9 @@ This post works through a recent issue I encountered with the <code>eglot</code>
 
 </div>
 
-<div id="outline-container-orga710426" class="outline-2">
-<h2 id="orga710426">Introduction</h2>
-<div class="outline-text-2" id="text-orga710426">
+<div id="outline-container-orgc4a065c" class="outline-2">
+<h2 id="orgc4a065c">Introduction</h2>
+<div class="outline-text-2" id="text-orgc4a065c">
 <p>
 For a while, whenever I used <a href="https://www.gnu.org/software/emacs/manual/html_mono/eglot.html">eglot</a> (mostly for Python projects) and then shut it down with e.g. <code>M-x eglot-shutdown</code>, all subsequent attempts to save any files in Emacs would return the following error: <code>(jsonrpc-error-message . "No current JSON-RPC connection")</code>. The save would generally succeed, so this was more annoying than anything. But it <i>was</i> annoying.
 </p>
@@ -104,9 +106,9 @@ Given this pattern, I started by looking for <a href="https://www.danliden.com/p
 </p>
 </div>
 </div>
-<div id="outline-container-orgbc7aa34" class="outline-2">
-<h2 id="orgbc7aa34">Finding Relevant Variables</h2>
-<div class="outline-text-2" id="text-orgbc7aa34">
+<div id="outline-container-orgc3592ca" class="outline-2">
+<h2 id="orgc3592ca">Finding Relevant Variables</h2>
+<div class="outline-text-2" id="text-orgc3592ca">
 <p>
 I wasn't entirely sure what I was looking for. But I knew from previous reading that hooks are variables that, by convention, include the word <code>hook</code> in their names. This already provides plenty to work with.
 </p>
@@ -116,7 +118,7 @@ The <code>apropos-variable</code> function takes a pattern or a list of words an
 </p>
 
 
-<figure id="orgc34f77a">
+<figure id="org6f99286">
 <img src="./figures/20250323-emacs-debugging/1_apropos.png" alt="1_apropos.png">
 
 </figure>
@@ -135,9 +137,9 @@ This is already very useful and points toward some directions for fixing the iss
 </p>
 </div>
 </div>
-<div id="outline-container-org084e3d6" class="outline-2">
-<h2 id="org084e3d6">Confirming the issue with error backtrace</h2>
-<div class="outline-text-2" id="text-org084e3d6">
+<div id="outline-container-orgc9f4930" class="outline-2">
+<h2 id="orgc9f4930">Confirming the issue with error backtrace</h2>
+<div class="outline-text-2" id="text-orgc9f4930">
 <p>
 I wanted to confirm that this hook was causing the issue so I used <code>M-x toggle-debug-on-error</code> to get a more detailed backtrace. In reality, this is where I should have started—the error trace provides much more specific and useful information than the short error message returned in the echo area. When I tried to save a file with debugging enabled, I received the following in a <b>Backtrace</b> buffer.
 </p>
@@ -169,9 +171,9 @@ Now that we have some understanding of what is happening, how do we fix it?
 </p>
 </div>
 </div>
-<div id="outline-container-orgb635233" class="outline-2">
-<h2 id="orgb635233">Quick fix—bandaid approach</h2>
-<div class="outline-text-2" id="text-orgb635233">
+<div id="outline-container-org57a5918" class="outline-2">
+<h2 id="org57a5918">Quick fix—bandaid approach</h2>
+<div class="outline-text-2" id="text-org57a5918">
 <p>
 My initial fix for this issue was to write a simple cleanup script to remove the offending hook function from the <code>after-save-hook</code>.
 </p>
@@ -201,9 +203,9 @@ At this point, it was not yet clear to me how the hook was set in the first plac
 </div>
 </div>
 
-<div id="outline-container-orgfa46ff9" class="outline-2">
-<h2 id="orgfa46ff9">Finding the root of the problem</h2>
-<div class="outline-text-2" id="text-orgfa46ff9">
+<div id="outline-container-org86720d4" class="outline-2">
+<h2 id="org86720d4">Finding the root of the problem</h2>
+<div class="outline-text-2" id="text-org86720d4">
 <p>
 My first thought was that, perhaps, the hook was being set when <code>eglot</code> was invoked. To check this, I:
 </p>
@@ -231,7 +233,7 @@ And it turns out, I set this hook myself!
 
 
 
-<figure id="org448f7a2">
+<figure id="org24cb8d1">
 <img src="./figures/20250323-emacs-debugging/2_grep.png" alt="2_grep.png">
 
 </figure>
@@ -242,9 +244,9 @@ Once I deleted the <code>(add-hook 'after-save-hook ...)</code> call from my con
 </div>
 </div>
 
-<div id="outline-container-org88c6d31" class="outline-2">
-<h2 id="org88c6d31">Conclusion—Emacs introspection</h2>
-<div class="outline-text-2" id="text-org88c6d31">
+<div id="outline-container-org116cd87" class="outline-2">
+<h2 id="org116cd87">Conclusion—Emacs introspection</h2>
+<div class="outline-text-2" id="text-org116cd87">
 <p>
 The approaches I used here are nowhere close to comprehensive. Emacs has countless introspection tools and a seemingly-inexhaustible collection of functions and variables that enable you to inspect everything going on in your Emacs setup. Furthermore, it provides a range of ways to search these variables and functions.
 </p>
@@ -268,7 +270,7 @@ Lastly—we're reaching a point where you don't have to do this yourself. You ca
 </p>
 
 
-<figure id="org7a1cd44">
+<figure id="org6e141db">
 <img src="./figures/20250323-emacs-debugging/3_gptel.png" alt="3_gptel.png">
 
 </figure>
