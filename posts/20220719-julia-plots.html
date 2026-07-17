@@ -22,11 +22,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2022-07-19T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-16T17:22:50Z">
+<meta property="article:modified_time" content="2026-07-17T00:00:28Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Basic Plotting in Julia">
 <meta name="twitter:description" content="In this short post, I show one of the many ways of using Julia within emacs org mode, and will describe some of the basic plotting functionality in Julia.">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Basic Plotting in Julia","description":"In this short post, I show one of the many ways of using Julia within emacs org mode, and will describe some of the basic plotting functionality in Julia.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220719-julia-plots.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2022-07-19T00:00:00Z","dateModified":"2026-07-16T17:22:50Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Basic Plotting in Julia","description":"In this short post, I show one of the many ways of using Julia within emacs org mode, and will describe some of the basic plotting functionality in Julia.","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220719-julia-plots.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2022-07-19T00:00:00Z","dateModified":"2026-07-17T00:00:28Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -57,20 +57,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3ee6302">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</a></li>
-<li><a href="#orgc09420d">Making some Plots</a>
+<li><a href="#orgf9faac4">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</a></li>
+<li><a href="#orgc9b2b01">Making some Plots</a>
 <ul>
-<li><a href="#org360902d">Building Plots Incrementally</a></li>
+<li><a href="#orgae0e78a">Building Plots Incrementally</a></li>
 </ul>
 </li>
-<li><a href="#orgf120818">Plotting Real Data</a></li>
-<li><a href="#org3af8d19">Modifying Plot Visual Components</a></li>
-<li><a href="#org48065f6">Different Plot Styles</a></li>
-<li><a href="#org525d527">Conculsion</a></li>
+<li><a href="#org2fbd4f4">Plotting Real Data</a></li>
+<li><a href="#org4a2bc2f">Modifying Plot Visual Components</a></li>
+<li><a href="#org0640a3a">Different Plot Styles</a></li>
+<li><a href="#orged5ee03">Conculsion</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org8297f66">
+<div class="preview" id="org7d9546c">
 <p>
 In this short post, I show one of the many ways of using Julia within emacs
 org mode, and will describe some of the basic plotting functionality in Julia.
@@ -78,9 +78,9 @@ org mode, and will describe some of the basic plotting functionality in Julia.
 
 </div>
 
-<div id="outline-container-org3ee6302" class="outline-2">
-<h2 id="org3ee6302">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</h2>
-<div class="outline-text-2" id="text-org3ee6302">
+<div id="outline-container-orgf9faac4" class="outline-2">
+<h2 id="orgf9faac4">Getting Started with Julia in Org Mode: <code>jupyter-julia</code>.</h2>
+<div class="outline-text-2" id="text-orgf9faac4">
 <p>
 While <a href="https://github.com/gcv/julia-snail">julia-snail</a> is my favorite Julia development environment, it's support for
 org-mode is, at present, quite limited. For example, it seems to ignore the
@@ -92,9 +92,9 @@ how to use emacs-jupyter with org-mode.
 </div>
 </div>
 
-<div id="outline-container-orgc09420d" class="outline-2">
-<h2 id="orgc09420d">Making some Plots</h2>
-<div class="outline-text-2" id="text-orgc09420d">
+<div id="outline-container-orgc9b2b01" class="outline-2">
+<h2 id="orgc9b2b01">Making some Plots</h2>
+<div class="outline-text-2" id="text-orgc9b2b01">
 <p>
 Let's make some plots. We'll use the <a href="https://docs.juliaplots.org/latest/tutorial/">Plots.jl</a> package and explore a few
 different plotting styles. First, we load the packages we'll be using. I tend to
@@ -110,9 +110,9 @@ using StatsPlots
 </div>
 </div>
 
-<div id="outline-container-org360902d" class="outline-3">
-<h3 id="org360902d">Building Plots Incrementally</h3>
-<div class="outline-text-3" id="text-org360902d">
+<div id="outline-container-orgae0e78a" class="outline-3">
+<h3 id="orgae0e78a">Building Plots Incrementally</h3>
+<div class="outline-text-3" id="text-orgae0e78a">
 <p>
 With these packages loaded, we'll start simply and plot a standard normal
 distribution.
@@ -124,7 +124,7 @@ distribution.
 </div>
 
 
-<figure id="orgd7fa1a0">
+<figure id="orgc571fca">
 <img src="figures/20220719-julia-plots/fig1.svg" alt="fig1.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 1: </span>A basic plot</figcaption>
@@ -143,7 +143,7 @@ plot!(leg=false) # Remove the Legend
 </div>
 
 
-<figure id="orgca0b938">
+<figure id="org63a0fe0">
 <img src="figures/20220719-julia-plots/fig2.svg" alt="fig2.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 2: </span>Removing the legend and adding labels</figcaption>
@@ -164,7 +164,7 @@ font(18, "Computer Modern"))
 </div>
 
 
-<figure id="orgea7c1c1">
+<figure id="orgc476096">
 <img src="figures/20220719-julia-plots/fig3.svg" alt="fig3.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 3: </span>Changing some Fonts</figcaption>
@@ -174,9 +174,9 @@ font(18, "Computer Modern"))
 </div>
 
 
-<div id="outline-container-orgf120818" class="outline-2">
-<h2 id="orgf120818">Plotting Real Data</h2>
-<div class="outline-text-2" id="text-orgf120818">
+<div id="outline-container-org2fbd4f4" class="outline-2">
+<h2 id="org2fbd4f4">Plotting Real Data</h2>
+<div class="outline-text-2" id="text-org2fbd4f4">
 <p>
 That's enough of that. Usually we're plotting real data, not standard standard
 distributions. Let's get some. First we'll pull from the <code>RDatasets</code> package,
@@ -210,7 +210,7 @@ title!("Horsepower by MPG and N Cylinders")
 </div>
 
 
-<figure id="org78ee439">
+<figure id="org732eb63">
 <img src="figures/20220719-julia-plots/fig4.svg" alt="fig4.svg" class="org-svg">
 
 <figcaption><span class="figure-number">Figure 4: </span>plotting data with Plots.jl</figcaption>
@@ -218,9 +218,9 @@ title!("Horsepower by MPG and N Cylinders")
 </div>
 </div>
 
-<div id="outline-container-org3af8d19" class="outline-2">
-<h2 id="org3af8d19">Modifying Plot Visual Components</h2>
-<div class="outline-text-2" id="text-org3af8d19">
+<div id="outline-container-org4a2bc2f" class="outline-2">
+<h2 id="org4a2bc2f">Modifying Plot Visual Components</h2>
+<div class="outline-text-2" id="text-org4a2bc2f">
 <p>
 It's not always straightforward to figure out how to modify visual components of
 a plot. Most of the relevant information lies in the <a href="https://docs.juliaplots.org/latest/attributes/">Attributes</a> section of the
@@ -228,9 +228,9 @@ Plots.jl documentation (and its subsections).
 </p>
 </div>
 </div>
-<div id="outline-container-org48065f6" class="outline-2">
-<h2 id="org48065f6">Different Plot Styles</h2>
-<div class="outline-text-2" id="text-org48065f6">
+<div id="outline-container-org0640a3a" class="outline-2">
+<h2 id="org0640a3a">Different Plot Styles</h2>
+<div class="outline-text-2" id="text-org0640a3a">
 <p>
 One of the benefits of the Plots.jl package is its support for many different
 <a href="https://docs.juliaplots.org/latest/backends/">plotting backends</a>. The default is GR which, according to the documentation, is
@@ -264,7 +264,7 @@ We then specify that we'd like to use this backend with the <code>unicodeplots()
 </pre>
 </div>
 
-<pre class="example" id="org80f123f">
+<pre class="example" id="orgaad8dec">
                         HP vs MPG                   
        +----------------------------------------+   
 343.49 |        ⚬                               | y1
@@ -293,7 +293,7 @@ update if and when I figure that out. It should look like this:
 </p>
 
 
-<figure id="org5abb688">
+<figure id="org7ff9446">
 <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="600px">
 
 <figcaption><span class="figure-number">Figure 5: </span>screenshot of unicodeplot from vterm</figcaption>
@@ -302,9 +302,9 @@ update if and when I figure that out. It should look like this:
 </div>
 
 
-<div id="outline-container-org525d527" class="outline-2">
-<h2 id="org525d527">Conculsion</h2>
-<div class="outline-text-2" id="text-org525d527">
+<div id="outline-container-orged5ee03" class="outline-2">
+<h2 id="orged5ee03">Conculsion</h2>
+<div class="outline-text-2" id="text-orged5ee03">
 <p>
 There's a lot more to get into with plotting in Julia and with using Julia in
 emacs. This post serves as a small jumping-off point—just enough to get started,

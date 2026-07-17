@@ -22,11 +22,11 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2022-07-24T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-16T17:22:50Z">
+<meta property="article:modified_time" content="2026-07-17T00:00:28Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Figures and Captions Don&#39;t Appear as Expected with Default Export Options">
 <meta name="twitter:description" content="I noticed that some of the formatting on this site was a little off and some of the org-mode components weren&#39;t being translated to HTML in quite the way I expected. Fixing this was simple, but /fi...">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Figures and Captions Don't Appear as Expected with Default Export Options","description":"I noticed that some of the formatting on this site was a little off and some of the org-mode components weren't being translated to HTML in quite the way I expected. Fixing this was simple, but /fi...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220724-html5.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2022-07-24T00:00:00Z","dateModified":"2026-07-16T17:22:50Z"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Figures and Captions Don't Appear as Expected with Default Export Options","description":"I noticed that some of the formatting on this site was a little off and some of the org-mode components weren't being translated to HTML in quite the way I expected. Fixing this was simple, but /fi...","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20220724-html5.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2022-07-24T00:00:00Z","dateModified":"2026-07-17T00:00:28Z"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -57,13 +57,13 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9e39109">The Problem</a></li>
-<li><a href="#org2e90b44">Changes to the Site Config</a></li>
-<li><a href="#orgadd0cf8">The Results</a></li>
+<li><a href="#orgd9fba2e">The Problem</a></li>
+<li><a href="#org94ddf99">Changes to the Site Config</a></li>
+<li><a href="#org0271e82">The Results</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="org6acfd77">
+<div class="preview" id="org5d7cfac">
 <p>
 I noticed that some of the formatting on this site was a little off and some of
 the org-mode components weren't being translated to HTML in quite the way I
@@ -81,9 +81,9 @@ While that brief introduction should capture the necessary changes, we can get
 into more specifics.
 </p>
 
-<div id="outline-container-org9e39109" class="outline-2">
-<h2 id="org9e39109">The Problem</h2>
-<div class="outline-text-2" id="text-org9e39109">
+<div id="outline-container-orgd9fba2e" class="outline-2">
+<h2 id="orgd9fba2e">The Problem</h2>
+<div class="outline-text-2" id="text-orgd9fba2e">
 <p>
 If we use the default settings, figures aren't wrapped in <code>&lt;figure&gt;</code> blocks and
 captions aren't wrapped in <code>&lt;figcaption&gt;</code> blocks, so none of the formatting we
@@ -111,9 +111,9 @@ The image and caption appear left-aligned on the page. Here's the html:
 </div>
 </div>
 
-<div id="outline-container-org2e90b44" class="outline-2">
-<h2 id="org2e90b44">Changes to the Site Config</h2>
-<div class="outline-text-2" id="text-org2e90b44">
+<div id="outline-container-org94ddf99" class="outline-2">
+<h2 id="org94ddf99">Changes to the Site Config</h2>
+<div class="outline-text-2" id="text-org94ddf99">
 <p>
 To address this, we need to change the <code>org-html-doctype</code> and <code>org-html-html5-fancy</code>
 variables. We can do this in the export configuration's
@@ -162,15 +162,15 @@ key changes.
 </div>
 </div>
 </div>
-<div id="outline-container-orgadd0cf8" class="outline-2">
-<h2 id="orgadd0cf8">The Results</h2>
-<div class="outline-text-2" id="text-orgadd0cf8">
+<div id="outline-container-org0271e82" class="outline-2">
+<h2 id="org0271e82">The Results</h2>
+<div class="outline-text-2" id="text-org0271e82">
 <p>
 With these changes, our images and captions are now centered:
 </p>
 
 
-<figure id="org89c55f5">
+<figure id="orgfb0dac7">
 <img src="figures/20220719-julia-plots/fig5.png" alt="fig5.png" width="450px">
 
 <figcaption><span class="figure-number">Figure 1: </span>This caption is now centered and wrapped in a <code>&lt;figcaption&gt;</code> tag!</figcaption>
