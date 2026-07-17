@@ -16,6 +16,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/dark-mode.js" defer></script>
 <script src="/admonitions.js" defer></script>
+<script data-goatcounter="https://danliden.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 <link rel="canonical" href="https://danliden.com/posts/20260228-harness-engineering.html">
 <meta name="author" content="Daniel Liden">
 <meta property="og:url" content="https://danliden.com/posts/20260228-harness-engineering.html">
@@ -24,13 +26,13 @@
 <meta property="og:site_name" content="Daniel Liden">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2026-02-28T00:00:00Z">
-<meta property="article:modified_time" content="2026-07-17T00:00:28Z">
+<meta property="article:modified_time" content="2026-07-17T15:04:02Z">
 <meta property="og:image" content="https://danliden.com/posts/figures/20260228-harness-engineering/social_image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Harness Engineering">
 <meta name="twitter:description" content="This post introduces the concept of harness engineering and builds a simple agent harness">
 <meta name="twitter:image" content="https://danliden.com/posts/figures/20260228-harness-engineering/social_image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Harness Engineering","description":"This post introduces the concept of harness engineering and builds a simple agent harness","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20260228-harness-engineering.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2026-02-28T00:00:00Z","dateModified":"2026-07-17T00:00:28Z","keywords":"agent, ai, mlflow, claude code, harness","image":"https://danliden.com/posts/figures/20260228-harness-engineering/social_image.png"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Harness Engineering","description":"This post introduces the concept of harness engineering and builds a simple agent harness","mainEntityOfPage":{"@type":"WebPage","@id":"https://danliden.com/posts/20260228-harness-engineering.html"},"author":{"@type":"Person","name":"Daniel Liden"},"datePublished":"2026-02-28T00:00:00Z","dateModified":"2026-07-17T15:04:02Z","keywords":"agent, ai, mlflow, claude code, harness","image":"https://danliden.com/posts/figures/20260228-harness-engineering/social_image.png"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -61,33 +63,33 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3748d09">Introduction</a></li>
-<li><a href="#orga2a67a9">A simple harness</a>
+<li><a href="#org5de9018">Introduction</a></li>
+<li><a href="#org2d28244">A simple harness</a>
 <ul>
-<li><a href="#org44b6f81">The core loop</a></li>
-<li><a href="#org518eca1">The execution log</a></li>
-<li><a href="#org1310f7a">Build the context</a></li>
-<li><a href="#org0a7e998">Add tool call support</a></li>
-<li><a href="#org644f4f4">LLM Support</a></li>
-<li><a href="#orgb83ef1c">Observability</a></li>
-<li><a href="#org31efaa0">Big picture</a></li>
+<li><a href="#org9861da4">The core loop</a></li>
+<li><a href="#org16208d7">The execution log</a></li>
+<li><a href="#org4f7f12a">Build the context</a></li>
+<li><a href="#orgd8188f2">Add tool call support</a></li>
+<li><a href="#orgfd28910">LLM Support</a></li>
+<li><a href="#orgb4799e3">Observability</a></li>
+<li><a href="#orgd0df9ab">Big picture</a></li>
 </ul>
 </li>
-<li><a href="#orgd496f26">What's next</a></li>
-<li><a href="#orgcc1e9a4">Takeaways</a></li>
+<li><a href="#org5cfa9a3">What's next</a></li>
+<li><a href="#orgef227ab">Takeaways</a></li>
 </ul>
 </div>
 </nav>
-<div class="preview" id="orgd5ff0a3">
+<div class="preview" id="org08a50b7">
 <p>
 In the first couple of years of LLMs, we talked a lot about "prompt engineering": how to craft a <i>prompt</i> just so in order to induce the LLM to do what we want. Since then, we've moved on to the more expansive "context engineering": how multiple available sources of context (chat history, file reads, web search results, etc.) should be combined to induce an agent to do what we want. Here, I'm writing about the even-more-expansive notion of "harness engineering": how do we orchestrate the whole loop of LLM invocations, tool calls, background process management, context retrieval, permission asks, etc., to get the agent to do what we want?
 </p>
 
 </div>
 
-<div id="outline-container-org3748d09" class="outline-2">
-<h2 id="org3748d09">Introduction</h2>
-<div class="outline-text-2" id="text-org3748d09">
+<div id="outline-container-org5de9018" class="outline-2">
+<h2 id="org5de9018">Introduction</h2>
+<div class="outline-text-2" id="text-org5de9018">
 <p>
 I have been using Claude Code and OpenAI Codex for months now. The underlying models clearly drive much of the effectiveness of these tools—the <a href="https://wtfhappened2025.com/">much commented-on</a> jumps in performance over the past few months are clear demonstrations of the centrality of model performance.
 </p>
@@ -101,7 +103,7 @@ Right now, Claude Opus 4.6, GPT Codex 5.3, and Gemini 3.1 Pro are vying for the 
 </p>
 
 
-<figure id="org5f58f83">
+<figure id="orgfbfead6">
 <img src="./figures/20260228-harness-engineering/terminal-bench-leaderboard.png" alt="terminal-bench-leaderboard.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>Terminal-Bench leaderboard (February 2026). GPT-5.3-Codex holds the top spot; Claude Opus 4.6 slots in at #4—separated by a few percentage points from the leader.</figcaption>
@@ -112,7 +114,7 @@ Even though Codex 5.3 currently hold the top slot, the Claude Code coding agent 
 </p>
 
 
-<figure id="orga21e3ea">
+<figure id="orga774100">
 <img src="./figures/20260228-harness-engineering/cc_codex_npm.png" alt="cc_codex_npm.png">
 
 <figcaption><span class="figure-number">Figure 2: </span>npm downloads for @anthropic-ai/claude-code vs. @openai/codex. Claude Code's ~32M downloads are more than 5× Codex's ~6M.</figcaption>
@@ -145,9 +147,9 @@ In the rest of this post, we'll make a simple extensible harness. This will be t
 </p>
 </div>
 </div>
-<div id="outline-container-orga2a67a9" class="outline-2">
-<h2 id="orga2a67a9">A simple harness</h2>
-<div class="outline-text-2" id="text-orga2a67a9">
+<div id="outline-container-org2d28244" class="outline-2">
+<h2 id="org2d28244">A simple harness</h2>
+<div class="outline-text-2" id="text-org2d28244">
 <p>
 My goal here was to build a very simple but extensible agent harness. I started by sketching out what this means:
 </p>
@@ -164,7 +166,7 @@ My goal here was to build a very simple but extensible agent harness. I started 
 The goals, at this phase, are interpretability and transparency. Optimization and experimentation will come later.
 </p>
 
-<div class="note" id="orgf232651">
+<div class="note" id="org8620685">
 <p>
 I'm not going to show much in the way of code. Poke around <a href="https://github.com/djliden/context-harness">here</a> if you're interested. I heavily used Claude Code and Codex to write the code (though this agent harness itself, powered by gemini-3-flash, contributed a little bit at the end!). So I'm focusing more on the high-level organization and the things I'm trying to accomplish.
 </p>
@@ -177,33 +179,33 @@ I'm new to this! I'm used to writing technical articles with a lot of code. I'd 
 </div>
 
 
-<div id="outline-container-org44b6f81" class="outline-3">
-<h3 id="org44b6f81">The core loop</h3>
-<div class="outline-text-3" id="text-org44b6f81">
+<div id="outline-container-org9861da4" class="outline-3">
+<h3 id="org9861da4">The core loop</h3>
+<div class="outline-text-3" id="text-org9861da4">
 <p>
 The <code>ChatLoop</code> class is where everything happens. At its core, it's just a for loop. The user's message goes in; context is assembled from the chat history; the model is called; tools are executed if there were tool calls; tool results are returned to the model. Once there is a text result with no tool calls, that result is returned to the user. You can find the class <a href="https://github.com/djliden/context-harness/commit/eef51a8eccc1f7fbb1c57ca37d08572cfa5a1bc8#diff-4dffee8972ca12234622b36061093a0d0beed07e5ba0a507907ec84707325ab8R14">here</a>. 
 </p>
 </div>
 </div>
-<div id="outline-container-org518eca1" class="outline-3">
-<h3 id="org518eca1">The execution log</h3>
-<div class="outline-text-3" id="text-org518eca1">
+<div id="outline-container-org16208d7" class="outline-3">
+<h3 id="org16208d7">The execution log</h3>
+<div class="outline-text-3" id="text-org16208d7">
 <p>
 I wanted a durable "source of truth" event log. For this simple initial version, I opted for an append-only in-memory event log defined in the <code>EventLog</code> class (<a href="https://github.com/djliden/context-harness/commit/eef51a8eccc1f7fbb1c57ca37d08572cfa5a1bc8#diff-64a8fc12530c0d0b6ef710971e6d6fed48b333fe1b100b72b7e0f02ba3c29c3fR35">link</a>). Each event—user messages, model calls, errors, etc.—is logged. This <code>EventLog</code> is used to construct the context at each turn and to simplify debugging.
 </p>
 </div>
 </div>
-<div id="outline-container-org1310f7a" class="outline-3">
-<h3 id="org1310f7a">Build the context</h3>
-<div class="outline-text-3" id="text-org1310f7a">
+<div id="outline-container-org4f7f12a" class="outline-3">
+<h3 id="org4f7f12a">Build the context</h3>
+<div class="outline-text-3" id="text-org4f7f12a">
 <p>
 One of the things I really want to explore about agent harnesses is the way context is constructed and sent to the model. In this case, context assembly is, intentionally, very simple: include everything, with no pruning or compaction. We can experiment more with this later (<a href="https://github.com/djliden/context-harness/commit/eef51a8eccc1f7fbb1c57ca37d08572cfa5a1bc8#diff-08ef332ff6f7d48abb605e670b4f550c07d70b86022f86e34151c99722edc76cR37">link</a>).
 </p>
 </div>
 </div>
-<div id="outline-container-org0a7e998" class="outline-3">
-<h3 id="org0a7e998">Add tool call support</h3>
-<div class="outline-text-3" id="text-org0a7e998">
+<div id="outline-container-orgd8188f2" class="outline-3">
+<h3 id="orgd8188f2">Add tool call support</h3>
+<div class="outline-text-3" id="text-orgd8188f2">
 <p>
 Tools have a very minimal protocol: <code>name</code>, <code>description</code>, <code>parameters</code>, and async <code>execute()</code>. Then I added three tools that cover a pretty substantial proportion of what we ask agents to do: <code>bash</code>, <code>web_search</code>, <code>web_fetch</code>.
 </p>
@@ -213,9 +215,9 @@ Again, no magic: a tool call was just structured input, a function execution, an
 </p>
 </div>
 </div>
-<div id="outline-container-org644f4f4" class="outline-3">
-<h3 id="org644f4f4">LLM Support</h3>
-<div class="outline-text-3" id="text-org644f4f4">
+<div id="outline-container-orgfd28910" class="outline-3">
+<h3 id="orgfd28910">LLM Support</h3>
+<div class="outline-text-3" id="text-orgfd28910">
 <p>
 Of course, the core of any agent is the intelligence powering it. I wanted this system to be model agnostic from the start. As we saw above, the "best model" for the job changes constantly.
 </p>
@@ -225,9 +227,9 @@ I used the <a href="https://www.litellm.ai/">LiteLLM</a> library to make this ag
 </p>
 </div>
 </div>
-<div id="outline-container-orgb83ef1c" class="outline-3">
-<h3 id="orgb83ef1c">Observability</h3>
-<div class="outline-text-3" id="text-orgb83ef1c">
+<div id="outline-container-orgb4799e3" class="outline-3">
+<h3 id="orgb4799e3">Observability</h3>
+<div class="outline-text-3" id="text-orgb4799e3">
 <p>
 Finally, I wired in tracing (<code>TraceLogger</code> + MLflow autologging) and usage logging. Importantly, this component will issue a warning without blocking the agent if there are e.g. errors with the tracking server.
 </p>
@@ -236,13 +238,13 @@ Finally, I wired in tracing (<code>TraceLogger</code> + MLflow autologging) and 
 Observability is important and I wanted to add it from the start. It should help me improve the system over time, but it should never become a runtime dependency for core behavior.
 </p>
 
-<div class="tip" id="orga68735b">
+<div class="tip" id="org3f0dfea">
 <p>
 MLflow recently added the ability to group traces into <b>sessions</b> so you can evaluate the quality of entire conversations, not just inputs and outputs.
 </p>
 
 
-<figure id="org47777c3">
+<figure id="org963d92f">
 <img src="./figures/20260228-harness-engineering/mlflow-sessions.png" alt="mlflow-sessions.png">
 
 <figcaption><span class="figure-number">Figure 3: </span>MLflow session view for the context-harness project, showing all turns of a conversation grouped into a single session with aggregate token and latency metrics.</figcaption>
@@ -252,9 +254,9 @@ MLflow recently added the ability to group traces into <b>sessions</b> so you ca
 </div>
 </div>
 
-<div id="outline-container-org31efaa0" class="outline-3">
-<h3 id="org31efaa0">Big picture</h3>
-<div class="outline-text-3" id="text-org31efaa0">
+<div id="outline-container-orgd0df9ab" class="outline-3">
+<h3 id="orgd0df9ab">Big picture</h3>
+<div class="outline-text-3" id="text-orgd0df9ab">
 <p>
 The result of all this is simple on purpose. At its core, the harness is a loop, a log, and a few translation layers. An "agent harness" is not some mystical thing. Especially with the help of <i>other</i> agent harnesses, you can build one in an afternoon.
 </p>
@@ -262,17 +264,17 @@ The result of all this is simple on purpose. At its core, the harness is a loop,
 </div>
 </div>
 
-<div id="outline-container-orgd496f26" class="outline-2">
-<h2 id="orgd496f26">What's next</h2>
-<div class="outline-text-2" id="text-orgd496f26">
+<div id="outline-container-org5cfa9a3" class="outline-2">
+<h2 id="org5cfa9a3">What's next</h2>
+<div class="outline-text-2" id="text-org5cfa9a3">
 <p>
 This harness is enough of a foundation to start running some experiments on. We have the core loop. It's modular and customizable. The results are all traced in MLflow.
 </p>
 </div>
 </div>
-<div id="outline-container-orgcc1e9a4" class="outline-2">
-<h2 id="orgcc1e9a4">Takeaways</h2>
-<div class="outline-text-2" id="text-orgcc1e9a4">
+<div id="outline-container-orgef227ab" class="outline-2">
+<h2 id="orgef227ab">Takeaways</h2>
+<div class="outline-text-2" id="text-orgef227ab">
 <p>
 You might feel like this post was a little thin. And you'd be right to feel that way. That's the point. Working with the major coding agents today can feel like petitioning a genie for help and hoping that its mystical machinations return what you need. What I hope I communicated is that agent harnesses can be very simple.
 </p>
