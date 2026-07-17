@@ -33,6 +33,17 @@
 (defconst my/org-site-base-url "https://danliden.com"
   "Canonical base URL for the published site without trailing slash.")
 
+(defconst my/org-site-author-name "Daniel Liden"
+  "Site author, used for author/publisher entities.")
+
+(defconst my/org-site-author-sameas
+  '("https://github.com/djliden"
+    "https://fosstodon.org/@dliden"
+    "https://bsky.app/profile/danliden.com"
+    "https://x.com/danjliden")
+  "Canonical profile URLs that identify the author as one entity.
+Add the LinkedIn profile URL here once available.")
+
 (defconst my/org-site-root
   (file-name-directory (file-truename (or load-file-name default-directory)))
   "Root directory of the org-site repository while building.")
@@ -117,16 +128,31 @@
       (dolist (line lines)
         (insert (format "#+HTML_HEAD_EXTRA: %s\n" line))))))
 
+(defun my/org-site--json-encode (node)
+  "Encode NODE (an alist) as a JSON string."
+  (let ((json-object-type 'alist)
+        (json-array-type 'list)
+        (json-key-type 'string))
+    (json-encode node)))
+
+(defun my/org-site--author-node ()
+  "Return the author as a schema.org Person alist with identity links."
+  `(("@type" . "Person")
+    ("name" . ,my/org-site-author-name)
+    ("url" . ,(my/org-site--abs-url "/about.html"))
+    ("sameAs" . ,my/org-site-author-sameas)))
+
 (defun my/org-site--build-jsonld (title description canonical published modified keywords image)
   "Construct JSON-LD string for the current page."
-  (let* ((base `(("@context" . "https://schema.org")
+  (let* ((author (my/org-site--author-node))
+         (base `(("@context" . "https://schema.org")
                  ("@type" . ,(if published "BlogPosting" "WebPage"))
                  ("headline" . ,title)
                  ("description" . ,description)
                  ("mainEntityOfPage" . (("@type" . "WebPage")
                                         ("@id" . ,canonical)))
-                 ("author" . (("@type" . "Person")
-                               ("name" . "Daniel Liden"))))))
+                 ("author" . ,author)
+                 ("publisher" . ,author))))
     (setq base (if published
                    (append base `(("datePublished" . ,published)))
                  base))
@@ -137,12 +163,25 @@
                    (append base `(("keywords" . ,keywords)))
                  base))
     (setq base (if image
-                   (append base `(("image" . ,image)))
+                   (append base `(("image" . (("@type" . "ImageObject")
+                                              ("url" . ,image)))))
                  base))
-    (let ((json-object-type 'alist)
-          (json-array-type 'list)
-          (json-key-type 'string))
-      (json-encode base))))
+    (my/org-site--json-encode base)))
+
+(defun my/org-site--build-website-jsonld ()
+  "Return the site-wide WebSite JSON-LD string (home page only)."
+  (my/org-site--json-encode
+   `(("@context" . "https://schema.org")
+     ("@type" . "WebSite")
+     ("name" . ,my/org-site-author-name)
+     ("url" . ,(string-remove-suffix "/" my/org-site-base-url))
+     ("author" . ,(my/org-site--author-node)))))
+
+(defun my/org-site--build-person-jsonld ()
+  "Return the author Person JSON-LD string (about page only)."
+  (my/org-site--json-encode
+   (append `(("@context" . "https://schema.org"))
+           (my/org-site--author-node))))
 
 (defun my/org-site--add-page-metadata (backend)
   "Inject SEO metadata for HTML BACKEND exports."
@@ -213,6 +252,18 @@
                      (let ((jsonld (my/org-site--build-jsonld normalized-title desc canonical
                                                              published-iso modified-iso keywords abs-image)))
                        (format "<script type=\"application/ld+json\">%s</script>" jsonld))))))
+      ;; Site-wide entity anchors: WebSite on the home page, Person on about.
+      (let ((home-url (string-remove-suffix "/" my/org-site-base-url)))
+        (when (and canonical (string= canonical home-url))
+          (setq meta-lines
+                (append meta-lines
+                        (list (format "<script type=\"application/ld+json\">%s</script>"
+                                      (my/org-site--build-website-jsonld))))))
+        (when (and source (string-match-p "/about\\.org\\'" source))
+          (setq meta-lines
+                (append meta-lines
+                        (list (format "<script type=\"application/ld+json\">%s</script>"
+                                      (my/org-site--build-person-jsonld)))))))
       (my/org-site--insert-head-extra meta-lines)
       (when (and published-time source (string-match-p "/posts/" source)
                  (not (my/org-site--collect-keyword "SUBTITLE")))
