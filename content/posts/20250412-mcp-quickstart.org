@@ -90,6 +90,7 @@ I found that just installing the server as described above did not work without 
 
 To find the configuration, go to the settings menu in the Claude Desktop app, then navigate to the Developer tab. Select your MCP server and click "edit config."
 
+#+ATTR_HTML: :alt Claude Desktop Developer settings showing the running SecretServer MCP server and an Edit Config button
 [[./figures/20250412-mcp-1/1-claude-config.png]]
 
 This will open a finder window (on MacOS) showing the directory with the configuration file, ~claude_desktop_config.json~. Open this with your preferred editor to access and update the config.
@@ -117,20 +118,24 @@ If you ran into a similar issue with ~uv~, replace ~uv~ in the ~Command~ field w
 
 If you configured the MCP server correctly, you should now see two new icons in Claude desktop showing that Claude has access to the MCP server and to one or more tools from the server.
 
+#+ATTR_HTML: :alt Claude Desktop chat box with the tools and MCP connector icons highlighted below the message field
 [[./figures/20250412-mcp-1/2-claude-icons.png]]
 
 Clicking on the hammer icon will list the available tools and should show the secret number function we created.
 
+#+ATTR_HTML: :alt Claude Desktop 'Available MCP tools' popup listing get_secret_number from SecretServer
 [[./figures/20250412-mcp-1/3-claude-tools.png]]
 
 After confirming that Claude has access to the MCP, we can try it out. Simply ask Claude: "what is the secret number?"
 
 Claude should know to use the function we created. A popup will appear asking for permission to use the function. Let's allow it.
 
+#+ATTR_HTML: :alt Claude Desktop dialog asking permission to run get_secret_number from SecretServer, with Allow and Deny options
 [[./figures/20250412-mcp-1/4-claude-permission.png]]
 
 Now Claude can use the tool to retrieve the secret number.
 
+#+ATTR_HTML: :alt Claude Desktop replying 'The secret number is 13' after calling the get_secret_number tool
 [[./figures/20250412-mcp-1/5-claude-answer.png]]
 
 This demonstrates the basic pattern for setting up and MCP server and using it via the Claude Desktop app.

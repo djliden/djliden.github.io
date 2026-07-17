@@ -22,11 +22,13 @@ Suppose I have the following window configurations open. When I say "window conf
 1. My ~init.el~ file along with a docs page on ~desktop-save-mode~.
 
    #+CAPTION: My init.el next to the desktop-save-mode docs
+   #+ATTR_HTML: :alt Emacs frame split in two: init.el config on the left, desktop-save-mode help docs on the right
    [[./figures/20251122-emacs-window-configs/1_init_desktop_config.png]]
    
 2. The org file for the blog I am working on now, a scratch buffer, and my blog's build script.
 
    #+CAPTION: Blog post on the left, scratch buffer and build script on the right
+   #+ATTR_HTML: :alt Emacs frame: blog post Org draft on the left; build-site.el over an empty scratch buffer on the right
    [[./figures/20251122-emacs-window-configs/2_blog_scratch_build_config.png]]
 
 Naively navigating from (1) to (2) requires changing the leftmost buffer to my blog draft, splitting the buffer on the right, and switching the two windows on the right to the scratch and build script buffers. Switching back requires deleting on of the windows on the right and navigating back to the original two buffers.
@@ -42,11 +44,13 @@ You can also register /window configurations/. The process is essentially the sa
 2. Select a register. Any single character (including non-alphanumeric characters such as emojis) can be used to set a register. So e.g. ~<C-x r w a>~ will save the window configuration to register ~a~. ~<C-x r w 1>~ will save it to register ~1~. You can read more about registers [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Registers.html][here]].
 
    #+CAPTION: Saving the current setup to a register
+   #+ATTR_HTML: :alt Emacs Register Preview list with minibuffer prompt 'Window configuration to register: a'
    [[./figures/20251122-emacs-window-configs/3_save_window_config.png]]
 
 3. Navigate away from your saved window configuration. When you want to get back to it, you can do so with ~<C-x r j>~ and then select the register you want to return to from the ~*Register Preview*~ menu.
 
    #+CAPTION: Jumping back to a saved configuration from the Register Preview menu
+   #+ATTR_HTML: :alt Emacs Register Preview listing saved window configurations with minibuffer prompt 'Jump to register: a'
    [[./figures/20251122-emacs-window-configs/4_restore_window_config.png]]
 
    This will immediately return you to the window configuration you saved above.
@@ -54,6 +58,7 @@ You can also register /window configurations/. The process is essentially the sa
 Once we register a couple of different window configurations, it becomes very easy to swap between them!
 
 #+CAPTION: Swapping between saved configurations
+#+ATTR_HTML: :alt Animated demo of swapping between saved Emacs window configurations via registers
 [[./figures/20251122-emacs-window-configs/5_switching_configs.gif]] 
 * Persisting across Sessions
 
@@ -64,6 +69,7 @@ One approach to persisting the state of emacs across sessions is with [[https://
 In my limited testing, this approach is imperfect. Some buffers are not restored, and window registers seem to be saved in a corrupted and unusable form (even though ~register-alist~ is part of the ~desktop-globals-to-save~ list, which specifies what is preserved across sessions).
 
 #+CAPTION: The saved window registers look a bit mangled
+#+ATTR_HTML: :alt Emacs Register Preview showing window-config registers restored as 'rectangle starting with Unprintable entity'
 [[./figures/20251122-emacs-window-configs/6_corrupted_registers.png]]
 
 Still, it's better than nothing? I'm sure there are other solutions out there.

@@ -71,6 +71,7 @@ The ~@mcp.resource~ decorator takes the resource's unique URI as an argument. Cl
 
 We have a couple of different options for how to give Claude Desktop access to these resources. First, we can directly attach it to a chat message via the ~+~ menu, where we can select ~add from SecretServer~ (the name of our server). This will essentially attach the resource as a document Claude can refer to.
 
+#+ATTR_HTML: :alt Claude Desktop with the get_secret_letter resource attached as a TXT file; Claude answers the secret letter is L
 [[./figures/20250921-mcp-2/1_attach_resource.png]]
 
 We can also define a /tool/ that claude can use to access the /resource/. Let's update our server code to see this option.
@@ -102,6 +103,7 @@ async def retrieve_secret_letter_tool(ctx: Context) -> str:
 
 Now, if we re-install the server with ~mcp install server.py~, Claude will be able to invoke this tool to access the secret letter resource, even if we have not explicitly added the resource to the chat.
 
+#+ATTR_HTML: :alt Claude Desktop showing the Retrieve secret letter tool's request and response returning L
 [[./figures/20250921-mcp-2/2_secret_letter_via_tool.png]]
 
 For a more in-depth guide on using resources, check out the [[https://gofastmcp.com/servers/resources][FastMCP]] docs. I recommend reading the section on how to [[https://gofastmcp.com/servers/resources#resource-templates][parameterize resources]] next.
@@ -142,10 +144,12 @@ def haiku(topic: str) -> str:
 
 Using MCP prompts with Claude Desktop is similar to using resources: you can send a custom prompt along with a message using the ~+~ menu. If the prompt accepts an argument (like ours does), you will be prompted for it when adding.
 
+#+ATTR_HTML: :alt Claude Desktop 'Enter prompt inputs' dialog for the haiku prompt with a required Topic field
 [[./figures/20250921-mcp-2/3_attach_prompt.png]]
 
 This will result in a text file containing the filled-in prompt. You can send this along with an empty message, and Claude will respond to the prompt.
 
+#+ATTR_HTML: :alt Claude Desktop responding to the attached haiku.txt prompt with a haiku about coffee
 [[./figures/20250921-mcp-2/4_prompt_response.png]]
 
 

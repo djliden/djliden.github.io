@@ -27,6 +27,7 @@ Suppose we want our agent to help with local development, but do not want it run
 You can add the policy to your current session from the Omnigent web app or desktop app by selecting the info button (ⓘ) in the top-right corner, clicking ~+~ next to ~policies~, and selecting "Require Approval for File & Shell Operations."
 
 #+CAPTION: The Add Policy dialog, with "Require Approval for File & Shell Operations" in the list
+#+ATTR_HTML: :alt Omnigent 'Add Policy' dialog listing policies including 'Require Approval for File & Shell Operations'
 [[./figures/20260715-omnigent-policies/1_add_policy_dialog.png]]
 
 You can also simply ask the agent to add the policy to your session—Omnigent supplies coding agents with the tools they need to add policies themselves.
@@ -34,6 +35,7 @@ You can also simply ask the agent to add the policy to your session—Omnigent s
 Now, whenever the agent attempts a file or shell operation, it will first ask the user for permission.
 
 #+CAPTION: Omnigent pausing for approval before a file write, with Approve and Reject buttons
+#+ATTR_HTML: :alt Omnigent showing an 'Approval required' panel before a Write(test.txt) call, with Approve and Reject buttons
 [[./figures/20260715-omnigent-policies/2_file_write_ask.png]]
 
 * Example 2: A Custom Policy in Python
@@ -94,6 +96,7 @@ omni run agent.yaml
 Run this from the directory where both files are located. ~omni run~ resolves your module against the directory you launch from.
 
 #+CAPTION: The budget policy pausing for approval on the fourth shell call
+#+ATTR_HTML: :alt Omnigent budget_shell_calls policy pausing for approval on the fourth shell call, 'echo 4', with Approve/Reject
 [[./figures/20260715-omnigent-policies/3_shell_budget_ask.png]]
 
 You can also register it on the server, which makes it selectable from the UI for everyone on that server. Add your module to the ~policy_modules:~ list in the server config and export a ~POLICY_REGISTRY~ list from it; the server scans that list at startup. See the [[https://omnigent.ai/docs/policies/custom#2-register-on-the-server][docs]] for the entry format.
@@ -121,6 +124,7 @@ guardrails:
 Only ~sys_os_shell~ calls get checked: the tool-name test comes first, so calls to other tools—which have no ~command~ field to read—pass through without erroring. And unlike the Python policy above, a CEL policy is just an expression with nothing to load, so the agent can add one to a live session immediately, no restart needed.
 
 #+CAPTION: The custom policy denying an rm -rf shell command with "Denied by policy: Recursive delete is blocked."
+#+ATTR_HTML: :alt Omnigent chat: 'echo hi' succeeds but 'rm -rf' is denied with 'Denied by policy: Recursive delete is blocked'
 [[./figures/20260715-omnigent-policies/4_rm_rf_deny.png]]
 
 * Conclusion

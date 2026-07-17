@@ -25,6 +25,7 @@ I wasn't entirely sure what I was looking for. But I knew from previous reading 
 
 The ~apropos-variable~ function takes a pattern or a list of words and returns an ~*Apropos*~ buffer with a list of matching variables. In this case, I interactively used ~apropos-variable~ with ~M-x apropos-variable RET save hook~ to search for variables matching ~save~ and ~hook~. This returned a couple of good candidates for further exploration!
 
+#+ATTR_HTML: :alt Emacs *Apropos* buffer listing save-related hook variables including after-save-hook and before-save-hook
 [[./figures/20250323-emacs-debugging/1_apropos.png]]
 
 The ~after-save-hook~ and ~before-save-hook~ variables look especially promising. We can inspect those further for anything ~eglot~-related by selecting them from the ~*Apropos*~ buffer or searching for them with ~C-h v <variable-name>~. Following this approach showed me that:
@@ -95,6 +96,7 @@ I next navigated to my config folder, ~~/coffeemacs/~, and invoked ~lgrep~ to se
 And it turns out, I set this hook myself!
 
 
+#+ATTR_HTML: :alt Emacs *grep* buffer showing matches for 'eglot' across init.el and pyconfig.el config files
 [[./figures/20250323-emacs-debugging/2_grep.png]]
 
 Once I deleted the ~(add-hook 'after-save-hook ...)~ call from my config, the issue was fully resolved.
@@ -113,6 +115,7 @@ Even these relatively simple tools are often enough to identify the source of an
 
 Lastly—we're reaching a point where you don't have to do this yourself. You can configure the [[https://github.com/karthink/gptel?tab=readme-ov-file#i-want-the-window-to-scroll-automatically-as-the-response-is-inserted][gptel]] package with a set of tools—Emacs functions—that will enable it to recursively search for information in docs, manuals, source code, etc. [[https://youtu.be/JHXG225oP8E?si=6pgmR_S-Vk2QmjU9][This video]] provides a good overview of how to get started.
 
+#+ATTR_HTML: :alt gptel response in Emacs explaining how gptel-tools and gptel-tool structs are defined after tool calls
 [[./figures/20250323-emacs-debugging/3_gptel.png]]
 
 #  LocalWords:  elisp eglot jsonrpc JSON RPC wasn RET backtrace src subr LSP ve

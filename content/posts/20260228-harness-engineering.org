@@ -19,11 +19,13 @@ But models frequently leapfrog each other in terms of performance (real or perce
 Right now, Claude Opus 4.6, GPT Codex 5.3, and Gemini 3.1 Pro are vying for the top positions on the [[https://www.tbench.ai/leaderboard/terminal-bench/2.0][terminal bench 2 benchmark]], with some variations depending on the harnesses in which they are running.
 
 #+CAPTION: Terminal-Bench leaderboard (February 2026). GPT-5.3-Codex holds the top spot; Claude Opus 4.6 slots in at #4—separated by a few percentage points from the leader.
+#+ATTR_HTML: :alt Terminal-Bench leaderboard table; Droid/GPT-5.3-Codex ranks #1 at 77.3%, Claude Opus 4.6 at #4
 [[./figures/20260228-harness-engineering/terminal-bench-leaderboard.png]]
 
 Even though Codex 5.3 currently hold the top slot, the Claude Code coding agent harness is much more popular than the OpenAI harness. Compare their npm downloads, for example—an incomplete, but directionally correct datapoint.
 
 #+CAPTION: npm downloads for @anthropic-ai/claude-code vs. @openai/codex. Claude Code's ~32M downloads are more than 5× Codex's ~6M.
+#+ATTR_HTML: :alt Line chart of npm downloads: Claude Code climbs to ~32M vs Codex ~6M over the past year
 [[./figures/20260228-harness-engineering/cc_codex_npm.png]]
 
 All of this is to say: the harness is crucially important. The harness is more responsible for the user's experience of working with a given coding agent than the underlying intelligence is. It's /also/ much easier to modify and customize than the underlying model. More on that later. First: what is an agent harness?
@@ -87,6 +89,7 @@ Observability is important and I wanted to add it from the start. It should help
 MLflow recently added the ability to group traces into *sessions* so you can evaluate the quality of entire conversations, not just inputs and outputs.
 
 #+CAPTION: MLflow session view for the context-harness project, showing all turns of a conversation grouped into a single session with aggregate token and latency metrics.
+#+ATTR_HTML: :alt MLflow session view for context-harness: turns 1-9 sidebar, token and latency metrics, bash tool-call trace
 [[./figures/20260228-harness-engineering/mlflow-sessions.png]]
 
 #+end_tip
